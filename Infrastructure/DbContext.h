@@ -14,6 +14,6 @@ public:
 	~DbContext();
 
 	private:
-	SAConnection * connection;
+	SAConnection * connection{};
 };
 

@@ -5,10 +5,7 @@
 #include <ostream>
 #include <SQLAPI.h>
 
-DbContext::DbContext()
-{
-	GetConnection();
-}
+DbContext::DbContext() = default;
 
 SAConnection* DbContext::GetConnection()
 {
@@ -27,14 +24,12 @@ SAConnection* DbContext::GetConnection()
 	{
 		std::cout << "There was an exception" << std::endl;
 		std::cout << x.ErrText().GetMultiByteChars() << std::endl;
+		if ( !connection->isAlive() )
+		{
+			DbContext::~DbContext();
+		}
 	}
-	connection->Destroy();
-	if( connection != nullptr)
-	{
-		delete connection;
-		connection = nullptr;
-	}
-	return nullptr;
+	return connection;
 }
 
 std::string DbContext::TestConnection() const
@@ -50,9 +45,22 @@ std::string DbContext::TestConnection() const
 
 DbContext::~DbContext()
 {
+	if( connection->isConnected() )
+	{
+		try
+		{
+			connection->Disconnect();
+		}
+		catch ( SAException & x )
+		{
+			std::cout << "Unable to disconnect " << std::endl;
+			std::cout << "Trying to destroy connection " << std::endl;
+			std::cout << x.ErrText().GetMultiByteChars() << std::endl;
+			connection->Destroy();
+		}
+	}
 	if ( connection != nullptr )
 	{
-		connection->Destroy();
 		delete connection;
 		connection = nullptr;
 	}

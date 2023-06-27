@@ -27,9 +27,15 @@
     <ClCompile Include="controller\IndexController.cc">
       <Filter>Source Files\Controller</Filter>
     </ClCompile>
+    <ClCompile Include="controller\AuthController.cpp">
+      <Filter>Source Files\Controller</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="controller\IndexController.h">
+      <Filter>Header Files\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="controller\AuthController.h">
       <Filter>Header Files\Controller</Filter>
     </ClInclude>
   </ItemGroup>
