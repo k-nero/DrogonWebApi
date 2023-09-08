@@ -9,7 +9,7 @@ public:
 
 	SAConnection * GetConnection();
 
-	std::string TestConnection() const;
+	[[nodiscard]] std::string TestConnection() const;
 
 	~DbContext();
 

@@ -27,16 +27,7 @@ void AuthController::login( const HttpRequestPtr& req, std::function<void( const
 	Json::Value ret;
 	if ( user != nullptr )
 	{
-		ret["Id"] = user->GetId();
-		ret["Username"] = user->GetUserName();
-		ret["PasswordHash"] = user->GetPasswordHash();
-		ret["SecurityStamp"] = user->GetSecurityStamp();
-		ret["Email"] = user->GetEmail();
-		ret["EmailConfirmed"] = user->GetEmailConfirmed();
-		ret["PhoneNumber"] = user->GetPhoneNumber();
-		ret["PhoneNumberConfirmed"] = user->GetPhoneNumberConfirmed();
-		ret["TwoFactorEnabled"] = user->GetTwoFactorEnabled();
-		ret["AccessFailedCount"] = user->GetAccessFailedCount();
+		ret = user->ToJson();
 	}
 	const auto resp = HttpResponse::newHttpJsonResponse( ret );
 	resp->setStatusCode( k200OK );

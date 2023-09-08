@@ -44,11 +44,6 @@ ApplicationUser::ApplicationUser( ApplicationUser&& applicationuser ) noexcept
 ApplicationUser& ApplicationUser::operator=( const ApplicationUser& applicationuser )
 = default;
 
-
-/*ApplicationUser& ApplicationUser::operator=( ApplicationUser&& applicationuser ) noexcept
-{
-}*/
-
 ApplicationUser::ApplicationUser( const std::string& id, const std::string& username, const std::string& normalizedusername, const std::string& email, const bool& emailconfirmed, const std::string& normalizedemail, const std::string& passwordhash, const std::string& securitystamp, const std::string& concurrencystamp, const std::string& phonenumber, const bool& phonenumberconfirmed, const bool& twofactorenabled, const std::string& lockoutend, const bool& lockoutenabled, const int& accessfailedcount )
 {
 	Id = id;
@@ -85,6 +80,27 @@ std::string ApplicationUser::ToString()
 		"LockoutEnd: " + LockoutEnd + "\n" +
 		"LockoutEnabled: " + std::to_string( LockoutEnabled ) + "\n" +
 		"AccessFailedCount: " + std::to_string( AccessFailedCount ) + "\n";
+}
+
+Json::Value ApplicationUser::ToJson()
+{
+	Json::Value json;
+	json["Id"] = Id;
+	json["UserName"] = UserName;
+	json["NormalizedUserName"] = NormalizedUserName;
+	json["Email"] = Email;
+	json["EmailConfirmed"] = EmailConfirmed;
+	json["NormalizedEmail"] = NormalizedEmail;
+	json["PasswordHash"] = PasswordHash;
+	json["SecurityStamp"] = SecurityStamp;
+	json["ConcurrencyStamp"] = ConcurrencyStamp;
+	json["PhoneNumber"] = PhoneNumber;
+	json["PhoneNumberConfirmed"] = PhoneNumberConfirmed;
+	json["TwoFactorEnabled"] = TwoFactorEnabled;
+	json["LockoutEnd"] = LockoutEnd;
+	json["LockoutEnabled"] = LockoutEnabled;
+	json["AccessFailedCount"] = AccessFailedCount;
+	return json;
 }
 
 ApplicationUser::~ApplicationUser() = default;

@@ -149,6 +149,7 @@
   <ItemGroup>
     <ClInclude Include="DbContext.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="IDbContext.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>

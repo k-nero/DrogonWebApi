@@ -1,38 +1,39 @@
 #include "IndexController.h"
-#include <ApplicationUserCommand.h>
-#include <ApplicationUser.h>
-#include <DbContext.h>
 
-void IndexController::get(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback, const std::string p1)
+
+void IndexController::getAll(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback)
 {
-	DbContext db; 
+	DbContext db;
 	auto con = db.GetConnection();
 	ApplicationUserCommand cmd(con);
-	ApplicationUser * user = cmd.GetApplicationUserById( p1 );
-	Json::Value ret;
-	if(user != nullptr )
+	const std::vector<ApplicationUser*> users = cmd.GetAllApplicationUsers();
+	Json::Value rs;
+	for (const auto &user : users)
 	{
-		ret["Id"] = user->GetId();
-		ret["Username"] = user->GetUserName();
-		ret["PasswordHash"] = user->GetPasswordHash();
-		ret["SecurityStamp"] = user->GetSecurityStamp();
-		ret["Email"] = user->GetEmail();
-		ret["EmailConfirmed"] = user->GetEmailConfirmed();
-		ret["PhoneNumber"] = user->GetPhoneNumber();
-		ret["PhoneNumberConfirmed"] = user->GetPhoneNumberConfirmed();
-		ret["TwoFactorEnabled"] = user->GetTwoFactorEnabled();
-		ret["AccessFailedCount"] = user->GetAccessFailedCount();
+		rs.append(user->ToJson());
 	}
-	const auto resp = HttpResponse::newHttpJsonResponse(ret);
+	const auto resp = HttpResponse::newHttpJsonResponse(rs);
 	resp->setStatusCode( k200OK );
-	if(user != nullptr )
+	for (auto user : users)
 	{
 		delete user;
 		user = nullptr;
 	}
-	if(con != nullptr )
+	callback(resp);
+}
+
+void IndexController::get(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback, const std::string p1)
+{
+	DbContext db;
+	const auto con = db.GetConnection();
+	const ApplicationUserCommand cmd(con);
+	const std::shared_ptr<ApplicationUser> user( cmd.GetApplicationUserById(p1));
+	Json::Value ret;
+	if(user != nullptr )
 	{
-		con = nullptr;
+		ret = user->ToJson();
 	}
+	const auto resp = HttpResponse::newHttpJsonResponse(ret);
+	resp->setStatusCode(k200OK);
 	callback(resp);
 }

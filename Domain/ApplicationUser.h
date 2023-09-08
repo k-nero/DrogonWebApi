@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include "json/json.h"
 
 class __declspec(dllexport) ApplicationUser
 {
@@ -21,6 +22,8 @@ public:
 	ApplicationUser(const std::string& id, const std::string& username, const std::string& normalizedusername, const std::string& email, const bool& emailconfirmed, const std::string& normalizedemail, const std::string& passwordhash, const std::string& securitystamp, const std::string& concurrencystamp, const std::string& phonenumber, const bool& phonenumberconfirmed, const bool& twofactorenabled, const std::string& lockoutend, const bool& lockoutenabled, const int& accessfailedcount);
 
 	virtual std::string ToString();
+
+	virtual Json::Value ToJson();
 
 	virtual std::string GetId()
 	{
@@ -81,10 +84,6 @@ public:
 	virtual int GetAccessFailedCount()
 	{
 		return AccessFailedCount;
-	}
-	virtual void SetId(const std::string& id)
-	{
-		Id = id;
 	}
 	virtual void SetUserName(const std::string& username)
 	{
