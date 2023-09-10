@@ -4,7 +4,6 @@
 #include <crtdbg.h>
 #endif
 
-
 #include <drogon/drogon.h>
 
 int main()

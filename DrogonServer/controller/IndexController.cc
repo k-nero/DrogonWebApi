@@ -6,7 +6,7 @@ void IndexController::getAll(const HttpRequestPtr& req, std::function<void(const
 	DbContext db;
 	auto con = db.GetConnection();
 	ApplicationUserCommand cmd(con);
-	const std::vector<ApplicationUser*> users = cmd.GetAllApplicationUsers();
+	const std::vector<std::shared_ptr<ApplicationUser>> users = cmd.GetAllApplicationUsers();
 	Json::Value rs;
 	for (const auto &user : users)
 	{
@@ -14,11 +14,6 @@ void IndexController::getAll(const HttpRequestPtr& req, std::function<void(const
 	}
 	const auto resp = HttpResponse::newHttpJsonResponse(rs);
 	resp->setStatusCode( k200OK );
-	for (auto user : users)
-	{
-		delete user;
-		user = nullptr;
-	}
 	callback(resp);
 }
 

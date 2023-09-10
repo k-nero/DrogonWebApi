@@ -5,10 +5,9 @@
 #include <ostream>
 #include <SQLAPI.h>
 
-
 ApplicationUserCommand::ApplicationUserCommand() = default;
 
-ApplicationUser* ApplicationUserCommand::GetApplicationUserById( const std::string& id ) const
+std::shared_ptr<ApplicationUser> ApplicationUserCommand::GetApplicationUserById( const std::string& id ) const
 {
 	try
 	{
@@ -18,21 +17,11 @@ ApplicationUser* ApplicationUserCommand::GetApplicationUserById( const std::stri
 		cmd.Execute();
 		if ( cmd.FetchNext() )
 		{
-			return new ApplicationUser( cmd.Field( _TSA( "Id" ) ).asString().GetMultiByteChars(),
-				cmd.Field( _TSA( "UserName" ) ).asString().GetMultiByteChars(),
-				cmd.Field( _TSA( "NormalizedUserName" ) ).asString().GetMultiByteChars(),
-				cmd.Field( _TSA( "Email" ) ).asString().GetMultiByteChars(),
-				cmd.Field( _TSA( "EmailConfirmed" ) ).asBool(),
-				cmd.Field( _TSA( "NormalizedEmail" ) ).asString().GetMultiByteChars(),
-				cmd.Field( _TSA( "PasswordHash" ) ).asString().GetMultiByteChars(),
-				cmd.Field( _TSA( "SecurityStamp" ) ).asString().GetMultiByteChars(),
-				cmd.Field( _TSA( "ConcurrencyStamp" ) ).asString().GetMultiByteChars(),
-				cmd.Field( _TSA( "PhoneNumber" ) ).asString().GetMultiByteChars(),
-				cmd.Field( _TSA( "PhoneNumberConfirmed" ) ).asBool(),
-				cmd.Field( _TSA( "TwoFactorEnabled" ) ).asBool(),
-				cmd.Field( _TSA( "LockoutEnd" ) ).asString().GetMultiByteChars(),
-				cmd.Field( _TSA( "LockoutEnabled" ) ).asBool(),
-				cmd.Field( _TSA( "AccessFailedCount" ) ).asUInt64() );
+			return std::shared_ptr<ApplicationUser>(new ApplicationUser(cmd.Field(_TSA("Id")).asString().GetMultiByteChars(),
+				cmd.Field(_TSA("UserName")).asString().GetMultiByteChars(),
+				cmd.Field(_TSA("Email")).asString().GetMultiByteChars(),
+				cmd.Field(_TSA("PasswordHash")).asString().GetMultiByteChars(),
+				cmd.Field(_TSA("PhoneNumber")).asString().GetMultiByteChars()));
 		}
 	}
 	catch ( SAException& ex )
@@ -42,7 +31,7 @@ ApplicationUser* ApplicationUserCommand::GetApplicationUserById( const std::stri
 	return nullptr;
 }
 
-ApplicationUser* ApplicationUserCommand::GetApplicationUserByUserName( std::string userName )
+std::shared_ptr<ApplicationUser> ApplicationUserCommand::GetApplicationUserByUserName( std::string userName )
 {
 	try
 	{
@@ -52,21 +41,11 @@ ApplicationUser* ApplicationUserCommand::GetApplicationUserByUserName( std::stri
 		cmd.Execute();
 		if ( cmd.FetchNext() )
 		{
-			return new ApplicationUser( cmd.Field( _TSA( "Id" ) ).asString().GetMultiByteChars(),
-				cmd.Field( _TSA( "UserName" ) ).asString().GetMultiByteChars(),
-				cmd.Field( _TSA( "NormalizedUserName" ) ).asString().GetMultiByteChars(),
-				cmd.Field( _TSA( "Email" ) ).asString().GetMultiByteChars(),
-				cmd.Field( _TSA( "EmailConfirmed" ) ).asBool(),
-				cmd.Field( _TSA( "NormalizedEmail" ) ).asString().GetMultiByteChars(),
-				cmd.Field( _TSA( "PasswordHash" ) ).asString().GetMultiByteChars(),
-				cmd.Field( _TSA( "SecurityStamp" ) ).asString().GetMultiByteChars(),
-				cmd.Field( _TSA( "ConcurrencyStamp" ) ).asString().GetMultiByteChars(),
-				cmd.Field( _TSA( "PhoneNumber" ) ).asString().GetMultiByteChars(),
-				cmd.Field( _TSA( "PhoneNumberConfirmed" ) ).asBool(),
-				cmd.Field( _TSA( "TwoFactorEnabled" ) ).asBool(),
-				cmd.Field( _TSA( "LockoutEnd" ) ).asString().GetMultiByteChars(),
-				cmd.Field( _TSA( "LockoutEnabled" ) ).asBool(),
-				cmd.Field( _TSA( "AccessFailedCount" ) ).asUInt64() );
+			return std::shared_ptr<ApplicationUser>(new ApplicationUser(cmd.Field(_TSA("Id")).asString().GetMultiByteChars(),
+				cmd.Field(_TSA("UserName")).asString().GetMultiByteChars(),
+				cmd.Field(_TSA("Email")).asString().GetMultiByteChars(),
+				cmd.Field(_TSA("PasswordHash")).asString().GetMultiByteChars(),
+				cmd.Field(_TSA("PhoneNumber")).asString().GetMultiByteChars()));
 		}
 	}
 	catch ( SAException& ex )
@@ -76,30 +55,20 @@ ApplicationUser* ApplicationUserCommand::GetApplicationUserByUserName( std::stri
 	return nullptr;
 }
 
-std::vector<ApplicationUser*> ApplicationUserCommand::GetAllApplicationUsers()
+std::vector<std::shared_ptr<ApplicationUser>> ApplicationUserCommand::GetAllApplicationUsers()
 {
-	std::vector<ApplicationUser*> applicationUsers;
+	std::vector<std::shared_ptr<ApplicationUser>> applicationUsers;
 	try
 	{
 		SACommand cmd(con, _TSA("SELECT * FROM [dbo].[AspNetUsers]"));
 		cmd.Execute();
 		while (cmd.FetchNext())
 		{
-			auto user = new ApplicationUser(cmd.Field(_TSA("Id")).asString().GetMultiByteChars(),
+			std::shared_ptr<ApplicationUser> user(new ApplicationUser(cmd.Field(_TSA("Id")).asString().GetMultiByteChars(),
 				cmd.Field(_TSA("UserName")).asString().GetMultiByteChars(),
-				cmd.Field(_TSA("NormalizedUserName")).asString().GetMultiByteChars(),
 				cmd.Field(_TSA("Email")).asString().GetMultiByteChars(),
-				cmd.Field(_TSA("EmailConfirmed")).asBool(),
-				cmd.Field(_TSA("NormalizedEmail")).asString().GetMultiByteChars(),
 				cmd.Field(_TSA("PasswordHash")).asString().GetMultiByteChars(),
-				cmd.Field(_TSA("SecurityStamp")).asString().GetMultiByteChars(),
-				cmd.Field(_TSA("ConcurrencyStamp")).asString().GetMultiByteChars(),
-				cmd.Field(_TSA("PhoneNumber")).asString().GetMultiByteChars(),
-				cmd.Field(_TSA("PhoneNumberConfirmed")).asBool(),
-				cmd.Field(_TSA("TwoFactorEnabled")).asBool(),
-				cmd.Field(_TSA("LockoutEnd")).asString().GetMultiByteChars(),
-				cmd.Field(_TSA("LockoutEnabled")).asBool(),
-				cmd.Field(_TSA("AccessFailedCount")).asUInt64());
+				cmd.Field(_TSA("PhoneNumber")).asString().GetMultiByteChars()));
 			applicationUsers.push_back(user);
 		}
 	}

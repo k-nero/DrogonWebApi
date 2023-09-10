@@ -10,7 +10,7 @@ void AuthController::login( const HttpRequestPtr& req, std::function<void( const
 	auto con = db.GetConnection();
 	ApplicationUserCommand cmd( con );
 	const auto& username = req->getParameter( "username" );
-	ApplicationUser* user = cmd.GetApplicationUserByUserName( username );
+	std::shared_ptr<ApplicationUser>user = cmd.GetApplicationUserByUserName( username );
 	if ( user != nullptr )
 	{
 		const auto& password = req->getParameter( "password" );
@@ -31,11 +31,6 @@ void AuthController::login( const HttpRequestPtr& req, std::function<void( const
 	}
 	const auto resp = HttpResponse::newHttpJsonResponse( ret );
 	resp->setStatusCode( k200OK );
-	if ( user != nullptr )
-	{
-		delete user;
-		user = nullptr;
-	}
 	if ( con != nullptr )
 	{
 		con = nullptr;
