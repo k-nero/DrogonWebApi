@@ -10,7 +10,7 @@ void AuthController::login( const HttpRequestPtr& req, std::function<void( const
 	auto con = db.GetConnection();
 	ApplicationUserCommand cmd( con );
 	const auto& username = req->getParameter( "username" );
-	ApplicationUser* user = cmd.GetApplicationUserByUserName( username );
+	std::shared_ptr<ApplicationUser>user = cmd.GetApplicationUserByUserName( username );
 	if ( user != nullptr )
 	{
 		const auto& password = req->getParameter( "password" );
@@ -27,24 +27,10 @@ void AuthController::login( const HttpRequestPtr& req, std::function<void( const
 	Json::Value ret;
 	if ( user != nullptr )
 	{
-		ret["Id"] = user->GetId();
-		ret["Username"] = user->GetUserName();
-		ret["PasswordHash"] = user->GetPasswordHash();
-		ret["SecurityStamp"] = user->GetSecurityStamp();
-		ret["Email"] = user->GetEmail();
-		ret["EmailConfirmed"] = user->GetEmailConfirmed();
-		ret["PhoneNumber"] = user->GetPhoneNumber();
-		ret["PhoneNumberConfirmed"] = user->GetPhoneNumberConfirmed();
-		ret["TwoFactorEnabled"] = user->GetTwoFactorEnabled();
-		ret["AccessFailedCount"] = user->GetAccessFailedCount();
+		ret = user->ToJson();
 	}
 	const auto resp = HttpResponse::newHttpJsonResponse( ret );
 	resp->setStatusCode( k200OK );
-	if ( user != nullptr )
-	{
-		delete user;
-		user = nullptr;
-	}
 	if ( con != nullptr )
 	{
 		con = nullptr;
