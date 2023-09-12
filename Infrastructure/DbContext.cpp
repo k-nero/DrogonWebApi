@@ -12,7 +12,7 @@ SAConnection* DbContext::GetConnection()
 	connection = new SAConnection();
 	try
 	{
-		connection->Connect("192.168.50.24@CleanArchitecture", "sa", "12345", SA_SQLServer_Client);
+		connection->Connect("localhost@CleanArchitecture", "sa", "12345", SA_SQLServer_Client);
 		if (connection->isConnected())
 		{
 			//std::cout << "Connection success" << std::endl;
