@@ -4,7 +4,9 @@
 #include <crtdbg.h>
 #endif
 
+#include "ConfigProvider.h"
 #include <drogon/drogon.h>
+
 
 int main()
 {
@@ -12,7 +14,6 @@ int main()
     _CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
     _CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_DEBUG);
 #endif
-
     //Set HTTP listener address and port
     drogon::app().addListener( "0.0.0.0", 80 );
     //Load config file

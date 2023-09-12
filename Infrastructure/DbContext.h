@@ -1,6 +1,9 @@
 #pragma once
 #include <SQLAPI.h>
+#include <INIReader.h>
+#include "ConfigProvider.h"
 #include <string>
+
 
 class __declspec(dllexport) DbContext
 {
@@ -15,5 +18,6 @@ public:
 
 	private:
 	SAConnection * connection{};
+	Database connectionString;
 };
 

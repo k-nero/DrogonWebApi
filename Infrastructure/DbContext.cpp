@@ -5,14 +5,22 @@
 #include <ostream>
 #include <SQLAPI.h>
 
-DbContext::DbContext() = default;
+DbContext::DbContext()
+{
+
+	if (ConfigProvider::GetInstance()->GetConnectionString().server.empty())
+	{
+		ConfigProvider::GetInstance()->InitDataBase();
+	}
+	connectionString = ConfigProvider::GetInstance()->GetConnectionString();
+}
 
 SAConnection* DbContext::GetConnection()
 {
 	connection = new SAConnection();
 	try
 	{
-		connection->Connect("localhost@CleanArchitecture", "sa", "12345", SA_SQLServer_Client);
+		connection->Connect(connectionString.server.c_str(), connectionString.username.c_str(), connectionString.password.c_str(), SA_SQLServer_Client);
 		if (connection->isConnected())
 		{
 			//std::cout << "Connection success" << std::endl;
@@ -24,10 +32,10 @@ SAConnection* DbContext::GetConnection()
 	{
 		std::cout << "There was an exception" << std::endl;
 		std::cout << x.ErrText().GetMultiByteChars() << std::endl;
-	/*	if (!connection->isAlive())
-		{
-			DbContext::~DbContext();
-		}*/
+		/*	if (!connection->isAlive())
+			{
+				DbContext::~DbContext();
+			}*/
 	}
 	return connection;
 }

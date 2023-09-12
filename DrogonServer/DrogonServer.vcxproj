@@ -151,6 +151,9 @@
       <Project>{b65be107-58be-43dd-8244-ccb27f0b6dcb}</Project>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="config.ini" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

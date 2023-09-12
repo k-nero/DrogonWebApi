@@ -11,7 +11,7 @@ std::shared_ptr<ApplicationUser> ApplicationUserCommand::GetApplicationUserById(
 {
 	try
 	{
-		SACommand cmd( con, _TSA( "SELECT * FROM [dbo].[AspNetUsers] WHERE Id=:id" ) );
+		SACommand cmd( con, _TSA( "SELECT * FROM [dbo].[Users] WHERE Id=:id" ) );
 		const SAString idStr( id.c_str() );
 		cmd.Param( _TSA( "id" ) ).setAsString() = idStr;
 		cmd.Execute();
@@ -35,7 +35,7 @@ std::shared_ptr<ApplicationUser> ApplicationUserCommand::GetApplicationUserByUse
 {
 	try
 	{
-		SACommand cmd( con, _TSA( "SELECT * FROM [dbo].[AspNetUsers] WHERE UserName=:username" ) );
+		SACommand cmd( con, _TSA( "SELECT * FROM [dbo].[Users] WHERE UserName=:username" ) );
 		const SAString username( userName.c_str() );
 		cmd.Param( _TSA( "username" ) ).setAsString() = username;
 		cmd.Execute();
@@ -60,7 +60,7 @@ std::vector<std::shared_ptr<ApplicationUser>> ApplicationUserCommand::GetAllAppl
 	std::vector<std::shared_ptr<ApplicationUser>> applicationUsers;
 	try
 	{
-		SACommand cmd(con, _TSA("SELECT * FROM [dbo].[AspNetUsers]"));
+		SACommand cmd(con, _TSA("SELECT * FROM [dbo].[Users]"));
 		cmd.Execute();
 		while (cmd.FetchNext())
 		{
