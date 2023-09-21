@@ -79,17 +79,31 @@ std::vector<std::shared_ptr<ApplicationUser>> ApplicationUserCommand::GetAllAppl
 	return applicationUsers;
 }
 
-std::string ApplicationUserCommand::CreateApplicationUser( ApplicationUser* applicationUser )
+
+int ApplicationUserCommand::CreateApplicationUser(ApplicationUser* applicationUser)
 {
+	int affectedRow;
 	try
 	{
-		return std::string();
+		SACommand cmd(con, _TSA("INSERT INTO [dbo].[Users] (Id, UserName, PasswordHash, Email, PhoneNumber, CreatedDate) VALUES (:Id, :Username, :PasswordHash, :Email, :PhoneNumber, :CreatedDate)"));
+		cmd.Param(_TSA("id")).setAsString() = _TSA(applicationUser->GetId().c_str());
+		cmd.Param(_TSA("UserName")).setAsString() = _TSA(applicationUser->GetUserName().c_str());
+		cmd.Param(_TSA("PasswordHash")).setAsString() = _TSA(applicationUser->GetPasswordHash().c_str());
+		cmd.Param(_TSA("Email")).setAsString() = _TSA(applicationUser->GetEmail().c_str());
+		cmd.Param(_TSA("PhoneNumber")).setAsString() = _TSA(applicationUser->GetPhoneNumber().c_str());
+		time_t rawtime;
+		time(&rawtime);
+		tm tm{};
+		localtime_s(&tm, &rawtime);
+		cmd.Param(_TSA("CreatedDate")).setAsDateTime() = SADateTime(tm);
+		cmd.Execute();
+		affectedRow = cmd.RowsAffected();
 	}
-	catch( SAException& ex)
+	catch (SAException& ex)
 	{
 		std::cout << ex.ErrText().GetMultiByteChars() << std::endl;
 	}
-	return std::string();
+	return affectedRow;
 }
 
 ApplicationUserCommand::~ApplicationUserCommand()

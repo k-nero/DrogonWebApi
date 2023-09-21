@@ -11,7 +11,7 @@ class __declspec(dllexport) ApplicationUserCommand
 		std::shared_ptr<ApplicationUser> GetApplicationUserById(const std::string& id) const;
 		std::shared_ptr<ApplicationUser> GetApplicationUserByUserName(std::string userName);
 		std::vector<std::shared_ptr<ApplicationUser>>GetAllApplicationUsers();
-		std::string CreateApplicationUser(ApplicationUser* applicationUser);
+		int CreateApplicationUser(ApplicationUser* applicationUser);
 		~ApplicationUserCommand();
 	private:
 		SAConnection* con = nullptr;

@@ -135,8 +135,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="controller\IndexController.cc" />
     <ClCompile Include="controller\AuthController.cpp" />
+    <ClCompile Include="controller\IndexController.cc" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
