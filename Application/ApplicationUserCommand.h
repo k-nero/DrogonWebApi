@@ -3,7 +3,13 @@
 #include <SQLAPI.h>
 #include <vector>
 
-class __declspec(dllexport) ApplicationUserCommand
+#ifdef APPLICATION_EXPORTS
+#define APPLICATION_API __declspec(dllexport)
+#else
+#define APPLICATION_API __declspec(dllimport)
+#endif
+
+class APPLICATION_API ApplicationUserCommand
 {
 	public:
 		ApplicationUserCommand();

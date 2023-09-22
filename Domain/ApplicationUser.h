@@ -2,7 +2,13 @@
 #include <string>
 #include "json/json.h"
 
-class __declspec(dllexport) ApplicationUser
+#ifdef DOMAIN_EXPORTS
+#define DOMAIN_API __declspec(dllexport)
+#else
+#define DOMAIN_API __declspec(dllimport)
+#endif
+
+class DOMAIN_API ApplicationUser
 {
 public:
 	ApplicationUser();

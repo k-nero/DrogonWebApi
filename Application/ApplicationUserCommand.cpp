@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "ApplicationUserCommand.h"
-
 #include <iostream>
 #include <ostream>
 #include <SQLAPI.h>
@@ -17,7 +16,8 @@ std::shared_ptr<ApplicationUser> ApplicationUserCommand::GetApplicationUserById(
 		cmd.Execute();
 		if ( cmd.FetchNext() )
 		{
-			return std::shared_ptr<ApplicationUser>(new ApplicationUser(cmd.Field(_TSA("Id")).asString().GetMultiByteChars(),
+			return std::shared_ptr<ApplicationUser>(new ApplicationUser(
+				cmd.Field(_TSA("Id")).asString().GetMultiByteChars(),
 				cmd.Field(_TSA("UserName")).asString().GetMultiByteChars(),
 				cmd.Field(_TSA("Email")).asString().GetMultiByteChars(),
 				cmd.Field(_TSA("PasswordHash")).asString().GetMultiByteChars(),
@@ -41,7 +41,8 @@ std::shared_ptr<ApplicationUser> ApplicationUserCommand::GetApplicationUserByUse
 		cmd.Execute();
 		if ( cmd.FetchNext() )
 		{
-			return std::shared_ptr<ApplicationUser>(new ApplicationUser(cmd.Field(_TSA("Id")).asString().GetMultiByteChars(),
+			return std::shared_ptr<ApplicationUser>(new ApplicationUser(
+				cmd.Field(_TSA("Id")).asString().GetMultiByteChars(),
 				cmd.Field(_TSA("UserName")).asString().GetMultiByteChars(),
 				cmd.Field(_TSA("Email")).asString().GetMultiByteChars(),
 				cmd.Field(_TSA("PasswordHash")).asString().GetMultiByteChars(),
@@ -64,7 +65,8 @@ std::vector<std::shared_ptr<ApplicationUser>> ApplicationUserCommand::GetAllAppl
 		cmd.Execute();
 		while (cmd.FetchNext())
 		{
-			std::shared_ptr<ApplicationUser> user(new ApplicationUser(cmd.Field(_TSA("Id")).asString().GetMultiByteChars(),
+			std::shared_ptr<ApplicationUser> user(new ApplicationUser(
+				cmd.Field(_TSA("Id")).asString().GetMultiByteChars(),
 				cmd.Field(_TSA("UserName")).asString().GetMultiByteChars(),
 				cmd.Field(_TSA("Email")).asString().GetMultiByteChars(),
 				cmd.Field(_TSA("PasswordHash")).asString().GetMultiByteChars(),
