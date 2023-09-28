@@ -147,7 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="BcryptHash.h" />
+    <ClInclude Include="Encrypt.h" />
     <ClInclude Include="ConfigProvider.h" />
     <ClInclude Include="DbContext.h" />
     <ClInclude Include="framework.h" />
@@ -155,7 +155,7 @@
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BcryptHash.cpp" />
+    <ClCompile Include="Encrypt.cpp" />
     <ClCompile Include="ConfigProvider.cpp" />
     <ClCompile Include="DbContext.cpp" />
     <ClCompile Include="dllmain.cpp" />

@@ -6,18 +6,18 @@
 #define INFRASTRUCTURE_API __declspec(dllimport)
 #endif
 
+#include <openssl/evp.h>
 #include <string>
-#include <bcrypt.h>
-#define NT_SUCCESS(Status) ((NTSTATUS)(Status) >= 0)
+#include <openssl/rand.h>
 
 
 
-class INFRASTRUCTURE_API BcryptHash
+class INFRASTRUCTURE_API Encrypt
 {
 public:
-	BcryptHash();
-	~BcryptHash();
-	static std::string HashPassword(std::string password);
+	Encrypt();
+	~Encrypt();
+	static std::string HashPassword(const std::string& password, const std::string& salt);
 	static bool VerifyPassword(std::string password, std::string hash);
 };
 

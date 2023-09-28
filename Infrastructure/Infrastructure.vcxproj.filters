@@ -30,7 +30,7 @@
     <ClInclude Include="ConfigProvider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BcryptHash.h">
+    <ClInclude Include="Encrypt.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -47,7 +47,7 @@
     <ClCompile Include="ConfigProvider.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BcryptHash.cpp">
+    <ClCompile Include="Encrypt.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
