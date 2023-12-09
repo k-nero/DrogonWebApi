@@ -114,7 +114,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Rpcrt4.lib;Domain.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Rpcrt4.lib;Domain.lib;bcrypt.lib;Infrastructure.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)\$(IntDir);$(AdditionalLibraryDirectories);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>

@@ -3,6 +3,12 @@
 #include <iostream>
 #include <INIReader.h>
 
+#ifdef INFRASTRUCTURE_EXPORTS
+#define INFRASTRUCTURE_API __declspec(dllexport)
+#else
+#define INFRASTRUCTURE_API __declspec(dllimport)
+#endif
+
 struct Database
 {
 	std::string server;
@@ -10,16 +16,21 @@ struct Database
 	std::string password;
 };
 
-class ConfigProvider
+class INFRASTRUCTURE_API ConfigProvider
 {
 public:
 	ConfigProvider();
-	void InitDataBase();
+	void Initialize();
 	~ConfigProvider();
 public:
 	Database GetConnectionString()
 	{
 		return connectionString;
+	}
+
+	std::string GetBcryptSecret()
+	{
+		return bcryptSecret;
 	}
 
 	static ConfigProvider* GetInstance()
@@ -29,5 +40,6 @@ public:
 	}
 private:
 	Database connectionString;
+	std::string bcryptSecret;
 };
 

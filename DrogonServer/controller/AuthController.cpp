@@ -2,7 +2,7 @@
 #include <ApplicationUserCommand.h>
 #include <ApplicationUser.h>
 #include <DbContext.h>
-#include "Encrypt.h"
+#include "BcryptPW.h"
 
 void AuthController::login( const HttpRequestPtr& req, std::function<void( const HttpResponsePtr& )>&& callback )
 {
@@ -13,10 +13,9 @@ void AuthController::login( const HttpRequestPtr& req, std::function<void( const
 	std::string username = (*request)["username"].asString();
 	std::string password = (*request)["password"].asString();
 	std::shared_ptr<ApplicationUser>user = cmd.GetApplicationUserByUserName( username );
-	std::cout << "User: " << user->GetPasswordHash() << std::endl;
 	if ( user != nullptr )
 	{
-		if (Encrypt::VerifyPassword(password, user->GetPasswordHash()))
+		if (Bcrypt::VerifyPassword(password, user->GetPasswordHash()))
 		{
 			Json::Value ret;
 			ret = user->ToJson();
@@ -26,7 +25,10 @@ void AuthController::login( const HttpRequestPtr& req, std::function<void( const
 			return;
 		}
 	}
-	const auto resp = HttpResponse::newHttpResponse( );
+	Json::Value ret;
+	ret["message"] = "Invalid username or password";
+	ret["status"] = k401Unauthorized;
+	const auto resp = HttpResponse::newHttpJsonResponse(ret);
 	resp->setStatusCode( k401Unauthorized );
 	if ( con != nullptr )
 	{
@@ -49,7 +51,7 @@ void AuthController::registerUser(const HttpRequestPtr& req, std::function<void(
 		if (user != nullptr)
 		{
 			Json::Value ret;
-			ret["status"] = 0;
+			ret["status"] = k200OK;
 			ret["message"] = "Username already exists";
 			ret["id"] = user->GetId();
 			const auto resp = HttpResponse::newHttpJsonResponse(ret);
@@ -72,14 +74,14 @@ void AuthController::registerUser(const HttpRequestPtr& req, std::function<void(
 				RpcStringFreeA(&szUuid);
 			}
 		}
-		std::string passwordHash = Encrypt::HashPassword((*reqJson)["password"].asString(), "");
+		std::string passwordHash = Bcrypt::HashPassword((*reqJson)["password"].asString());
 		ApplicationUser user(guid, (*reqJson)["username"].asString(), (*reqJson)["email"].asString(), passwordHash, (*reqJson)["phoneNumber"].asString());
 		int rs = cmd.CreateApplicationUser(&user);
 		if (rs >= 1)
 		{
 			Json::Value ret;
-			ret["message"] = "User created successfully with password " + (*reqJson)["password"].asString();
-			ret["status"] = 1;
+			ret["message"] = "User created successfully!";
+			ret["status"] = k200OK;
 			ret["id"] = guid;
 			ret["user"] = user.ToJson();
 			const auto resp = HttpResponse::newHttpJsonResponse(ret);

@@ -16,9 +16,17 @@ int main()
 #endif
     //Set HTTP listener address and port
     drogon::app().addListener( "0.0.0.0", 80 );
+    drogon::app().setLogLevel( trantor::Logger::kInfo );
+    drogon::app().setThreadNum( 16 );
+    drogon::app().enableBrotli(true);
+    drogon::app().enableGzip(true);
+    drogon::app().enableDateHeader(true);
+    drogon::app().enableServerHeader(true);
+
     //Load config file
     //drogon::app().loadConfigFile("../config.json");
     //Run HTTP framework,the method will block in the internal event loop
+    ConfigProvider::GetInstance()->Initialize();
     drogon::app().run();
 #if defined _DEBUG
     _CrtDumpMemoryLeaks();

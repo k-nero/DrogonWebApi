@@ -10,7 +10,7 @@ DbContext::DbContext()
 
 	if (ConfigProvider::GetInstance()->GetConnectionString().server.empty())
 	{
-		ConfigProvider::GetInstance()->InitDataBase();
+		ConfigProvider::GetInstance()->Initialize();
 	}
 	connectionString = ConfigProvider::GetInstance()->GetConnectionString();
 }

@@ -84,7 +84,7 @@ std::vector<std::shared_ptr<ApplicationUser>> ApplicationUserCommand::GetAllAppl
 
 int ApplicationUserCommand::CreateApplicationUser(ApplicationUser* applicationUser)
 {
-	int affectedRow;
+	int affectedRow = 0;
 	try
 	{
 		SACommand cmd(con, _TSA("INSERT INTO [dbo].[Users] (Id, UserName, PasswordHash, Email, PhoneNumber, CreatedDate) VALUES (:Id, :Username, :PasswordHash, :Email, :PhoneNumber, :CreatedDate)"));

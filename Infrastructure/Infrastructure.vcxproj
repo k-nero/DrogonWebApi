@@ -116,7 +116,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(SolutionDir)lib\SQLAPI\include</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
@@ -124,7 +124,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
       <AdditionalLibraryDirectories>$(SolutionDir)lib\SQLAPI\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sqlapid.lib;Bcrypt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sqlapid.lib;bcrypt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -147,7 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Encrypt.h" />
+    <ClInclude Include="BcryptPW.h" />
     <ClInclude Include="ConfigProvider.h" />
     <ClInclude Include="DbContext.h" />
     <ClInclude Include="framework.h" />
@@ -155,7 +155,7 @@
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Encrypt.cpp" />
+    <ClCompile Include="BcryptPW.cpp" />
     <ClCompile Include="ConfigProvider.cpp" />
     <ClCompile Include="DbContext.cpp" />
     <ClCompile Include="dllmain.cpp" />
