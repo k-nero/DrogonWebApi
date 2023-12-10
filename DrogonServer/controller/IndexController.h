@@ -16,7 +16,7 @@ public:
 	{
 		// use METHOD_ADD to add your custom processing function here;
 		registerMethod(&IndexController::get, "/api/users/{1}", { Get }, false, "IndexController::get"); // path is /IndexController
-		registerMethod(&IndexController::getAll, "/api/users", { Get , "Authorization" }, false, "IndexController::getAll");
+		registerMethod(&IndexController::getAll, "/api/users", { Get , "Auth::Authorization", "Auth::Admin"}, false, "IndexController::getAll");
 		// METHOD_ADD(IndexController::your_method_name, "/{1}/{2}/list", Get); // path is /IndexController/{arg1}/{arg2}/list
 		// ADD_METHOD_TO(IndexController::your_method_name, "/absolute/path/{1}/{2}/list", Get); // path is /absolute/path/{arg1}/{arg2}/list
 	}

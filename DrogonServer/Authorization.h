@@ -5,13 +5,24 @@
 #include "ApplicationUser.h"
 #include "ApplicationUserCommand.h"
 
-
-
-class Authorization : public drogon::HttpFilter<Authorization>
+namespace Auth
 {
-public:
-	Authorization();
-	virtual void doFilter(const drogon::HttpRequestPtr& req, drogon::FilterCallback&& fcb, drogon::FilterChainCallback&& fccb) override;
-	virtual ~Authorization();
-};
+	class Authorization : public drogon::HttpFilter<Authorization>
+	{
+	public:
+		Authorization();
+		virtual void doFilter(const drogon::HttpRequestPtr& req, drogon::FilterCallback&& fcb, drogon::FilterChainCallback&& fccb) override;
+		virtual ~Authorization();
+	};
+
+	class Admin : public drogon::HttpFilter<Admin>
+	{
+	public:
+		Admin();
+		virtual void doFilter(const drogon::HttpRequestPtr& req, drogon::FilterCallback&& fcb, drogon::FilterChainCallback&& fccb) override;
+		virtual ~Admin();
+	};
+}
+
+
 

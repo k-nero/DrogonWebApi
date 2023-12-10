@@ -1,10 +1,10 @@
 #include "Authorization.h"
 
-Authorization::Authorization()
+Auth::Authorization::Authorization()
 {
 }
 
-void Authorization::doFilter(const drogon::HttpRequestPtr& req, drogon::FilterCallback&& fcb, drogon::FilterChainCallback&& fccb)
+void Auth::Authorization::doFilter(const drogon::HttpRequestPtr& req, drogon::FilterCallback&& fcb, drogon::FilterChainCallback&& fccb)
 {
 	auto& rawToken = req->getHeader("Authorization");
 	if (rawToken.empty())
@@ -25,7 +25,11 @@ void Authorization::doFilter(const drogon::HttpRequestPtr& req, drogon::FilterCa
 		auto decoded = jwt::decode(token);
 		verifier.verify(decoded);
 		auto payload = decoded.get_payload_claims();
-		auto userId = payload.find("sub");
+		auto role = payload.find("role");
+		if (role != payload.end())
+		{
+			req->addHeader("role", role->second.as_string());
+		}
 		fccb();
 	}
 	catch (const std::exception& e)
@@ -50,6 +54,29 @@ void Authorization::doFilter(const drogon::HttpRequestPtr& req, drogon::FilterCa
 	}
 }
 
-Authorization::~Authorization()
+Auth::Authorization::~Authorization()
+{
+}
+
+Auth::Admin::Admin()
+{
+}
+
+void Auth::Admin::doFilter(const drogon::HttpRequestPtr& req, drogon::FilterCallback&& fcb, drogon::FilterChainCallback&& fccb)
+{
+	auto& role = req->getHeader("role");
+	if (role != "Admin")
+	{
+		Json::Value json;
+		json["debug_message"] = "You are not authorized to access this resource";
+		auto resp = drogon::HttpResponse::newHttpJsonResponse(json);
+		resp->setStatusCode(drogon::HttpStatusCode::k403Forbidden);
+		fcb(resp);
+		return;
+	}
+	fccb();
+}
+
+Auth::Admin::~Admin()
 {
 }

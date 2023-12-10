@@ -22,6 +22,7 @@ void AuthController::login( const HttpRequestPtr& req, std::function<void( const
 				.set_id(CoreHelper::GetGuid())
 				.set_payload_claim("sub", jwt::claim(user->GetId()))
 				.set_payload_claim("name", jwt::claim(user->GetUserName()))
+				.set_payload_claim("role", jwt::claim(std::string{"Admin"}))
 				.set_payload_claim("iat", jwt::claim(std::chrono::system_clock::now()))
 				.set_payload_claim("exp", jwt::claim(std::chrono::system_clock::now() + std::chrono::hours{ 24 }))
 				.sign(jwt::algorithm::rs512(public_key, private_key , "", ""));
