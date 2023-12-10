@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "ConfigProvider.h"
+#include "CoreHelper.h"
+
 
 ConfigProvider::ConfigProvider()
 {
@@ -24,6 +26,15 @@ void ConfigProvider::Initialize()
 	if (bcryptSecret.empty())
 	{
 		bcryptSecret = reader.Get("bcrypt", "secret", "default");
+	}
+
+	if (privateRSAKey.empty())
+	{
+		privateRSAKey = CoreHelper::ReadPemFile("private_key.pem");
+	}
+	if (publicRSAKey.empty())
+	{
+		publicRSAKey = CoreHelper::ReadPemFile("public_key.pem");
 	}
 }
 

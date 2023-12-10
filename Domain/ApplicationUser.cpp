@@ -45,11 +45,11 @@ std::string ApplicationUser::ToString()
 Json::Value ApplicationUser::ToJson()
 {
 	Json::Value json;
-	json["Id"] = Id;
-	json["UserName"] = UserName;
-	json["Email"] = Email;
-	json["PasswordHash"] = PasswordHash;
-	json["PhoneNumber"] = PhoneNumber;
+	json["id"] = Id;
+	json["username"] = UserName;
+	json["email"] = Email;
+	json["passwordHash"] = PasswordHash;
+	json["phoneNumber"] = PhoneNumber;
 	return json;
 }
 

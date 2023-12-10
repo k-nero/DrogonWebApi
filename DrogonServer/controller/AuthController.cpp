@@ -1,8 +1,5 @@
 #include "AuthController.h"
-#include <ApplicationUserCommand.h>
-#include <ApplicationUser.h>
-#include <DbContext.h>
-#include "BcryptPW.h"
+
 
 void AuthController::login( const HttpRequestPtr& req, std::function<void( const HttpResponsePtr& )>&& callback )
 {
@@ -17,8 +14,21 @@ void AuthController::login( const HttpRequestPtr& req, std::function<void( const
 	{
 		if (Bcrypt::VerifyPassword(password, user->GetPasswordHash()))
 		{
+			std::string private_key = ConfigProvider::GetInstance()->GetPrivateRSAKey();
+			std::string public_key = ConfigProvider::GetInstance()->GetPublicRSAKey();
+			auto token = jwt::create()
+				.set_issuer("auth0")
+				.set_type("JWT")
+				.set_id(CoreHelper::GetGuid())
+				.set_payload_claim("sub", jwt::claim(user->GetId()))
+				.set_payload_claim("name", jwt::claim(user->GetUserName()))
+				.set_payload_claim("iat", jwt::claim(std::chrono::system_clock::now()))
+				.set_payload_claim("exp", jwt::claim(std::chrono::system_clock::now() + std::chrono::hours{ 30 * 24 }))
+				.sign(jwt::algorithm::rs512(public_key, private_key , "", ""));
+
 			Json::Value ret;
-			ret = user->ToJson();
+			ret["user"] = user->ToJson();
+			ret["access_token"] = token;
 			auto resp = HttpResponse::newHttpJsonResponse( ret );
 			resp->setStatusCode( k200OK );
 			callback( resp );

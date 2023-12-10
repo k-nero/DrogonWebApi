@@ -1,7 +1,12 @@
 #pragma once
 
+#include <jwt-cpp/jwt.h>
 #include <drogon/HttpController.h>
 #include "CoreHelper.h"
+#include "ApplicationUserCommand.h"
+#include "ApplicationUser.h"
+#include "DbContext.h"
+#include "BcryptPW.h"
 
 using namespace drogon;
 

@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "CoreHelper.h"
-#include <xlocale>
 
 CoreHelper::CoreHelper()
 {
@@ -34,4 +33,28 @@ inline tm CoreHelper::GetSystemTime()
 	tm tm{};
 	localtime_s(&tm, &rawtime);
 	return tm;
+}
+
+inline std::string CoreHelper::ReadPemFile(std::string path)
+{
+	std::ifstream pemFile(path);
+	SkipBOM(pemFile);
+	std::stringstream strStream;
+	strStream << pemFile.rdbuf(); // read the file
+	std::string pemToString = strStream.str(); // str holds the content of the file
+
+	return pemToString;
+}
+
+inline void CoreHelper::SkipBOM(std::ifstream& in)
+{
+	char test[3] = { 0 };
+	in.read(test, 3);
+	if ((unsigned char)test[0] == 0xEF &&
+		(unsigned char)test[1] == 0xBB &&
+		(unsigned char)test[2] == 0xBF)
+	{
+		return;
+	}
+	in.seekg(0);
 }

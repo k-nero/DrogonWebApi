@@ -38,8 +38,20 @@ public:
 		static ConfigProvider instance;
 		return &instance;
 	}
+
+	std::string GetPrivateRSAKey()
+	{
+		return privateRSAKey;
+	}
+
+	std::string GetPublicRSAKey()
+	{
+		return publicRSAKey;
+	}
 private:
 	Database connectionString;
 	std::string bcryptSecret;
+	std::string privateRSAKey;
+	std::string publicRSAKey;
 };
 

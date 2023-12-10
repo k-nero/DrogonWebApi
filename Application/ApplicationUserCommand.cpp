@@ -73,7 +73,7 @@ std::vector<std::shared_ptr<ApplicationUser>> ApplicationUserCommand::GetAllAppl
 	{
 		std::cout << ex.ErrText().GetMultiByteChars() << std::endl;
 	}
-	return;
+	return applicationUsers;
 }
 
 
