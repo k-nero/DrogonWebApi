@@ -1,6 +1,7 @@
 #pragma once
 
 #include <drogon/HttpController.h>
+#include "CoreHelper.h"
 
 using namespace drogon;
 
@@ -10,7 +11,7 @@ public:
 	static void initPathRouting()
 	{
 		METHOD_ADD( AuthController::login, "/login", Post ); // path is /AuthController
-		METHOD_ADD(AuthController::registerUser, "/register", Post);
+		METHOD_ADD( AuthController::registerUser, "/register", Post );
 		return;
 	}
 	void login ( const HttpRequestPtr& req, std::function<void( const HttpResponsePtr& )>&& callback );

@@ -43,7 +43,8 @@ void AuthController::registerUser(const HttpRequestPtr& req, std::function<void(
 	DbContext db;
 	auto con = db.GetConnection();
 	ApplicationUserCommand cmd(con);
-	auto &reqJson = req->getJsonObject();
+
+	auto& reqJson = req->getJsonObject();
 
 	if (!(*reqJson)["username"].isNull())
 	{
@@ -59,38 +60,27 @@ void AuthController::registerUser(const HttpRequestPtr& req, std::function<void(
 			callback(resp);
 			return;
 		}
-	}
-
-	if (reqJson != nullptr)
-	{
-		UUID uuid;
-		std::string guid;
-		if (UuidCreate(&uuid) == RPC_S_OK)
+		else
 		{
-			RPC_CSTR szUuid = NULL;
-			if (UuidToStringA(&uuid, &szUuid) == RPC_S_OK)
+			std::string guid = CoreHelper::GetGuid();
+			std::string passwordHash = Bcrypt::HashPassword((*reqJson)["password"].asString());
+			ApplicationUser user(guid, (*reqJson)["username"].asString(), (*reqJson)["email"].asString(), passwordHash, (*reqJson)["phoneNumber"].asString());
+			int rs = cmd.CreateApplicationUser(&user);
+			if (rs >= 1)
 			{
-				guid = (char*)szUuid;
-				RpcStringFreeA(&szUuid);
+				Json::Value ret;
+				ret["message"] = "User created successfully!";
+				ret["status"] = k200OK;
+				ret["id"] = guid;
+				ret["user"] = user.ToJson();
+				const auto resp = HttpResponse::newHttpJsonResponse(ret);
+				resp->setStatusCode(k200OK);
+				callback(resp);
+				return;
 			}
 		}
-		std::string passwordHash = Bcrypt::HashPassword((*reqJson)["password"].asString());
-		ApplicationUser user(guid, (*reqJson)["username"].asString(), (*reqJson)["email"].asString(), passwordHash, (*reqJson)["phoneNumber"].asString());
-		int rs = cmd.CreateApplicationUser(&user);
-		if (rs >= 1)
-		{
-			Json::Value ret;
-			ret["message"] = "User created successfully!";
-			ret["status"] = k200OK;
-			ret["id"] = guid;
-			ret["user"] = user.ToJson();
-			const auto resp = HttpResponse::newHttpJsonResponse(ret);
-			resp->setStatusCode(k200OK);
-			callback(resp);
-			return;
-		}
+		const auto resp = HttpResponse::newHttpResponse();
+		resp->setStatusCode(k422UnprocessableEntity);
+		callback(resp);
 	}
-	const auto resp = HttpResponse::newHttpResponse();
-	resp->setStatusCode(k400BadRequest);
-	callback(resp);
 }

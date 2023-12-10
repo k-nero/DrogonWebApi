@@ -152,7 +152,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="certificate.crt" />
     <None Include="config.ini" />
+    <None Include="private.key" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

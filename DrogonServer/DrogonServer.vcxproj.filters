@@ -41,5 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="config.ini" />
+    <None Include="certificate.crt" />
+    <None Include="private.key" />
   </ItemGroup>
 </Project>

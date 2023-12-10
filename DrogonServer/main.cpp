@@ -15,7 +15,7 @@ int main()
     _CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_DEBUG);
 #endif
     //Set HTTP listener address and port
-    drogon::app().addListener( "0.0.0.0", 80 );
+    drogon::app().addListener( "0.0.0.0", 443, true, "certificate.crt", "private.key");
     drogon::app().setLogLevel( trantor::Logger::kInfo );
     drogon::app().setThreadNum( 16 );
     drogon::app().enableBrotli(true);

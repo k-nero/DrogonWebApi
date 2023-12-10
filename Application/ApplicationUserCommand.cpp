@@ -6,7 +6,17 @@
 
 ApplicationUserCommand::ApplicationUserCommand() = default;
 
-std::shared_ptr<ApplicationUser> ApplicationUserCommand::GetApplicationUserById( const std::string& id ) const
+std::shared_ptr<ApplicationUser> ApplicationUserCommand::GetApplicationUserFromCommand(SACommand& cmd)
+{
+	return std::shared_ptr<ApplicationUser>(new ApplicationUser(
+		cmd.Field(_TSA("Id")).asString().GetMultiByteChars(),
+		cmd.Field(_TSA("UserName")).asString().GetMultiByteChars(),
+		cmd.Field(_TSA("Email")).asString().GetMultiByteChars(),
+		cmd.Field(_TSA("PasswordHash")).asString().GetMultiByteChars(),
+		cmd.Field(_TSA("PhoneNumber")).asString().GetMultiByteChars()));
+}
+
+std::shared_ptr<ApplicationUser> ApplicationUserCommand::GetApplicationUserById( const std::string& id ) 
 {
 	try
 	{
@@ -16,12 +26,7 @@ std::shared_ptr<ApplicationUser> ApplicationUserCommand::GetApplicationUserById(
 		cmd.Execute();
 		if ( cmd.FetchNext() )
 		{
-			return std::shared_ptr<ApplicationUser>(new ApplicationUser(
-				cmd.Field(_TSA("Id")).asString().GetMultiByteChars(),
-				cmd.Field(_TSA("UserName")).asString().GetMultiByteChars(),
-				cmd.Field(_TSA("Email")).asString().GetMultiByteChars(),
-				cmd.Field(_TSA("PasswordHash")).asString().GetMultiByteChars(),
-				cmd.Field(_TSA("PhoneNumber")).asString().GetMultiByteChars()));
+			return GetApplicationUserFromCommand(cmd);
 		}
 	}
 	catch ( SAException& ex )
@@ -41,12 +46,7 @@ std::shared_ptr<ApplicationUser> ApplicationUserCommand::GetApplicationUserByUse
 		cmd.Execute();
 		if ( cmd.FetchNext() )
 		{
-			return std::shared_ptr<ApplicationUser>(new ApplicationUser(
-				cmd.Field(_TSA("Id")).asString().GetMultiByteChars(),
-				cmd.Field(_TSA("UserName")).asString().GetMultiByteChars(),
-				cmd.Field(_TSA("Email")).asString().GetMultiByteChars(),
-				cmd.Field(_TSA("PasswordHash")).asString().GetMultiByteChars(),
-				cmd.Field(_TSA("PhoneNumber")).asString().GetMultiByteChars()));
+			return GetApplicationUserFromCommand(cmd);
 		}
 	}
 	catch ( SAException& ex )
@@ -65,26 +65,20 @@ std::vector<std::shared_ptr<ApplicationUser>> ApplicationUserCommand::GetAllAppl
 		cmd.Execute();
 		while (cmd.FetchNext())
 		{
-			std::shared_ptr<ApplicationUser> user(new ApplicationUser(
-				cmd.Field(_TSA("Id")).asString().GetMultiByteChars(),
-				cmd.Field(_TSA("UserName")).asString().GetMultiByteChars(),
-				cmd.Field(_TSA("Email")).asString().GetMultiByteChars(),
-				cmd.Field(_TSA("PasswordHash")).asString().GetMultiByteChars(),
-				cmd.Field(_TSA("PhoneNumber")).asString().GetMultiByteChars()));
-			applicationUsers.push_back(user);
+			applicationUsers.push_back(GetApplicationUserFromCommand(cmd));
 		}
+		return applicationUsers;
 	}
 	catch (SAException& ex)
 	{
 		std::cout << ex.ErrText().GetMultiByteChars() << std::endl;
 	}
-	return applicationUsers;
+	return;
 }
 
 
 int ApplicationUserCommand::CreateApplicationUser(ApplicationUser* applicationUser)
 {
-	int affectedRow = 0;
 	try
 	{
 		SACommand cmd(con, _TSA("INSERT INTO [dbo].[Users] (Id, UserName, PasswordHash, Email, PhoneNumber, CreatedDate) VALUES (:Id, :Username, :PasswordHash, :Email, :PhoneNumber, :CreatedDate)"));
@@ -93,19 +87,36 @@ int ApplicationUserCommand::CreateApplicationUser(ApplicationUser* applicationUs
 		cmd.Param(_TSA("PasswordHash")).setAsString() = _TSA(applicationUser->GetPasswordHash().c_str());
 		cmd.Param(_TSA("Email")).setAsString() = _TSA(applicationUser->GetEmail().c_str());
 		cmd.Param(_TSA("PhoneNumber")).setAsString() = _TSA(applicationUser->GetPhoneNumber().c_str());
-		time_t rawtime;
-		time(&rawtime);
-		tm tm{};
-		localtime_s(&tm, &rawtime);
-		cmd.Param(_TSA("CreatedDate")).setAsDateTime() = SADateTime(tm);
+		cmd.Param(_TSA("CreatedDate")).setAsDateTime() = SADateTime(CoreHelper::GetSystemTime());
 		cmd.Execute();
-		affectedRow = cmd.RowsAffected();
+		return cmd.RowsAffected();
 	}
 	catch (SAException& ex)
 	{
 		std::cout << ex.ErrText().GetMultiByteChars() << std::endl;
 	}
-	return affectedRow;
+	return 0;
+}
+
+int ApplicationUserCommand::UpdateApplicationUser(ApplicationUser* applicationUser)
+{
+	try
+	{
+		SACommand cmd(con, _TSA("UPDATE [dbo].[Users] SET UserName=:UserName, PasswordHash=:PasswordHash, Email=:Email, PhoneNumber=:PhoneNumber, ModifiedDate=:ModifiedDate WHERE Id=:Id"));
+		cmd.Param(_TSA("Id")).setAsString() = _TSA(applicationUser->GetId().c_str());
+		cmd.Param(_TSA("UserName")).setAsString() = _TSA(applicationUser->GetUserName().c_str());
+		cmd.Param(_TSA("PasswordHash")).setAsString() = _TSA(applicationUser->GetPasswordHash().c_str());
+		cmd.Param(_TSA("Email")).setAsString() = _TSA(applicationUser->GetEmail().c_str());
+		cmd.Param(_TSA("PhoneNumber")).setAsString() = _TSA(applicationUser->GetPhoneNumber().c_str());
+		cmd.Param(_TSA("ModifiedDate")).setAsDateTime() = SADateTime(CoreHelper::GetSystemTime());
+		cmd.Execute();
+		return cmd.RowsAffected();
+	}
+	catch (SAException& ex)
+	{
+		std::cout << ex.ErrText().GetMultiByteChars() << std::endl;
+	}
+	return 0;
 }
 
 ApplicationUserCommand::~ApplicationUserCommand()
@@ -115,3 +126,4 @@ ApplicationUserCommand::~ApplicationUserCommand()
 		con = nullptr;
 	}
 }
+

@@ -21,7 +21,7 @@ void IndexController::get(const HttpRequestPtr& req, std::function<void(const Ht
 {
 	DbContext db;
 	const auto con = db.GetConnection();
-	const ApplicationUserCommand cmd(con);
+	ApplicationUserCommand cmd(con);
 	const std::shared_ptr<ApplicationUser> user( cmd.GetApplicationUserById(p1));
 	Json::Value ret;
 	if(user != nullptr )
