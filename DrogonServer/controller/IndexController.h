@@ -8,14 +8,15 @@
 
 using namespace drogon;
 
+
 class IndexController : public HttpController<IndexController>
 {
 public:
 	static void initPathRouting()
 	{
 		// use METHOD_ADD to add your custom processing function here;
-		METHOD_ADD( IndexController::get, "/{1}", Get ); // path is /IndexController
-		METHOD_ADD(IndexController::getAll, "", Get);
+		registerMethod(&IndexController::get, "/api/users/{1}", { Get }, false, "IndexController::get"); // path is /IndexController
+		registerMethod(&IndexController::getAll, "/api/users", { Get , "Authorization" }, false, "IndexController::getAll");
 		// METHOD_ADD(IndexController::your_method_name, "/{1}/{2}/list", Get); // path is /IndexController/{arg1}/{arg2}/list
 		// ADD_METHOD_TO(IndexController::your_method_name, "/absolute/path/{1}/{2}/list", Get); // path is /absolute/path/{arg1}/{arg2}/list
 	}

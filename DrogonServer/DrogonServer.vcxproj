@@ -135,11 +135,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Authorization.cpp" />
     <ClCompile Include="controller\AuthController.cpp" />
     <ClCompile Include="controller\IndexController.cc" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Authorization.h" />
     <ClInclude Include="controller\IndexController.h" />
     <ClInclude Include="controller\AuthController.h" />
   </ItemGroup>

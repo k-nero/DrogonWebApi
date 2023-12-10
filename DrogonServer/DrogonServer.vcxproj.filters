@@ -19,6 +19,12 @@
     <Filter Include="Header Files\Controller">
       <UniqueIdentifier>{6962d7c3-a297-4cd0-bf53-1942c549ccfb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Middleware">
+      <UniqueIdentifier>{72ada706-9c0d-42a6-8ce9-94d6cbb21372}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Middleware">
+      <UniqueIdentifier>{8e853bbe-43ff-4794-9213-dd1008b39da6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -30,6 +36,9 @@
     <ClCompile Include="controller\AuthController.cpp">
       <Filter>Source Files\Controller</Filter>
     </ClCompile>
+    <ClCompile Include="Authorization.cpp">
+      <Filter>Source Files\Middleware</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="controller\IndexController.h">
@@ -37,6 +46,9 @@
     </ClInclude>
     <ClInclude Include="controller\AuthController.h">
       <Filter>Header Files\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Authorization.h">
+      <Filter>Header Files\Middleware</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

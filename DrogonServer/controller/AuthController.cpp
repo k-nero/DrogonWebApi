@@ -23,7 +23,7 @@ void AuthController::login( const HttpRequestPtr& req, std::function<void( const
 				.set_payload_claim("sub", jwt::claim(user->GetId()))
 				.set_payload_claim("name", jwt::claim(user->GetUserName()))
 				.set_payload_claim("iat", jwt::claim(std::chrono::system_clock::now()))
-				.set_payload_claim("exp", jwt::claim(std::chrono::system_clock::now() + std::chrono::hours{ 30 * 24 }))
+				.set_payload_claim("exp", jwt::claim(std::chrono::system_clock::now() + std::chrono::hours{ 24 }))
 				.sign(jwt::algorithm::rs512(public_key, private_key , "", ""));
 
 			Json::Value ret;
@@ -38,14 +38,14 @@ void AuthController::login( const HttpRequestPtr& req, std::function<void( const
 	Json::Value ret;
 	ret["message"] = "Invalid username or password";
 	ret["status"] = k401Unauthorized;
-	const auto resp = HttpResponse::newHttpJsonResponse(ret);
+	auto resp = HttpResponse::newHttpJsonResponse(ret);
 	resp->setStatusCode( k401Unauthorized );
 	if ( con != nullptr )
 	{
 		con = nullptr;
 	}
 	callback( resp );
-
+	return;
 }
 
 void AuthController::registerUser(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback)
@@ -65,7 +65,7 @@ void AuthController::registerUser(const HttpRequestPtr& req, std::function<void(
 			ret["status"] = k200OK;
 			ret["message"] = "Username already exists";
 			ret["id"] = user->GetId();
-			const auto resp = HttpResponse::newHttpJsonResponse(ret);
+			auto resp = HttpResponse::newHttpJsonResponse(ret);
 			resp->setStatusCode(k200OK);
 			callback(resp);
 			return;
@@ -83,14 +83,15 @@ void AuthController::registerUser(const HttpRequestPtr& req, std::function<void(
 				ret["status"] = k200OK;
 				ret["id"] = guid;
 				ret["user"] = user.ToJson();
-				const auto resp = HttpResponse::newHttpJsonResponse(ret);
+				auto resp = HttpResponse::newHttpJsonResponse(ret);
 				resp->setStatusCode(k200OK);
 				callback(resp);
 				return;
 			}
 		}
-		const auto resp = HttpResponse::newHttpResponse();
+		auto resp = HttpResponse::newHttpResponse();
 		resp->setStatusCode(k422UnprocessableEntity);
 		callback(resp);
+		return;
 	}
 }
