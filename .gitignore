@@ -365,3 +365,5 @@ FodyWeavers.xsd
 /DrogonServer/config.ini
 /DrogonServer/private.key
 /DrogonServer/certificate.crt
+/DrogonServer/private_key.pem
+/DrogonServer/public_key.pem
