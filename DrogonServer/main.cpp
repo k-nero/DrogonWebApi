@@ -18,8 +18,8 @@ int main()
     drogon::app().addListener( "0.0.0.0", 443, true, "certificate.crt", "private.key");
     drogon::app().setLogLevel( trantor::Logger::kInfo );
     drogon::app().setThreadNum( 16 );
-    drogon::app().enableBrotli(true);
     drogon::app().enableGzip(true);
+    drogon::app().enableBrotli(true);
     drogon::app().enableDateHeader(true);
     drogon::app().enableServerHeader(true);
 

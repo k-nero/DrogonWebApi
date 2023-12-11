@@ -22,7 +22,7 @@ public:
 	//Copy assignment operator
 	ApplicationUser& operator=(const ApplicationUser& applicationuser);
 
-	ApplicationUser(const std::string& id, const std::string& username, const std::string& email, const std::string& passwordhash, const std::string& phonenumber);
+	ApplicationUser(const std::string& id, const std::string& username, const std::string& email, const std::string& passwordhash, const std::string& phonenumber, const std::string& createdDate = "", const std::string& modifedDate = "");
 
 	//Move assignment operator
 	ApplicationUser& operator=(ApplicationUser&& applicationuser) noexcept;
@@ -68,6 +68,26 @@ public:
 		PhoneNumber = phonenumber;
 	}
 
+	virtual void SetCreatedDate(const std::string& createddate)
+	{
+		CreatedDate = createddate;
+	}
+
+	virtual void SetModifiedDate(const std::string& modifieddate)
+	{
+		ModifiedDate = modifieddate;
+	}
+
+	virtual std::string GetCreatedDate()
+	{
+		return CreatedDate;
+	}
+
+	virtual std::string GetModifiedDate()
+	{
+		return ModifiedDate;
+	}
+
 	virtual ~ApplicationUser();
 
 private:
@@ -76,5 +96,7 @@ private:
 	std::string Email = {};
 	std::string PasswordHash = {};
 	std::string PhoneNumber = {};
+	std::string CreatedDate = {};
+	std::string ModifiedDate = {};
 };
 

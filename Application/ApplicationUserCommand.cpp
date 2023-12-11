@@ -13,7 +13,9 @@ std::shared_ptr<ApplicationUser> ApplicationUserCommand::GetApplicationUserFromC
 		cmd.Field(_TSA("UserName")).asString().GetMultiByteChars(),
 		cmd.Field(_TSA("Email")).asString().GetMultiByteChars(),
 		cmd.Field(_TSA("PasswordHash")).asString().GetMultiByteChars(),
-		cmd.Field(_TSA("PhoneNumber")).asString().GetMultiByteChars()));
+		cmd.Field(_TSA("PhoneNumber")).asString().GetMultiByteChars(),
+		cmd.Field(_TSA("CreatedDate")).asString().GetMultiByteChars(), 
+		cmd.Field(_TSA("ModifiedDate")).asString().GetMultiByteChars()));
 }
 
 std::shared_ptr<ApplicationUser> ApplicationUserCommand::GetApplicationUserById( const std::string& id ) 
