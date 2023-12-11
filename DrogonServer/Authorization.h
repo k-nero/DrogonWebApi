@@ -22,6 +22,14 @@ namespace Auth
 		virtual void doFilter(const drogon::HttpRequestPtr& req, drogon::FilterCallback&& fcb, drogon::FilterChainCallback&& fccb) override;
 		virtual ~Admin();
 	};
+
+	class User : public drogon::HttpFilter<User>
+	{
+	public:
+		User();
+		virtual void doFilter(const drogon::HttpRequestPtr& req, drogon::FilterCallback&& fcb, drogon::FilterChainCallback&& fccb) override;
+		virtual ~User();
+	};
 }
 
 

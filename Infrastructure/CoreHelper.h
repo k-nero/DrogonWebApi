@@ -20,7 +20,7 @@ public:
 	~CoreHelper();
 	static inline std::string GetGuid();
 	static inline tm GetSystemTime();
-	static inline std::string ReadPemFile(std::string path);
+	static inline std::string ReadTextFile(std::string path);
 private:
 	inline static void SkipBOM(std::ifstream& in);
 };

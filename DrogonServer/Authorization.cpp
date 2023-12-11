@@ -19,11 +19,10 @@ void Auth::Authorization::doFilter(const drogon::HttpRequestPtr& req, drogon::Fi
 	auto token = rawToken.substr(rawToken.find_first_of(" ") + 1);
 	auto privateKey = ConfigProvider::GetInstance()->GetPrivateRSAKey();
 	auto publicKey = ConfigProvider::GetInstance()->GetPublicRSAKey();
-	auto verifier = jwt::verify().allow_algorithm(jwt::algorithm::rs512(publicKey, privateKey, "", "")).with_issuer("auth0");
 	try
 	{
 		auto decoded = jwt::decode(token);
-		verifier.verify(decoded);
+		jwt::verify().allow_algorithm(jwt::algorithm::rs512(publicKey, privateKey, "", "")).with_issuer("auth0").verify(decoded);
 		auto payload = decoded.get_payload_claims();
 		auto role = payload.find("role");
 		if (role != payload.end())
@@ -35,8 +34,7 @@ void Auth::Authorization::doFilter(const drogon::HttpRequestPtr& req, drogon::Fi
 	catch (const std::exception& e)
 	{
 		Json::Value json;
-		json["debug_message"] = e.what();
-		json["message"] = "An error occured while decoding token";
+		json["message"] = e.what();
 		auto resp = drogon::HttpResponse::newHttpJsonResponse(json);
 		resp->setStatusCode(drogon::HttpStatusCode::k401Unauthorized);
 		fcb(resp);
@@ -46,7 +44,6 @@ void Auth::Authorization::doFilter(const drogon::HttpRequestPtr& req, drogon::Fi
 	{
 		Json::Value json;
 		json["debug_message"] = e.what();
-		json["message"] = "Invalid token";
 		auto resp = drogon::HttpResponse::newHttpJsonResponse(json);
 		resp->setStatusCode(drogon::HttpStatusCode::k401Unauthorized);
 		fcb(resp);
@@ -69,6 +66,7 @@ void Auth::Admin::doFilter(const drogon::HttpRequestPtr& req, drogon::FilterCall
 	{
 		Json::Value json;
 		json["debug_message"] = "You are not authorized to access this resource";
+		json["status"] = drogon::HttpStatusCode::k403Forbidden;
 		auto resp = drogon::HttpResponse::newHttpJsonResponse(json);
 		resp->setStatusCode(drogon::HttpStatusCode::k403Forbidden);
 		fcb(resp);
@@ -78,5 +76,29 @@ void Auth::Admin::doFilter(const drogon::HttpRequestPtr& req, drogon::FilterCall
 }
 
 Auth::Admin::~Admin()
+{
+}
+
+Auth::User::User()
+{
+}
+
+void Auth::User::doFilter(const drogon::HttpRequestPtr& req, drogon::FilterCallback&& fcb, drogon::FilterChainCallback&& fccb)
+{
+auto& role = req->getHeader("role");
+	if (role != "User")
+	{
+		Json::Value json;
+		json["debug_message"] = "You are not authorized to access this resource";
+		json["status"] = drogon::HttpStatusCode::k403Forbidden;
+		auto resp = drogon::HttpResponse::newHttpJsonResponse(json);
+		resp->setStatusCode(drogon::HttpStatusCode::k403Forbidden);
+		fcb(resp);
+		return;
+	}
+	fccb();
+}
+
+Auth::User::~User()
 {
 }

@@ -9,7 +9,7 @@
 #define INFRASTRUCTURE_API __declspec(dllimport)
 #endif
 
-struct Database
+struct INFRASTRUCTURE_API Database
 {
 	std::string server;
 	std::string username;

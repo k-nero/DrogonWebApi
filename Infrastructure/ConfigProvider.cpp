@@ -30,11 +30,11 @@ void ConfigProvider::Initialize()
 
 	if (privateRSAKey.empty())
 	{
-		privateRSAKey = CoreHelper::ReadPemFile("private_key.pem");
+		privateRSAKey = CoreHelper::ReadTextFile("private_key.pem");
 	}
 	if (publicRSAKey.empty())
 	{
-		publicRSAKey = CoreHelper::ReadPemFile("public_key.pem");
+		publicRSAKey = CoreHelper::ReadTextFile("public_key.pem");
 	}
 }
 

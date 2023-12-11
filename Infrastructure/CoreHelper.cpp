@@ -35,7 +35,7 @@ inline tm CoreHelper::GetSystemTime()
 	return tm;
 }
 
-inline std::string CoreHelper::ReadPemFile(std::string path)
+inline std::string CoreHelper::ReadTextFile(std::string path)
 {
 	std::ifstream pemFile(path);
 	SkipBOM(pemFile);
