@@ -46,6 +46,8 @@ inline std::string CoreHelper::ReadTextFile(std::string path)
 	return pemToString;
 }
 
+
+
 inline void CoreHelper::SkipBOM(std::ifstream& in)
 {
 	char test[3] = { 0 };

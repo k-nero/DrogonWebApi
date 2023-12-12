@@ -5,6 +5,7 @@
 #include <ApplicationUser.h>
 #include <DbContext.h>
 #include <memory.h>
+#include "JsonHelper.h"
 
 using namespace drogon;
 

@@ -1,15 +1,12 @@
 #pragma once
 #include <string>
 #include "json/json.h"
+#include "BaseEntity.h"
+#include "DomainApi.h"
 
-#ifdef DOMAIN_EXPORTS
-#define DOMAIN_API __declspec(dllexport)
-#else
-#define DOMAIN_API __declspec(dllimport)
-#endif
-
-class DOMAIN_API ApplicationUser
+class DOMAIN_API ApplicationUser : public BaseEntity
 {
+	BOOST_DESCRIBE_CLASS(ApplicationUser, (BaseEntity), (), (), (UserName, Email, PasswordHash, PhoneNumber))
 public:
 	ApplicationUser();
 
@@ -29,12 +26,7 @@ public:
 
 	virtual std::string ToString();
 
-	virtual Json::Value ToJson();
-
-	virtual std::string GetId()
-	{
-		return Id;
-	}
+	//virtual Json::Value ToJson();
 	virtual std::string GetUserName()
 	{
 		return UserName;
@@ -68,35 +60,12 @@ public:
 		PhoneNumber = phonenumber;
 	}
 
-	virtual void SetCreatedDate(const std::string& createddate)
-	{
-		CreatedDate = createddate;
-	}
-
-	virtual void SetModifiedDate(const std::string& modifieddate)
-	{
-		ModifiedDate = modifieddate;
-	}
-
-	virtual std::string GetCreatedDate()
-	{
-		return CreatedDate;
-	}
-
-	virtual std::string GetModifiedDate()
-	{
-		return ModifiedDate;
-	}
-
 	virtual ~ApplicationUser();
 
 private:
-	std::string Id = {};
 	std::string UserName = {};
 	std::string Email = {};
 	std::string PasswordHash = {};
 	std::string PhoneNumber = {};
-	std::string CreatedDate = {};
-	std::string ModifiedDate = {};
 };
 

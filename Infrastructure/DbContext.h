@@ -3,12 +3,7 @@
 #include <INIReader.h>
 #include "ConfigProvider.h"
 #include <string>
-
-#ifdef INFRASTRUCTURE_EXPORTS
-#define INFRASTRUCTURE_API __declspec(dllexport)
-#else
-#define INFRASTRUCTURE_API __declspec(dllimport)
-#endif
+#include "InfrastructureApi.h"
 
 class INFRASTRUCTURE_API DbContext
 {

@@ -36,6 +36,12 @@
     <ClInclude Include="CoreHelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="InfrastructureApi.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="JsonHelper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">

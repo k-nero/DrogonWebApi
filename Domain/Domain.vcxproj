@@ -202,11 +202,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="ApplicationUser.h" />
+    <ClInclude Include="BaseEntity.h" />
+    <ClInclude Include="DomainApi.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ApplicationUser.cpp" />
+    <ClCompile Include="BaseEntity.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

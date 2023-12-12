@@ -2,12 +2,7 @@
 #include <string>
 #include <iostream>
 #include <INIReader.h>
-
-#ifdef INFRASTRUCTURE_EXPORTS
-#define INFRASTRUCTURE_API __declspec(dllexport)
-#else
-#define INFRASTRUCTURE_API __declspec(dllimport)
-#endif
+#include "InfrastructureApi.h"
 
 struct INFRASTRUCTURE_API Database
 {

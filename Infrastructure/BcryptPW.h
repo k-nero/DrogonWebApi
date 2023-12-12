@@ -6,12 +6,7 @@
 #include <iomanip>
 #include <boost/beast/core/detail/base64.hpp>
 #include "ConfigProvider.h"	
-
-#ifdef INFRASTRUCTURE_EXPORTS
-#define INFRASTRUCTURE_API __declspec(dllexport)
-#else
-#define INFRASTRUCTURE_API __declspec(dllimport)
-#endif
+#include "InfrastructureApi.h"
 
 class INFRASTRUCTURE_API Bcrypt
 {

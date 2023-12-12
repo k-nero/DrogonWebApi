@@ -7,6 +7,7 @@
 #include "ApplicationUser.h"
 #include "DbContext.h"
 #include "BcryptPW.h"
+#include "JsonHelper.h"
 
 using namespace drogon;
 
