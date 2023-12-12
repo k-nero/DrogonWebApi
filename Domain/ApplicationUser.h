@@ -6,7 +6,7 @@
 
 class DOMAIN_API ApplicationUser : public BaseEntity
 {
-	BOOST_DESCRIBE_CLASS(ApplicationUser, (BaseEntity), (), (), (UserName, Email, PasswordHash, PhoneNumber))
+	BOOST_DESCRIBE_CLASS(ApplicationUser, (BaseEntity), (), (UserName, Email, PasswordHash, PhoneNumber), ())
 public:
 	ApplicationUser();
 
@@ -62,7 +62,7 @@ public:
 
 	virtual ~ApplicationUser();
 
-private:
+protected:
 	std::string UserName = {};
 	std::string Email = {};
 	std::string PasswordHash = {};

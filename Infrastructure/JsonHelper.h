@@ -6,7 +6,8 @@
 #include <boost/json.hpp>
 #include <json/json.h>
 
-template<class T, class D1 = boost::describe::describe_members<T, boost::describe::mod_any_access>>
+template<class T, class D1 = boost::describe::describe_members<T, boost::describe::mod_any_access | boost::describe::mod_inherited>,
+		 class D2 = boost::describe::describe_members<T, boost::describe::mod_any_access>>
 void tag_invoke(boost::json::value_from_tag const&, boost::json::value& v, T const& t)
 {
 	auto& obj = v.emplace_object();
@@ -16,7 +17,7 @@ void tag_invoke(boost::json::value_from_tag const&, boost::json::value& v, T con
 	});
 }
 
-template<class T> static Json::Value ToJson(T t)
+template<class T> static Json::Value ToJson(T&t)
 {
 	auto jv = boost::json::value_from(t);
 	auto json = boost::json::serialize(jv);

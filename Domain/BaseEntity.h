@@ -5,7 +5,7 @@
 
 class DOMAIN_API BaseEntity
 {
-	BOOST_DESCRIBE_CLASS(BaseEntity, (), (), (), (Id, CreatedDate, ModifiedDate))
+	BOOST_DESCRIBE_CLASS(BaseEntity, (), (), (Id, CreatedDate, ModifiedDate), ())
 
 public:
 	BaseEntity();
