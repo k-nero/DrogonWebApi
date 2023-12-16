@@ -19,7 +19,7 @@ int main()
     drogon::app().setLogLevel( trantor::Logger::kInfo );
     drogon::app().setThreadNum( 16 );
     drogon::app().enableGzip(true);
-    drogon::app().enableBrotli(true);
+    drogon::app().enableBrotli(false);
     drogon::app().enableDateHeader(true);
     drogon::app().enableServerHeader(true);
 

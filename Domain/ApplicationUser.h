@@ -27,7 +27,7 @@ public:
 	virtual std::string ToString();
 
 	//virtual Json::Value ToJson();
-	virtual std::string GetUserName()
+	virtual std::string GetUsername()
 	{
 		return UserName;
 	}
@@ -43,7 +43,7 @@ public:
 	{
 		return PhoneNumber;
 	}
-	virtual void SetUserName(const std::string& username)
+	virtual void SetUsername(const std::string& username)
 	{
 		UserName = username;
 	}
@@ -68,4 +68,3 @@ protected:
 	std::string PasswordHash = {};
 	std::string PhoneNumber = {};
 };
-

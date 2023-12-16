@@ -88,7 +88,7 @@ int ApplicationUserCommand::CreateApplicationUser(ApplicationUser* applicationUs
 	{
 		SACommand cmd(con, _TSA("INSERT INTO [dbo].[Users] (Id, UserName, PasswordHash, Email, PhoneNumber, CreatedDate) VALUES (:Id, :Username, :PasswordHash, :Email, :PhoneNumber, :CreatedDate)"));
 		cmd.Param(_TSA("id")).setAsString() = _TSA(applicationUser->GetId().c_str());
-		cmd.Param(_TSA("UserName")).setAsString() = _TSA(applicationUser->GetUserName().c_str());
+		cmd.Param(_TSA("UserName")).setAsString() = _TSA(applicationUser->GetUsername().c_str());
 		cmd.Param(_TSA("PasswordHash")).setAsString() = _TSA(applicationUser->GetPasswordHash().c_str());
 		cmd.Param(_TSA("Email")).setAsString() = _TSA(applicationUser->GetEmail().c_str());
 		cmd.Param(_TSA("PhoneNumber")).setAsString() = _TSA(applicationUser->GetPhoneNumber().c_str());
@@ -110,7 +110,7 @@ int ApplicationUserCommand::UpdateApplicationUser(ApplicationUser* applicationUs
 	{
 		SACommand cmd(con, _TSA("UPDATE [dbo].[Users] SET UserName=:UserName, PasswordHash=:PasswordHash, Email=:Email, PhoneNumber=:PhoneNumber, ModifiedDate=:ModifiedDate WHERE Id=:Id"));
 		cmd.Param(_TSA("Id")).setAsString() = _TSA(applicationUser->GetId().c_str());
-		cmd.Param(_TSA("UserName")).setAsString() = _TSA(applicationUser->GetUserName().c_str());
+		cmd.Param(_TSA("UserName")).setAsString() = _TSA(applicationUser->GetUsername().c_str());
 		cmd.Param(_TSA("PasswordHash")).setAsString() = _TSA(applicationUser->GetPasswordHash().c_str());
 		cmd.Param(_TSA("Email")).setAsString() = _TSA(applicationUser->GetEmail().c_str());
 		cmd.Param(_TSA("PhoneNumber")).setAsString() = _TSA(applicationUser->GetPhoneNumber().c_str());

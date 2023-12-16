@@ -3,7 +3,7 @@
 
 ApplicationUser::ApplicationUser() = default;
 
-ApplicationUser::ApplicationUser(const ApplicationUser& applicationuser) : BaseEntity(applicationuser.Id, applicationuser.CreatedDate, applicationuser.ModifiedDate)
+ApplicationUser::ApplicationUser(const ApplicationUser& applicationuser) : BaseEntity(applicationuser)
 {
 	UserName = applicationuser.UserName;
 	Email = applicationuser.Email;
@@ -11,15 +11,12 @@ ApplicationUser::ApplicationUser(const ApplicationUser& applicationuser) : BaseE
 	PhoneNumber = applicationuser.PhoneNumber;
 }
 
-ApplicationUser::ApplicationUser(ApplicationUser&& applicationuser) noexcept : BaseEntity(std::move(applicationuser.Id), std::move(applicationuser.CreatedDate), std::move(applicationuser.ModifiedDate))
+ApplicationUser::ApplicationUser(ApplicationUser&& applicationuser) noexcept : BaseEntity(applicationuser)
 {
-	Id = std::move(applicationuser.Id);
 	UserName = std::move(applicationuser.UserName);
 	Email = std::move(applicationuser.Email);
 	PasswordHash = std::move(applicationuser.PasswordHash);
 	PhoneNumber = std::move(applicationuser.PhoneNumber);
-	CreatedDate = std::move(applicationuser.CreatedDate);
-	ModifiedDate = std::move(applicationuser.ModifiedDate);
 }
 
 ApplicationUser& ApplicationUser::operator=(const ApplicationUser& applicationuser)

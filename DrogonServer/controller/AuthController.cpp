@@ -1,7 +1,7 @@
 #include "AuthController.h"
 
 
-void AuthController::login(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback)
+void AuthController::Login(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback)
 {
 	try
 	{
@@ -24,7 +24,7 @@ void AuthController::login(const HttpRequestPtr& req, std::function<void(const H
 					.set_type("JWT")
 					.set_id(CoreHelper::GetGuid())
 					.set_payload_claim("sub", jwt::claim(user->GetId()))
-					.set_payload_claim("name", jwt::claim(user->GetUserName()))
+					.set_payload_claim("name", jwt::claim(user->GetUsername()))
 					.set_payload_claim("role", jwt::claim(std::string{ "Admin" }))
 					.set_payload_claim("iat", jwt::claim(std::chrono::system_clock::now()))
 					.set_payload_claim("exp", jwt::claim(std::chrono::system_clock::now() + std::chrono::hours{ 24 }))
@@ -56,7 +56,7 @@ void AuthController::login(const HttpRequestPtr& req, std::function<void(const H
 	}
 }
 
-void AuthController::registerUser(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback)
+void AuthController::Register(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback)
 {
 	try
 	{

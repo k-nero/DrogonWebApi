@@ -16,10 +16,10 @@ class AuthController : public HttpController<AuthController>
 public: 
 	static void initPathRouting()
 	{
-		registerMethod(&AuthController::login, "/api/auth/login", { Post }, false, "AuthController::login");
-		registerMethod(&AuthController::registerUser, "/api/auth/register", { Post }, false, "AuthController::registerUser");
+		registerMethod(&AuthController::Login, "/api/auth/login", { Post }, false, "AuthController::Login");
+		registerMethod(&AuthController::Register, "/api/auth/register", { Post }, false, "AuthController::RegisterUser");
 	}
-	void login ( const HttpRequestPtr& req, std::function<void( const HttpResponsePtr& )>&& callback );
-	void registerUser ( const HttpRequestPtr& req, std::function<void( const HttpResponsePtr& )>&& callback );
+	void Login ( const HttpRequestPtr& req, std::function<void( const HttpResponsePtr& )>&& callback );
+	void Register ( const HttpRequestPtr& req, std::function<void( const HttpResponsePtr& )>&& callback );
 };
 

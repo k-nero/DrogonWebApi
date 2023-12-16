@@ -361,7 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-/lib/SQLAPI
 /DrogonServer/config.ini
 /DrogonServer/private.key
 /DrogonServer/certificate.crt

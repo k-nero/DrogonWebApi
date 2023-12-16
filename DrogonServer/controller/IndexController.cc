@@ -1,7 +1,7 @@
 #include "IndexController.h"
 
 
-void IndexController::getAll(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback)
+void IndexController::GetAll(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback)
 {
 	try
 	{
@@ -32,7 +32,7 @@ void IndexController::getAll(const HttpRequestPtr& req, std::function<void(const
 	}
 }
 
-void IndexController::get(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback, const std::string p1)
+void IndexController::Get(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback, const std::string p1)
 {
 	try
 	{

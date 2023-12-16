@@ -85,7 +85,7 @@ Auth::User::User()
 
 void Auth::User::doFilter(const drogon::HttpRequestPtr& req, drogon::FilterCallback&& fcb, drogon::FilterChainCallback&& fccb)
 {
-auto& role = req->getHeader("role");
+	auto& role = req->getHeader("role");
 	if (role != "User")
 	{
 		Json::Value json;
