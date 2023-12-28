@@ -30,6 +30,12 @@
     <ClInclude Include="DomainApi.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TodoList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TodoItem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -42,6 +48,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BaseEntity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TodoList.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TodoItem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
