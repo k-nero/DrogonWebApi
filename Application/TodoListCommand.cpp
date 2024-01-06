@@ -66,7 +66,7 @@ int TodoListCommand::CreateTodoList(TodoList& todoList)
 			for (auto& item : todoList.GetTodoItems())
 			{
 				item->SetTodoListId(todoList.GetId());
-				std::make_shared<TodoItemCommand>(con)->CreateTodoItem(item.get());
+				std::make_shared<TodoItemCommand>(con)->CreateTodoItem(*item);
 			}
 		}
 		return i;

@@ -216,13 +216,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="ApplicationUserCommand.h" />
-    <ClInclude Include="BaseCommand.h" />
     <ClInclude Include="BaseQuery.h" />
-    <ClInclude Include="IBaseCommand.h" />
+    <ClInclude Include="BaseCommand.h" />
+    <ClInclude Include="IBaseQuery.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="ApplicationApi.h" />
-    <ClInclude Include="IBaseQuery.h" />
+    <ClInclude Include="IBaseCommand.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="TestApplicationUser.h" />
     <ClInclude Include="TodoItemCommand.h" />
     <ClInclude Include="TodoListCommand.h" />
   </ItemGroup>
@@ -237,6 +238,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="TestApplicationUser.cpp" />
     <ClCompile Include="TodoItemCommand.cpp" />
     <ClCompile Include="TodoListCommand.cpp" />
   </ItemGroup>

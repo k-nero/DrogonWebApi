@@ -7,8 +7,8 @@ void IndexController::GetAll(const HttpRequestPtr& req, std::function<void(const
 	{
 		DbContext db;
 		auto con = db.GetConnection();
-		ApplicationUserCommand cmd(con);
-		const std::vector<std::shared_ptr<ApplicationUser>> users = cmd.GetAllApplicationUsers();
+		TestApplicationUser cmd(con);
+		const std::vector<std::shared_ptr<ApplicationUser>> users = cmd.GetAll();
 		Json::Value rs;
 		for (const auto& user : users)
 		{
@@ -38,8 +38,8 @@ void IndexController::Get(const HttpRequestPtr& req, std::function<void(const Ht
 	{
 		DbContext db;
 		const auto con = db.GetConnection();
-		ApplicationUserCommand cmd(con);
-		const std::shared_ptr<ApplicationUser> user(cmd.GetApplicationUserById(p1));
+		TestApplicationUser cmd(con);
+		const std::shared_ptr<ApplicationUser> user(cmd.GetById(p1));
 		Json::Value ret;
 		if (user != nullptr)
 		{

@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\Interface">
+      <UniqueIdentifier>{6571c82d-eba5-4895-bbb2-3ebc017e5f3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Base">
+      <UniqueIdentifier>{58b15587-9f40-4933-b632-777ddd63b225}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -33,17 +39,20 @@
     <ClInclude Include="ApplicationApi.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="IBaseCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BaseCommand.h">
+    <ClInclude Include="TestApplicationUser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="IBaseQuery.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="IBaseCommand.h">
+      <Filter>Header Files\Interface</Filter>
     </ClInclude>
     <ClInclude Include="BaseQuery.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseCommand.h">
+      <Filter>Header Files\Base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -60,6 +69,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TodoListCommand.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TestApplicationUser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

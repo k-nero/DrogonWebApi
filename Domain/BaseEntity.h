@@ -52,8 +52,8 @@ public:
 	}
 	virtual ~BaseEntity();
 protected:
-	std::string Id;
-	std::string CreatedDate;
-	std::string ModifiedDate;
+	std::string Id = "";
+	std::string CreatedDate = "";
+	std::string ModifiedDate = "";
 };
 
