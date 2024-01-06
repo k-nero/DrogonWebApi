@@ -156,6 +156,9 @@
       <AdditionalIncludeDirectories>$(SolutionDir)Infrastructure;$(SolutionDir)Domain;$(SolutionDir)lib\SQLAPI\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <EnableParallelCodeGeneration>
+      </EnableParallelCodeGeneration>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -214,8 +217,11 @@
   <ItemGroup>
     <ClInclude Include="ApplicationUserCommand.h" />
     <ClInclude Include="BaseCommand.h" />
+    <ClInclude Include="BaseQuery.h" />
+    <ClInclude Include="IBaseCommand.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="ApplicationApi.h" />
+    <ClInclude Include="IBaseQuery.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="TodoItemCommand.h" />
     <ClInclude Include="TodoListCommand.h" />

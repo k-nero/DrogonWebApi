@@ -55,11 +55,45 @@ std::vector<std::shared_ptr<TodoItem>> TodoItemCommand::GetAllTodoItems(std::str
 
 int TodoItemCommand::CreateTodoItem(TodoItem* todoItem)
 {
+	try 
+{
+		SACommand cmd(con, _TSA("INSERT INTO [dbo].[TodoItems] (Id, TodoListId, Title, Note, IsCompleted, CreatedDate) VALUES (:id, :todoListId, :title, :note, :isCompleted, :createdDate)"));
+		cmd.Param(_TSA("id")).setAsString() = todoItem->GetId().c_str();
+		cmd.Param(_TSA("todoListId")).setAsString() = todoItem->GetTodoListId().c_str();
+		cmd.Param(_TSA("title")).setAsString() = todoItem->GetTitle().c_str();
+		cmd.Param(_TSA("note")).setAsString() = todoItem->GetNote().c_str();
+		cmd.Param(_TSA("isCompleted")).setAsBool() = todoItem->GetIsCompleted();
+		cmd.Param(_TSA("createdDate")).setAsDateTime() = SADateTime(CoreHelper::GetSystemTime());
+		cmd.Execute();
+		return cmd.RowsAffected();
+	}
+	catch (SAException& ex)
+	{
+		std::cout << ex.ErrText().GetMultiByteChars() << std::endl;
+		throw std::exception("Internal error! Database insert failed");
+	}
 	return 0;
 }
 
 int TodoItemCommand::UpdateTodoItem(TodoItem* todoItem)
 {
+	try
+{
+		SACommand cmd(con, _TSA("UPDATE [dbo].[TodoItems] SET TodoListId=:todoListId, Title=:title, Note=:note, IsCompleted=:isCompleted, ModifiedDate=:modifiedDate WHERE Id=:id"));
+		cmd.Param(_TSA("id")).setAsString() = todoItem->GetId().c_str();
+		cmd.Param(_TSA("todoListId")).setAsString() = todoItem->GetTodoListId().c_str();
+		cmd.Param(_TSA("title")).setAsString() = todoItem->GetTitle().c_str();
+		cmd.Param(_TSA("note")).setAsString() = todoItem->GetNote().c_str();
+		cmd.Param(_TSA("isCompleted")).setAsBool() = todoItem->GetIsCompleted();
+		cmd.Param(_TSA("modifiedDate")).setAsDateTime() = SADateTime(CoreHelper::GetSystemTime());
+		cmd.Execute();
+		return cmd.RowsAffected();
+	}
+	catch (SAException& ex)
+	{
+		std::cout << ex.ErrText().GetMultiByteChars() << std::endl;
+		throw std::exception("Internal error! Database set failed");
+	}
 	return 0;
 }
 

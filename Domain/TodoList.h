@@ -8,7 +8,7 @@ class TodoItem;
 
 class DOMAIN_API TodoList : public BaseEntity
 {
-	BOOST_DESCRIBE_CLASS(TodoList, (BaseEntity), (), (Title, Description), ())
+	BOOST_DESCRIBE_CLASS(TodoList, (BaseEntity), (), (Title, Description, TodoItems), ())
 
 public:
 	TodoList();
@@ -35,11 +35,17 @@ public:
 	{
 		Description = description;
 	}
-
-public:
-	std::vector<std::shared_ptr<TodoItem>> TodoItems;
+	virtual std::vector<std::shared_ptr<TodoItem>> GetTodoItems()
+	{
+		return TodoItems;
+	}
+	virtual void SetTodoItems(std::vector<std::shared_ptr<TodoItem>> todoItems)
+	{
+		TodoItems = todoItems;
+	}
 protected:
 	std::string Title;
 	std::string Description;
+	std::vector<std::shared_ptr<TodoItem>> TodoItems;
 };
 

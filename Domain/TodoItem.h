@@ -7,7 +7,7 @@ class TodoList;
 
 class DOMAIN_API TodoItem : public BaseEntity
 {
-	BOOST_DESCRIBE_CLASS(TodoItem, (BaseEntity), (), (TodoListId, Title, Note, IsCompleted), (todoList))
+	BOOST_DESCRIBE_CLASS(TodoItem, (BaseEntity), (), (TodoListId, Title, Note, IsCompleted, todoList), ())
 public:
 	TodoItem();
 	TodoItem(const TodoItem& todoItem);
@@ -33,13 +33,36 @@ public:
 	{
 		return IsCompleted;
 	}
+	virtual void SetTodoListId(const std::string& todoListId)
+	{
+		TodoListId = todoListId;
+	}
+	virtual void SetTitle(const std::string& title)
+	{
+		Title = title;
+	}
+	virtual void SetNote(const std::string& note)
+	{
+		Note = note;
+	}
+	virtual void SetIsCompleted(bool isCompleted)
+	{
+		IsCompleted = isCompleted;
+	}
+	virtual std::shared_ptr<TodoList> GetTodoList()
+	{
+		return todoList;
+	}
+	virtual void SetTodoList(std::shared_ptr<TodoList> todoList)
+	{
+		this->todoList = todoList;
+	}
 
 protected:
 	std::string TodoListId;
 	std::string Title;
 	std::string Note;
 	bool IsCompleted = false;
-public:
 	std::shared_ptr<TodoList> todoList = nullptr;
 };
 

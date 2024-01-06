@@ -13,8 +13,8 @@ public:
 	explicit TodoListCommand(SAConnection* con) { this->con = con; }
 	std::shared_ptr<TodoList> GetTodoListById(const std::string& id);
 	std::vector<std::shared_ptr<TodoList>>GetAllTodoLists();
-	int CreateTodoList(TodoList* todoList);
-	int UpdateTodoList(TodoList* todoList);
+	int CreateTodoList(TodoList& todoList);
+	int UpdateTodoList(TodoList& todoList);
 	~TodoListCommand();
 private:
 	std::shared_ptr<TodoList> GetTodoListFromCommand(SACommand& cmd);
