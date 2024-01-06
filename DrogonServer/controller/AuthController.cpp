@@ -62,12 +62,12 @@ void AuthController::Register(const HttpRequestPtr& req, std::function<void(cons
 	{
 		DbContext db;
 		auto con = db.GetConnection();
-		ApplicationUserCommand cmd(con);
+		TestApplicationUser cmd(con);
 		auto& reqJson = req->getJsonObject();
 		Json::Value ret;
 		if (!(*reqJson)["username"].isNull())
 		{
-			auto user = cmd.GetApplicationUserByUserName((*reqJson)["username"].asString());
+			auto user = cmd.GetById((*reqJson)["username"].asString());
 			if (user != nullptr)
 			{
 				ret["status"] = k200OK;
@@ -83,7 +83,7 @@ void AuthController::Register(const HttpRequestPtr& req, std::function<void(cons
 				std::string guid = CoreHelper::GetGuid();
 				std::string passwordHash = Bcrypt::HashPassword((*reqJson)["password"].asString());
 				ApplicationUser user(guid, (*reqJson)["username"].asString(), (*reqJson)["email"].asString(), passwordHash, (*reqJson)["phoneNumber"].asString());
-				int rs = cmd.CreateApplicationUser(&user);
+				int rs = cmd.Create(&user);
 				if (rs >= 1)
 				{
 					ret["message"] = "User created successfully!";

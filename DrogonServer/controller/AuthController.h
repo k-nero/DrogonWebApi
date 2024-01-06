@@ -4,6 +4,7 @@
 #include <drogon/HttpController.h>
 #include "CoreHelper.h"
 #include "ApplicationUserCommand.h"
+#include "TestApplicationUser.h"
 #include "ApplicationUser.h"
 #include "DbContext.h"
 #include "BcryptPW.h"
