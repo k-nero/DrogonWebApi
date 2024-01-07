@@ -13,11 +13,35 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\Interface">
+    <Filter Include="Header Files\CQRS">
+      <UniqueIdentifier>{3a6e9174-e294-4704-a000-6d75c8cd2124}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\CQRS\Base">
+      <UniqueIdentifier>{58b15587-9f40-4933-b632-777ddd63b225}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\CQRS\Interface">
       <UniqueIdentifier>{6571c82d-eba5-4895-bbb2-3ebc017e5f3c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Base">
-      <UniqueIdentifier>{58b15587-9f40-4933-b632-777ddd63b225}</UniqueIdentifier>
+    <Filter Include="Header Files\Services">
+      <UniqueIdentifier>{a0081a3a-c8de-4d36-8487-47d2ba10cda0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\CQRS\ApplicationUser">
+      <UniqueIdentifier>{a2b8f76e-b10a-4792-876e-63fffd60a419}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\CQRS">
+      <UniqueIdentifier>{9e3ea82a-c73c-478c-a624-26ad57393c0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\CQRS\ApplicationUser">
+      <UniqueIdentifier>{43dce0e7-461d-4843-8336-2a55a445d00a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\CQRS\Interface\ApplicationUser">
+      <UniqueIdentifier>{4ad0d946-904d-4577-a666-fc8c35c3e2f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\EndpointObject">
+      <UniqueIdentifier>{7973f26f-fbea-4a8a-b040-123dab547ab9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\EndpointObject">
+      <UniqueIdentifier>{e70b6957-2ad6-4ac6-849e-211b5d0b3de1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -27,7 +51,7 @@
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ApplicationUserCommand.h">
+    <ClInclude Include="ApplicationUserCommand2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TodoItemCommand.h">
@@ -43,16 +67,31 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="IBaseQuery.h">
-      <Filter>Header Files\Interface</Filter>
+      <Filter>Header Files\CQRS\Interface</Filter>
     </ClInclude>
     <ClInclude Include="IBaseCommand.h">
-      <Filter>Header Files\Interface</Filter>
+      <Filter>Header Files\CQRS\Interface</Filter>
     </ClInclude>
     <ClInclude Include="BaseQuery.h">
-      <Filter>Header Files\Base</Filter>
+      <Filter>Header Files\CQRS\Base</Filter>
     </ClInclude>
     <ClInclude Include="BaseCommand.h">
-      <Filter>Header Files\Base</Filter>
+      <Filter>Header Files\CQRS\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="ApplicationUserCommand.h">
+      <Filter>Header Files\CQRS\ApplicationUser</Filter>
+    </ClInclude>
+    <ClInclude Include="IApplicationUserCommand.h">
+      <Filter>Header Files\CQRS\Interface\ApplicationUser</Filter>
+    </ClInclude>
+    <ClInclude Include="IAppicationUserQuery.h">
+      <Filter>Header Files\CQRS\Interface\ApplicationUser</Filter>
+    </ClInclude>
+    <ClInclude Include="ApplicationUserQuery.h">
+      <Filter>Header Files\CQRS\ApplicationUser</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseEObject.h">
+      <Filter>Header Files\EndpointObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -62,7 +101,7 @@
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ApplicationUserCommand.cpp">
+    <ClCompile Include="ApplicationUserCommand2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TodoItemCommand.cpp">
@@ -73,6 +112,15 @@
     </ClCompile>
     <ClCompile Include="TestApplicationUser.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ApplicationUserCommand.cpp">
+      <Filter>Source Files\CQRS\ApplicationUser</Filter>
+    </ClCompile>
+    <ClCompile Include="ApplicationUserQuery.cpp">
+      <Filter>Source Files\CQRS\ApplicationUser</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseEObject.cpp">
+      <Filter>Source Files\EndpointObject</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

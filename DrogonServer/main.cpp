@@ -31,6 +31,5 @@ int main()
 #if defined _DEBUG
     _CrtDumpMemoryLeaks();
 #endif
-
     return 0;
 }

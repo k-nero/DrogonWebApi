@@ -7,7 +7,7 @@ void AuthController::Login(const HttpRequestPtr& req, std::function<void(const H
 	{
 		DbContext db;
 		auto con = db.GetConnection();
-		ApplicationUserCommand cmd(con);
+		ApplicationUserCommand2 cmd(con);
 		auto& request = req->getJsonObject();
 		std::string username = (*request)["username"].asString();
 		std::string password = (*request)["password"].asString();
