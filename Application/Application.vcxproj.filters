@@ -43,6 +43,18 @@
     <Filter Include="Source Files\EndpointObject">
       <UniqueIdentifier>{e70b6957-2ad6-4ac6-849e-211b5d0b3de1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Common">
+      <UniqueIdentifier>{20946bce-1235-4dfc-ad5d-bfa552f241d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Services">
+      <UniqueIdentifier>{1161eb53-88cc-4bac-9847-8821d7fc4f0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Services\Interface">
+      <UniqueIdentifier>{0e29a219-c1b7-4076-8f11-29efe88f4348}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Services\Base">
+      <UniqueIdentifier>{fa33e1ed-b085-40fe-ba3c-0c36111484fe}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -51,16 +63,10 @@
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ApplicationUserCommand2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="TodoItemCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TodoListCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ApplicationApi.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TestApplicationUser.h">
@@ -93,15 +99,18 @@
     <ClInclude Include="BaseEObject.h">
       <Filter>Header Files\EndpointObject</Filter>
     </ClInclude>
+    <ClInclude Include="ApplicationUserServices.h">
+      <Filter>Header Files\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="ApplicationApi.h">
+      <Filter>Header Files\Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ApplicationUserCommand2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TodoItemCommand.cpp">
@@ -121,6 +130,9 @@
     </ClCompile>
     <ClCompile Include="BaseEObject.cpp">
       <Filter>Source Files\EndpointObject</Filter>
+    </ClCompile>
+    <ClCompile Include="ApplicationUserServices.cpp">
+      <Filter>Source Files\Services</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

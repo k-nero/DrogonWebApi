@@ -216,7 +216,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="ApplicationUserCommand.h" />
-    <ClInclude Include="ApplicationUserCommand2.h" />
+    <ClInclude Include="ApplicationUserServices.h" />
     <ClInclude Include="ApplicationUserQuery.h" />
     <ClInclude Include="BaseEObject.h" />
     <ClInclude Include="BaseQuery.h" />
@@ -234,7 +234,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ApplicationUserCommand.cpp" />
-    <ClCompile Include="ApplicationUserCommand2.cpp" />
+    <ClCompile Include="ApplicationUserServices.cpp" />
     <ClCompile Include="ApplicationUserQuery.cpp" />
     <ClCompile Include="BaseEObject.cpp" />
     <ClCompile Include="dllmain.cpp" />

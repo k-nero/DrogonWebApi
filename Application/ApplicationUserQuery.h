@@ -7,7 +7,7 @@ class ApplicationUserQuery : public BaseQuery<ApplicationUser>, IApplicationUser
 public:
 	ApplicationUserQuery();
 	explicit ApplicationUserQuery(SAConnection* con) : BaseQuery(con) {}
-	virtual std::shared_ptr<ApplicationUser> GetByUserName();
+	virtual std::shared_ptr<ApplicationUser> GetByUserName(std::string username);
 	~ApplicationUserQuery();
 };
 
