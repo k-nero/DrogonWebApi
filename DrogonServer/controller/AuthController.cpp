@@ -42,6 +42,16 @@ void AuthController::Login(const HttpRequestPtr& req, std::function<void(const H
 		callback(resp);
 		return;
 	}
+	catch (std::exception& ex)
+	{
+		Json::Value ret;
+		ret["message"] = ex.what();
+		ret["status"] = k500InternalServerError;
+		auto resp = HttpResponse::newHttpJsonResponse(ret);
+		resp->setStatusCode(k500InternalServerError);
+		callback(resp);
+		return;
+	}
 	catch (...)
 	{
 		Json::Value ret;
@@ -98,7 +108,17 @@ void AuthController::Register(const HttpRequestPtr& req, std::function<void(cons
 			return;
 		}
 	}
-	catch(...)
+	catch (std::exception& ex)
+	{
+		Json::Value ret;
+		ret["message"] = ex.what();
+		ret["status"] = k500InternalServerError;
+		auto resp = HttpResponse::newHttpJsonResponse(ret);
+		resp->setStatusCode(k500InternalServerError);
+		callback(resp);
+		return;
+	}
+	catch (...)
 	{
 		Json::Value ret;
 		ret["message"] = "Internal server error";

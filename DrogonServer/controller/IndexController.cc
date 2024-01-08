@@ -1,7 +1,7 @@
 #include "IndexController.h"
 
 
-void IndexController::GetAll(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback)
+void IndexController::GetAll(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback) 
 {
 	try
 	{
@@ -17,6 +17,16 @@ void IndexController::GetAll(const HttpRequestPtr& req, std::function<void(const
 		callback(resp);
 		return;
 	}
+	catch (std::exception& ex)
+	{
+		Json::Value ret;
+		ret["error"] = ex.what();
+		ret["status"] = 500;
+		const auto resp = HttpResponse::newHttpJsonResponse(ret);
+		resp->setStatusCode(k500InternalServerError);
+		callback(resp);
+		return;
+	}
 	catch (...)
 	{
 		Json::Value ret;
@@ -26,7 +36,6 @@ void IndexController::GetAll(const HttpRequestPtr& req, std::function<void(const
 		resp->setStatusCode(k500InternalServerError);
 		callback(resp);
 		return;
-
 	}
 }
 
@@ -43,6 +52,16 @@ void IndexController::Get(const HttpRequestPtr& req, std::function<void(const Ht
 		}
 		const auto resp = HttpResponse::newHttpJsonResponse(ret);
 		resp->setStatusCode(k200OK);
+		callback(resp);
+		return;
+	}
+	catch (std::exception& ex)
+	{
+		Json::Value ret;
+		ret["error"] = ex.what();
+		ret["status"] = 500;
+		const auto resp = HttpResponse::newHttpJsonResponse(ret);
+		resp->setStatusCode(k500InternalServerError);
 		callback(resp);
 		return;
 	}

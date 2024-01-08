@@ -11,10 +11,18 @@ class APPLICATION_API BaseCommand : public IBaseCommand<T>
 public:
 	BaseCommand() = default;
 	explicit BaseCommand(SAConnection* con) { this->con = con; }
-	virtual int Create(T* item) override
+	virtual int Create(T* item) throw(std::exception) override
 	{
 		try
 		{
+			if (item == nullptr)
+			{
+				throw std::exception("Internal error! Item is null");
+			}
+			if (con == nullptr || !con->isConnected())
+			{
+				throw std::exception("Internal error! Database connection is null or failed");
+			}
 			std::string table_name = typeid(T).name();
 			table_name = table_name.substr(table_name.find_last_of(' ') + 1);
 			std::string query = "INSERT INTO [dbo].[" + table_name + "] (";
@@ -88,12 +96,12 @@ public:
 		catch (SAException& ex)
 		{
 			std::cout << ex.ErrText().GetMultiByteChars() << std::endl;
-			throw std::exception("Internal error! Database insert command failed");
+			throw std::exception(ex.ErrText().GetMultiByteChars());
 		}
 		return 0;
 	}
 
-	virtual int Update(T* item) override
+	virtual int Update(T* item) throw(std::exception) override
 	{
 		try
 		{
@@ -167,15 +175,19 @@ public:
 		catch (SAException& ex)
 		{
 			std::cout << ex.ErrText().GetMultiByteChars() << std::endl;
-			throw std::exception("Internal error! Database update command failed");
+			throw std::exception(ex.ErrText().GetMultiByteChars());
 		}
 		return 0;
 	}
 
-	virtual int Delete(std::string& id) override
+	virtual int Delete(std::string& id) throw(std::exception) override
 	{
 		try
 		{
+			if (id.empty())
+			{
+				throw std::exception("Internal error! Id is empty");
+			}
 			std::string table_name = typeid(T).name();
 			table_name = table_name.substr(table_name.find_last_of(' ') + 1);
 			std::string query = "DELETE FROM [dbo].[" + table_name + "] WHERE Id = :id";
@@ -188,11 +200,11 @@ public:
 		catch (SAException& ex)
 		{
 			std::cout << ex.ErrText().GetMultiByteChars() << std::endl;
-			throw std::exception("Internal error! Database delete command failed");
+			throw std::exception(ex.ErrText().GetMultiByteChars());
 		}
 	}
 
 	~BaseCommand() = default;
 protected:
-	SAConnection* con;
+	SAConnection* con = nullptr;
 };

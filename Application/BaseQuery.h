@@ -15,10 +15,15 @@ class APPLICATION_API BaseQuery : public IBaseQuery<T>
 public:
 	BaseQuery() = default;
 	explicit BaseQuery(SAConnection* con) { this->con = con; }
-	virtual std::shared_ptr<T> GetById(const std::string& id) override
+	virtual std::shared_ptr<T> GetById(const std::string& id) throw(std::exception) override 
 	{
 		try
 		{
+			if (id.empty())
+			{
+				throw std::exception("Id is empty");
+			}
+
 			std::string table_name = typeid(T).name();
 			table_name = table_name.substr(table_name.find_last_of(' ') + 1);
 			std::string query = "SELECT * FROM [dbo].[" + table_name + "] WHERE Id = :id";
@@ -34,12 +39,12 @@ public:
 		catch (SAException& ex)
 		{
 			std::cout << ex.ErrText().GetMultiByteChars() << std::endl;
-			throw std::exception("Internal error! Database query failed");
+			throw std::exception(ex.ErrText().GetMultiByteChars());
 		}
 		return nullptr;
 	}
 
-	virtual std::vector<std::shared_ptr<T>>GetAll(std::string query = "") override
+	virtual std::vector<std::shared_ptr<T>>GetAll(std::string query = "") throw(std::exception) override
 	{
 		std::vector<std::shared_ptr<T>> items;
 		try
@@ -62,7 +67,7 @@ public:
 		catch (SAException& ex)
 		{
 			std::cout << ex.ErrText().GetMultiByteChars() << std::endl;
-			throw std::exception("Internal error! Database query failed");
+			throw std::exception(ex.ErrText().GetMultiByteChars());
 		}
 		return items;
 	}
@@ -104,7 +109,7 @@ public:
 		return std::shared_ptr<T>(item);
 	}
 
-	virtual std::shared_ptr<T> GetSingle(const std::string query = "") override
+	virtual std::shared_ptr<T> GetSingle(const std::string query = "") throw(std::exception) override
 	{
 		try
 		{
@@ -121,11 +126,11 @@ public:
 		catch (SAException& ex)
 		{
 			std::cout << ex.ErrText().GetMultiByteChars() << std::endl;
-			throw std::exception("Internal error! Database query failed");
+			throw std::exception(ex.ErrText().GetMultiByteChars());
 		}
 	}
 
-	virtual PaginationObject<T> GetPagination(int page, int pageSize, std::string query = "") override
+	virtual PaginationObject<T> GetPagination(int page, int pageSize, std::string query = "") throw(std::exception) override
 	{
 		try
 		{
@@ -165,12 +170,12 @@ public:
 		catch (SAException& ex)
 		{
 			std::cout << ex.ErrText().GetMultiByteChars() << std::endl;
-			throw std::exception("Internal error! Database query failed");
+			throw std::exception(ex.ErrText().GetMultiByteChars());
 		}
 	}
 
 	virtual ~BaseQuery() = default;
 
 protected:
-	SAConnection* con;
+	SAConnection* con = nullptr;
 };

@@ -10,7 +10,7 @@ ApplicationUserService::ApplicationUserService()
 	
 }
 
-std::shared_ptr<ApplicationUser> ApplicationUserService::GetApplicationUserById( const std::string& id ) 
+std::shared_ptr<ApplicationUser> ApplicationUserService::GetApplicationUserById( const std::string& id ) throw (std::exception)
 {
 	try
 	{
@@ -18,15 +18,14 @@ std::shared_ptr<ApplicationUser> ApplicationUserService::GetApplicationUserById(
 		ApplicationUserQuery query(db.GetConnection());
 		return query.GetById(id);
 	}
-	catch ( SAException& ex )
+	catch ( std::exception& ex )
 	{
-		std::cout << ex.ErrText().GetMultiByteChars() << std::endl;
-		throw std::exception("Internal error! Database query failed");
+		throw ex;
 	}
 	return nullptr;
 }
 
-std::shared_ptr<ApplicationUser> ApplicationUserService::GetApplicationUserByUserName( std::string& userName )
+std::shared_ptr<ApplicationUser> ApplicationUserService::GetApplicationUserByUserName( std::string& userName ) throw (std::exception)
 {
 	try
 	{
@@ -34,15 +33,14 @@ std::shared_ptr<ApplicationUser> ApplicationUserService::GetApplicationUserByUse
 		ApplicationUserQuery query(db.GetConnection());
 		return query.GetSingle("UserName = '" + userName + "'");
 	}
-	catch ( SAException& ex )
+	catch (std::exception& ex)
 	{
-		std::cout << ex.ErrText().GetMultiByteChars() << std::endl;
-		throw std::exception("Internal error! Database query failed");
+		throw ex;
 	}
 	return nullptr;
 }
 
-std::vector<std::shared_ptr<ApplicationUser>> ApplicationUserService::GetAllApplicationUsers()
+std::vector<std::shared_ptr<ApplicationUser>> ApplicationUserService::GetAllApplicationUsers() throw (std::exception)
 {
 	std::vector<std::shared_ptr<ApplicationUser>> applicationUsers;
 	try
@@ -52,16 +50,15 @@ std::vector<std::shared_ptr<ApplicationUser>> ApplicationUserService::GetAllAppl
 		applicationUsers = query.GetAll();
 		return applicationUsers;
 	}
-	catch (SAException& ex)
+	catch (std::exception& ex)
 	{
-		std::cout << ex.ErrText().GetMultiByteChars() << std::endl;
-		throw std::exception("Internal error! Database query failed");
+		throw ex;
 	}
 	return applicationUsers;
 }
 
 
-int ApplicationUserService::CreateApplicationUser(ApplicationUser* applicationUser)
+int ApplicationUserService::CreateApplicationUser(ApplicationUser* applicationUser) throw (std::exception)
 {
 	try
 	{
@@ -69,15 +66,14 @@ int ApplicationUserService::CreateApplicationUser(ApplicationUser* applicationUs
 		ApplicationUserCommand cmd(db.GetConnection());
 		return cmd.Create(applicationUser);
 	}
-	catch (SAException& ex)
+	catch (std::exception& ex)
 	{
-		std::cout << ex.ErrText().GetMultiByteChars() << std::endl;
-		throw std::exception("Internal error! Database command failed");
+		throw ex;
 	}
 	return 0;
 }
 
-int ApplicationUserService::UpdateApplicationUser(ApplicationUser* applicationUser)
+int ApplicationUserService::UpdateApplicationUser(ApplicationUser* applicationUser) throw (std::exception)
 {
 	try
 	{
@@ -85,10 +81,9 @@ int ApplicationUserService::UpdateApplicationUser(ApplicationUser* applicationUs
 		ApplicationUserCommand cmd(db.GetConnection());
 		return cmd.Update(applicationUser);
 	}
-	catch (SAException& ex)
+	catch (std::exception& ex)
 	{
-		std::cout << ex.ErrText().GetMultiByteChars() << std::endl;
-		throw std::exception("Internal error! Database command failed");
+		throw ex;
 	}
 	return 0;
 }
