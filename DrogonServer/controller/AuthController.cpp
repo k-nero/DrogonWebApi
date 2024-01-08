@@ -5,9 +5,7 @@ void AuthController::Login(const HttpRequestPtr& req, std::function<void(const H
 {
 	try
 	{
-		DbContext db;
-		auto con = db.GetConnection();
-		ApplicationUserCommand2 cmd(con);
+		ApplicationUserService cmd;
 		auto& request = req->getJsonObject();
 		std::string username = (*request)["username"].asString();
 		std::string password = (*request)["password"].asString();
@@ -60,14 +58,13 @@ void AuthController::Register(const HttpRequestPtr& req, std::function<void(cons
 {
 	try
 	{
-		DbContext db;
-		auto con = db.GetConnection();
-		TestApplicationUser cmd(con);
+		ApplicationUserService cmd;
 		auto& reqJson = req->getJsonObject();
 		Json::Value ret;
 		if (!(*reqJson)["username"].isNull())
 		{
-			auto user = cmd.GetById((*reqJson)["username"].asString());
+			std::string username = (*reqJson)["username"].asString();
+			auto user = cmd.GetApplicationUserByUserName(username);
 			if (user != nullptr)
 			{
 				ret["status"] = k200OK;
@@ -83,7 +80,7 @@ void AuthController::Register(const HttpRequestPtr& req, std::function<void(cons
 				std::string guid = CoreHelper::GetGuid();
 				std::string passwordHash = Bcrypt::HashPassword((*reqJson)["password"].asString());
 				ApplicationUser user(guid, (*reqJson)["username"].asString(), (*reqJson)["email"].asString(), passwordHash, (*reqJson)["phoneNumber"].asString());
-				int rs = cmd.Create(&user);
+				int rs = cmd.CreateApplicationUser(&user);
 				if (rs >= 1)
 				{
 					ret["message"] = "User created successfully!";

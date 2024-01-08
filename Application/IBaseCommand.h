@@ -10,4 +10,5 @@ class APPLICATION_API IBaseCommand
 {
 	virtual int Create(T* item) = 0;
 	virtual int Update(T* item) = 0;
+	virtual int Delete(std::string& id ) = 0;
 };

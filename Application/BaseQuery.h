@@ -85,7 +85,7 @@ public:
 				item->*(D).pointer = cmd.Field(D.name).asBool();
 			}
 			else if (std::is_same<decltype(item->*(D).pointer), double&>::value || typeid(item->*(D).pointer) == typeid(double)
-				  || std::is_same<decltype(item->*(D).pointer), float&>::value || typeid(item->*(D).pointer) == typeid(float))
+				|| std::is_same<decltype(item->*(D).pointer), float&>::value || typeid(item->*(D).pointer) == typeid(float))
 			{
 				item->*(D).pointer = cmd.Field(D.name).asDouble();
 			}
@@ -98,11 +98,77 @@ public:
 			}
 			else if (std::is_same<decltype(item->*(D).pointer), std::tm&>::value || typeid(item->*(D).pointer) == typeid(std::tm))
 			{
-				item->*(D).pointer = cmd.Field(D.name).asDateTime().GetAsDBTIMESTAMP();
+				//item->*(D).pointer = cmd.Field(D.name).asDateTime().GetAsDBTIMESTAMP();
 			}
 		});
 		return std::shared_ptr<T>(item);
 	}
+
+	virtual std::shared_ptr<T> GetSingle(const std::string query = "") override
+	{
+		try
+		{
+			std::string table_name = typeid(T).name();
+			table_name = table_name.substr(table_name.find_last_of(' ') + 1);
+			std::string base_query = "SELECT * FROM [dbo].[" + table_name + "] WHERE " + query;
+			SACommand cmd(con, _TSA(base_query.c_str()));
+			cmd.Execute();
+			if (cmd.FetchNext())
+			{
+				return GetFromCommand(cmd);
+			}
+		}
+		catch (SAException& ex)
+		{
+			std::cout << ex.ErrText().GetMultiByteChars() << std::endl;
+			throw std::exception("Internal error! Database query failed");
+		}
+	}
+
+	virtual PaginationObject<T> GetPagination(int page, int pageSize, std::string query = "") override
+	{
+		try
+		{
+			std::string table_name = typeid(T).name();
+			table_name = table_name.substr(table_name.find_last_of(' ') + 1);
+			int count = 0;
+			std::string base_query = "SELECT COUNT(*) FROM [dbo].[" + table_name + "]";
+			if (query.length() > 1)
+			{
+				base_query += " WHERE " + query;
+			}
+			SACommand cmd(con, _TSA(base_query.c_str()));
+
+			cmd.Execute();
+			if (cmd.FetchNext())
+			{
+				count = cmd.Field(1).asLong();
+			}
+
+			base_query = "SELECT * FROM [dbo].[" + table_name + "]";
+			if (query.length() > 1)
+			{
+				base_query += " WHERE " + query;
+			}
+
+			int offset = (page - 1) * pageSize;
+			base_query += " ORDER BY Id OFFSET " + std::to_string(offset) + " ROWS FETCH NEXT " + std::to_string(pageSize) + " ROWS ONLY";
+			SACommand cmd2(con, _TSA(base_query.c_str()));
+			cmd2.Execute();
+			std::vector<std::shared_ptr<T>> items;
+			while (cmd2.FetchNext())
+			{
+				items.push_back(GetFromCommand(cmd2));
+			}
+			return PaginationObject<T>(items, count, page, pageSize);
+		}
+		catch (SAException& ex)
+		{
+			std::cout << ex.ErrText().GetMultiByteChars() << std::endl;
+			throw std::exception("Internal error! Database query failed");
+		}
+	}
+
 	virtual ~BaseQuery() = default;
 
 protected:

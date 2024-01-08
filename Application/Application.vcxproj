@@ -221,14 +221,15 @@
     <ClInclude Include="BaseEObject.h" />
     <ClInclude Include="BaseQuery.h" />
     <ClInclude Include="BaseCommand.h" />
+    <ClInclude Include="CommandBuilder.h" />
     <ClInclude Include="IAppicationUserQuery.h" />
     <ClInclude Include="IApplicationUserCommand.h" />
     <ClInclude Include="IBaseQuery.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="ApplicationApi.h" />
     <ClInclude Include="IBaseCommand.h" />
+    <ClInclude Include="PaginationObject.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="TestApplicationUser.h" />
     <ClInclude Include="TodoItemCommand.h" />
     <ClInclude Include="TodoListCommand.h" />
   </ItemGroup>
@@ -237,7 +238,9 @@
     <ClCompile Include="ApplicationUserServices.cpp" />
     <ClCompile Include="ApplicationUserQuery.cpp" />
     <ClCompile Include="BaseEObject.cpp" />
+    <ClCompile Include="CommandBuilder.cpp" />
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="PaginationObject.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='CLR|x64'">Create</PrecompiledHeader>
@@ -246,7 +249,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="TestApplicationUser.cpp" />
     <ClCompile Include="TodoItemCommand.cpp" />
     <ClCompile Include="TodoListCommand.cpp" />
   </ItemGroup>

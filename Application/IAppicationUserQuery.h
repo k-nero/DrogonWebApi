@@ -3,7 +3,7 @@
 #include "ApplicationUser.h"
 #include "IBaseQuery.h"
 
-class APPLICATION_API IApplicationUserQuery : IBaseQuery<ApplicationUser>
+class APPLICATION_API IApplicationUserQuery
 {
-	virtual std::shared_ptr<ApplicationUser> GetByUserName() = 0;
+
 };

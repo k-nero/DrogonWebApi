@@ -3,6 +3,7 @@
 #include "IBaseCommand.h"
 #include <boost/describe.hpp>
 #include <boost/mp11.hpp>
+#include <iostream>
 
 template <typename T, class D = boost::describe::describe_members<T, boost::describe::mod_any_access | boost::describe::mod_inherited>>
 class APPLICATION_API BaseCommand : public IBaseCommand<T>
@@ -141,14 +142,14 @@ public:
 							cmd.Param(D.name).setAsBool() = *(bool*)void_pointer;
 						}
 						else if (std::is_same<decltype(item->*(D).pointer), double&>::value || typeid(item->*(D).pointer) == typeid(double)
-							  || std::is_same<decltype(item->*(D).pointer), float&>::value || typeid(item->*(D).pointer) == typeid(float))
+							|| std::is_same<decltype(item->*(D).pointer), float&>::value || typeid(item->*(D).pointer) == typeid(float))
 						{
 							cmd.Param(D.name).setAsDouble() = *(double*)void_pointer;
 						}
 						else if (std::is_same<decltype(item->*(D).pointer), std::string&>::value || typeid(item->*(D).pointer) == typeid(std::string)
-							  || std::is_same<decltype(item->*(D).pointer), std::wstring&>::value || typeid(item->*(D).pointer) == typeid(std::wstring)
-							  || std::is_same<decltype(item->*(D).pointer), std::string_view&>::value || typeid(item->*(D).pointer) == typeid(std::string_view)
-							  || std::is_same<decltype(item->*(D).pointer), std::wstring_view&>::value || typeid(item->*(D).pointer) == typeid(std::wstring_view))
+							|| std::is_same<decltype(item->*(D).pointer), std::wstring&>::value || typeid(item->*(D).pointer) == typeid(std::wstring)
+							|| std::is_same<decltype(item->*(D).pointer), std::string_view&>::value || typeid(item->*(D).pointer) == typeid(std::string_view)
+							|| std::is_same<decltype(item->*(D).pointer), std::wstring_view&>::value || typeid(item->*(D).pointer) == typeid(std::wstring_view))
 						{
 							cmd.Param(_TSA(D.name)).setAsString() = (*(std::string*)void_pointer).c_str();
 						}
@@ -170,6 +171,27 @@ public:
 		}
 		return 0;
 	}
+
+	virtual int Delete(std::string& id) override
+	{
+		try
+		{
+			std::string table_name = typeid(T).name();
+			table_name = table_name.substr(table_name.find_last_of(' ') + 1);
+			std::string query = "DELETE FROM [dbo].[" + table_name + "] WHERE Id = :id";
+			SACommand cmd(con);
+			cmd.setCommandText(_TSA(query.c_str()));
+			cmd.Param(_TSA("id")).setAsString() = id.c_str();
+			cmd.Execute();
+			return cmd.RowsAffected();
+		}
+		catch (SAException& ex)
+		{
+			std::cout << ex.ErrText().GetMultiByteChars() << std::endl;
+			throw std::exception("Internal error! Database delete command failed");
+		}
+	}
+
 	~BaseCommand() = default;
 protected:
 	SAConnection* con;

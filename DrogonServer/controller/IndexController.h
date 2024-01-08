@@ -1,8 +1,7 @@
 #pragma once
 
 #include <drogon/HttpController.h>
-#include <ApplicationUserCommand.h>
-#include "TestApplicationUser.h"
+#include "ApplicationUserServices.h"
 #include <ApplicationUser.h>
 #include <DbContext.h>
 #include <memory.h>
