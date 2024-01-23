@@ -38,7 +38,7 @@ public:
 		}
 		catch (SAException& ex)
 		{
-			std::cout << ex.ErrText().GetMultiByteChars() << std::endl;
+			std::cerr << ex.ErrText().GetMultiByteChars() << std::endl;
 			throw std::exception(ex.ErrText().GetMultiByteChars());
 		}
 		return nullptr;
@@ -66,7 +66,7 @@ public:
 		}
 		catch (SAException& ex)
 		{
-			std::cout << ex.ErrText().GetMultiByteChars() << std::endl;
+			std::cerr << ex.ErrText().GetMultiByteChars() << std::endl;
 			throw std::exception(ex.ErrText().GetMultiByteChars());
 		}
 		return items;
@@ -95,15 +95,15 @@ public:
 				item->*(D).pointer = cmd.Field(D.name).asDouble();
 			}
 			else if (std::is_same<decltype(item->*(D).pointer), std::string&>::value || typeid(item->*(D).pointer) == typeid(std::string)
-				|| std::is_same<decltype(item->*(D).pointer), std::wstring&>::value || typeid(item->*(D).pointer) == typeid(std::wstring)
-				|| std::is_same<decltype(item->*(D).pointer), std::string_view&>::value || typeid(item->*(D).pointer) == typeid(std::string_view)
-				|| std::is_same<decltype(item->*(D).pointer), std::wstring_view&>::value || typeid(item->*(D).pointer) == typeid(std::wstring_view))
+				  || std::is_same<decltype(item->*(D).pointer), std::wstring&>::value || typeid(item->*(D).pointer) == typeid(std::wstring)
+				  || std::is_same<decltype(item->*(D).pointer), std::string_view&>::value || typeid(item->*(D).pointer) == typeid(std::string_view)
+				  || std::is_same<decltype(item->*(D).pointer), std::wstring_view&>::value || typeid(item->*(D).pointer) == typeid(std::wstring_view))
 			{
 				item->*(D).pointer = cmd.Field(D.name).asString().GetMultiByteChars();
 			}
 			else if (std::is_same<decltype(item->*(D).pointer), std::tm&>::value || typeid(item->*(D).pointer) == typeid(std::tm))
 			{
-				//item->*(D).pointer = cmd.Field(D.name).asDateTime().GetAsDBTIMESTAMP();
+				item->*(D).pointer = cmd.Field(D.name).asDateTime();
 			}
 		});
 		return std::shared_ptr<T>(item);
@@ -125,7 +125,7 @@ public:
 		}
 		catch (SAException& ex)
 		{
-			std::cout << ex.ErrText().GetMultiByteChars() << std::endl;
+			std::cerr << ex.ErrText().GetMultiByteChars() << std::endl;
 			throw std::exception(ex.ErrText().GetMultiByteChars());
 		}
 	}
@@ -169,7 +169,7 @@ public:
 		}
 		catch (SAException& ex)
 		{
-			std::cout << ex.ErrText().GetMultiByteChars() << std::endl;
+			std::cerr << ex.ErrText().GetMultiByteChars() << std::endl;
 			throw std::exception(ex.ErrText().GetMultiByteChars());
 		}
 	}

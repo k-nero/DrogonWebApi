@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "BcryptPW.h"
 
-
 Bcrypt::Bcrypt()
 {
 }

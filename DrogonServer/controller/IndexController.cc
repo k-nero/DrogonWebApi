@@ -50,6 +50,15 @@ void IndexController::Get(const HttpRequestPtr& req, std::function<void(const Ht
 		{
 			ret = ToJson(*user);
 		}
+		else
+		{
+			ret["error"] = "Not Found";
+			ret["status"] = 404;
+			const auto resp = HttpResponse::newHttpJsonResponse(ret);
+			resp->setStatusCode(k404NotFound);
+			callback(resp);
+			return;
+		}
 		const auto resp = HttpResponse::newHttpJsonResponse(ret);
 		resp->setStatusCode(k200OK);
 		callback(resp);

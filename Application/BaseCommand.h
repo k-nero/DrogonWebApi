@@ -95,7 +95,7 @@ public:
 		}
 		catch (SAException& ex)
 		{
-			std::cout << ex.ErrText().GetMultiByteChars() << std::endl;
+			std::cerr << ex.ErrText().GetMultiByteChars() << std::endl;
 			throw std::exception(ex.ErrText().GetMultiByteChars());
 		}
 		return 0;
@@ -174,7 +174,7 @@ public:
 		}
 		catch (SAException& ex)
 		{
-			std::cout << ex.ErrText().GetMultiByteChars() << std::endl;
+			std::cerr << ex.ErrText().GetMultiByteChars() << std::endl;
 			throw std::exception(ex.ErrText().GetMultiByteChars());
 		}
 		return 0;
@@ -199,7 +199,7 @@ public:
 		}
 		catch (SAException& ex)
 		{
-			std::cout << ex.ErrText().GetMultiByteChars() << std::endl;
+			std::cerr << ex.ErrText().GetMultiByteChars() << std::endl;
 			throw std::exception(ex.ErrText().GetMultiByteChars());
 		}
 	}
