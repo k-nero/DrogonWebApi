@@ -5,6 +5,12 @@ void AuthController::Login(const HttpRequestPtr& req, std::function<void(const H
 {
 	try
 	{
+		auto queryStr = req.get()->getQuery();
+		if(!queryStr.empty())
+		{
+			queryStr = "?" + queryStr;
+		}
+		BOOST_LOG_TRIVIAL(info) << req.get()->getVersionString() << " " << req.get()->getMethodString() << ": " << req.get()->getOriginalPath() << queryStr;
 		ApplicationUserService cmd;
 		auto& request = req->getJsonObject();
 		std::string username = (*request)["username"].asString();
@@ -70,6 +76,12 @@ void AuthController::Register(const HttpRequestPtr& req, std::function<void(cons
 {
 	try
 	{
+		auto queryStr = req.get()->getQuery();
+		if (!queryStr.empty())
+		{
+			queryStr = "?" + queryStr;
+		}
+		BOOST_LOG_TRIVIAL(info) << req.get()->getVersionString() << " " << req.get()->getMethodString() << ": " << req.get()->getOriginalPath() << queryStr;
 		ApplicationUserService cmd;
 		auto& reqJson = req->getJsonObject();
 		Json::Value ret;

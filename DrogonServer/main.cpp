@@ -18,7 +18,7 @@ int main()
 #endif
     //Set HTTP listener address and port
     drogon::app().addListener( "127.0.0.1", 443, true, "certificate.crt", "private.key");
-    drogon::app().setLogPath("./");
+    drogon::app().setLogPath("", "", 100000000, 0, true);
     drogon::app().setLogLevel( trantor::Logger::kInfo );
     drogon::app().setThreadNum( 16 );
     drogon::app().enableGzip(true);

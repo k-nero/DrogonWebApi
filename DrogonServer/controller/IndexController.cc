@@ -5,6 +5,12 @@ void IndexController::GetAll(const HttpRequestPtr& req, std::function<void(const
 {
 	try
 	{
+		auto queryStr = req.get()->getQuery();
+		if (!queryStr.empty())
+		{
+			queryStr = "?" + queryStr;
+		}
+		BOOST_LOG_TRIVIAL(info) << req.get()->getVersionString() << " " << req.get()->getMethodString() << ": " << req.get()->getOriginalPath() << queryStr;
 		ApplicationUserService cmd;
 		const std::vector<std::shared_ptr<ApplicationUser>> users = cmd.GetAllApplicationUsers();
 		Json::Value rs;
@@ -45,6 +51,12 @@ void IndexController::Get(const HttpRequestPtr& req, std::function<void(const Ht
 {
 	try
 	{
+		auto queryStr = req.get()->getQuery();
+		if (!queryStr.empty())
+		{
+			queryStr = "?" + queryStr;
+		}
+		BOOST_LOG_TRIVIAL(info) << req.get()->getVersionString() << " " << req.get()->getMethodString() << ": " << req.get()->getOriginalPath() << queryStr;
 		ApplicationUserService cmd;
 		const std::shared_ptr<ApplicationUser> user(cmd.GetApplicationUserById(p1));
 		Json::Value ret;
