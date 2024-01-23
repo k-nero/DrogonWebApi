@@ -8,6 +8,7 @@
 #include "DbContext.h"
 #include "BcryptPW.h"
 #include "JsonHelper.h"
+#include <boost/log/trivial.hpp>
 
 using namespace drogon;
 

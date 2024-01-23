@@ -4,7 +4,9 @@
 #include <crtdbg.h>
 #endif
 
+#include <iostream>
 #include "ConfigProvider.h"
+#include <boost/log/trivial.hpp>
 #include <drogon/drogon.h>
 
 
@@ -15,7 +17,8 @@ int main()
     _CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_DEBUG);
 #endif
     //Set HTTP listener address and port
-    drogon::app().addListener( "0.0.0.0", 443, true, "certificate.crt", "private.key");
+    drogon::app().addListener( "127.0.0.1", 443, true, "certificate.crt", "private.key");
+    drogon::app().setLogPath("./");
     drogon::app().setLogLevel( trantor::Logger::kInfo );
     drogon::app().setThreadNum( 16 );
     drogon::app().enableGzip(true);
@@ -27,6 +30,7 @@ int main()
     //drogon::app().loadConfigFile("../config.json");
     //Run HTTP framework,the method will block in the internal event loop
     ConfigProvider::GetInstance()->Initialize();
+    BOOST_LOG_TRIVIAL(info) << "Drogon server started at 127.0.0.1:443";
     drogon::app().run();
 #if defined _DEBUG
     _CrtDumpMemoryLeaks();

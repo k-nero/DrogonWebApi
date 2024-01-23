@@ -7,6 +7,8 @@
 #include <fstream>
 #include <sstream>
 #include "InfrastructureApi.h"
+#include <boost/log/trivial.hpp>
+
 
 class INFRASTRUCTURE_API CoreHelper
 {

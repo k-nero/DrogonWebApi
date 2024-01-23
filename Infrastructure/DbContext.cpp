@@ -30,8 +30,13 @@ SAConnection* DbContext::GetConnection()
 	}
 	catch (SAException& x)
 	{
-		std::cout << "There was an exception" << std::endl;
-		std::cout << x.ErrText().GetMultiByteChars() << std::endl;
+		BOOST_LOG_TRIVIAL(fatal) << x.ErrText();
+		BOOST_LOG_TRIVIAL(error) << x.ErrMessage();
+#ifdef _DEBUG
+		BOOST_LOG_TRIVIAL(debug) << x.ErrNativeCode();
+		BOOST_LOG_TRIVIAL(debug) << x.ErrClass();
+		BOOST_LOG_TRIVIAL(debug) << x.ErrPos();
+#endif // DEBUG
 		/*	if (!connection->isAlive())
 			{
 				DbContext::~DbContext();
@@ -63,7 +68,13 @@ DbContext::~DbContext()
 		{
 			std::cout << "Unable to disconnect " << std::endl;
 			std::cout << "Trying to destroy connection " << std::endl;
-			std::cout << x.ErrText().GetMultiByteChars() << std::endl;
+			BOOST_LOG_TRIVIAL(fatal) << x.ErrText();
+			BOOST_LOG_TRIVIAL(error) << x.ErrMessage();
+#ifdef _DEBUG
+			BOOST_LOG_TRIVIAL(debug) << x.ErrNativeCode();
+			BOOST_LOG_TRIVIAL(debug) << x.ErrClass();
+			BOOST_LOG_TRIVIAL(debug) << x.ErrPos();
+#endif // DEBUG
 			connection->Destroy();
 		}
 	}

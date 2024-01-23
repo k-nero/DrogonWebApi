@@ -44,6 +44,7 @@ void AuthController::Login(const HttpRequestPtr& req, std::function<void(const H
 	}
 	catch (std::exception& ex)
 	{
+		BOOST_LOG_TRIVIAL(error) << ex.what();
 		Json::Value ret;
 		ret["message"] = ex.what();
 		ret["status"] = k500InternalServerError;
@@ -54,6 +55,7 @@ void AuthController::Login(const HttpRequestPtr& req, std::function<void(const H
 	}
 	catch (...)
 	{
+		BOOST_LOG_TRIVIAL(error) << "Unknow exception";
 		Json::Value ret;
 		ret["message"] = "Internal server error";
 		ret["status"] = k500InternalServerError;
@@ -110,6 +112,7 @@ void AuthController::Register(const HttpRequestPtr& req, std::function<void(cons
 	}
 	catch (std::exception& ex)
 	{
+		BOOST_LOG_TRIVIAL(error) << ex.what();
 		Json::Value ret;
 		ret["message"] = ex.what();
 		ret["status"] = k500InternalServerError;
@@ -120,6 +123,7 @@ void AuthController::Register(const HttpRequestPtr& req, std::function<void(cons
 	}
 	catch (...)
 	{
+		BOOST_LOG_TRIVIAL(error) << "Unknow exception";
 		Json::Value ret;
 		ret["message"] = "Internal server error";
 		ret["status"] = k500InternalServerError;

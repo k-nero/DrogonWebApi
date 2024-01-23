@@ -4,6 +4,8 @@
 #include "ConfigProvider.h"
 #include <string>
 #include "InfrastructureApi.h"
+#include <boost/log/trivial.hpp>
+
 
 class INFRASTRUCTURE_API DbContext
 {

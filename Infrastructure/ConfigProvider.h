@@ -3,6 +3,8 @@
 #include <iostream>
 #include <INIReader.h>
 #include "InfrastructureApi.h"
+#include <boost/log/trivial.hpp>
+
 
 struct INFRASTRUCTURE_API Database
 {

@@ -4,6 +4,8 @@
 #include <boost/describe.hpp>
 #include <boost/mp11.hpp>
 #include <iostream>
+#include <boost/log/trivial.hpp>
+
 
 template <typename T, class D = boost::describe::describe_members<T, boost::describe::mod_any_access | boost::describe::mod_inherited>>
 class APPLICATION_API BaseCommand : public IBaseCommand<T>
@@ -95,7 +97,14 @@ public:
 		}
 		catch (SAException& ex)
 		{
-			std::cerr << ex.ErrText().GetMultiByteChars() << std::endl;
+			BOOST_LOG_TRIVIAL(fatal) << ex.ErrText();
+			BOOST_LOG_TRIVIAL(error) << ex.ErrMessage();
+#ifdef _DEBUG
+			BOOST_LOG_TRIVIAL(debug) << ex.CommandText();
+			BOOST_LOG_TRIVIAL(debug) << ex.ErrNativeCode();
+			BOOST_LOG_TRIVIAL(debug) << ex.ErrClass();
+			BOOST_LOG_TRIVIAL(debug) << ex.ErrPos();
+#endif // DEBUG
 			throw std::exception(ex.ErrText().GetMultiByteChars());
 		}
 		return 0;
@@ -174,7 +183,14 @@ public:
 		}
 		catch (SAException& ex)
 		{
-			std::cerr << ex.ErrText().GetMultiByteChars() << std::endl;
+			BOOST_LOG_TRIVIAL(fatal) << ex.ErrText();
+			BOOST_LOG_TRIVIAL(error) << ex.ErrMessage();
+#ifdef _DEBUG
+			BOOST_LOG_TRIVIAL(debug) << ex.CommandText();
+			BOOST_LOG_TRIVIAL(debug) << ex.ErrNativeCode();
+			BOOST_LOG_TRIVIAL(debug) << ex.ErrClass();
+			BOOST_LOG_TRIVIAL(debug) << ex.ErrPos();
+#endif // DEBUG
 			throw std::exception(ex.ErrText().GetMultiByteChars());
 		}
 		return 0;
@@ -199,7 +215,14 @@ public:
 		}
 		catch (SAException& ex)
 		{
-			std::cerr << ex.ErrText().GetMultiByteChars() << std::endl;
+			BOOST_LOG_TRIVIAL(fatal) << ex.ErrText();
+			BOOST_LOG_TRIVIAL(error) << ex.ErrMessage();
+#ifdef _DEBUG
+			BOOST_LOG_TRIVIAL(debug) << ex.CommandText();
+			BOOST_LOG_TRIVIAL(debug) << ex.ErrNativeCode();
+			BOOST_LOG_TRIVIAL(debug) << ex.ErrClass();
+			BOOST_LOG_TRIVIAL(debug) << ex.ErrPos();
+#endif // DEBUG
 			throw std::exception(ex.ErrText().GetMultiByteChars());
 		}
 	}

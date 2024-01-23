@@ -19,6 +19,7 @@ void IndexController::GetAll(const HttpRequestPtr& req, std::function<void(const
 	}
 	catch (std::exception& ex)
 	{
+		BOOST_LOG_TRIVIAL(error) << ex.what();
 		Json::Value ret;
 		ret["error"] = ex.what();
 		ret["status"] = 500;
@@ -29,6 +30,7 @@ void IndexController::GetAll(const HttpRequestPtr& req, std::function<void(const
 	}
 	catch (...)
 	{
+		BOOST_LOG_TRIVIAL(error) << "Unknow exception";
 		Json::Value ret;
 		ret["error"] = "Internal Server Error";
 		ret["status"] = 500;
@@ -66,6 +68,7 @@ void IndexController::Get(const HttpRequestPtr& req, std::function<void(const Ht
 	}
 	catch (std::exception& ex)
 	{
+		BOOST_LOG_TRIVIAL(error) << ex.what();
 		Json::Value ret;
 		ret["error"] = ex.what();
 		ret["status"] = 500;
@@ -76,6 +79,7 @@ void IndexController::Get(const HttpRequestPtr& req, std::function<void(const Ht
 	}
 	catch (...)
 	{
+		BOOST_LOG_TRIVIAL(error) << "Unknow exception";
 		Json::Value ret;
 		ret["error"] = "Internal Server Error";
 		ret["status"] = 500;

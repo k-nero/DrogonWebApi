@@ -37,13 +37,25 @@ inline tm CoreHelper::GetSystemTime()
 
 inline std::string CoreHelper::ReadTextFile(std::string path)
 {
-	std::ifstream pemFile(path);
-	SkipBOM(pemFile);
-	std::stringstream strStream;
-	strStream << pemFile.rdbuf(); // read the file
-	std::string pemToString = strStream.str(); // str holds the content of the file
-
-	return pemToString;
+	try
+	{
+		std::ifstream pemFile(path);
+		if (!pemFile.is_open())
+		{
+			BOOST_LOG_TRIVIAL(error) << "Error reading file: " << path;
+			return "";
+		}
+		SkipBOM(pemFile);
+		std::stringstream strStream;
+		strStream << pemFile.rdbuf(); // read the file
+		std::string pemToString = strStream.str(); // str holds the content of the file
+		return pemToString;
+	}
+	catch (const std::exception&)
+	{
+		BOOST_LOG_TRIVIAL(error) << "Error reading file: " << path;
+		return "";
+	}
 }
 
 
