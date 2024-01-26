@@ -474,14 +474,14 @@ public:
 	virtual void InitializeClient(const SAOptions *pOptions);
 	virtual void UnInitializeClient(const SAPI *pSAPI, const SAOptions* pOptions);
 
-	virtual long GetClientVersion() const;
+	virtual int GetClientVersion() const;
 
 	virtual ISAConnection *NewConnection(SAConnection *pConnection);
 
 protected:
 	void  *m_hLibrary;
 	SAMutex m_loaderMutex;
-	long m_nSBDLLVersionLoaded;
+	int m_nSBDLLVersionLoaded;
 
 	virtual void ResetAPI();
 	virtual void LoadAPI();

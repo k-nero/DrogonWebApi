@@ -15,7 +15,7 @@ DbContext::DbContext()
 	connectionString = ConfigProvider::GetInstance()->GetConnectionString();
 }
 
-SAConnection* DbContext::GetConnection()
+SAConnection* DbContext::GetConnection() throw (std::exception&)
 {
 	connection = new SAConnection();
 	try
@@ -41,7 +41,18 @@ SAConnection* DbContext::GetConnection()
 			{
 				DbContext::~DbContext();
 			}*/
+		throw std::exception(x.ErrText().GetMultiByteChars());
 	}
+	catch (std::exception& ex)
+	{
+		BOOST_LOG_TRIVIAL(fatal) << ex.what();
+		throw ex;
+	}
+	catch (...)
+	{
+		BOOST_LOG_TRIVIAL(fatal) << "Unknown exception";
+	}
+
 	return connection;
 }
 

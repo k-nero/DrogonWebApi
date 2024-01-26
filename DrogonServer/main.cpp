@@ -15,6 +15,9 @@ int main()
     _CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
     _CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_DEBUG);
 #endif
+    std::cout << drogon::banner;
+    BOOST_LOG_TRIVIAL(info) << "Drogon server starting...";
+
     //Set HTTP listener address and port
     drogon::app().addListener( "0.0.0.0", 443, true, "certificate.crt", "private.key");
     drogon::app().setLogPath("");

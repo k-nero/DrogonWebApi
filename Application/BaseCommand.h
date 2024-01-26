@@ -13,7 +13,7 @@ class APPLICATION_API BaseCommand : public IBaseCommand<T>
 public:
 	BaseCommand() = default;
 	explicit BaseCommand(SAConnection* con) { this->con = con; }
-	virtual int Create(T* item) throw(std::exception) override
+	virtual int Create(T* item) throw(std::exception&) override
 	{
 		try
 		{
@@ -93,7 +93,7 @@ public:
 				}
 			});
 			cmd.Execute();
-			return cmd.RowsAffected();
+			return (int)cmd.RowsAffected();
 		}
 		catch (SAException& ex)
 		{
@@ -110,7 +110,7 @@ public:
 		return 0;
 	}
 
-	virtual int Update(T* item) throw(std::exception) override
+	virtual int Update(T* item) throw(std::exception&) override
 	{
 		try
 		{
@@ -179,7 +179,7 @@ public:
 			});
 			cmd.Param(_TSA("id")).setAsString() = item->GetId().c_str();
 			cmd.Execute();
-			return cmd.RowsAffected();
+			return (int)cmd.RowsAffected();
 		}
 		catch (SAException& ex)
 		{
@@ -196,7 +196,7 @@ public:
 		return 0;
 	}
 
-	virtual int Delete(std::string& id) throw(std::exception) override
+	virtual int Delete(std::string& id) throw(std::exception&) override
 	{
 		try
 		{
@@ -211,7 +211,7 @@ public:
 			cmd.setCommandText(_TSA(query.c_str()));
 			cmd.Param(_TSA("id")).setAsString() = id.c_str();
 			cmd.Execute();
-			return cmd.RowsAffected();
+			return (int)cmd.RowsAffected();
 		}
 		catch (SAException& ex)
 		{

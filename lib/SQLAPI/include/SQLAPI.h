@@ -50,6 +50,9 @@
 #endif
 
 #ifdef SQLAPI_WINDOWS
+// 32-bit integer
+typedef __int32 sa_int32_t;
+typedef unsigned __int32 sa_uint32_t;
 // 64-bit integer
 typedef __int64 sa_int64_t;
 typedef unsigned __int64 sa_uint64_t;
@@ -57,6 +60,8 @@ typedef unsigned __int64 sa_uint64_t;
 #define SQLAPI_CALLBACK __cdecl
 #else
 // 64-bit integer
+typedef int sa_int32_t;
+typedef unsigned int sa_uint32_t;
 typedef long long int sa_int64_t;
 typedef unsigned long long int sa_uint64_t;
 // SQLAPI callback naming
@@ -156,10 +161,12 @@ enum eSADataType
 	SA_dtBool, //!< data type is C bool
 	SA_dtShort, //!< data type is C short
 	SA_dtUShort, //!< data type is C unsigned short
-	SA_dtLong, //!< data type is C long
-	SA_dtULong, //!< data type is C unsigned long
-	SA_dtInt64, //!< data type is 8-bit integer
-	SA_dtUInt64, //!< data type is 8-bit unsigned integer
+	SA_dtInt32, //!< data type is 4-bytes integer
+	SA_dtUInt32, //!< data type is 4-bytes integer
+	SA_dtLong = SA_dtInt32, //!< data type is C long (deprecated)
+	SA_dtULong = SA_dtUInt32, //!< data type is C unsigned long (deprecated)
+	SA_dtInt64, //!< data type is 8-bytes integer
+	SA_dtUInt64, //!< data type is 8-bytes unsigned integer
 	SA_dtDouble, //!< data type is C double
 	SA_dtNumeric, //!< data type is SANumeric
 	SA_dtDateTime, //!< data type is SADateTime
@@ -321,9 +328,12 @@ public:
 	virtual void InitializeClient(const SAOptions* pOptions) = 0;
 	virtual void UnInitializeClient(const SAPI* pSAPI, const SAOptions* pOptions) = 0;
 
-	virtual long GetClientVersion() const = 0;
+	virtual int GetClientVersion() const = 0;
 
 	virtual ISAConnection* NewConnection(SAConnection* pConnection) = 0;
+
+	virtual void ThreadInit();
+	virtual void ThreadEnd();
 };
 
 //! Base class for DBMS specific connection handle(s).
@@ -665,18 +675,18 @@ class SQLAPI_API SAInterval
 public:
 	SAInterval(); //!< Default constructor, initializes to zero.
 	SAInterval(double dVal); //!< Initializes from double.
-	SAInterval(long nDays, int nHours, int nMins, int nSecs); //!< Initializes with defined days, hours, minutes and seconds.
-	SAInterval(long nDays, int nHours, int nMins, int nSecs, unsigned int nNanoSeconds); //!< Initializes with defined days, hours, minutes, seconds and nanoseconds
+	SAInterval(int nDays, int nHours, int nMins, int nSecs); //!< Initializes with defined days, hours, minutes and seconds.
+	SAInterval(int nDays, int nHours, int nMins, int nSecs, unsigned int nNanoSeconds); //!< Initializes with defined days, hours, minutes, seconds and nanoseconds
 
 	double GetTotalDays() const; //!< Returns total days in interval.
 	double GetTotalHours() const; //!< Returns total hours in interval.
 	double GetTotalMinutes() const; //!< Returns total minutes in interval.
 	double GetTotalSeconds() const; //!< Returns total seconds in interval.
 
-	long GetDays() const; //!< Returns interval days.
-	long GetHours() const; //!< Returns interval hours.
-	long GetMinutes() const; //!< Returns interval minutes.
-	long GetSeconds() const; //!< Returns interval seconds.
+	int GetDays() const; //!< Returns interval days.
+	int GetHours() const; //!< Returns interval hours.
+	int GetMinutes() const; //!< Returns interval minutes.
+	int GetSeconds() const; //!< Returns interval seconds.
 	unsigned int Fraction() const; //!< Returns interval nanoseconds.
 
 	//! Interval type operator.
@@ -692,7 +702,7 @@ public:
 	operator SAString() const; //!< Converts interval into string (format is [-]HH:MM:SS[.ZZZZZZZZZ])
 
 	//! Re-initializes with defined days, hours, minutes, seconds and nanoseconds.
-	void SetInterval(long nDays, int nHours, int nMins, int nSecs, unsigned int nNanoSeconds);
+	void SetInterval(int nDays, int nHours, int nMins, int nSecs, unsigned int nNanoSeconds);
 	SAInterval& operator=(double dVal); //!< Re-initializes from double.
 
 private:
@@ -751,7 +761,7 @@ public:
 #endif
 #ifdef SQLAPI_WINDOWS
 	//! Constructs new SADateTime object from Windows SYSTEMTIME value.
-	SADateTime(SYSTEMTIME& st);
+	SADateTime(const SYSTEMTIME& st);
 #endif
 	//! Copy constructor.
 	SADateTime(const SADateTime& other);
@@ -844,6 +854,12 @@ public:
 	SAOptions();
 	virtual ~SAOptions();
 
+private:
+	// disable copy constructor
+	SAOptions(const SAOptions&);
+	// disable assignment operator
+	SAOptions& operator = (const SAOptions&);
+
 public:
 	//! Sets a string value of a specific option. 
 	virtual SAString& setOption(const SAString& sOptionName);
@@ -900,15 +916,20 @@ public:
 	//! Returns the current DBMS client assigned for the connection.
 	SAClient_t Client() const;
 	//! Returns the DBMS client API version number. 
-	long ClientVersion() const SQLAPI_THROW(SAException);
+	int ClientVersion() const SQLAPI_THROW(SAException);
 
 	//! Returns a native DBMS client API object.
 	IsaAPI* NativeAPI() const SQLAPI_THROW(SAException);
 
-	//! Returns native API unload flag value
+	//! Returns native API unload flag value.
 	bool isUnloadAPI() const;
-	//! Set native API auto-uninitialize flag value
+	//! Set native API auto-uninitialize flag value.
 	void setAutoUnInitialize(bool bVal);
+
+	//! Initializes DBMS thread-specific resources.
+	void ThreadInit() SQLAPI_THROW(SAException);
+	//! Frees DBMS already allocated thread-specific resources.
+	void ThreadEnd() SQLAPI_THROW(SAException);
 };
 
 /*! Describes types of a handle called for DBMS connection.
@@ -955,8 +976,8 @@ private:
 protected:
 	void EnumCursors(EnumCursors_t fn, void* pAddlData);
 	void RegisterCommand(SACommand* pCommand);
-	void UnRegisterCommand(SACommand* pCommand);
-	ISACursor* GetISACursor(SACommand* pCommand);
+	void UnRegisterCommand(const SACommand* pCommand);
+	ISACursor* GetISACursor(const SACommand* pCommand);
 	ISAConnection* GetISAConnection();
 
 public:
@@ -976,9 +997,9 @@ public:
 	//! Returns the current DBMS SAPI object type associated with the connection.
 	SAClient_t Client() const;
 	//! Returns the DBMS client API version number.
-	long ClientVersion() const SQLAPI_THROW(SAException);
+	int ClientVersion() const SQLAPI_THROW(SAException);
 	//! Returns the currently connected DBMS server version number.
-	long ServerVersion() const SQLAPI_THROW(SAException);
+	int ServerVersion() const SQLAPI_THROW(SAException);
 	//! Returns the currently connected DBMS server version string.
 	SAString ServerVersionString() const SQLAPI_THROW(SAException);
 
@@ -1040,6 +1061,7 @@ class SQLAPI_API SACommand : public SAOptions
 	friend class IoraConnection;
 	friend class IoraCursor;
 	friend class IsybCursor;
+	friend class IibCursor;
 
 	friend class saParams;
 	friend class saFields;
@@ -1159,7 +1181,7 @@ public:
 	//! Tests whether a result set exists after the command execution.
 	bool isResultSet() SQLAPI_THROW(SAException);
 	//! Returns number of rows affected by last DML operation.
-	long RowsAffected() SQLAPI_THROW(SAException);
+	sa_uint64_t RowsAffected() SQLAPI_THROW(SAException);
 	//! Fetches next row from a result set.
 	bool FetchNext() SQLAPI_THROW(SAException);
 	//! Fetches the previous row from a result set.
@@ -1207,8 +1229,8 @@ public:
 	SACommand& operator << (bool Value);
 	SACommand& operator << (short Value);
 	SACommand& operator << (unsigned short Value);
-	SACommand& operator << (long Value);
-	SACommand& operator << (unsigned long Value);
+	SACommand& operator << (sa_int32_t Value);
+	SACommand& operator << (sa_uint32_t Value);
 	SACommand& operator << (double Value);
 	SACommand& operator << (const SANumeric& Value);
 	SACommand& operator << (sa_int64_t Value);
@@ -1321,8 +1343,8 @@ private:
 		bool m_Bool;
 		short m_Short;
 		unsigned short m_uShort;
-		long m_Long;
-		unsigned long m_uLong;
+		sa_int32_t m_Int4;
+		sa_uint64_t m_uInt4;
 		sa_int64_t m_Int8;
 		sa_uint64_t m_uInt8;
 		double m_Double;
@@ -1358,8 +1380,10 @@ public:
 	bool asBool() const;
 	short asShort() const;
 	unsigned short asUShort() const;
-	long asLong() const;
-	unsigned long asULong() const;
+	sa_int32_t asInt32() const;
+	sa_uint32_t asUInt32() const;
+	sa_int32_t asLong() const;
+	sa_uint32_t asULong() const;
 	sa_int64_t asInt64() const;
 	sa_uint64_t asUInt64() const;
 	double asDouble() const;
@@ -1397,8 +1421,8 @@ public:
 	operator bool() const;
 	operator short() const;
 	operator unsigned short() const;
-	operator long() const;
-	operator unsigned long() const;
+	operator sa_int32_t() const;
+	operator sa_uint32_t() const;
 	operator sa_int64_t() const;
 	operator sa_uint64_t() const;
 	operator double() const;
@@ -1481,10 +1505,14 @@ public:
 	short& setAsShort();
 	//! Sets the value as unsigned short integer data.
 	unsigned short& setAsUShort();
-	//! Sets the value as long integer data.
-	long& setAsLong();
-	//! Sets the value as unsigned long integer data.
-	unsigned long& setAsULong();
+	//! Sets the value as 32-bit integer data.
+	sa_int32_t& setAsInt32();
+	//! Sets the value as unsigned 32-bit integer data.
+	sa_uint32_t& setAsUInt32();
+	//! Sets the value as 32-bit integer data (deprecated).
+	sa_int32_t& setAsLong();
+	//! Sets the value as unsigned 32-bit integer data (deprecated).
+	sa_uint32_t& setAsULong();
 	//! Sets the value as 64-bit integer data.
 	sa_int64_t& setAsInt64();
 	//! Sets the value as unsigned 64-bit integer data.
@@ -1816,11 +1844,15 @@ public:
 	virtual ~SAUserException();
 };
 
-//! The Library trace information type.
+/*!
+The Library trace information type.
+
+\see SAGlobals::SetTraceFunction
+*/
 typedef	enum eSATraceInfo
 {
-	SA_Trace_None = 0,
-	SA_Trace_QueryText = 1 //! trace real DBMS API query text SQLAPI++ sends
+	SA_Trace_None = 0, //!< no info
+	SA_Trace_QueryText = 1 //!< trace the real DBMS API query text SQLAPI++ sends
 } SATraceInfo_t;
 
 /*!
@@ -1921,6 +1953,8 @@ SQLAPI_API SACommand* sqlapi_alloc_command(SAConnection* con);
 SQLAPI_API void sqlapi_free_command(SACommand** pcmd);
 SQLAPI_API void sqlapi_set_command_option(SACommand* cmd, const SAChar* szOption, const SAChar* szValue);
 SQLAPI_API SAErrorClass_t sqlapi_execute(SACommand* cmd, const SAChar* szQuery, SAException* err);
+SQLAPI_API sa_uint64_t sqlapi_rows_affected(SACommand* cmd, SAException* err);
+SQLAPI_API SAErrorClass_t sqlapi_close_command(SACommand* cmd, SAException* err);
 SQLAPI_API void sqlapi_reset_command(SACommand* cmd);
 SQLAPI_API SABool_t sqlapi_is_result_set(SACommand* cmd, SAException* err);
 SQLAPI_API SABool_t sqlapi_fetch_next(SACommand* cmd, SAException* err);
@@ -1943,8 +1977,8 @@ SQLAPI_API const SAValueRead* sqlapi_param_value(SACommand* cmd, int nParamByID,
 SQLAPI_API const SAValueRead* sqlapi_param_value_by_name(SACommand* cmd, const SAChar* szParamByName, SAException* err);
 SQLAPI_API void sqlapi_param_set_short(SAParam* par, short val);
 SQLAPI_API void sqlapi_param_set_ushort(SAParam* par, unsigned short val);
-SQLAPI_API void sqlapi_param_set_int32(SAParam* par, long val);
-SQLAPI_API void sqlapi_param_set_uint32(SAParam* par, unsigned long val);
+SQLAPI_API void sqlapi_param_set_int32(SAParam* par, sa_int32_t val);
+SQLAPI_API void sqlapi_param_set_uint32(SAParam* par, sa_uint32_t val);
 SQLAPI_API void sqlapi_param_set_int64(SAParam* par, sa_int64_t val);
 SQLAPI_API void sqlapi_param_set_uint64(SAParam* par, sa_uint64_t val);
 SQLAPI_API void sqlapi_param_set_string(SAParam* par, const SAString* val);
@@ -1969,8 +2003,8 @@ SQLAPI_API int sqlapi_field_scale(const SAField* field);
 
 SQLAPI_API short sqlapi_value_as_short(const SAValueRead* val);
 SQLAPI_API unsigned short sqlapi_value_as_ushort(const SAValueRead* val);
-SQLAPI_API long sqlapi_value_as_int32(const SAValueRead* val);
-SQLAPI_API unsigned long sqlapi_value_as_uint32(const SAValueRead* val);
+SQLAPI_API sa_int32_t sqlapi_value_as_int32(const SAValueRead* val);
+SQLAPI_API sa_uint32_t sqlapi_value_as_uint32(const SAValueRead* val);
 SQLAPI_API sa_int64_t sqlapi_value_as_int64(const SAValueRead* val);
 SQLAPI_API sa_uint64_t sqlapi_value_as_uint64(const SAValueRead* val);
 SQLAPI_API SAString* sqlapi_value_as_string(const SAValueRead* val);
@@ -2039,9 +2073,9 @@ SQLAPI_API SABool_t sqlapi_datetime_has_time(const SADateTime* dt);
 #endif
 
 #define SQLAPI_VER_MAJOR	5
-#define SQLAPI_VER_MINOR	2
-#define SQLAPI_VER_BUILD	4
-#define SQLAPI_VER_REVISION	0
+#define SQLAPI_VER_MINOR	3
+#define SQLAPI_VER_BUILD	0
+#define SQLAPI_VER_REVISION	1
 
 #endif // !defined(__SQLAPI_H__)
 
