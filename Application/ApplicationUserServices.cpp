@@ -1,8 +1,5 @@
 #include "pch.h"
 #include "ApplicationUserServices.h"
-#include <iostream>
-#include <ostream>
-#include <SQLAPI.h>
 #include "DbContext.h"
 
 ApplicationUserService::ApplicationUserService()

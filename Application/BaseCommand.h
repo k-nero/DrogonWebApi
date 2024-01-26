@@ -146,31 +146,31 @@ public:
 					{
 						auto value = (item->*(D).pointer);
 						auto void_pointer = (void*)&value;
-						if (std::is_same<decltype(item->*(D).pointer), int&>::value || typeid(item->*(D).pointer) == typeid(int))
+						if (std::is_same<decltype(item->*(D).pointer), int&>::value )
 						{
 							cmd.Param(D.name).setAsLong() = *(int*)void_pointer;
 						}
-						else if (std::is_same<decltype(item->*(D).pointer), long&>::value || typeid(item->*(D).pointer) == typeid(long))
+						else if (std::is_same<decltype(item->*(D).pointer), long&>::value )
 						{
 							cmd.Param(D.name).setAsLong() = *(long*)void_pointer;
 						}
-						else if (std::is_same<decltype(item->*(D).pointer), bool&>::value || typeid(item->*(D).pointer) == typeid(bool))
+						else if (std::is_same<decltype(item->*(D).pointer), bool&>::value )
 						{
 							cmd.Param(D.name).setAsBool() = *(bool*)void_pointer;
 						}
-						else if (std::is_same<decltype(item->*(D).pointer), double&>::value || typeid(item->*(D).pointer) == typeid(double)
-							|| std::is_same<decltype(item->*(D).pointer), float&>::value || typeid(item->*(D).pointer) == typeid(float))
+						else if (std::is_same<decltype(item->*(D).pointer), double&>::value 
+							|| std::is_same<decltype(item->*(D).pointer), float&>::value)
 						{
 							cmd.Param(D.name).setAsDouble() = *(double*)void_pointer;
 						}
-						else if (std::is_same<decltype(item->*(D).pointer), std::string&>::value || typeid(item->*(D).pointer) == typeid(std::string)
-							|| std::is_same<decltype(item->*(D).pointer), std::wstring&>::value || typeid(item->*(D).pointer) == typeid(std::wstring)
-							|| std::is_same<decltype(item->*(D).pointer), std::string_view&>::value || typeid(item->*(D).pointer) == typeid(std::string_view)
-							|| std::is_same<decltype(item->*(D).pointer), std::wstring_view&>::value || typeid(item->*(D).pointer) == typeid(std::wstring_view))
+						else if (std::is_same<decltype(item->*(D).pointer), std::string&>::value 
+							|| std::is_same<decltype(item->*(D).pointer), std::wstring&>::value 
+							|| std::is_same<decltype(item->*(D).pointer), std::string_view&>::value 
+							|| std::is_same<decltype(item->*(D).pointer), std::wstring_view&>::value )
 						{
 							cmd.Param(_TSA(D.name)).setAsString() = (*(std::string*)void_pointer).c_str();
 						}
-						else if (std::is_same<decltype(item->*(D).pointer), std::tm&>::value || typeid(item->*(D).pointer) == typeid(std::tm))
+						else if (std::is_same<decltype(item->*(D).pointer), std::tm&>::value )
 						{
 							cmd.Param(_TSA(D.name)).setAsDateTime() = SADateTime(*(tm*)void_pointer);
 						}

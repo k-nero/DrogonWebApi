@@ -58,6 +58,15 @@
     <Filter Include="Source Files\Common">
       <UniqueIdentifier>{9149844f-55c9-4af4-ba05-a8fe88616cc9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\CQRS\TodoList">
+      <UniqueIdentifier>{ac2590e4-672e-4f65-85a9-146bd31fdbb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\CQRS\Interface\TodoList">
+      <UniqueIdentifier>{5280e5ee-b1dc-422d-ba70-4fb8b24fa06c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\CQRS\TodoList">
+      <UniqueIdentifier>{75b7f077-ae91-479d-8004-7a3ab62770ac}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -67,9 +76,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TodoItemCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TodoListCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="IBaseQuery.h">
@@ -96,7 +102,7 @@
     <ClInclude Include="ApplicationUserQuery.h">
       <Filter>Header Files\CQRS\ApplicationUser</Filter>
     </ClInclude>
-    <ClInclude Include="BaseEObject.h">
+    <ClInclude Include="BaseEPObject.h">
       <Filter>Header Files\EndpointObject</Filter>
     </ClInclude>
     <ClInclude Include="ApplicationUserServices.h">
@@ -111,6 +117,21 @@
     <ClInclude Include="CommandBuilder.h">
       <Filter>Header Files\Common</Filter>
     </ClInclude>
+    <ClInclude Include="ITodoListQuery.h">
+      <Filter>Header Files\CQRS\Interface\TodoList</Filter>
+    </ClInclude>
+    <ClInclude Include="TodoListCommand.h">
+      <Filter>Header Files\CQRS\TodoList</Filter>
+    </ClInclude>
+    <ClInclude Include="ITodoListCommand.h">
+      <Filter>Header Files\CQRS\Interface\TodoList</Filter>
+    </ClInclude>
+    <ClInclude Include="TodoListQuery.h">
+      <Filter>Header Files\CQRS\TodoList</Filter>
+    </ClInclude>
+    <ClInclude Include="TodoListService.h">
+      <Filter>Header Files\Services</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -120,9 +141,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TodoItemCommand.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TodoListCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ApplicationUserCommand.cpp">
@@ -142,6 +160,15 @@
     </ClCompile>
     <ClCompile Include="CommandBuilder.cpp">
       <Filter>Source Files\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="TodoListQuery.cpp">
+      <Filter>Source Files\CQRS\TodoList</Filter>
+    </ClCompile>
+    <ClCompile Include="TodoListCommand.cpp">
+      <Filter>Source Files\CQRS\TodoList</Filter>
+    </ClCompile>
+    <ClCompile Include="TodoListService.cpp">
+      <Filter>Source Files\Services</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

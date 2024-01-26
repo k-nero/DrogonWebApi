@@ -44,8 +44,8 @@ public:
 		TodoItems = todoItems;
 	}
 protected:
-	std::string Title;
-	std::string Description;
-	std::vector<std::shared_ptr<TodoItem>> TodoItems;
+	std::string Title = {};
+	std::string Description = {};
+	std::vector<std::shared_ptr<TodoItem>> TodoItems = {};
 };
 

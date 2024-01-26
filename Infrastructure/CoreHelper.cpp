@@ -9,7 +9,7 @@ CoreHelper::~CoreHelper()
 {
 }
 
-std::string CoreHelper::GetGuid()
+inline std::string CoreHelper::CreateUUID()
 {
 
 	UUID uuid;

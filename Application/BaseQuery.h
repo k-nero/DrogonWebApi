@@ -1,8 +1,6 @@
 #pragma once
 #include "ApplicationApi.h"
-#include "ApplicationUser.h"
 #include "IBaseQuery.h"
-#include "BaseEntity.h"
 #include "iostream"
 #include "CoreHelper.h"
 #include "ApplicationApi.h"
@@ -92,33 +90,47 @@ public:
 		T* item = new T();
 		boost::mp11::mp_for_each<D>([&](auto D)
 		{
-			if (cmd.Field(D.name).isNull())
+			if (cmd.FieldExists(D.name))
 			{
-				item->*(D).pointer = "";
+				if (cmd.Field(D.name).isNull())
+				{
+					auto pointer = (void*)&(item->*(D).pointer);
+				}
+				else if (std::is_same<decltype(item->*(D).pointer), int&>::value)
+				{
+					(long&)(item->*(D).pointer) = cmd.Field(D.name).asLong();
+				}
+				else if (std::is_same<decltype(item->*(D).pointer), bool&>::value)
+				{
+					(bool&)(item->*(D).pointer) = cmd.Field(D.name).asBool();
+				}
+				else if (std::is_same<decltype(item->*(D).pointer), double&>::value
+					|| std::is_same<decltype(item->*(D).pointer), float&>::value)
+				{
+					(double&)(item->*(D).pointer) = cmd.Field(D.name).asDouble();
+				}
+				else if (std::is_same<decltype(item->*(D).pointer), std::string&>::value
+					|| std::is_same<decltype(item->*(D).pointer), std::wstring&>::value
+					|| std::is_same<decltype(item->*(D).pointer), std::string_view&>::value
+					|| std::is_same<decltype(item->*(D).pointer), std::wstring_view&>::value)
+				{
+					if (cmd.Field(D.name).isNull())
+					{
+						(std::string&)(item->*(D).pointer) = "null";
+					}
+					else
+					{
+						(std::string&)(item->*(D).pointer) = cmd.Field(D.name).asString().GetMultiByteChars();
+					}
+				}
+				else if (std::is_same<decltype(item->*(D).pointer), std::tm&>::value || typeid(item->*(D).pointer) == typeid(std::tm))
+				{
+					(std::tm&)(item->*(D).pointer) = std::tm(cmd.Field(D.name).asDateTime());
+				}
 			}
-			else if (std::is_same<decltype(item->*(D).pointer), int&>::value || typeid(item->*(D).pointer) == typeid(int))
+			else
 			{
-				item->*(D).pointer = cmd.Field(D.name).asLong();
-			}
-			else if (std::is_same<decltype(item->*(D).pointer), bool&>::value || typeid(item->*(D).pointer) == typeid(bool))
-			{
-				item->*(D).pointer = cmd.Field(D.name).asBool();
-			}
-			else if (std::is_same<decltype(item->*(D).pointer), double&>::value || typeid(item->*(D).pointer) == typeid(double)
-				|| std::is_same<decltype(item->*(D).pointer), float&>::value || typeid(item->*(D).pointer) == typeid(float))
-			{
-				item->*(D).pointer = cmd.Field(D.name).asDouble();
-			}
-			else if (std::is_same<decltype(item->*(D).pointer), std::string&>::value || typeid(item->*(D).pointer) == typeid(std::string)
-				  || std::is_same<decltype(item->*(D).pointer), std::wstring&>::value || typeid(item->*(D).pointer) == typeid(std::wstring)
-				  || std::is_same<decltype(item->*(D).pointer), std::string_view&>::value || typeid(item->*(D).pointer) == typeid(std::string_view)
-				  || std::is_same<decltype(item->*(D).pointer), std::wstring_view&>::value || typeid(item->*(D).pointer) == typeid(std::wstring_view))
-			{
-				item->*(D).pointer = cmd.Field(D.name).asString().GetMultiByteChars();
-			}
-			else if (std::is_same<decltype(item->*(D).pointer), std::tm&>::value || typeid(item->*(D).pointer) == typeid(std::tm))
-			{
-				item->*(D).pointer = cmd.Field(D.name).asDateTime();
+				//TODO: Join table
 			}
 		});
 		return std::shared_ptr<T>(item);

@@ -5,12 +5,6 @@ void AuthController::Login(const HttpRequestPtr& req, std::function<void(const H
 {
 	try
 	{
-		auto queryStr = req.get()->getQuery();
-		if(!queryStr.empty())
-		{
-			queryStr = "?" + queryStr;
-		}
-		BOOST_LOG_TRIVIAL(info) << req.get()->getVersionString() << " " << req.get()->getMethodString() << ": " << req.get()->getOriginalPath() << queryStr;
 		ApplicationUserService cmd;
 		auto& request = req->getJsonObject();
 		std::string username = (*request)["username"].asString();
@@ -26,7 +20,7 @@ void AuthController::Login(const HttpRequestPtr& req, std::function<void(const H
 				auto token = jwt::create()
 					.set_issuer("auth0")
 					.set_type("JWT")
-					.set_id(CoreHelper::GetGuid())
+					.set_id(CoreHelper::CreateUUID())
 					.set_payload_claim("sub", jwt::claim(user->GetId()))
 					.set_payload_claim("name", jwt::claim(user->GetUsername()))
 					.set_payload_claim("role", jwt::claim(std::string{ "Admin" }))
@@ -76,12 +70,6 @@ void AuthController::Register(const HttpRequestPtr& req, std::function<void(cons
 {
 	try
 	{
-		auto queryStr = req.get()->getQuery();
-		if (!queryStr.empty())
-		{
-			queryStr = "?" + queryStr;
-		}
-		BOOST_LOG_TRIVIAL(info) << req.get()->getVersionString() << " " << req.get()->getMethodString() << ": " << req.get()->getOriginalPath() << queryStr;
 		ApplicationUserService cmd;
 		auto& reqJson = req->getJsonObject();
 		Json::Value ret;
@@ -101,7 +89,7 @@ void AuthController::Register(const HttpRequestPtr& req, std::function<void(cons
 			}
 			else
 			{
-				std::string guid = CoreHelper::GetGuid();
+				std::string guid = CoreHelper::CreateUUID();
 				std::string passwordHash = Bcrypt::HashPassword((*reqJson)["password"].asString());
 				ApplicationUser user(guid, (*reqJson)["username"].asString(), (*reqJson)["email"].asString(), passwordHash, (*reqJson)["phoneNumber"].asString());
 				int rs = cmd.CreateApplicationUser(&user);
@@ -146,3 +134,22 @@ void AuthController::Register(const HttpRequestPtr& req, std::function<void(cons
 	}
 }
 
+void AuthController::FirebaseAuth(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback)
+{
+	//TODO: Implement this
+}
+
+void AuthController::RefreshToken(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback)
+{
+	//TODO: Implement this
+}
+
+void AuthController::SignOut(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback)
+{
+	//TODO: Implement this
+}
+
+void AuthController::SignOutAll(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback)
+{
+	//TODO: Implement this
+}

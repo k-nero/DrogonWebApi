@@ -215,6 +215,8 @@
     <ClCompile Include="controller\AuthController.cpp" />
     <ClCompile Include="controller\IndexController.cc" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="TodoListController.cpp" />
+    <ClInclude Include="TodoListController.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Authorization.h" />

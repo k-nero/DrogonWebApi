@@ -5,7 +5,7 @@
 
 class DOMAIN_API BaseEntity
 {
-	BOOST_DESCRIBE_CLASS(BaseEntity, (), (), (Id, CreatedDate, ModifiedDate), ())
+	BOOST_DESCRIBE_CLASS(BaseEntity, (), (), (Id, CreatedDate, ModifiedDate, Version), ())
 
 public:
 	BaseEntity();
@@ -55,5 +55,6 @@ protected:
 	std::string Id = "";
 	std::string CreatedDate = "";
 	std::string ModifiedDate = "";
+	float Version = 0;
 };
 

@@ -15,7 +15,7 @@ class INFRASTRUCTURE_API CoreHelper
 public:
 	CoreHelper();
 	~CoreHelper();
-	static inline std::string GetGuid();
+	static inline std::string CreateUUID();
 	static inline tm GetSystemTime();
 	static inline std::string ReadTextFile(std::string path);
 private:
