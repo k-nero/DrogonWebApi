@@ -7,6 +7,8 @@ Highly recommend using vcpkg to install these packages
 - SQLAPI : Can be found in lib folder
 - boost/describe
 - boost/json
+- boost/log
+- boost/mp11
 ### Database
 - Currently using MSSQL, the connection param can be found in config.ini
 ### Build
