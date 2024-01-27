@@ -1,23 +1,14 @@
 #pragma once
-#include "TodoList.h"
-#include <SQLAPI.h>
-#include <vector>
-#include "CoreHelper.h"
 #include "ApplicationApi.h"
-#include "TodoItemCommand.h"
+#include "BaseCommand.h"
+#include "TodoList.h"
+#include "ITodoListCommand.h"
 
-class APPLICATION_API TodoListCommand
+class APPLICATION_API TodoListCommand : public BaseCommand<TodoList>, ITodoListCommand
 {
 public:
 	TodoListCommand();
-	explicit TodoListCommand(SAConnection* con) { this->con = con; }
-	std::shared_ptr<TodoList> GetTodoListById(const std::string& id);
-	std::vector<std::shared_ptr<TodoList>>GetAllTodoLists();
-	int CreateTodoList(TodoList& todoList);
-	int UpdateTodoList(TodoList& todoList);
+	explicit TodoListCommand(SAConnection* con) : BaseCommand(con) {}
 	~TodoListCommand();
-private:
-	std::shared_ptr<TodoList> GetTodoListFromCommand(SACommand& cmd);
-	SAConnection* con = nullptr;
 };
 

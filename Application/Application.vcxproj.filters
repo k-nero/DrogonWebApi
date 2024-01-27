@@ -67,15 +67,21 @@
     <Filter Include="Source Files\CQRS\TodoList">
       <UniqueIdentifier>{75b7f077-ae91-479d-8004-7a3ab62770ac}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\CQRS\TodoItem">
+      <UniqueIdentifier>{15d279f7-e1cb-4c8d-b38a-fdeb9dc15449}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\CQRS\Interface\TodoItem">
+      <UniqueIdentifier>{9be5fd49-73d2-43e9-b326-520feb1f4bd3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\CQRS\TodoItem">
+      <UniqueIdentifier>{04f1a55d-d43c-42e5-8d18-be5044852521}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="pch.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TodoItemCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="IBaseQuery.h">
@@ -132,15 +138,27 @@
     <ClInclude Include="TodoListService.h">
       <Filter>Header Files\Services</Filter>
     </ClInclude>
+    <ClInclude Include="TodoItemQuery.h">
+      <Filter>Header Files\CQRS\TodoItem</Filter>
+    </ClInclude>
+    <ClInclude Include="TodoItemCommand.h">
+      <Filter>Header Files\CQRS\TodoItem</Filter>
+    </ClInclude>
+    <ClInclude Include="ITodoItemCommand.h">
+      <Filter>Header Files\CQRS\Interface\TodoItem</Filter>
+    </ClInclude>
+    <ClInclude Include="ITodoItemQuery.h">
+      <Filter>Header Files\CQRS\Interface\TodoItem</Filter>
+    </ClInclude>
+    <ClInclude Include="TodoItemService.h">
+      <Filter>Header Files\Services</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TodoItemCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ApplicationUserCommand.cpp">
@@ -168,6 +186,15 @@
       <Filter>Source Files\CQRS\TodoList</Filter>
     </ClCompile>
     <ClCompile Include="TodoListService.cpp">
+      <Filter>Source Files\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="TodoItemQuery.cpp">
+      <Filter>Source Files\CQRS\TodoItem</Filter>
+    </ClCompile>
+    <ClCompile Include="TodoItemCommand.cpp">
+      <Filter>Source Files\CQRS\TodoItem</Filter>
+    </ClCompile>
+    <ClCompile Include="TodoItemService.cpp">
       <Filter>Source Files\Services</Filter>
     </ClCompile>
   </ItemGroup>

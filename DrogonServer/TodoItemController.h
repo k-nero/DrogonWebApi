@@ -1,8 +1,8 @@
 #pragma once
 
 #include <drogon/HttpController.h>
-#include "TodoListService.h"
-#include <TodoList.h>
+#include "TodoItemService.h"
+#include <TodoItem.h>
 #include <DbContext.h>
 #include <memory.h>
 #include "JsonHelper.h"
@@ -12,13 +12,13 @@
 using namespace drogon;
 
 
-class TodoListController : public HttpController<TodoListController>
+class TodoItemController : public HttpController<TodoItemController>
 {
 public:
 	static void initPathRouting()
 	{
-		registerMethod(&TodoListController::Get, "/api/todo-list/{1}", { drogon::HttpMethod::Get }, false, "TodoListController::Get"); // path is /IndexController
-		registerMethod(&TodoListController::GetAll, "/api/todo-list", { drogon::HttpMethod::Get }, false, "TodoListController::GetAll");
+		registerMethod(&TodoItemController::Get, "/api/todo-item/{1}", { drogon::HttpMethod::Get }, false, "TodoItemController::Get"); // path is /IndexController
+		registerMethod(&TodoItemController::GetAll, "/api/todo-item", { drogon::HttpMethod::Get }, false, "TodoItemController::GetAll");
 	}
 	// your declaration of processing function maybe like this:
 	void GetAll(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback);

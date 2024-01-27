@@ -55,6 +55,6 @@ protected:
 	std::string Id = "";
 	std::string CreatedDate = "";
 	std::string ModifiedDate = "";
-	float Version = 0;
+	int Version = 0;
 };
 

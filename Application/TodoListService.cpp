@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "TodoListService.h"
 #include "DbContext.h"
+#include "TodoItemQuery.h"
 
 TodoListService::TodoListService()
 {
@@ -12,8 +13,14 @@ std::shared_ptr<TodoList> TodoListService::GetTodoListById(const std::string& id
 	try
 	{
 		DbContext db;
-		TodoListQuery query(db.GetConnection());
-		return query.GetById(id);
+		auto con = db.GetConnection();
+		TodoListQuery todo_list_query(con);
+		TodoItemQuery todo_item_query(con);
+
+		auto todo_list = todo_list_query.GetById(id);
+		todo_list.get()->SetTodoItems(todo_item_query.GetAll("TodoListId = '" + id + "'"));
+
+		return todo_list;
 	}
 	catch (std::exception& ex)
 	{

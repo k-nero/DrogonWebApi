@@ -92,43 +92,41 @@ public:
 			T* item = new T();
 			boost::mp11::mp_for_each<D>([&](auto D)
 			{
-				if (cmd.FieldExists(D.name))
+
+				/*if (cmd.Field(D.name).isNull())
+				{
+					auto pointer = (void*)&(item->*(D).pointer);
+				}*/
+				if (std::is_same<decltype(item->*(D).pointer), int&>::value)
+				{
+					(long&)(item->*(D).pointer) = cmd.Field(D.name).asLong();
+				}
+				else if (std::is_same<decltype(item->*(D).pointer), bool&>::value)
+				{
+					(bool&)(item->*(D).pointer) = cmd.Field(D.name).asBool();
+				}
+				else if (std::is_same<decltype(item->*(D).pointer), double&>::value
+					|| std::is_same<decltype(item->*(D).pointer), float&>::value)
+				{
+					(double&)(item->*(D).pointer) = cmd.Field(D.name).asDouble();
+				}
+				else if (std::is_same<decltype(item->*(D).pointer), std::string&>::value
+					|| std::is_same<decltype(item->*(D).pointer), std::wstring&>::value
+					|| std::is_same<decltype(item->*(D).pointer), std::string_view&>::value
+					|| std::is_same<decltype(item->*(D).pointer), std::wstring_view&>::value)
 				{
 					if (cmd.Field(D.name).isNull())
 					{
-						auto pointer = (void*)&(item->*(D).pointer);
+						(std::string&)(item->*(D).pointer) = "null";
 					}
-					else if (std::is_same<decltype(item->*(D).pointer), int&>::value)
+					else
 					{
-						(long&)(item->*(D).pointer) = cmd.Field(D.name).asLong();
+						(std::string&)(item->*(D).pointer) = cmd.Field(D.name).asString().GetMultiByteChars();
 					}
-					else if (std::is_same<decltype(item->*(D).pointer), bool&>::value)
-					{
-						(bool&)(item->*(D).pointer) = cmd.Field(D.name).asBool();
-					}
-					else if (std::is_same<decltype(item->*(D).pointer), double&>::value
-						|| std::is_same<decltype(item->*(D).pointer), float&>::value)
-					{
-						(double&)(item->*(D).pointer) = cmd.Field(D.name).asDouble();
-					}
-					else if (std::is_same<decltype(item->*(D).pointer), std::string&>::value
-						|| std::is_same<decltype(item->*(D).pointer), std::wstring&>::value
-						|| std::is_same<decltype(item->*(D).pointer), std::string_view&>::value
-						|| std::is_same<decltype(item->*(D).pointer), std::wstring_view&>::value)
-					{
-						if (cmd.Field(D.name).isNull())
-						{
-							(std::string&)(item->*(D).pointer) = "null";
-						}
-						else
-						{
-							(std::string&)(item->*(D).pointer) = cmd.Field(D.name).asString().GetMultiByteChars();
-						}
-					}
-					else if (std::is_same<decltype(item->*(D).pointer), std::tm&>::value || typeid(item->*(D).pointer) == typeid(std::tm))
-					{
-						(std::tm&)(item->*(D).pointer) = std::tm(cmd.Field(D.name).asDateTime());
-					}
+				}
+				else if (std::is_same<decltype(item->*(D).pointer), std::tm&>::value || typeid(item->*(D).pointer) == typeid(std::tm))
+				{
+					(std::tm&)(item->*(D).pointer) = std::tm(cmd.Field(D.name).asDateTime());
 				}
 				else
 				{

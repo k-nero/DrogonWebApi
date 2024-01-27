@@ -42,6 +42,9 @@
     <ClCompile Include="TodoListController.cpp">
       <Filter>Source Files\Controller</Filter>
     </ClCompile>
+    <ClCompile Include="TodoItemController.cpp">
+      <Filter>Source Files\Controller</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="controller\IndexController.h">
@@ -54,6 +57,9 @@
       <Filter>Header Files\Middleware</Filter>
     </ClInclude>
     <ClInclude Include="TodoListController.h">
+      <Filter>Header Files\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="TodoItemController.h">
       <Filter>Header Files\Controller</Filter>
     </ClInclude>
   </ItemGroup>

@@ -8,7 +8,7 @@ class TodoItem;
 
 class DOMAIN_API TodoList : public BaseEntity
 {
-	BOOST_DESCRIBE_CLASS(TodoList, (BaseEntity), (), (Title, Description), ())
+	BOOST_DESCRIBE_CLASS(TodoList, (BaseEntity), (), (Title, Description, TodoItems), ())
 
 public:
 	TodoList();
