@@ -19,7 +19,7 @@ int main()
     BOOST_LOG_TRIVIAL(info) << "Drogon server starting...";
 
     //Set HTTP listener address and port
-    drogon::app().addListener( "0.0.0.0", 443, true, "certificate.crt", "private.key");
+    drogon::app().addListener( "127.0.0.1", 443, true, "certificate.crt", "private.key");
     drogon::app().setLogPath("");
     drogon::app().setLogLevel( trantor::Logger::kTrace );
     drogon::app().setThreadNum( 16 );
