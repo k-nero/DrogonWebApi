@@ -30,7 +30,7 @@ public:
 			const SAString idStr(id.c_str());
 			cmd.Param(_TSA("id")).setAsString() = idStr;
 			cmd.Execute();
-			
+
 			if (cmd.FetchNext())
 			{
 				return GetFromCommand(cmd);
@@ -88,70 +88,51 @@ public:
 
 	virtual std::shared_ptr<T> GetFromCommand(SACommand& cmd) noexcept(false) override
 	{
-		try
+		T* item = new T();
+		boost::mp11::mp_for_each<D>([&](auto D)
 		{
-			T* item = new T();
-			boost::mp11::mp_for_each<D>([&](auto D)
-			{
 
-				/*if (cmd.Field(D.name).isNull())
+			/*if (cmd.Field(D.name).isNull())
+			{
+				auto pointer = (void*)&(item->*(D).pointer);
+			}*/
+			if (std::is_same<decltype(item->*(D).pointer), int&>::value)
+			{
+				(long&)(item->*(D).pointer) = cmd.Field(D.name).asLong();
+			}
+			else if (std::is_same<decltype(item->*(D).pointer), bool&>::value)
+			{
+				(bool&)(item->*(D).pointer) = cmd.Field(D.name).asBool();
+			}
+			else if (std::is_same<decltype(item->*(D).pointer), double&>::value
+				|| std::is_same<decltype(item->*(D).pointer), float&>::value)
+			{
+				(double&)(item->*(D).pointer) = cmd.Field(D.name).asDouble();
+			}
+			else if (std::is_same<decltype(item->*(D).pointer), std::string&>::value
+				|| std::is_same<decltype(item->*(D).pointer), std::wstring&>::value
+				|| std::is_same<decltype(item->*(D).pointer), std::string_view&>::value
+				|| std::is_same<decltype(item->*(D).pointer), std::wstring_view&>::value)
+			{
+				if (cmd.Field(D.name).isNull())
 				{
-					auto pointer = (void*)&(item->*(D).pointer);
-				}*/
-				if (std::is_same<decltype(item->*(D).pointer), int&>::value)
-				{
-					(long&)(item->*(D).pointer) = cmd.Field(D.name).asLong();
-				}
-				else if (std::is_same<decltype(item->*(D).pointer), bool&>::value)
-				{
-					(bool&)(item->*(D).pointer) = cmd.Field(D.name).asBool();
-				}
-				else if (std::is_same<decltype(item->*(D).pointer), double&>::value
-					|| std::is_same<decltype(item->*(D).pointer), float&>::value)
-				{
-					(double&)(item->*(D).pointer) = cmd.Field(D.name).asDouble();
-				}
-				else if (std::is_same<decltype(item->*(D).pointer), std::string&>::value
-					|| std::is_same<decltype(item->*(D).pointer), std::wstring&>::value
-					|| std::is_same<decltype(item->*(D).pointer), std::string_view&>::value
-					|| std::is_same<decltype(item->*(D).pointer), std::wstring_view&>::value)
-				{
-					if (cmd.Field(D.name).isNull())
-					{
-						(std::string&)(item->*(D).pointer) = "null";
-					}
-					else
-					{
-						(std::string&)(item->*(D).pointer) = cmd.Field(D.name).asString().GetMultiByteChars();
-					}
-				}
-				else if (std::is_same<decltype(item->*(D).pointer), std::tm&>::value || typeid(item->*(D).pointer) == typeid(std::tm))
-				{
-					(std::tm&)(item->*(D).pointer) = std::tm(cmd.Field(D.name).asDateTime());
+					(std::string&)(item->*(D).pointer) = "null";
 				}
 				else
 				{
-					//TODO: Join table
+					(std::string&)(item->*(D).pointer) = cmd.Field(D.name).asString().GetMultiByteChars();
 				}
-			});
-			return std::shared_ptr<T>(item);
-		}
-		catch (SAException& ex)
-		{
-			BOOST_LOG_TRIVIAL(fatal) << ex.ErrText();
-			BOOST_LOG_TRIVIAL(error) << ex.ErrMessage();
-#ifdef _DEBUG
-			BOOST_LOG_TRIVIAL(debug) << ex.CommandText();
-			BOOST_LOG_TRIVIAL(debug) << ex.ErrNativeCode();
-			BOOST_LOG_TRIVIAL(debug) << ex.ErrClass();
-			BOOST_LOG_TRIVIAL(debug) << ex.ErrPos();
-#endif // DEBUG
-			throw std::exception(ex.ErrText().GetMultiByteChars());
-		}
-		catch (...)
-		{
-			throw std::exception("Unknown exception");
-		}
+			}
+			else if (std::is_same<decltype(item->*(D).pointer), std::tm&>::value || typeid(item->*(D).pointer) == typeid(std::tm))
+			{
+				(std::tm&)(item->*(D).pointer) = std::tm(cmd.Field(D.name).asDateTime());
+			}
+			else
+			{
+				//TODO: Join table
+			}
+		});
+		return std::shared_ptr<T>(item);
 	}
 
 	virtual std::shared_ptr<T> GetSingle(const std::string query = "") noexcept(false) override
