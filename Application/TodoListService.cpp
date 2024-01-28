@@ -8,7 +8,7 @@ TodoListService::TodoListService()
 
 }
 
-std::shared_ptr<TodoList> TodoListService::GetTodoListById(const std::string& id) throw (std::exception&)
+std::shared_ptr<TodoList> TodoListService::GetTodoListById(const std::string& id) noexcept(false)
 {
 	try
 	{
@@ -29,7 +29,7 @@ std::shared_ptr<TodoList> TodoListService::GetTodoListById(const std::string& id
 	return nullptr;
 }
 
-std::vector<std::shared_ptr<TodoList>> TodoListService::GetAllTodoLists() throw (std::exception&)
+std::vector<std::shared_ptr<TodoList>> TodoListService::GetAllTodoLists() noexcept(false)
 {
 	std::vector<std::shared_ptr<TodoList>> TodoLists;
 	try
@@ -47,13 +47,13 @@ std::vector<std::shared_ptr<TodoList>> TodoListService::GetAllTodoLists() throw 
 }
 
 
-int TodoListService::CreateTodoList(TodoList* TodoList) throw (std::exception&)
+int TodoListService::CreateTodoList(TodoList* TodoList) noexcept(false)
 {
 	throw std::exception("Not implemented");
 	return 0;
 }
 
-int TodoListService::UpdateTodoList(TodoList* TodoList) throw (std::exception&)
+int TodoListService::UpdateTodoList(TodoList* TodoList) noexcept(false)
 {
 	throw std::exception("Not implemented");
 

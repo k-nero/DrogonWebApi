@@ -8,7 +8,7 @@ TodoItemService::TodoItemService()
 
 }
 
-std::shared_ptr<TodoItem> TodoItemService::GetTodoItemById(const std::string& id) throw (std::exception&)
+std::shared_ptr<TodoItem> TodoItemService::GetTodoItemById(const std::string& id) noexcept(false)
 {
 	try
 	{
@@ -27,7 +27,7 @@ std::shared_ptr<TodoItem> TodoItemService::GetTodoItemById(const std::string& id
 	return nullptr;
 }
 
-std::vector<std::shared_ptr<TodoItem>> TodoItemService::GetAllTodoItems() throw (std::exception&)
+std::vector<std::shared_ptr<TodoItem>> TodoItemService::GetAllTodoItems() noexcept(false)
 {
 	std::vector<std::shared_ptr<TodoItem>> TodoItems;
 	try
@@ -45,13 +45,13 @@ std::vector<std::shared_ptr<TodoItem>> TodoItemService::GetAllTodoItems() throw 
 }
 
 
-int TodoItemService::CreateTodoItem(TodoItem* TodoItem) throw (std::exception&)
+int TodoItemService::CreateTodoItem(TodoItem* TodoItem) noexcept(false)
 {
 	throw std::exception("Not implemented");
 	return 0;
 }
 
-int TodoItemService::UpdateTodoItem(TodoItem* TodoItem) throw (std::exception&)
+int TodoItemService::UpdateTodoItem(TodoItem* TodoItem) noexcept(false)
 {
 	throw std::exception("Not implemented");
 

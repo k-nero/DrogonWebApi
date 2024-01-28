@@ -7,7 +7,7 @@ ApplicationUserService::ApplicationUserService()
 	
 }
 
-std::shared_ptr<ApplicationUser> ApplicationUserService::GetApplicationUserById( const std::string& id ) throw (std::exception&)
+std::shared_ptr<ApplicationUser> ApplicationUserService::GetApplicationUserById( const std::string& id ) noexcept(false)
 {
 	try
 	{
@@ -22,7 +22,7 @@ std::shared_ptr<ApplicationUser> ApplicationUserService::GetApplicationUserById(
 	return nullptr;
 }
 
-std::shared_ptr<ApplicationUser> ApplicationUserService::GetApplicationUserByUserName( std::string& userName ) throw (std::exception&)
+std::shared_ptr<ApplicationUser> ApplicationUserService::GetApplicationUserByUserName( std::string& userName ) noexcept(false)
 {
 	try
 	{
@@ -37,7 +37,7 @@ std::shared_ptr<ApplicationUser> ApplicationUserService::GetApplicationUserByUse
 	return nullptr;
 }
 
-std::vector<std::shared_ptr<ApplicationUser>> ApplicationUserService::GetAllApplicationUsers() throw (std::exception&)
+std::vector<std::shared_ptr<ApplicationUser>> ApplicationUserService::GetAllApplicationUsers() noexcept(false)
 {
 	std::vector<std::shared_ptr<ApplicationUser>> applicationUsers;
 	try
@@ -55,7 +55,7 @@ std::vector<std::shared_ptr<ApplicationUser>> ApplicationUserService::GetAllAppl
 }
 
 
-int ApplicationUserService::CreateApplicationUser(ApplicationUser* applicationUser) throw (std::exception&)
+int ApplicationUserService::CreateApplicationUser(ApplicationUser* applicationUser) noexcept(false)
 {
 	try
 	{
@@ -70,7 +70,7 @@ int ApplicationUserService::CreateApplicationUser(ApplicationUser* applicationUs
 	return 0;
 }
 
-int ApplicationUserService::UpdateApplicationUser(ApplicationUser* applicationUser) throw (std::exception&)
+int ApplicationUserService::UpdateApplicationUser(ApplicationUser* applicationUser) noexcept(false)
 {
 	try
 	{

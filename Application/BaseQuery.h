@@ -14,7 +14,7 @@ class APPLICATION_API BaseQuery : public IBaseQuery<T>
 public:
 	BaseQuery() = default;
 	explicit BaseQuery(SAConnection* con) { this->con = con; }
-	virtual std::shared_ptr<T> GetById(const std::string& id) throw(std::exception&)override
+	virtual std::shared_ptr<T> GetById(const std::string& id) noexcept(false) override
 	{
 		try
 		{
@@ -30,6 +30,7 @@ public:
 			const SAString idStr(id.c_str());
 			cmd.Param(_TSA("id")).setAsString() = idStr;
 			cmd.Execute();
+			
 			if (cmd.FetchNext())
 			{
 				return GetFromCommand(cmd);
@@ -50,7 +51,7 @@ public:
 		return nullptr;
 	}
 
-	virtual std::vector<std::shared_ptr<T>>GetAll(std::string query = "") throw(std::exception&)override
+	virtual std::vector<std::shared_ptr<T>>GetAll(std::string query = "") noexcept(false) override
 	{
 		std::vector<std::shared_ptr<T>> items;
 		try
@@ -85,7 +86,7 @@ public:
 		return items;
 	}
 
-	virtual std::shared_ptr<T> GetFromCommand(SACommand& cmd) throw(std::exception&)override
+	virtual std::shared_ptr<T> GetFromCommand(SACommand& cmd) noexcept(false) override
 	{
 		try
 		{
@@ -153,7 +154,7 @@ public:
 		}
 	}
 
-	virtual std::shared_ptr<T> GetSingle(const std::string query = "") throw(std::exception&)override
+	virtual std::shared_ptr<T> GetSingle(const std::string query = "") noexcept(false) override
 	{
 		try
 		{
@@ -166,6 +167,7 @@ public:
 			{
 				return GetFromCommand(cmd);
 			}
+			return nullptr;
 		}
 		catch (SAException& ex)
 		{
@@ -181,7 +183,7 @@ public:
 		}
 	}
 
-	virtual PaginationObject<T> GetPagination(int page, int pageSize, std::string query = "") throw(std::exception&)override
+	virtual PaginationObject<T> GetPagination(int page, int pageSize, std::string query = "") noexcept(false) override
 	{
 		try
 		{

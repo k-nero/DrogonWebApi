@@ -13,7 +13,7 @@ class APPLICATION_API BaseCommand : public IBaseCommand<T>
 public:
 	BaseCommand() = default;
 	explicit BaseCommand(SAConnection* con) { this->con = con; }
-	virtual int Create(T* item) throw(std::exception&) override
+	virtual int Create(T* item) noexcept(false) override
 	{
 		try
 		{
@@ -110,7 +110,7 @@ public:
 		return 0;
 	}
 
-	virtual int Update(T* item) throw(std::exception&) override
+	virtual int Update(T* item) noexcept(false) override
 	{
 		try
 		{
@@ -196,7 +196,7 @@ public:
 		return 0;
 	}
 
-	virtual int Delete(std::string& id) throw(std::exception&) override
+	virtual int Delete(std::string& id) noexcept(false) override
 	{
 		try
 		{

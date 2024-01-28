@@ -17,6 +17,8 @@ public:
 	TodoItem& operator=(TodoItem&& todoItem) noexcept;
 	virtual std::string ToString();
 
+	virtual ~TodoItem();
+
 	virtual std::string GetTodoListId()
 	{
 		return TodoListId;

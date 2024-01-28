@@ -41,3 +41,7 @@ std::string TodoItem::ToString()
 {
 	return std::string();
 }
+
+TodoItem::~TodoItem()
+{
+}
