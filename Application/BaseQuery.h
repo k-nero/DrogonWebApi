@@ -8,6 +8,7 @@
 #include <boost/mp11.hpp>
 #include <boost/log/trivial.hpp>
 #include "TypeCheck.h"
+#include "TodoItem.h"
 
 template <typename T, class D = boost::describe::describe_members<T, boost::describe::mod_any_access | boost::describe::mod_inherited>>
 class APPLICATION_API BaseQuery : public IBaseQuery<T>
@@ -39,14 +40,17 @@ public:
 					if(std::find(includes.begin(), includes.end(), D.name) != includes.end())
 					{
 						using type = std::remove_reference_t<decltype(item.get()->*(D).pointer)>;
-						if (is_vector_v<type> || is_list_v<type> )
+						using inner_type = has_value_type_t<type>;
+						if (!std::is_void_v<inner_type>)
 						{
-							BOOST_LOG_TRIVIAL(debug) << typeid(type).name();
-						}
-						else
-						{
+							using inner_elem_type = has_element_type_t<std::remove_reference_t<inner_type>>;
 
+							if (!std::is_void_v<inner_elem_type>)
+							{
+								//(type&)(item.get()->*(D).pointer) = (type&)GetAll<inner_elem_type>(table_name + "Id = '" + id + "'");
+							}
 						}
+						
 					}
 				
 				});

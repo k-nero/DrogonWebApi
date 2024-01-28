@@ -27,3 +27,26 @@ template <typename C> inline constexpr bool is_weak_ptr = is_weak_ptr<C>::value;
 template <typename C> struct is_map : std::false_type {};
 template <typename T, typename A> struct is_map<std::map<T, A>> : std::true_type {};
 template <typename C> inline constexpr bool is_map_v = is_map<C>::value;
+
+template <typename , typename = void> struct has_value_type
+{
+	using type = void;
+};
+
+template <typename T> struct has_value_type<T, std::void_t<typename T::value_type>>
+{
+	using type = T::value_type;
+};
+
+template <typename, typename = void> struct has_element_type
+{
+	using type = void;
+};
+
+template <typename T> struct has_element_type<T, std::void_t<typename T::element_type>>
+{
+	using type = T::element_type;
+};
+
+template <typename T> using has_value_type_t = typename has_value_type<T>::type;
+template <typename T> using has_element_type_t = typename has_element_type<T>::type;
