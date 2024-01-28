@@ -76,6 +76,9 @@
     <Filter Include="Source Files\CQRS\TodoItem">
       <UniqueIdentifier>{04f1a55d-d43c-42e5-8d18-be5044852521}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\CQRS\Base">
+      <UniqueIdentifier>{838272c3-dfea-49bf-82b7-30f427193de5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">

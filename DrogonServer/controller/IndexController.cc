@@ -8,6 +8,7 @@ void IndexController::GetAll(const HttpRequestPtr& req, std::function<void(const
 		ApplicationUserService cmd;
 		const std::vector<std::shared_ptr<ApplicationUser>> users = cmd.GetAllApplicationUsers();
 		Json::Value rs;
+		
 		for (const auto& user : users)
 		{
 			rs.append(ToJson(*user));

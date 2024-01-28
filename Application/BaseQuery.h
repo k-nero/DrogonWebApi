@@ -7,6 +7,7 @@
 #include <boost/describe.hpp>
 #include <boost/mp11.hpp>
 #include <boost/log/trivial.hpp>
+#include "TypeCheck.h"
 
 template <typename T, class D = boost::describe::describe_members<T, boost::describe::mod_any_access | boost::describe::mod_inherited>>
 class APPLICATION_API BaseQuery : public IBaseQuery<T>
@@ -14,7 +15,7 @@ class APPLICATION_API BaseQuery : public IBaseQuery<T>
 public:
 	BaseQuery() = default;
 	explicit BaseQuery(SAConnection* con) { this->con = con; }
-	virtual std::shared_ptr<T> GetById(const std::string& id) noexcept(false) override
+	virtual std::shared_ptr<T> GetById(const std::string& id, std::vector<std::string> includes = {}) noexcept(false) override
 	{
 		try
 		{
@@ -30,11 +31,30 @@ public:
 			const SAString idStr(id.c_str());
 			cmd.Param(_TSA("id")).setAsString() = idStr;
 			cmd.Execute();
-
+			auto item = std::make_shared<T>();
 			if (cmd.FetchNext())
 			{
-				return GetFromCommand(cmd);
+				boost::mp11::mp_for_each<D>([&](auto D) 
+				{
+					if(std::find(includes.begin(), includes.end(), D.name) != includes.end())
+					{
+						using type = std::remove_reference_t<decltype(item.get()->*(D).pointer)>;
+						if (is_vector_v<type> || is_list_v<type> )
+						{
+							BOOST_LOG_TRIVIAL(debug) << typeid(type).name();
+						}
+						else
+						{
+
+						}
+					}
+				
+				});
+
+
+				item = GetFromCommand(cmd);
 			}
+			return item;
 		}
 		catch (SAException& ex)
 		{
@@ -86,7 +106,7 @@ public:
 		return items;
 	}
 
-	virtual std::shared_ptr<T> GetFromCommand(SACommand& cmd) noexcept(false) override
+	virtual std::shared_ptr<T> GetFromCommand(SACommand& cmd, std::vector<std::string> includes = {}) noexcept(false) override
 	{
 		T* item = new T();
 		boost::mp11::mp_for_each<D>([&](auto D)
@@ -96,23 +116,23 @@ public:
 			{
 				auto pointer = (void*)&(item->*(D).pointer);
 			}*/
-			if (std::is_same<decltype(item->*(D).pointer), int&>::value)
+			if (std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, int>::value)
 			{
 				(long&)(item->*(D).pointer) = cmd.Field(D.name).asLong();
 			}
-			else if (std::is_same<decltype(item->*(D).pointer), bool&>::value)
+			else if (std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, bool>::value)
 			{
 				(bool&)(item->*(D).pointer) = cmd.Field(D.name).asBool();
 			}
-			else if (std::is_same<decltype(item->*(D).pointer), double&>::value
-				|| std::is_same<decltype(item->*(D).pointer), float&>::value)
+			else if (std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, double>::value
+				|| std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, float>::value)
 			{
 				(double&)(item->*(D).pointer) = cmd.Field(D.name).asDouble();
 			}
-			else if (std::is_same<decltype(item->*(D).pointer), std::string&>::value
-				|| std::is_same<decltype(item->*(D).pointer), std::wstring&>::value
-				|| std::is_same<decltype(item->*(D).pointer), std::string_view&>::value
-				|| std::is_same<decltype(item->*(D).pointer), std::wstring_view&>::value)
+			else if (std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, std::string>::value
+				|| std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, std::wstring>::value
+				|| std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, std::string_view>::value
+				|| std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, std::wstring_view>::value)
 			{
 				if (cmd.Field(D.name).isNull())
 				{
@@ -123,7 +143,7 @@ public:
 					(std::string&)(item->*(D).pointer) = cmd.Field(D.name).asString().GetMultiByteChars();
 				}
 			}
-			else if (std::is_same<decltype(item->*(D).pointer), std::tm&>::value || typeid(item->*(D).pointer) == typeid(std::tm))
+			else if (std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, std::tm&>::value || typeid(item->*(D).pointer) == typeid(std::tm))
 			{
 				(std::tm&)(item->*(D).pointer) = std::tm(cmd.Field(D.name).asDateTime());
 			}

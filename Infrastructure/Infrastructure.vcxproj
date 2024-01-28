@@ -246,6 +246,7 @@
     <ClInclude Include="IDbContext.h" />
     <ClInclude Include="JsonHelper.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="TypeCheck.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BcryptPW.cpp" />
