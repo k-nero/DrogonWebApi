@@ -143,7 +143,7 @@ public:
 					(std::string&)(item->*(D).pointer) = cmd.Field(D.name).asString().GetMultiByteChars();
 				}
 			}
-			else if (std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, std::tm&>::value || typeid(item->*(D).pointer) == typeid(std::tm))
+			else if (std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, std::tm>::value )
 			{
 				(std::tm&)(item->*(D).pointer) = std::tm(cmd.Field(D.name).asDateTime());
 			}
