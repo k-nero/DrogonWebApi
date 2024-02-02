@@ -8,7 +8,7 @@
 #include <boost/mp11.hpp>
 #include <boost/log/trivial.hpp>
 #include "TypeCheck.h"
-#include "TodoItem.h"
+#include "JsonHelper.h"
 
 template <typename T, class D = boost::describe::describe_members<T, boost::describe::mod_any_access | boost::describe::mod_inherited>>
 class APPLICATION_API BaseQuery : public IBaseQuery<T>
@@ -35,24 +35,77 @@ public:
 			auto item = std::make_shared<T>();
 			if (cmd.FetchNext())
 			{
-				boost::mp11::mp_for_each<D>([&](auto D) 
+				boost::mp11::mp_for_each<D>([&](auto D)
 				{
-					if(std::find(includes.begin(), includes.end(), D.name) != includes.end())
+					if (std::find(includes.begin(), includes.end(), D.name) != includes.end())
 					{
 						using type = std::remove_reference_t<decltype(item.get()->*(D).pointer)>;
 						using inner_type = has_value_type_t<type>;
 						if (!std::is_void_v<inner_type>)
 						{
-							using inner_elem_type = has_element_type_t<std::remove_reference_t<inner_type>>;
+							using inner_elem_type = std::remove_pointer_t<has_element_type_t<std::remove_reference_t<inner_type>>>;
 
 							if (!std::is_void_v<inner_elem_type>)
 							{
-								//(type&)(item.get()->*(D).pointer) = (type&)GetAll<inner_elem_type>(table_name + "Id = '" + id + "'");
+								std::vector<std::shared_ptr<inner_elem_type>> inner_items;
+								std::string inner_table_name = typeid(inner_elem_type).name();
+								inner_table_name = inner_table_name.substr(inner_table_name.find_last_of(' ') + 1);
+
+								std::string inner_query = "SELECT * FROM [dbo].[" + inner_table_name + "] WHERE " + table_name + "Id = :id";
+								SACommand inner_cmd(con, _TSA(inner_query.c_str()));
+								const SAString idStr(id.c_str());
+								inner_cmd.Param(_TSA("id")).setAsString() = idStr;
+								inner_cmd.Execute();
+
+								//while (inner_cmd.FetchNext())
+								{
+									//auto inner_item = new inner_elem_type();
+									//auto inner_item = std::make_shared<inner_elem_type>();
+									/*boost::mp11::mp_for_each<boost::describe::describe_members<inner_elem_type, boost::describe::mod_any_access | boost::describe::mod_inherited>>([&](auto inner_D)
+									{
+										if (std::is_same<std::remove_reference_t<decltype(inner_item->*(inner_D).pointer)>, int>::value)
+										{
+											(long&)(inner_item->*(inner_D).pointer) = inner_cmd.Field(inner_D.name).asLong();
+										}
+										else if (std::is_same<std::remove_reference_t<decltype(inner_item->*(inner_D).pointer)>, bool>::value)
+										{
+											(bool&)(inner_item->*(inner_D).pointer) = inner_cmd.Field(inner_D.name).asBool();
+										}
+										else if (std::is_same<std::remove_reference_t<decltype(inner_item->*(inner_D).pointer)>, double>::value
+											|| std::is_same<std::remove_reference_t<decltype(inner_item->*(inner_D).pointer)>, float>::value)
+										{
+											(double&)(inner_item->*(inner_D).pointer) = inner_cmd.Field(inner_D.name).asDouble();
+										}
+										else if (std::is_same<std::remove_reference_t<decltype(inner_item->*(inner_D).pointer)>, std::string>::value
+											|| std::is_same<std::remove_reference_t<decltype(inner_item->*(inner_D).pointer)>, std::wstring>::value
+											|| std::is_same<std::remove_reference_t<decltype(inner_item->*(inner_D).pointer)>, std::string_view>::value
+											|| std::is_same<std::remove_reference_t<decltype(inner_item->*(inner_D).pointer)>, std::wstring_view>::value)
+										{
+											if (inner_cmd.Field(inner_D.name).isNull())
+											{
+												(std::string&)(inner_item->*(inner_D).pointer) = "null";
+											}
+											else
+											{
+												(std::string&)(inner_item->*(inner_D).pointer) = inner_cmd.Field(inner_D.name).asString().GetMultiByteChars();
+											}
+										}
+										else if (std::is_same<std::remove_reference_t<decltype(inner_item->*(inner_D).pointer)>, std::tm>::value)
+										{
+											(std::tm&)(inner_item->*(inner_D).pointer) = std::tm(inner_cmd.Field(inner_D.name).asDateTime());
+										}
+										else
+										{
+
+										}
+									});*/
+									//inner_items.push_back(inner_item);
+								}
 							}
 						}
-						
+
 					}
-				
+
 				});
 
 
@@ -147,7 +200,7 @@ public:
 					(std::string&)(item->*(D).pointer) = cmd.Field(D.name).asString().GetMultiByteChars();
 				}
 			}
-			else if (std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, std::tm>::value )
+			else if (std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, std::tm>::value)
 			{
 				(std::tm&)(item->*(D).pointer) = std::tm(cmd.Field(D.name).asDateTime());
 			}

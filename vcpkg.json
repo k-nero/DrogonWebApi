@@ -1,0 +1,49 @@
+{
+  "dependencies": [
+    {
+      "name": "drogon",
+      "version>=": "1.9.2",
+      "host": true,
+      "platform": "x64"
+    },
+    {
+      "name": "boost-log",
+      "version>=": "1.84.0",
+      "host": true,
+      "platform": "x64"
+    },
+    {
+      "name": "boost-describe",
+      "version>=": "1.84.0",
+      "host": true,
+      "platform": "x64"
+    },
+    {
+      "name": "jwt-cpp",
+      "version>=": "0.6.0",
+      "host": true,
+      "platform": "x64"
+    },
+    {
+      "name": "inih",
+      "version>=": "57",
+      "host": true,
+      "platform": "x64",
+      "default-features": false,
+      "features": [ "cpp" ]
+    },
+    {
+      "name": "boost-json",
+      "version>=": "1.84.0",
+      "host": true,
+      "platform": "x64"
+    },
+    {
+      "name": "boost-beast",
+      "version>=": "1.84.0",
+      "host": true,
+      "platform": "x64"
+    }
+  ],
+  "builtin-baseline": "f7c5a7c8fc7b8785df379b8494f323cd3182ca4c"
+}

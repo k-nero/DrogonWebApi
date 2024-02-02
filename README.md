@@ -1,14 +1,19 @@
 # DrogonWebApp
 
-### Dependency
-Highly recommend using vcpkg to install these packages
-- drogon: A C++14/17/20 based HTTP web application framework running on Linux/macOS/Unix/Windows
-- inih: Simple .INI file parser in C, good for embedded systems
-- SQLAPI : Can be found in lib folder
-- boost/describe
-- boost/json
-- boost/log
-- boost/mp11
+### Installation
+
+Install Dependencies with vcpkg
+In case you don't have vcpkg installed, you can install it from [here]( https://github.com/microsoft/vcpkg) and add vcpkg to your PATH.
+Then navigate to the root directory and run the following command to install the dependencies.
+```sh 
+vcpkg install
+```
+
+This project is using SQLAPI++ for database connection, you can download it from [here](https://www.sqlapi.com/Download/). After downloading, extract the files and copy the include and lib folders to the root directory of the project and copy the dll files to the build output directory.
+
+  
+
+
 ### Database
 - Currently using MSSQL, the connection param can be found in config.ini
 ### Build

@@ -33,6 +33,7 @@ int main()
     //Run HTTP framework,the method will block in the internal event loop
     ConfigProvider::GetInstance()->Initialize();
     BOOST_LOG_TRIVIAL(info) << "Drogon server started at 127.0.0.1:443";
+    BOOST_LOG_TRIVIAL(info) << "Drogon server running with 16 thread";
     drogon::app().run();
 #if defined _DEBUG
     _CrtDumpMemoryLeaks();
