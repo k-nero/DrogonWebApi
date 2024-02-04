@@ -9,7 +9,7 @@ Bcrypt::~Bcrypt()
 {
 }
 
-std::string Bcrypt::HashPassword(const std::string& passwordStr)
+std::string Bcrypt::HashPassword(const std::string& passwordStr) noexcept(false)
 {
 	if (ConfigProvider::GetInstance()->GetBcryptSecret().empty())
 	{
@@ -36,60 +36,71 @@ std::string Bcrypt::HashPassword(const std::string& passwordStr)
 	status = BCryptOpenAlgorithmProvider(&hAlg, BCRYPT_SHA512_ALGORITHM, NULL, BCRYPT_ALG_HANDLE_HMAC_FLAG);
 	if (!(((NTSTATUS)(status)) >= 0))
 	{
-		std::cerr << "BCryptOpenAlgorithmProvider failed with status: " << std::hex << status << std::endl;
+
+		BOOST_LOG_TRIVIAL(error) << "BCryptOpenAlgorithmProvider failed with status: " << std::hex << status;
+		throw std::exception("BCryptOpenAlgorithmProvider failed");
 		goto Cleanup;
 	}
 
 	status = BCryptGetProperty(hAlg, BCRYPT_OBJECT_LENGTH, (PBYTE)&cbHashObject, sizeof(DWORD), &cbData, 0);
 	if (!(((NTSTATUS)(status)) >= 0))
 	{
-		std::cerr << "BCryptGetProperty failed with status: " << std::hex << status << std::endl;
+		BOOST_LOG_TRIVIAL(error) << "BCryptGetProperty failed with status: " << std::hex << status;
+		throw std::exception("BCryptGetProperty failed");
 		goto Cleanup;
 	}
 
 	pbHashObject = (PBYTE)HeapAlloc(GetProcessHeap(), 0, cbHashObject);
 	if (NULL == pbHashObject)
 	{
-		std::cerr << "Memory allocation failed" << std::endl;
+		BOOST_LOG_TRIVIAL(error) << "Memory allocation failed";
+		throw std::exception("Memory allocation failed");
 		goto Cleanup;
 	}
 
 	status = BCryptCreateHash(hAlg, &hHash, pbHashObject, cbHashObject, secret, secretSize, 0);
 	if (!(((NTSTATUS)(status)) >= 0))
 	{
-		std::cerr << "BCryptCreateHash failed with status: " << std::hex << status << std::endl;
+		BOOST_LOG_TRIVIAL(error) << "BCryptCreateHash failed with status: " << std::hex << status;
+		throw std::exception("BCryptCreateHash failed");
 		goto Cleanup;
 	}
 
 	status = BCryptHashData(hHash, password, passwordSize, 0);
 	if (!(((NTSTATUS)(status)) >= 0))
 	{
-		std::cerr << "BCryptHashData failed with status: " << std::hex << status << std::endl;
+		BOOST_LOG_TRIVIAL(error) << "BCryptHashData failed with status: " << std::hex << status;
+		throw std::exception("BCryptHashData failed");
 		goto Cleanup;
 	}
 
 	status = BCryptGetProperty(hHash, BCRYPT_HASH_LENGTH, (PBYTE)&hashSize, sizeof(DWORD), &cbData, 0);
 	if (!(((NTSTATUS)(status)) >= 0))
 	{
-		std::cerr << "BCryptGetProperty failed with status: " << std::hex << status << std::endl;
+		
+		BOOST_LOG_TRIVIAL(error) << "BCryptGetProperty failed with status: " << std::hex << status;
+		throw std::exception("BCryptGetProperty failed");
 		goto Cleanup;
 	}
 
 	hash = (PUCHAR)malloc(hashSize);
 	if (hash == nullptr)
 	{
-		std::cerr << "Memory allocation failed" << std::endl;
+		BOOST_LOG_TRIVIAL(error) << "Memory allocation failed";
+		throw std::exception("Memory allocation failed");
 		goto Cleanup;
 	}
 	status = BCryptFinishHash(hHash, hash, hashSize, NULL);
 	if (status == STATUS_INVALID_PARAMETER)
 	{
-		std::cerr << "One or more parameters are not valid. This includes the case where cbOutput is not the same size as the hash. " << std::hex << status << std::endl;
+		BOOST_LOG_TRIVIAL(fatal) << "The hashSize parameter is not valid. " << std::hex << status;
+		throw std::exception("The hashSize parameter is not valid");
 		goto Cleanup;
 	}
 	else if (status == STATUS_INVALID_HANDLE)
 	{
-		std::cerr << "The hash handle in the hHash parameter is not valid. " << std::hex << status << std::endl;
+		BOOST_LOG_TRIVIAL(fatal) << "The hHash parameter is not valid. " << std::hex << status;
+		throw std::exception("The hHash parameter is not valid");
 		goto Cleanup;
 	}
 
@@ -136,15 +147,24 @@ Cleanup:
 }
 
 
-bool Bcrypt::VerifyPassword(std::string password, std::string hash)
+bool Bcrypt::VerifyPassword(std::string password, std::string hash) noexcept(false)
 {
 	/*int size = boost::beast::detail::base64::decoded_size(hash.size());
 	char* decodedPassword = (char*)malloc(size);
 	auto sizeStr = boost::beast::detail::base64::decode(decodedPassword, hash.c_str(), hash.size());*/
-	std::string hashedPassword = HashPassword(password);
-	if (hashedPassword == hash)
+	try
 	{
-		return true;
+		std::string hashedPassword = HashPassword(password);
+		if (hashedPassword == hash)
+		{
+			return true;
+		}
 	}
+	catch (std::exception& e)
+	{
+		BOOST_LOG_TRIVIAL(error) << "Error: " << e.what();
+		throw;
+	}
+	
 	return false;
 }
