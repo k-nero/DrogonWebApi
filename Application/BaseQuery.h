@@ -13,12 +13,13 @@
 #include "TodoList.h"
 
 template <typename T, class D = boost::describe::describe_members<T, boost::describe::mod_any_access | boost::describe::mod_inherited>>
-class APPLICATION_API BaseQuery : public IBaseQuery<T>
+class APPLICATION_API BaseQuery 
 {
 public:
 	BaseQuery() = default;
 	explicit BaseQuery(SAConnection* con) { this->con = con; }
-	virtual std::shared_ptr<T> GetById(const std::string& id, std::vector<std::string> includes = {}) noexcept(false) override
+	template<typename K = T>
+	std::shared_ptr<K> GetById(const std::string& id, std::vector<std::string> includes = {}) noexcept(false)
 	{
 		try
 		{
@@ -27,17 +28,17 @@ public:
 				throw std::exception("Id is empty");
 			}
 
-			std::string table_name = typeid(T).name();
+			std::string table_name = typeid(K).name();
 			table_name = table_name.substr(table_name.find_last_of(' ') + 1);
 			std::string query = "SELECT * FROM [dbo].[" + table_name + "] WHERE Id = :id";
 			SACommand cmd(con, _TSA(query.c_str()));
 			const SAString idStr(id.c_str());
 			cmd.Param(_TSA("id")).setAsString() = idStr;
 			cmd.Execute();
-			auto item = std::make_shared<T>();
+			auto item = std::make_shared<K>();
 			if (cmd.FetchNext())
 			{
-				item = GetFromCmd<T>(cmd);
+				item = GetFromCmd(cmd);
 				boost::mp11::mp_for_each<D>([&](auto D)
 				{
 					if (std::find(includes.begin(), includes.end(), D.name) != includes.end())
@@ -112,12 +113,13 @@ public:
 		return nullptr;
 	}
 
-	virtual std::vector<std::shared_ptr<T>>GetAll(std::string query = "") noexcept(false) override
+	template<typename K = T>
+	 std::vector<std::shared_ptr<K>>GetAll(std::string query = "") noexcept(false)
 	{
 		std::vector<std::shared_ptr<T>> items;
 		try
 		{
-			std::string table_name = typeid(T).name();
+			std::string table_name = typeid(K).name();
 			table_name = table_name.substr(table_name.find_last_of(' ') + 1);
 			std::string base_query = "SELECT * FROM [dbo].[" + table_name + "]";
 			if (query.length() > 1)
@@ -128,7 +130,7 @@ public:
 			cmd.Execute();
 			while (cmd.FetchNext())
 			{
-				items.push_back(GetFromCmd<T>(cmd));
+				items.push_back(GetFromCmd(cmd));
 			}
 			return items;
 		}
@@ -197,18 +199,19 @@ public:
 		return std::shared_ptr<T>(item);
 	}
 
-	virtual std::shared_ptr<T> GetSingle(const std::string query = "") noexcept(false) override
+	template<typename K = T>
+	 std::shared_ptr<K> GetSingle(const std::string query = "") noexcept(false)
 	{
 		try
 		{
-			std::string table_name = typeid(T).name();
+			std::string table_name = typeid(K).name();
 			table_name = table_name.substr(table_name.find_last_of(' ') + 1);
 			std::string base_query = "SELECT * FROM [dbo].[" + table_name + "] WHERE " + query;
 			SACommand cmd(con, _TSA(base_query.c_str()));
 			cmd.Execute();
 			if (cmd.FetchNext())
 			{
-				return GetFromCmd<T>(cmd);
+				return GetFromCmd(cmd);
 			}
 			return nullptr;
 		}
@@ -226,11 +229,12 @@ public:
 		}
 	}
 
-	virtual PaginationObject<T> GetPagination(int page, int pageSize, std::string query = "") noexcept(false) override
+	 template<typename K = T>
+	 PaginationObject<K> GetPagination(int page, int pageSize, std::string query = "") noexcept(false)
 	{
 		try
 		{
-			std::string table_name = typeid(T).name();
+			std::string table_name = typeid(K).name();
 			table_name = table_name.substr(table_name.find_last_of(' ') + 1);
 			int count = 0;
 			std::string base_query = "SELECT COUNT(*) FROM [dbo].[" + table_name + "]";
@@ -256,12 +260,12 @@ public:
 			base_query += " ORDER BY Id OFFSET " + std::to_string(offset) + " ROWS FETCH NEXT " + std::to_string(pageSize) + " ROWS ONLY";
 			SACommand cmd2(con, _TSA(base_query.c_str()));
 			cmd2.Execute();
-			std::vector<std::shared_ptr<T>> items;
+			std::vector<std::shared_ptr<K>> items;
 			while (cmd2.FetchNext())
 			{
-				items.push_back(GetFromCmd<T>(cmd2));
+				items.push_back(GetFromCmd(cmd2));
 			}
-			return PaginationObject<T>(items, count, page, pageSize);
+			return PaginationObject<K>(items, count, page, pageSize);
 		}
 		catch (SAException& ex)
 		{
@@ -277,13 +281,13 @@ public:
 		}
 	}
 
-	template<typename K, std::enable_if_t<std::is_void_v<K>, bool> = true>
+	template<typename K = T, std::enable_if_t<std::is_void_v<K>, bool> = true>
 	auto GetFromCmd(SACommand& cmd, std::vector<std::string> includes = {}) noexcept(false)
 	{
 		return nullptr;
 	}
 
-	template<typename K, std::enable_if_t<std::is_class_v<K>, bool> = true>
+	template<typename K = T, std::enable_if_t<std::is_class_v<K>, bool> = true>
 	std::shared_ptr<K> GetFromCmd(SACommand& cmd, std::vector<std::string> includes = {}) noexcept(false)
 	{
 		K* item = new K();
