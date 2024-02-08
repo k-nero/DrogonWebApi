@@ -12,7 +12,7 @@ TodoItem::TodoItem(const TodoItem& todoItem) : BaseEntity(todoItem)
 	TodoListId = todoItem.TodoListId;
 	Title = todoItem.Title;
 	Note = todoItem.Note;
-	todoList = todoItem.todoList;
+	TodoList = todoItem.TodoList;
 }
 
 TodoItem::TodoItem(TodoItem&& todoItem) noexcept : BaseEntity(todoItem)
@@ -22,7 +22,7 @@ TodoItem::TodoItem(TodoItem&& todoItem) noexcept : BaseEntity(todoItem)
 	Title = std::move(todoItem.Title);
 	Note = std::move(todoItem.Note);
 	IsCompleted = todoItem.IsCompleted;
-	todoList = std::move(todoItem.todoList);
+	TodoList = std::move(todoItem.TodoList);
 }
 
 TodoItem& TodoItem::operator=(const TodoItem& todoItem) = default;

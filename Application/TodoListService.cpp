@@ -13,9 +13,7 @@ std::shared_ptr<TodoList> TodoListService::GetTodoListById(const std::string& id
 	DbContext db;
 	auto con = db.GetConnection();
 	TodoListQuery todo_list_query(con);
-	TodoItemQuery todo_item_query(con);
-	auto todo_list = todo_list_query.GetById(id);
-	todo_list.get()->SetTodoItems(todo_item_query.GetAll("TodoListId = '" + id + "'"));
+	auto todo_list = todo_list_query.GetById(id, {"TodoItems"});
 	return todo_list;
 }
 

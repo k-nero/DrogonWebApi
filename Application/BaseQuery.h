@@ -9,6 +9,8 @@
 #include <boost/log/trivial.hpp>
 #include "TypeCheck.h"
 #include "JsonHelper.h"
+#include <any>
+#include "TodoList.h"
 
 template <typename T, class D = boost::describe::describe_members<T, boost::describe::mod_any_access | boost::describe::mod_inherited>>
 class APPLICATION_API BaseQuery : public IBaseQuery<T>
@@ -35,13 +37,14 @@ public:
 			auto item = std::make_shared<T>();
 			if (cmd.FetchNext())
 			{
+				item = GetFromCmd<T>(cmd);
 				boost::mp11::mp_for_each<D>([&](auto D)
 				{
 					if (std::find(includes.begin(), includes.end(), D.name) != includes.end())
 					{
 						using type = std::remove_reference_t<decltype(item.get()->*(D).pointer)>;
 						using inner_type = has_value_type_t<type>;
-						if (!std::is_void_v<inner_type>)
+						if (!std::is_void_v<inner_type> && !std::is_same_v<std::string, type> && !std::is_same_v<std::wstring, type>)
 						{
 							using inner_elem_type = std::remove_pointer_t<has_element_type_t<std::remove_reference_t<inner_type>>>;
 
@@ -57,59 +60,40 @@ public:
 								inner_cmd.Param(_TSA("id")).setAsString() = idStr;
 								inner_cmd.Execute();
 
-								//while (inner_cmd.FetchNext())
+								while (inner_cmd.FetchNext())
 								{
-									//auto inner_item = new inner_elem_type();
-									//auto inner_item = std::make_shared<inner_elem_type>();
-									/*boost::mp11::mp_for_each<boost::describe::describe_members<inner_elem_type, boost::describe::mod_any_access | boost::describe::mod_inherited>>([&](auto inner_D)
-									{
-										if (std::is_same<std::remove_reference_t<decltype(inner_item->*(inner_D).pointer)>, int>::value)
-										{
-											(long&)(inner_item->*(inner_D).pointer) = inner_cmd.Field(inner_D.name).asLong();
-										}
-										else if (std::is_same<std::remove_reference_t<decltype(inner_item->*(inner_D).pointer)>, bool>::value)
-										{
-											(bool&)(inner_item->*(inner_D).pointer) = inner_cmd.Field(inner_D.name).asBool();
-										}
-										else if (std::is_same<std::remove_reference_t<decltype(inner_item->*(inner_D).pointer)>, double>::value
-											|| std::is_same<std::remove_reference_t<decltype(inner_item->*(inner_D).pointer)>, float>::value)
-										{
-											(double&)(inner_item->*(inner_D).pointer) = inner_cmd.Field(inner_D.name).asDouble();
-										}
-										else if (std::is_same<std::remove_reference_t<decltype(inner_item->*(inner_D).pointer)>, std::string>::value
-											|| std::is_same<std::remove_reference_t<decltype(inner_item->*(inner_D).pointer)>, std::wstring>::value
-											|| std::is_same<std::remove_reference_t<decltype(inner_item->*(inner_D).pointer)>, std::string_view>::value
-											|| std::is_same<std::remove_reference_t<decltype(inner_item->*(inner_D).pointer)>, std::wstring_view>::value)
-										{
-											if (inner_cmd.Field(inner_D.name).isNull())
-											{
-												(std::string&)(inner_item->*(inner_D).pointer) = "null";
-											}
-											else
-											{
-												(std::string&)(inner_item->*(inner_D).pointer) = inner_cmd.Field(inner_D.name).asString().GetMultiByteChars();
-											}
-										}
-										else if (std::is_same<std::remove_reference_t<decltype(inner_item->*(inner_D).pointer)>, std::tm>::value)
-										{
-											(std::tm&)(inner_item->*(inner_D).pointer) = std::tm(inner_cmd.Field(inner_D.name).asDateTime());
-										}
-										else
-										{
-
-										}
-									});*/
-									//inner_items.push_back(inner_item);
+									auto inner_item = (GetFromCmd<inner_elem_type>(inner_cmd));
+									inner_items.push_back(inner_item);
 								}
+								(item.get()->*(D).pointer) = std::any_cast<type>(inner_items);
+							}
+						}
+						else if (is_shared_ptr_v<type>)
+						{
+							using inner_elem_type = std::remove_pointer_t<has_element_type_t<std::remove_reference_t<type>>>;
+							if (!std::is_void_v<inner_elem_type>)
+							{
+								std::shared_ptr<inner_elem_type> inner_ptr_item;
+								std::string inner_table_name = typeid(inner_elem_type).name();
+								inner_table_name = inner_table_name.substr(inner_table_name.find_last_of(' ') + 1);
+								std::string f = inner_table_name + "Id";
+								std::string inner_query = "SELECT * FROM [dbo].[" + inner_table_name + "] WHERE " + "Id = :id";
+								SACommand inner_cmd(con, _TSA(inner_query.c_str()));
+								const SAString idStr(cmd.Field(f.c_str()).asString().GetMultiByteChars());
+								inner_cmd.Param(_TSA("id")).setAsString() = idStr;
+								inner_cmd.Execute();
+
+								if (inner_cmd.FetchNext())
+								{
+									inner_ptr_item = (GetFromCmd<inner_elem_type>(inner_cmd));
+								}
+								(item.get()->*(D).pointer) = std::any_cast<type>(inner_ptr_item);
 							}
 						}
 
 					}
 
 				});
-
-
-				item = GetFromCommand(cmd);
 			}
 			return item;
 		}
@@ -144,7 +128,7 @@ public:
 			cmd.Execute();
 			while (cmd.FetchNext())
 			{
-				items.push_back(GetFromCommand(cmd));
+				items.push_back(GetFromCmd<T>(cmd));
 			}
 			return items;
 		}
@@ -163,7 +147,8 @@ public:
 		return items;
 	}
 
-	virtual std::shared_ptr<T> GetFromCommand(SACommand& cmd, std::vector<std::string> includes = {}) noexcept(false) override
+	[[deprecated]]
+	std::shared_ptr<T> GetFromCommand(SACommand& cmd, std::vector<std::string> includes = {}) noexcept(false)
 	{
 		T* item = new T();
 		boost::mp11::mp_for_each<D>([&](auto D)
@@ -223,7 +208,7 @@ public:
 			cmd.Execute();
 			if (cmd.FetchNext())
 			{
-				return GetFromCommand(cmd);
+				return GetFromCmd<T>(cmd);
 			}
 			return nullptr;
 		}
@@ -274,7 +259,7 @@ public:
 			std::vector<std::shared_ptr<T>> items;
 			while (cmd2.FetchNext())
 			{
-				items.push_back(GetFromCommand(cmd2));
+				items.push_back(GetFromCmd<T>(cmd2));
 			}
 			return PaginationObject<T>(items, count, page, pageSize);
 		}
@@ -290,6 +275,62 @@ public:
 #endif // DEBUG
 			throw std::exception(ex.ErrText().GetMultiByteChars());
 		}
+	}
+
+	template<typename K, std::enable_if_t<std::is_void_v<K>, bool> = true>
+	auto GetFromCmd(SACommand& cmd, std::vector<std::string> includes = {}) noexcept(false)
+	{
+		return nullptr;
+	}
+
+	template<typename K, std::enable_if_t<std::is_class_v<K>, bool> = true>
+	std::shared_ptr<K> GetFromCmd(SACommand& cmd, std::vector<std::string> includes = {}) noexcept(false)
+	{
+		K* item = new K();
+		boost::mp11::mp_for_each<boost::describe::describe_members<K, boost::describe::mod_any_access | boost::describe::mod_inherited>>([&](auto D)
+		{
+
+			/*if (cmd.Field(D.name).isNull())
+			{
+				auto pointer = (void*)&(item->*(D).pointer);
+			}*/
+			if (std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, int>::value)
+			{
+				(long&)(item->*(D).pointer) = cmd.Field(D.name).asLong();
+			}
+			else if (std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, bool>::value)
+			{
+				(bool&)(item->*(D).pointer) = cmd.Field(D.name).asBool();
+			}
+			else if (std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, double>::value
+				|| std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, float>::value)
+			{
+				(double&)(item->*(D).pointer) = cmd.Field(D.name).asDouble();
+			}
+			else if (std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, std::string>::value
+				|| std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, std::wstring>::value
+				|| std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, std::string_view>::value
+				|| std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, std::wstring_view>::value)
+			{
+				if (cmd.Field(D.name).isNull())
+				{
+					(std::string&)(item->*(D).pointer) = "null";
+				}
+				else
+				{
+					(std::string&)(item->*(D).pointer) = cmd.Field(D.name).asString().GetMultiByteChars();
+				}
+			}
+			else if (std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, std::tm>::value)
+			{
+				(std::tm&)(item->*(D).pointer) = std::tm(cmd.Field(D.name).asDateTime());
+			}
+			else
+			{
+				//TODO: Join table
+			}
+		});
+		return std::shared_ptr<K>(item);
 	}
 
 	virtual ~BaseQuery() = default;
