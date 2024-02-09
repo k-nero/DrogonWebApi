@@ -182,6 +182,9 @@
       <AdditionalDependencies>Rpcrt4.lib;Domain.lib;bcrypt.lib;Infrastructure.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)\$(IntDir);$(AdditionalLibraryDirectories);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command> xcopy /d /y "$(SolutionDir)lib\SQLAPI\bin\*.*" "$(OutDir)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='CLR|x64'">
     <ClCompile>
@@ -222,6 +225,10 @@
       <AdditionalDependencies>Rpcrt4.lib;Domain.lib;bcrypt.lib;Infrastructure.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)\$(IntDir);$(AdditionalLibraryDirectories);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command> xcopy /d /y "$(SolutionDir)lib\SQLAPI\bin\*.*" "$(OutDir)"
+</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Authorization.cpp" />
