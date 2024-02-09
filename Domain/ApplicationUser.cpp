@@ -19,7 +19,7 @@ ApplicationUser::ApplicationUser(ApplicationUser&& applicationuser) noexcept : B
 	PhoneNumber = std::move(applicationuser.PhoneNumber);
 }
 
-ApplicationUser& ApplicationUser::operator=(const ApplicationUser& applicationuser)
+ApplicationUser& ApplicationUser::operator=(const ApplicationUser& applicationuser) 
 = default;
 
 ApplicationUser::ApplicationUser(const std::string& id, const std::string& username, const std::string& email, const std::string& passwordhash, const std::string& phonenumber, const std::string& createdDate, const std::string& modifedDate) : BaseEntity(id, createdDate, modifedDate)
@@ -31,7 +31,13 @@ ApplicationUser::ApplicationUser(const std::string& id, const std::string& usern
 }
 
 ApplicationUser& ApplicationUser::operator=(ApplicationUser&& applicationuser) noexcept
-= default;
+{
+	UserName = std::move(applicationuser.UserName);
+	Email = std::move(applicationuser.Email);
+	PasswordHash = std::move(applicationuser.PasswordHash);
+	PhoneNumber = std::move(applicationuser.PhoneNumber);
+	return *this;
+}
 
 std::string ApplicationUser::ToString()
 {

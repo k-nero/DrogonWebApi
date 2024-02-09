@@ -44,7 +44,7 @@ public:
 			auto item = std::make_shared<K>();
 			if (cmd.FetchNext())
 			{
-				item = GetFromCmd(cmd);
+				item = GetFromCmd<K>(cmd);
 				boost::mp11::mp_for_each< boost::describe::describe_members<K, boost::describe::mod_any_access | boost::describe::mod_inherited>>([&](auto D)
 				{
 					if (std::find(includes.begin(), includes.end(), D.name) != includes.end())
@@ -124,7 +124,46 @@ public:
 			cmd.Execute();
 			while (cmd.FetchNext())
 			{
-				items.push_back(GetFromCmd<K>(cmd));
+				auto item = GetFromCmd<K>(cmd);
+				boost::mp11::mp_for_each< boost::describe::describe_members<K, boost::describe::mod_any_access | boost::describe::mod_inherited>>([&](auto D)
+				{
+					if (std::find(includes.begin(), includes.end(), D.name) != includes.end())
+					{
+						using type = std::remove_reference_t<decltype(item.get()->*(D).pointer)>;
+						using inner_type = has_value_type_t<type>;
+						if (!std::is_void_v<inner_type> && !std::is_same_v<std::string, type> && !std::is_same_v<std::wstring, type>)
+						{
+							using inner_elem_type = std::remove_pointer_t<has_element_type_t<std::remove_reference_t<inner_type>>>;
+
+							if (!std::is_void_v<inner_elem_type>)
+							{
+								std::vector<std::shared_ptr<inner_elem_type>> inner_items;
+								//TODO: Include 
+								includes.erase(std::remove_if(includes.begin(), includes.end(), [&](std::string s) { return s == D.name; }), includes.end());
+								inner_items = GetAll<inner_elem_type>(table_name + "Id = '" + item.get()->GetId() + "'", includes);
+								(item.get()->*(D).pointer) = std::any_cast<type>(inner_items);
+							}
+						}
+						else if (is_shared_ptr_v<type>)
+						{
+							using inner_elem_type = std::remove_pointer_t<has_element_type_t<std::remove_reference_t<type>>>;
+							if (!std::is_void_v<inner_elem_type>)
+							{
+								std::string inner_table_name = typeid(inner_elem_type).name();
+								inner_table_name = inner_table_name.substr(inner_table_name.find_last_of(' ') + 1);
+								std::string id = std::string(cmd.Field(std::string(inner_table_name + "Id").c_str()).asString().GetMultiByteChars());
+								//TODO: Include 
+								includes.erase(std::remove_if(includes.begin(), includes.end(), [&](std::string s) { return s == D.name; }), includes.end());
+								std::shared_ptr<inner_elem_type> inner_ptr_item = GetSingle<inner_elem_type>("Id =  '" + id + "'", includes);
+
+								(item.get()->*(D).pointer) = std::any_cast<type>(inner_ptr_item);
+							}
+						}
+
+					}
+
+				});
+				items.push_back(item);
 			}
 			return items;
 		}
