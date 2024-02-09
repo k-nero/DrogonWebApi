@@ -308,7 +308,7 @@ public:
 	}
 
 	template<typename K = T>
-	PaginationObject<K> GetPagination(int page, int pageSize, std::string query = "") noexcept(false)
+	PaginationObject<K> GetPagination(int page, int pageSize, std::string query = "", std::vector<std::string> includes = {}) noexcept(false)
 	{
 		try
 		{
@@ -321,27 +321,67 @@ public:
 				base_query += " WHERE " + query;
 			}
 			SACommand cmd(con, _TSA(base_query.c_str()));
-
 			cmd.Execute();
 			if (cmd.FetchNext())
 			{
 				count = cmd.Field(1).asLong();
 			}
 
-			base_query = "SELECT * FROM [dbo].[" + table_name + "]";
+			base_query = "SELECT * FROM ( SELECT ROW_NUMBER() OVER (ORDER BY CreatedDate) AS RowNum, * FROM [dbo].[" + table_name + "]";
+
+
 			if (query.length() > 1)
 			{
 				base_query += " WHERE " + query;
 			}
 
-			int offset = (page - 1) * pageSize;
-			base_query += " ORDER BY Id OFFSET " + std::to_string(offset) + " ROWS FETCH NEXT " + std::to_string(pageSize) + " ROWS ONLY";
+			base_query += " ) AS S WHERE RowNum BETWEEN " + std::to_string((page - 1) * pageSize + 1) + " AND " + std::to_string(page * pageSize) + " ORDER BY RowNum";
+			
 			SACommand cmd2(con, _TSA(base_query.c_str()));
 			cmd2.Execute();
 			std::vector<std::shared_ptr<K>> items;
 			while (cmd2.FetchNext())
 			{
-				items.push_back(GetFromCmd(cmd2));
+				auto item = GetFromCmd<K>(cmd2);
+				boost::mp11::mp_for_each< boost::describe::describe_members<K, boost::describe::mod_any_access | boost::describe::mod_inherited>>([&](auto D)
+				{
+					if (std::find(includes.begin(), includes.end(), D.name) != includes.end())
+					{
+						using type = std::remove_reference_t<decltype(item.get()->*(D).pointer)>;
+						using inner_type = has_value_type_t<type>;
+						if (!std::is_void_v<inner_type> && !std::is_same_v<std::string, type> && !std::is_same_v<std::wstring, type>)
+						{
+							using inner_elem_type = std::remove_pointer_t<has_element_type_t<std::remove_reference_t<inner_type>>>;
+
+							if (!std::is_void_v<inner_elem_type>)
+							{
+								std::vector<std::shared_ptr<inner_elem_type>> inner_items;
+								//TODO: Include 
+								includes.erase(std::remove_if(includes.begin(), includes.end(), [&](std::string s) { return s == D.name; }), includes.end());
+								inner_items = GetAll<inner_elem_type>(table_name + "Id = '" + item.get()->GetId() + "'", includes);
+								(item.get()->*(D).pointer) = std::any_cast<type>(inner_items);
+							}
+						}
+						else if (is_shared_ptr_v<type>)
+						{
+							using inner_elem_type = std::remove_pointer_t<has_element_type_t<std::remove_reference_t<type>>>;
+							if (!std::is_void_v<inner_elem_type>)
+							{
+								std::string inner_table_name = typeid(inner_elem_type).name();
+								inner_table_name = inner_table_name.substr(inner_table_name.find_last_of(' ') + 1);
+								std::string id = std::string(cmd.Field(std::string(inner_table_name + "Id").c_str()).asString().GetMultiByteChars());
+								//TODO: Include 
+								includes.erase(std::remove_if(includes.begin(), includes.end(), [&](std::string s) { return s == D.name; }), includes.end());
+								std::shared_ptr<inner_elem_type> inner_ptr_item = GetSingle<inner_elem_type>("Id =  '" + id + "'", includes);
+
+								(item.get()->*(D).pointer) = std::any_cast<type>(inner_ptr_item);
+							}
+						}
+
+					}
+
+				});
+				items.push_back(item);
 			}
 			return PaginationObject<K>(items, count, page, pageSize);
 		}
