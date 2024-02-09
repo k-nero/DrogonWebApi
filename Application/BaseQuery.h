@@ -17,7 +17,8 @@
 #include "ApplicationApi.h"
 #include "PaginationObject.h"
 
-template <typename T, class D = boost::describe::describe_members<T, boost::describe::mod_any_access | boost::describe::mod_inherited>>
+//TODO: Apply concepts
+template <typename T>
 class APPLICATION_API BaseQuery
 {
 public:
@@ -57,20 +58,9 @@ public:
 							if (!std::is_void_v<inner_elem_type>)
 							{
 								std::vector<std::shared_ptr<inner_elem_type>> inner_items;
-								std::string inner_table_name = typeid(inner_elem_type).name();
-								inner_table_name = inner_table_name.substr(inner_table_name.find_last_of(' ') + 1);
-
-								std::string inner_query = "SELECT * FROM [dbo].[" + inner_table_name + "] WHERE " + table_name + "Id = :id";
-								SACommand inner_cmd(con, _TSA(inner_query.c_str()));
-								const SAString idStr(id.c_str());
-								inner_cmd.Param(_TSA("id")).setAsString() = idStr;
-								inner_cmd.Execute();
-
-								while (inner_cmd.FetchNext())
-								{
-									auto inner_item = GetFromCmd<inner_elem_type>(inner_cmd);
-									inner_items.push_back(inner_item);
-								}
+								//TODO: Include 
+								includes.erase(std::remove_if(includes.begin(), includes.end(), [&](std::string s) { return s == D.name; }), includes.end());
+								inner_items = GetAll<inner_elem_type>(table_name + "Id = '" + item.get()->GetId() + "'", includes);
 								(item.get()->*(D).pointer) = std::any_cast<type>(inner_items);
 							}
 						}
@@ -79,20 +69,13 @@ public:
 							using inner_elem_type = std::remove_pointer_t<has_element_type_t<std::remove_reference_t<type>>>;
 							if (!std::is_void_v<inner_elem_type>)
 							{
-								std::shared_ptr<inner_elem_type> inner_ptr_item;
 								std::string inner_table_name = typeid(inner_elem_type).name();
 								inner_table_name = inner_table_name.substr(inner_table_name.find_last_of(' ') + 1);
-								std::string f = inner_table_name + "Id";
-								std::string inner_query = "SELECT * FROM [dbo].[" + inner_table_name + "] WHERE " + "Id = :id";
-								SACommand inner_cmd(con, _TSA(inner_query.c_str()));
-								const SAString idStr(cmd.Field(f.c_str()).asString().GetMultiByteChars());
-								inner_cmd.Param(_TSA("id")).setAsString() = idStr;
-								inner_cmd.Execute();
+								std::string id = std::string(cmd.Field(std::string(inner_table_name + "Id").c_str()).asString().GetMultiByteChars());
+								//TODO: Include 
+								includes.erase(std::remove_if(includes.begin(), includes.end(), [&](std::string s) { return s == D.name; }), includes.end());
+								std::shared_ptr<inner_elem_type> inner_ptr_item = GetSingle<inner_elem_type>("Id =  '" + id + "'", includes);
 
-								if (inner_cmd.FetchNext())
-								{
-									inner_ptr_item = (GetFromCmd<inner_elem_type>(inner_cmd));
-								}
 								(item.get()->*(D).pointer) = std::any_cast<type>(inner_ptr_item);
 							}
 						}
@@ -164,7 +147,7 @@ public:
 	std::shared_ptr<T> GetFromCommand(SACommand& cmd, std::vector<std::string> includes = {}) noexcept(false)
 	{
 		T* item = new T();
-		boost::mp11::mp_for_each<D>([&](auto D)
+		boost::mp11::mp_for_each<boost::describe::describe_members<T, boost::describe::mod_any_access | boost::describe::mod_inherited>>([&](auto D)
 		{
 
 			/*if (cmd.Field(D.name).isNull())
@@ -245,7 +228,8 @@ public:
 							{
 								std::vector<std::shared_ptr<inner_elem_type>> inner_items;
 								//TODO: Include 
-								inner_items = GetAll<inner_elem_type>(table_name + "Id = '" + cmd.Field("Id").asString().GetMultiByteChars() + "'");
+								includes.erase(std::remove_if(includes.begin(), includes.end(), [&](std::string s) { return s == D.name; }), includes.end());
+								inner_items = GetAll<inner_elem_type>(table_name + "Id = '" + item.get()->GetId() + "'", includes);
 								(item.get()->*(D).pointer) = std::any_cast<type>(inner_items);
 							}
 						}
@@ -256,10 +240,10 @@ public:
 							{
 								std::string inner_table_name = typeid(inner_elem_type).name();
 								inner_table_name = inner_table_name.substr(inner_table_name.find_last_of(' ') + 1);
-								std::string f = inner_table_name + "Id";
-								std::string id = std::string(cmd.Field(f.c_str()).asString().GetMultiByteChars());
+								std::string id = std::string(cmd.Field(std::string(inner_table_name + "Id").c_str()).asString().GetMultiByteChars());
 								//TODO: Include 
-								std::shared_ptr<inner_elem_type> inner_ptr_item = GetSingle<inner_elem_type>("Id =  '" + id + "'");
+								includes.erase(std::remove_if(includes.begin(), includes.end(), [&](std::string s) { return s == D.name; }), includes.end());
+								std::shared_ptr<inner_elem_type> inner_ptr_item = GetSingle<inner_elem_type>("Id =  '" + id + "'", includes);
 
 								(item.get()->*(D).pointer) = std::any_cast<type>(inner_ptr_item);
 							}
