@@ -13,7 +13,7 @@ std::shared_ptr<TodoItem> TodoItemService::GetTodoItemById(const std::string& id
 	DbContext db;
 	auto con = db.GetConnection();
 	TodoItemQuery todo_item_query(con);
-	auto todo_item = todo_item_query.GetById(id, {"TodoList"});
+	auto todo_item = todo_item_query.GetSingle("Id = '" + id + "'", {"TodoList"});
 	return todo_item;
 }
 

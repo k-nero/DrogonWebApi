@@ -1,6 +1,5 @@
 #pragma once
 #include "ApplicationApi.h"
-#include "IBaseQuery.h"
 #include "iostream"
 #include "CoreHelper.h"
 #include "ApplicationApi.h"
@@ -11,9 +10,15 @@
 #include "JsonHelper.h"
 #include <any>
 #include "TodoList.h"
+#include <memory>
+#include <vector>
+#include <string>
+#include <SQLAPI.h>
+#include "ApplicationApi.h"
+#include "PaginationObject.h"
 
 template <typename T, class D = boost::describe::describe_members<T, boost::describe::mod_any_access | boost::describe::mod_inherited>>
-class APPLICATION_API BaseQuery 
+class APPLICATION_API BaseQuery
 {
 public:
 	BaseQuery() = default;
@@ -39,7 +44,7 @@ public:
 			if (cmd.FetchNext())
 			{
 				item = GetFromCmd(cmd);
-				boost::mp11::mp_for_each<D>([&](auto D)
+				boost::mp11::mp_for_each< boost::describe::describe_members<K, boost::describe::mod_any_access | boost::describe::mod_inherited>>([&](auto D)
 				{
 					if (std::find(includes.begin(), includes.end(), D.name) != includes.end())
 					{
@@ -63,7 +68,7 @@ public:
 
 								while (inner_cmd.FetchNext())
 								{
-									auto inner_item = (GetFromCmd<inner_elem_type>(inner_cmd));
+									auto inner_item = GetFromCmd<inner_elem_type>(inner_cmd);
 									inner_items.push_back(inner_item);
 								}
 								(item.get()->*(D).pointer) = std::any_cast<type>(inner_items);
@@ -113,10 +118,16 @@ public:
 		return nullptr;
 	}
 
-	template<typename K = T>
-	 std::vector<std::shared_ptr<K>>GetAll(std::string query = "") noexcept(false)
+	template<typename K = T, std::enable_if_t<std::is_void_v<K>, bool> = true>
+	auto GetAll(std::string query = "", std::vector<std::string> includes = {}) noexcept(false)
 	{
-		std::vector<std::shared_ptr<T>> items;
+		return std::vector<std::shared_ptr<K>>();
+	}
+
+	template<typename K = T, std::enable_if_t<std::is_class_v<K>, bool> = true>
+	std::vector<std::shared_ptr<K>>GetAll(std::string query = "", std::vector<std::string> includes = {}) noexcept(false)
+	{
+		std::vector<std::shared_ptr<K>> items;
 		try
 		{
 			std::string table_name = typeid(K).name();
@@ -130,7 +141,7 @@ public:
 			cmd.Execute();
 			while (cmd.FetchNext())
 			{
-				items.push_back(GetFromCmd(cmd));
+				items.push_back(GetFromCmd<K>(cmd));
 			}
 			return items;
 		}
@@ -199,8 +210,15 @@ public:
 		return std::shared_ptr<T>(item);
 	}
 
-	template<typename K = T>
-	 std::shared_ptr<K> GetSingle(const std::string query = "") noexcept(false)
+	template<typename K = T, std::enable_if_t<std::is_void_v<K>, bool> = true>
+	auto GetSingle(const std::string query = "", std::vector<std::string> includes = {}) noexcept(false)
+	{
+		return nullptr;
+	}
+
+
+	template<typename K = T, std::enable_if_t<std::is_class_v<K>, bool> = true>
+	std::shared_ptr<K> GetSingle(const std::string query = "", std::vector<std::string> includes = {}) noexcept(false)
 	{
 		try
 		{
@@ -209,11 +227,48 @@ public:
 			std::string base_query = "SELECT * FROM [dbo].[" + table_name + "] WHERE " + query;
 			SACommand cmd(con, _TSA(base_query.c_str()));
 			cmd.Execute();
+			auto item = std::make_shared<K>();
 			if (cmd.FetchNext())
 			{
-				return GetFromCmd(cmd);
+				item = GetFromCmd<K>(cmd);
+				boost::mp11::mp_for_each<boost::describe::describe_members<K, boost::describe::mod_any_access | boost::describe::mod_inherited>>([&](auto D)
+				{
+					if (std::find(includes.begin(), includes.end(), D.name) != includes.end())
+					{
+						using type = std::remove_reference_t<decltype(item.get()->*(D).pointer)>;
+						using inner_type = has_value_type_t<type>;
+						if (!std::is_void_v<inner_type> && !std::is_same_v<std::string, type> && !std::is_same_v<std::wstring, type>)
+						{
+							using inner_elem_type = std::remove_pointer_t<has_element_type_t<std::remove_reference_t<inner_type>>>;
+
+							if (!std::is_void_v<inner_elem_type>)
+							{
+								std::vector<std::shared_ptr<inner_elem_type>> inner_items;
+								//TODO: Include 
+								inner_items = GetAll<inner_elem_type>(table_name + "Id = '" + cmd.Field("Id").asString().GetMultiByteChars() + "'");
+								(item.get()->*(D).pointer) = std::any_cast<type>(inner_items);
+							}
+						}
+						else if (is_shared_ptr_v<type>)
+						{
+							using inner_elem_type = std::remove_pointer_t<has_element_type_t<std::remove_reference_t<type>>>;
+							if (!std::is_void_v<inner_elem_type>)
+							{
+								std::string inner_table_name = typeid(inner_elem_type).name();
+								inner_table_name = inner_table_name.substr(inner_table_name.find_last_of(' ') + 1);
+								std::string f = inner_table_name + "Id";
+								std::string id = std::string(cmd.Field(f.c_str()).asString().GetMultiByteChars());
+								//TODO: Include 
+								std::shared_ptr<inner_elem_type> inner_ptr_item = GetSingle<inner_elem_type>("Id =  '" + id + "'");
+
+								(item.get()->*(D).pointer) = std::any_cast<type>(inner_ptr_item);
+							}
+
+						}
+					}
+				});
 			}
-			return nullptr;
+			return item;
 		}
 		catch (SAException& ex)
 		{
@@ -229,8 +284,8 @@ public:
 		}
 	}
 
-	 template<typename K = T>
-	 PaginationObject<K> GetPagination(int page, int pageSize, std::string query = "") noexcept(false)
+	template<typename K = T>
+	PaginationObject<K> GetPagination(int page, int pageSize, std::string query = "") noexcept(false)
 	{
 		try
 		{
