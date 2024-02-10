@@ -18,7 +18,7 @@
 #include "PaginationObject.h"
 
 //TODO: Apply concepts
-template <typename T>
+template <typename T, typename Z = std::is_base_of<BaseEntity, T>::type>
 class APPLICATION_API BaseQuery
 {
 public:
@@ -57,10 +57,8 @@ public:
 
 							if (!std::is_void_v<inner_elem_type>)
 							{
-								std::vector<std::shared_ptr<inner_elem_type>> inner_items;
-								//TODO: Include 
 								includes.erase(std::remove_if(includes.begin(), includes.end(), [&](std::string s) { return s == D.name; }), includes.end());
-								inner_items = GetAll<inner_elem_type>(table_name + "Id = '" + item.get()->GetId() + "'", includes);
+								auto inner_items = GetAll<inner_elem_type>(table_name + "Id = '" + item.get()->GetId() + "'", includes);
 								(item.get()->*(D).pointer) = std::any_cast<type>(inner_items);
 							}
 						}
@@ -71,12 +69,10 @@ public:
 							{
 								std::string inner_table_name = typeid(inner_elem_type).name();
 								inner_table_name = inner_table_name.substr(inner_table_name.find_last_of(' ') + 1);
-								std::string id = std::string(cmd.Field(std::string(inner_table_name + "Id").c_str()).asString().GetMultiByteChars());
-								//TODO: Include 
+								auto id = std::string(cmd.Field(std::string(inner_table_name + "Id").c_str()).asString().GetMultiByteChars());
 								includes.erase(std::remove_if(includes.begin(), includes.end(), [&](std::string s) { return s == D.name; }), includes.end());
-								std::shared_ptr<inner_elem_type> inner_ptr_item = GetSingle<inner_elem_type>("Id =  '" + id + "'", includes);
-
-								(item.get()->*(D).pointer) = std::any_cast<type>(inner_ptr_item);
+								auto inner_item = GetSingle<inner_elem_type>("Id =  '" + id + "'", includes);
+								(item.get()->*(D).pointer) = std::any_cast<type>(inner_item);
 							}
 						}
 
@@ -108,7 +104,7 @@ public:
 	}
 
 	template<typename K = T, std::enable_if_t<std::is_class_v<K>, bool> = true>
-	std::vector<std::shared_ptr<K>>GetAll(std::string query = "", std::vector<std::string> includes = {}) noexcept(false)
+	std::vector<std::shared_ptr<K>> GetAll(std::string query = "", std::vector<std::string> includes = {}) noexcept(false)
 	{
 		std::vector<std::shared_ptr<K>> items;
 		try
@@ -137,10 +133,8 @@ public:
 
 							if (!std::is_void_v<inner_elem_type>)
 							{
-								std::vector<std::shared_ptr<inner_elem_type>> inner_items;
-								//TODO: Include 
 								includes.erase(std::remove_if(includes.begin(), includes.end(), [&](std::string s) { return s == D.name; }), includes.end());
-								inner_items = GetAll<inner_elem_type>(table_name + "Id = '" + item.get()->GetId() + "'", includes);
+								auto inner_items = GetAll<inner_elem_type>(table_name + "Id = '" + item.get()->GetId() + "'", includes);
 								(item.get()->*(D).pointer) = std::any_cast<type>(inner_items);
 							}
 						}
@@ -151,12 +145,10 @@ public:
 							{
 								std::string inner_table_name = typeid(inner_elem_type).name();
 								inner_table_name = inner_table_name.substr(inner_table_name.find_last_of(' ') + 1);
-								std::string id = std::string(cmd.Field(std::string(inner_table_name + "Id").c_str()).asString().GetMultiByteChars());
-								//TODO: Include 
+								auto id = std::string(cmd.Field(std::string(inner_table_name + "Id").c_str()).asString().GetMultiByteChars());
 								includes.erase(std::remove_if(includes.begin(), includes.end(), [&](std::string s) { return s == D.name; }), includes.end());
-								std::shared_ptr<inner_elem_type> inner_ptr_item = GetSingle<inner_elem_type>("Id =  '" + id + "'", includes);
-
-								(item.get()->*(D).pointer) = std::any_cast<type>(inner_ptr_item);
+								auto inner_item = GetSingle<inner_elem_type>("Id =  '" + id + "'", includes);
+								(item.get()->*(D).pointer) = std::any_cast<type>(inner_item);
 							}
 						}
 
@@ -235,9 +227,8 @@ public:
 	template<typename K = T, std::enable_if_t<std::is_void_v<K>, bool> = true>
 	auto GetSingle(const std::string query = "", std::vector<std::string> includes = {}) noexcept(false)
 	{
-		return nullptr;
+		return std::shared_ptr<K>();
 	}
-
 
 	template<typename K = T, std::enable_if_t<std::is_class_v<K>, bool> = true>
 	std::shared_ptr<K> GetSingle(const std::string query = "", std::vector<std::string> includes = {}) noexcept(false)
@@ -265,10 +256,9 @@ public:
 
 							if (!std::is_void_v<inner_elem_type>)
 							{
-								std::vector<std::shared_ptr<inner_elem_type>> inner_items;
-								//TODO: Include 
+
 								includes.erase(std::remove_if(includes.begin(), includes.end(), [&](std::string s) { return s == D.name; }), includes.end());
-								inner_items = GetAll<inner_elem_type>(table_name + "Id = '" + item.get()->GetId() + "'", includes);
+								auto inner_items = GetAll<inner_elem_type>(table_name + "Id = '" + item.get()->GetId() + "'", includes);
 								(item.get()->*(D).pointer) = std::any_cast<type>(inner_items);
 							}
 						}
@@ -279,11 +269,9 @@ public:
 							{
 								std::string inner_table_name = typeid(inner_elem_type).name();
 								inner_table_name = inner_table_name.substr(inner_table_name.find_last_of(' ') + 1);
-								std::string id = std::string(cmd.Field(std::string(inner_table_name + "Id").c_str()).asString().GetMultiByteChars());
-								//TODO: Include 
+								auto id = std::string(cmd.Field(std::string(inner_table_name + "Id").c_str()).asString().GetMultiByteChars());
 								includes.erase(std::remove_if(includes.begin(), includes.end(), [&](std::string s) { return s == D.name; }), includes.end());
-								std::shared_ptr<inner_elem_type> inner_ptr_item = GetSingle<inner_elem_type>("Id =  '" + id + "'", includes);
-
+								auto inner_ptr_item = GetSingle<inner_elem_type>("Id =  '" + id + "'", includes);
 								(item.get()->*(D).pointer) = std::any_cast<type>(inner_ptr_item);
 							}
 
@@ -355,10 +343,8 @@ public:
 
 							if (!std::is_void_v<inner_elem_type>)
 							{
-								std::vector<std::shared_ptr<inner_elem_type>> inner_items;
-								//TODO: Include 
 								includes.erase(std::remove_if(includes.begin(), includes.end(), [&](std::string s) { return s == D.name; }), includes.end());
-								inner_items = GetAll<inner_elem_type>(table_name + "Id = '" + item.get()->GetId() + "'", includes);
+								auto inner_items = GetAll<inner_elem_type>(table_name + "Id = '" + item.get()->GetId() + "'", includes);
 								(item.get()->*(D).pointer) = std::any_cast<type>(inner_items);
 							}
 						}
@@ -369,12 +355,10 @@ public:
 							{
 								std::string inner_table_name = typeid(inner_elem_type).name();
 								inner_table_name = inner_table_name.substr(inner_table_name.find_last_of(' ') + 1);
-								std::string id = std::string(cmd.Field(std::string(inner_table_name + "Id").c_str()).asString().GetMultiByteChars());
-								//TODO: Include 
+								auto id = std::string(cmd.Field(std::string(inner_table_name + "Id").c_str()).asString().GetMultiByteChars());
 								includes.erase(std::remove_if(includes.begin(), includes.end(), [&](std::string s) { return s == D.name; }), includes.end());
-								std::shared_ptr<inner_elem_type> inner_ptr_item = GetSingle<inner_elem_type>("Id =  '" + id + "'", includes);
-
-								(item.get()->*(D).pointer) = std::any_cast<type>(inner_ptr_item);
+								auto inner_item = GetSingle<inner_elem_type>("Id =  '" + id + "'", includes);
+								(item.get()->*(D).pointer) = std::any_cast<type>(inner_item);
 							}
 						}
 
