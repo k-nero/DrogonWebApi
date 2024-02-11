@@ -15,7 +15,7 @@ DbContext::DbContext()
 	connectionString = ConfigProvider::GetInstance()->GetConnectionString();
 }
 
-SAConnection* DbContext::GetConnection() throw (std::exception&)
+SAConnection* DbContext::GetConnection() noexcept(false)
 {
 	connection = new SAConnection();
 	try

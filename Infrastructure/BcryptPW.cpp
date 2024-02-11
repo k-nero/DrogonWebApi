@@ -18,14 +18,14 @@ std::string Bcrypt::HashPassword(const std::string& passwordStr) noexcept(false)
 	auto sec = ConfigProvider::GetInstance()->GetBcryptSecret();
 
 	PUCHAR secret = (PUCHAR)sec.data();
-	ULONG secretSize = sec.size();
+	ULONG secretSize = (ULONG)sec.size();
 
 	BCRYPT_ALG_HANDLE hAlg = NULL;
 	BCRYPT_HASH_HANDLE hHash = NULL;
 	NTSTATUS status = 0;
 	DWORD cbData = 0, cbHash = 0, cbHashObject = 0;
 	PBYTE pbHashObject = NULL;
-	DWORD passwordSize = passwordStr.size();
+	DWORD passwordSize = (DWORD)passwordStr.size();
 
 	ULONG hashSize = 0;
 	PUCHAR hash = nullptr;
@@ -125,9 +125,9 @@ Cleanup:
 	
 	if (status >= 0 && hash != nullptr)
 	{
-		int size = boost::beast::detail::base64::encoded_size(hashSize);
+		size_t size = boost::beast::detail::base64::encoded_size(hashSize);
 		char* hashStr = (char*)malloc(size * sizeof(char));
-		int hashedPasswordSize = boost::beast::detail::base64::encode(hashStr, hash, hashSize);
+		size_t hashedPasswordSize = boost::beast::detail::base64::encode(hashStr, hash, hashSize);
 		if (hash)
 		{
 			free(hash);

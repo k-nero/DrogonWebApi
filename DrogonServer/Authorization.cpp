@@ -34,18 +34,20 @@ void Auth::Authorization::doFilter(const drogon::HttpRequestPtr& req, drogon::Fi
 	catch (const std::exception& e)
 	{
 		Json::Value json;
-		json["message"] = e.what();
+		json["debug_message"] = e.what();
 		auto resp = drogon::HttpResponse::newHttpJsonResponse(json);
 		resp->setStatusCode(drogon::HttpStatusCode::k401Unauthorized);
 		fcb(resp);
 		return;
 	}
-	catch (const jwt::signature_verification_exception& e)
+	catch (...)
 	{
-		Json::Value json;
-		json["debug_message"] = e.what();
-		auto resp = drogon::HttpResponse::newHttpJsonResponse(json);
-		resp->setStatusCode(drogon::HttpStatusCode::k401Unauthorized);
+		BOOST_LOG_TRIVIAL(error) << "Unknow exception";
+		Json::Value ret;
+		ret["message"] = "Internal server error";
+		ret["status"] = drogon::HttpStatusCode::k500InternalServerError;
+		auto resp = drogon::HttpResponse::newHttpJsonResponse(ret);
+		resp->setStatusCode(drogon::HttpStatusCode::k500InternalServerError);
 		fcb(resp);
 		return;
 	}
