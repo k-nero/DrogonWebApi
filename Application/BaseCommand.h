@@ -2,9 +2,9 @@
 #include "ApplicationApi.h"
 #include "IBaseCommand.h"
 #include <boost/describe.hpp>
+#include <boost/log/trivial.hpp>
 #include <boost/mp11.hpp>
 #include <iostream>
-#include <boost/log/trivial.hpp>
 
 
 template <typename T, class D = boost::describe::describe_members<T, boost::describe::mod_any_access | boost::describe::mod_inherited>>

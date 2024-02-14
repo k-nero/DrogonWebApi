@@ -1,21 +1,19 @@
 #pragma once
 #include "ApplicationApi.h"
-#include "iostream"
 #include "CoreHelper.h"
-#include "ApplicationApi.h"
-#include <boost/describe.hpp>
-#include <boost/mp11.hpp>
-#include <boost/log/trivial.hpp>
-#include "TypeCheck.h"
 #include "JsonHelper.h"
-#include <any>
-#include "TodoList.h"
-#include <memory>
-#include <vector>
-#include <string>
-#include <SQLAPI.h>
-#include "ApplicationApi.h"
 #include "PaginationObject.h"
+#include "TodoList.h"
+#include "TypeCheck.h"
+#include <any>
+#include <boost/describe.hpp>
+#include <boost/log/trivial.hpp>
+#include <boost/mp11.hpp>
+#include <iostream>
+#include <memory>
+#include <SQLAPI.h>
+#include <string>
+#include <vector>
 
 //TODO: Apply concepts
 template <typename T, typename Z = std::is_base_of<BaseEntity, T>::type>

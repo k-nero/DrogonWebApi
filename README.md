@@ -7,7 +7,8 @@ Install Dependencies with vcpkg.
 In case you don't have vcpkg installed, you can install it from [here]( https://github.com/microsoft/vcpkg) and add vcpkg to your PATH.
 Then navigate to the root directory and run the following command to install the dependencies.
 ```sh 
-vcpkg install
+$ vcpkg x-update-baseline
+$ vcpkg install
 ```
 
 Note: If you are using Visual Studio or MSBuild, please skip this step and enable the vcpkg integration in your IDE. Learn more about manifest mode [here]( https://learn.microsoft.com/en-us/vcpkg/consume/manifest-mode?tabs=msbuild%2Cbuild-MSBuild )
