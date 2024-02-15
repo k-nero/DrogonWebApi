@@ -14,11 +14,11 @@ std::shared_ptr<ApplicationUser> ApplicationUserService::GetApplicationUserById(
 	return query.GetById(id);
 }
 
-std::shared_ptr<ApplicationUser> ApplicationUserService::GetApplicationUserByUserName(std::string& userName) noexcept(false)
+std::shared_ptr<ApplicationUser> ApplicationUserService::GetApplicationUserByUserName(std::string& UserName) noexcept(false)
 {
 	DbContext db;
 	ApplicationUserQuery query(db.GetConnection());
-	return query.GetSingle("UserName = '" + userName + "'");
+	return query.GetSingle(EQ(UserName));
 }
 
 std::vector<std::shared_ptr<ApplicationUser>> ApplicationUserService::GetAllApplicationUsers() noexcept(false)
