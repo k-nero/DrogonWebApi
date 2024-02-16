@@ -4,19 +4,15 @@
 #include <vector>
 #include "CoreHelper.h"
 #include "ApplicationApi.h"
+#include "ITodoItemCommand.h"
+#include "BaseCommand.h"
 
-class APPLICATION_API TodoItemCommand
+
+class APPLICATION_API TodoItemCommand : public BaseCommand<TodoItem>, ITodoItemCommand
 {
 public:
 	TodoItemCommand();
-	explicit TodoItemCommand(SAConnection* con) { this->con = con; }
-	std::shared_ptr<TodoItem> GetTodoItemById(const std::string& id);
-	std::vector<std::shared_ptr<TodoItem>>GetAllTodoItems(std::string query = "");
-	int CreateTodoItem(TodoItem& todoItem);
-	int UpdateTodoItem(TodoItem& todoItem);
+	//explicit TodoItemCommand(SAConnection* con) : BaseCommand(con) {}
 	~TodoItemCommand();
-private:
-	std::shared_ptr<TodoItem> GetTodoItemFromCommand(SACommand& cmd);
-	SAConnection* con = nullptr;
 };
 

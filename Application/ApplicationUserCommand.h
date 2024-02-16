@@ -8,7 +8,7 @@ class APPLICATION_API ApplicationUserCommand : public BaseCommand<ApplicationUse
 {
 public:
 	ApplicationUserCommand();
-	explicit ApplicationUserCommand(SAConnection* con) : BaseCommand(con) {}
+	//explicit ApplicationUserCommand(SAConnection* con) : BaseCommand(con) {}
 	~ApplicationUserCommand();
 };
 

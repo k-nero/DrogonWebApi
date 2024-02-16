@@ -14,17 +14,27 @@
 #include <SQLAPI.h>
 #include <string>
 #include <vector>
+#include "DbContext.h"
 
 //TODO: Apply concepts
 template <typename T, typename Z = std::is_base_of<BaseEntity, T>::type>
 class APPLICATION_API BaseQuery
 {
 public:
-	BaseQuery() = default;
-	explicit BaseQuery(SAConnection* con) { this->con = con; }
+	BaseQuery()
+	{
+		if (!db)
+		{
+			this->db = std::make_unique<DbContext>();
+		}
+	}
+	explicit BaseQuery(DbContext* db) { this->db = std::make_unique<DbContext>(db); }
+	explicit BaseQuery(std::unique_ptr<DbContext> db) { this->db = db; }
+
 	template<typename K = T>
 	std::shared_ptr<K> GetById(const std::string& id, std::vector<std::string> includes = {}) noexcept(false)
 	{
+		auto con = db->GetConnection();
 		try
 		{
 			if (id.empty())
@@ -104,6 +114,7 @@ public:
 	template<typename K = T, std::enable_if_t<std::is_class_v<K>, bool> = true>
 	std::vector<std::shared_ptr<K>> GetAll(std::string query = "", std::vector<std::string> includes = {}) noexcept(false)
 	{
+		auto con = db->GetConnection();
 		std::vector<std::shared_ptr<K>> items;
 		try
 		{
@@ -231,6 +242,7 @@ public:
 	template<typename K = T, std::enable_if_t<std::is_class_v<K>, bool> = true>
 	std::shared_ptr<K> GetSingle(const std::string query = "", std::vector<std::string> includes = {}) noexcept(false)
 	{
+		auto con = db->GetConnection();
 		try
 		{
 			std::string table_name = typeid(K).name();
@@ -296,6 +308,7 @@ public:
 	template<typename K = T>
 	PaginationObject<K> GetPagination(int page, int pageSize, std::string query = "", std::vector<std::string> includes = {}) noexcept(false)
 	{
+		auto con = db->GetConnection();
 		try
 		{
 			std::string table_name = typeid(K).name();
@@ -322,7 +335,7 @@ public:
 			}
 
 			base_query += " ) AS S WHERE RowNum BETWEEN " + std::to_string((page - 1) * pageSize + 1) + " AND " + std::to_string(page * pageSize) + " ORDER BY RowNum";
-			
+
 			SACommand cmd2(con, _TSA(base_query.c_str()));
 			cmd2.Execute();
 			std::vector<std::shared_ptr<K>> items;
@@ -440,5 +453,5 @@ public:
 	virtual ~BaseQuery() = default;
 
 protected:
-	SAConnection* con = nullptr;
+	std::unique_ptr<DbContext> db = nullptr;
 };

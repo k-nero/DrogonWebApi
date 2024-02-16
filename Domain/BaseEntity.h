@@ -3,6 +3,10 @@
 #include <boost/describe.hpp>
 #include "DomainApi.h"
 
+/// <summary>
+///  It is the base class for all entities in the system. It contains the common properties of all entities.
+///  It is a part of the underlying command and query model in Application module
+/// </summary>
 class DOMAIN_API BaseEntity
 {
 	BOOST_DESCRIBE_CLASS(BaseEntity, (), (), (Id, CreatedDate, ModifiedDate, Version), ())
@@ -52,6 +56,9 @@ public:
 	}
 	virtual ~BaseEntity();
 protected:
+	/// <summary>
+	///  It is the unique identifier of the entity. Its name should not be changed or deleted.
+	/// </summary>
 	std::string Id = "";
 	std::string CreatedDate = "";
 	std::string ModifiedDate = "";

@@ -5,7 +5,7 @@
 #include <ostream>
 #include <SQLAPI.h>
 
-DbContext::DbContext()
+DbContext::DbContext() 
 {
 
 	if (ConfigProvider::GetInstance()->GetConnectionString().server.empty())
@@ -13,20 +13,16 @@ DbContext::DbContext()
 		ConfigProvider::GetInstance()->Initialize();
 	}
 	connectionString = ConfigProvider::GetInstance()->GetConnectionString();
-}
 
-SAConnection* DbContext::GetConnection() noexcept(false)
-{
 	connection = new SAConnection();
 	try
 	{
 		connection->Connect(connectionString.server.c_str(), connectionString.username.c_str(), connectionString.password.c_str(), SA_SQLServer_Client);
-		if (connection->isConnected())
+		if (!connection->isConnected())
 		{
-			//std::cout << "Connection success" << std::endl;
-			return connection;
+			BOOST_LOG_TRIVIAL(fatal) << "Unable to connect to the database";
+			throw std::exception("Unable to connect to the database");
 		}
-		std::cout << "Connection failed" << std::endl;
 	}
 	catch (SAException& x)
 	{
@@ -53,6 +49,10 @@ SAConnection* DbContext::GetConnection() noexcept(false)
 		BOOST_LOG_TRIVIAL(fatal) << "Unknown exception";
 	}
 
+}
+
+SAConnection* DbContext::GetConnection() noexcept(false)
+{
 	return connection;
 }
 

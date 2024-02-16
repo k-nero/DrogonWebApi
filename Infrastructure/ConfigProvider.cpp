@@ -15,6 +15,8 @@ void ConfigProvider::Initialize()
 	if (reader.ParseError() < 0)
 	{
 		BOOST_LOG_TRIVIAL(error) << "Can't load 'config.ini'";
+		BOOST_LOG_TRIVIAL(info) << "Failed to load config file in DrogonServer folder";
+
 	}
 	else
 	{
@@ -34,6 +36,7 @@ void ConfigProvider::Initialize()
 		if (bcryptSecret == "default")
 		{
 			BOOST_LOG_TRIVIAL(error) << "bcrypt secret is not set !";
+			BOOST_LOG_TRIVIAL(info) << "Set bcrypt secret in config.ini with the example \n [bcrypt] \n secret = secret ";
 		}
 	}
 
@@ -43,6 +46,8 @@ void ConfigProvider::Initialize()
 		if (privateRSAKey.empty())
 		{
 			BOOST_LOG_TRIVIAL(error) << "private_key.pem is not set !";
+			BOOST_LOG_TRIVIAL(info) << "Please provide a private RSA key in startup project folder ";
+
 		}
 	}
 	if (publicRSAKey.empty())
@@ -51,6 +56,7 @@ void ConfigProvider::Initialize()
 		if (publicRSAKey.empty())
 		{
 			BOOST_LOG_TRIVIAL(error) << "public_key.pem is not set !";
+			BOOST_LOG_TRIVIAL(info) << "Please provide a public RSA key in startup project folder ";
 		}
 	}
 }

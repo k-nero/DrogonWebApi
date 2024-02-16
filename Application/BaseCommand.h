@@ -5,16 +5,25 @@
 #include <boost/log/trivial.hpp>
 #include <boost/mp11.hpp>
 #include <iostream>
+#include "DbContext.h"
 
 
 template <typename T, class D = boost::describe::describe_members<T, boost::describe::mod_any_access | boost::describe::mod_inherited>>
 class APPLICATION_API BaseCommand : public IBaseCommand<T>
 {
 public:
-	BaseCommand() = default;
-	explicit BaseCommand(SAConnection* con) { this->con = con; }
+	BaseCommand()
+	{
+		if (!db)
+		{
+			this->db = std::make_unique<DbContext>();
+		}
+	}
+	explicit BaseCommand(std::unique_ptr<DbContext> db) { this->db = db; }
+	explicit BaseCommand(DbContext* db) { this->db = std::make_unique<DbContext>(db); }
 	virtual int Create(T* item) noexcept(false) override
 	{
+		auto con = db->GetConnection();
 		try
 		{
 			if (item == nullptr)
@@ -112,6 +121,7 @@ public:
 
 	virtual int Update(T* item) noexcept(false) override
 	{
+		auto con = db->GetConnection();
 		try
 		{
 			std::string table_name = typeid(T).name();
@@ -198,6 +208,7 @@ public:
 
 	virtual int Delete(std::string& id) noexcept(false) override
 	{
+		auto con = db->GetConnection();
 		try
 		{
 			if (id.empty())
@@ -227,7 +238,7 @@ public:
 		}
 	}
 
-	~BaseCommand() = default;
+	virtual ~BaseCommand() = default;
 protected:
-	SAConnection* con = nullptr;
+	std::unique_ptr<DbContext> db = nullptr;
 };

@@ -7,6 +7,6 @@ class APPLICATION_API TodoListQuery : public BaseQuery<TodoList>, ITodoListQuery
 {
 public:
 	TodoListQuery();
-	explicit TodoListQuery(SAConnection* con) : BaseQuery(con) {}
+	//explicit TodoListQuery(SAConnection* con) : BaseQuery(con) {}
 	~TodoListQuery();
 };

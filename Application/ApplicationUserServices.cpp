@@ -9,39 +9,33 @@ ApplicationUserService::ApplicationUserService()
 
 std::shared_ptr<ApplicationUser> ApplicationUserService::GetApplicationUserById(const std::string& id) noexcept(false)
 {
-	DbContext db;
-	ApplicationUserQuery query(db.GetConnection());
+	ApplicationUserQuery query;
 	return query.GetById(id);
 }
 
 std::shared_ptr<ApplicationUser> ApplicationUserService::GetApplicationUserByUserName(std::string& UserName) noexcept(false)
 {
-	DbContext db;
-	ApplicationUserQuery query(db.GetConnection());
+	ApplicationUserQuery query;
 	return query.GetSingle(EQ(UserName));
 }
 
 std::vector<std::shared_ptr<ApplicationUser>> ApplicationUserService::GetAllApplicationUsers() noexcept(false)
 {
-	std::vector<std::shared_ptr<ApplicationUser>> applicationUsers;
-	DbContext db;
-	ApplicationUserQuery query(db.GetConnection());
-	applicationUsers = query.GetAll();
-	return applicationUsers;
+	ApplicationUserQuery query;
+	return query.GetAll();
 }
-
 
 int ApplicationUserService::CreateApplicationUser(ApplicationUser* applicationUser) noexcept(false)
 {
 	DbContext db;
-	ApplicationUserCommand cmd(db.GetConnection());
+	ApplicationUserCommand cmd;
 	return cmd.Create(applicationUser);
 }
 
 int ApplicationUserService::UpdateApplicationUser(ApplicationUser* applicationUser) noexcept(false)
 {
 	DbContext db;
-	ApplicationUserCommand cmd(db.GetConnection());
+	ApplicationUserCommand cmd;
 	return cmd.Update(applicationUser);
 }
 

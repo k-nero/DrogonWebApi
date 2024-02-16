@@ -8,9 +8,7 @@
 #include "JsonHelper.h"
 #include <boost/log/trivial.hpp>
 
-
 using namespace drogon;
-
 
 class IndexController : public HttpController<IndexController>
 {

@@ -1,10 +1,11 @@
 #include "pch.h"
 #include "TodoListQuery.h"
 
-TodoListQuery::TodoListQuery()
+TodoListQuery::TodoListQuery() : BaseQuery()
 {
 }
 
-TodoListQuery::~TodoListQuery()
+TodoListQuery::~TodoListQuery() 
 {
+
 }

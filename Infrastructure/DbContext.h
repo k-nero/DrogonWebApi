@@ -10,9 +10,9 @@
 class INFRASTRUCTURE_API DbContext
 {
 public:
-	DbContext();
+	DbContext() noexcept(false);
 
-	SAConnection * GetConnection();
+	[[nodiscard]] SAConnection * GetConnection();
 
 	[[nodiscard]] std::string TestConnection() const;
 

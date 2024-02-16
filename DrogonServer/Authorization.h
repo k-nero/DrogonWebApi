@@ -32,6 +32,3 @@ namespace Auth
 		virtual ~User();
 	};
 }
-
-
-

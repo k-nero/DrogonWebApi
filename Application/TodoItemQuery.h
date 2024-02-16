@@ -7,6 +7,6 @@ class APPLICATION_API TodoItemQuery : public BaseQuery<TodoItem>, ITodoItemQuery
 {
 public:
 	TodoItemQuery();
-	explicit TodoItemQuery(SAConnection* con) : BaseQuery(con) {}
+	//explicit TodoItemQuery(SAConnection* con) : BaseQuery(con) {}
 	~TodoItemQuery();
 };

@@ -20,5 +20,6 @@
 #define IS_NOT_NULL(x) #x " IS NOT NULL"
 #define AND(x, y) x _AND y
 #define OR(x, y) x _OR y
-constexpr auto _AND = " AND ";
-constexpr auto _OR = " OR ";
+#define _AND = " AND "
+#define _OR = " OR "
+#define INCLUDE(x) #x

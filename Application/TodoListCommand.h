@@ -8,7 +8,7 @@ class APPLICATION_API TodoListCommand : public BaseCommand<TodoList>, ITodoListC
 {
 public:
 	TodoListCommand();
-	explicit TodoListCommand(SAConnection* con) : BaseCommand(con) {}
+	//explicit TodoListCommand(SAConnection* con) : BaseCommand(con) {}
 	~TodoListCommand();
 };
 

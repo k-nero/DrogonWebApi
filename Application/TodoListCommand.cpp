@@ -2,7 +2,7 @@
 #include "TodoListCommand.h"
 #include "iostream"
 
-TodoListCommand::TodoListCommand()
+TodoListCommand::TodoListCommand() : BaseCommand()
 {
 
 }

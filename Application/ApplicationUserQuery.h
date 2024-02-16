@@ -7,7 +7,7 @@ class APPLICATION_API ApplicationUserQuery : public BaseQuery<ApplicationUser>, 
 {
 public:
 	ApplicationUserQuery();
-	explicit ApplicationUserQuery(SAConnection* con) : BaseQuery(con) {}
+	//explicit ApplicationUserQuery(SAConnection* con) : BaseQuery(con) {}
 	~ApplicationUserQuery();
 };
 

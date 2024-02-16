@@ -10,20 +10,14 @@ TodoListService::TodoListService()
 
 std::shared_ptr<TodoList> TodoListService::GetTodoListById(const std::string& Id) noexcept(false)
 {
-	DbContext db;
-	auto con = db.GetConnection();
-	TodoListQuery todo_list_query(con);
-	auto todo_list = todo_list_query.GetSingle(EQ(Id), {"TodoItems"});
-	return todo_list;
+	TodoListQuery todo_list_query;
+	return todo_list_query.GetSingle(EQ(Id), { "TodoItems" });
 }
 
 std::vector<std::shared_ptr<TodoList>> TodoListService::GetAllTodoLists() noexcept(false)
 {
-	std::vector<std::shared_ptr<TodoList>> TodoLists;
-	DbContext db;
-	TodoListQuery query(db.GetConnection());
-	TodoLists = query.GetAll();
-	return TodoLists;
+	TodoListQuery query;
+	return query.GetAll();
 }
 
 

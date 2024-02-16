@@ -9,7 +9,6 @@
 #include "InfrastructureApi.h"
 #include <boost/log/trivial.hpp>
 
-
 class INFRASTRUCTURE_API CoreHelper
 {
 public:

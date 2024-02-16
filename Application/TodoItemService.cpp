@@ -10,20 +10,14 @@ TodoItemService::TodoItemService()
 
 std::shared_ptr<TodoItem> TodoItemService::GetTodoItemById(const std::string& Id) noexcept(false)
 {
-	DbContext db;
-	auto con = db.GetConnection();
-	TodoItemQuery todo_item_query(con);
-	auto todo_item = todo_item_query.GetSingle(EQ(Id), {"TodoList"});
-	return todo_item;
+	TodoItemQuery todo_item_query;
+	return todo_item_query.GetSingle(EQ(Id), { "TodoList" });
 }
 
 std::vector<std::shared_ptr<TodoItem>> TodoItemService::GetAllTodoItems() noexcept(false)
 {
-	std::vector<std::shared_ptr<TodoItem>> TodoItems;
-	DbContext db;
-	TodoItemQuery query(db.GetConnection());
-	TodoItems = query.GetAll();
-	return TodoItems;
+	TodoItemQuery query;
+	return query.GetAll();
 }
 
 
