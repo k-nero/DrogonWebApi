@@ -29,7 +29,6 @@ public:
 		}
 	}
 	explicit BaseQuery(DbContext* db) { this->db = std::make_unique<DbContext>(db); }
-	explicit BaseQuery(std::unique_ptr<DbContext> db) { this->db = db; }
 
 	template<typename K = T>
 	std::shared_ptr<K> GetById(const std::string& id, std::vector<std::string> includes = {}) noexcept(false)
