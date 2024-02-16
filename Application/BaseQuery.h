@@ -15,6 +15,9 @@
 #include <string>
 #include <vector>
 #include "DbContext.h"
+#include <future> 
+
+#define ASYNC
 
 //TODO: Apply concepts
 template <typename T, typename Z = std::is_base_of<BaseEntity, T>::type>
@@ -65,7 +68,15 @@ public:
 							if (!std::is_void_v<inner_elem_type>)
 							{
 								includes.erase(std::remove_if(includes.begin(), includes.end(), [&](std::string s) { return s == D.name; }), includes.end());
+#ifdef ASYNC
+								std::future<std::vector<std::shared_ptr<inner_elem_type>>> inner_items_future = std::async(std::launch::async, &BaseQuery::GetAll<inner_elem_type>, this, table_name + "Id = '" + item.get()->GetId() + "'", includes);
+								auto inner_items = inner_items_future.get();
+#else
 								auto inner_items = GetAll<inner_elem_type>(table_name + "Id = '" + item.get()->GetId() + "'", includes);
+
+#endif // ASYNC
+
+
 								(item.get()->*(D).pointer) = std::any_cast<type>(inner_items);
 							}
 						}
@@ -78,7 +89,12 @@ public:
 								inner_table_name = inner_table_name.substr(inner_table_name.find_last_of(' ') + 1);
 								auto id = std::string(cmd.Field(std::string(inner_table_name + "Id").c_str()).asString().GetMultiByteChars());
 								includes.erase(std::remove_if(includes.begin(), includes.end(), [&](std::string s) { return s == D.name; }), includes.end());
+#ifdef ASYNC
+								std::future<std::shared_ptr<inner_elem_type>> inner_item_future = std::async(std::launch::async, &BaseQuery::GetSingle<inner_elem_type>, this, "Id =  '" + id + "'", includes);
+								auto inner_item = inner_item_future.get();
+#else
 								auto inner_item = GetSingle<inner_elem_type>("Id =  '" + id + "'", includes);
+#endif // ASYNC
 								(item.get()->*(D).pointer) = std::any_cast<type>(inner_item);
 							}
 						}
@@ -142,7 +158,12 @@ public:
 							if (!std::is_void_v<inner_elem_type>)
 							{
 								includes.erase(std::remove_if(includes.begin(), includes.end(), [&](std::string s) { return s == D.name; }), includes.end());
+#ifdef ASYNC
+								std::future<std::vector<std::shared_ptr<inner_elem_type>>> inner_items_future = std::async(std::launch::async, &BaseQuery::GetAll<inner_elem_type>, this, table_name + "Id = '" + item.get()->GetId() + "'", includes);
+								auto inner_items = inner_items_future.get();
+#else
 								auto inner_items = GetAll<inner_elem_type>(table_name + "Id = '" + item.get()->GetId() + "'", includes);
+#endif // ASYNC
 								(item.get()->*(D).pointer) = std::any_cast<type>(inner_items);
 							}
 						}
@@ -155,7 +176,12 @@ public:
 								inner_table_name = inner_table_name.substr(inner_table_name.find_last_of(' ') + 1);
 								auto id = std::string(cmd.Field(std::string(inner_table_name + "Id").c_str()).asString().GetMultiByteChars());
 								includes.erase(std::remove_if(includes.begin(), includes.end(), [&](std::string s) { return s == D.name; }), includes.end());
+#ifdef ASYNC
+								std::future<std::shared_ptr<inner_elem_type>> inner_item_future = std::async(std::launch::async, &BaseQuery::GetSingle<inner_elem_type>, this, "Id =  '" + id + "'", includes);
+								auto inner_item = inner_item_future.get();
+#else
 								auto inner_item = GetSingle<inner_elem_type>("Id =  '" + id + "'", includes);
+#endif // ASYNC
 								(item.get()->*(D).pointer) = std::any_cast<type>(inner_item);
 							}
 						}
@@ -265,9 +291,13 @@ public:
 
 							if (!std::is_void_v<inner_elem_type>)
 							{
-
 								includes.erase(std::remove_if(includes.begin(), includes.end(), [&](std::string s) { return s == D.name; }), includes.end());
+#ifdef ASYNC
+								std::future<std::vector<std::shared_ptr<inner_elem_type>>> inner_items_future = std::async(std::launch::async, &BaseQuery::GetAll<inner_elem_type>, this, table_name + "Id = '" + item.get()->GetId() + "'", includes);
+								auto inner_items = inner_items_future.get();
+#else 
 								auto inner_items = GetAll<inner_elem_type>(table_name + "Id = '" + item.get()->GetId() + "'", includes);
+#endif	// ASYNC
 								(item.get()->*(D).pointer) = std::any_cast<type>(inner_items);
 							}
 						}
@@ -280,7 +310,12 @@ public:
 								inner_table_name = inner_table_name.substr(inner_table_name.find_last_of(' ') + 1);
 								auto id = std::string(cmd.Field(std::string(inner_table_name + "Id").c_str()).asString().GetMultiByteChars());
 								includes.erase(std::remove_if(includes.begin(), includes.end(), [&](std::string s) { return s == D.name; }), includes.end());
+#ifdef ASYNC
+								std::future<std::shared_ptr<inner_elem_type>> inner_ptr_item_future = std::async(std::launch::async, &BaseQuery::GetSingle<inner_elem_type>, this, "Id =  '" + id + "'", includes);
+								auto inner_ptr_item = inner_ptr_item_future.get();
+#else 
 								auto inner_ptr_item = GetSingle<inner_elem_type>("Id =  '" + id + "'", includes);
+#endif	// ASYNC
 								(item.get()->*(D).pointer) = std::any_cast<type>(inner_ptr_item);
 							}
 
@@ -354,7 +389,12 @@ public:
 							if (!std::is_void_v<inner_elem_type>)
 							{
 								includes.erase(std::remove_if(includes.begin(), includes.end(), [&](std::string s) { return s == D.name; }), includes.end());
+#ifdef ASYNC
+								std::future<std::vector<std::shared_ptr<inner_elem_type>>> inner_items_future = std::async(std::launch::async, &BaseQuery::GetAll<inner_elem_type>, this, table_name + "Id = '" + item.get()->GetId() + "'", includes);
+								auto inner_items = inner_items_future.get();
+#else
 								auto inner_items = GetAll<inner_elem_type>(table_name + "Id = '" + item.get()->GetId() + "'", includes);
+#endif // ASYNC
 								(item.get()->*(D).pointer) = std::any_cast<type>(inner_items);
 							}
 						}
@@ -367,7 +407,12 @@ public:
 								inner_table_name = inner_table_name.substr(inner_table_name.find_last_of(' ') + 1);
 								auto id = std::string(cmd.Field(std::string(inner_table_name + "Id").c_str()).asString().GetMultiByteChars());
 								includes.erase(std::remove_if(includes.begin(), includes.end(), [&](std::string s) { return s == D.name; }), includes.end());
+#ifdef ASYNC
+								std::future<std::shared_ptr<inner_elem_type>> inner_item_future = std::async(std::launch::async, &BaseQuery::GetSingle<inner_elem_type>, this, "Id =  '" + id + "'", includes);
+								auto inner_item = inner_item_future.get();
+#else
 								auto inner_item = GetSingle<inner_elem_type>("Id =  '" + id + "'", includes);
+#endif // ASYNC
 								(item.get()->*(D).pointer) = std::any_cast<type>(inner_item);
 							}
 						}
