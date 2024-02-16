@@ -19,7 +19,6 @@ public:
 			this->db = std::make_unique<DbContext>();
 		}
 	}
-	explicit BaseCommand(std::unique_ptr<DbContext> db) { this->db = db; }
 	explicit BaseCommand(DbContext* db) { this->db = std::make_unique<DbContext>(db); }
 	virtual int Create(T* item) noexcept(false) override
 	{
