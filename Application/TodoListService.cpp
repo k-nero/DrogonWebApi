@@ -11,7 +11,7 @@ TodoListService::TodoListService()
 std::shared_ptr<TodoList> TodoListService::GetTodoListById(const std::string& Id) noexcept(false)
 {
 	TodoListQuery todo_list_query;
-	return todo_list_query.GetSingle(EQ(Id), { "TodoItems" });
+	return todo_list_query.GetSingle(EQ(Id), {"TodoItems"});
 }
 
 std::vector<std::shared_ptr<TodoList>> TodoListService::GetAllTodoLists() noexcept(false)
