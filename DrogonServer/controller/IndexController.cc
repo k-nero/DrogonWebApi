@@ -11,7 +11,7 @@ void IndexController::GetAll(const HttpRequestPtr& req, std::function<void(const
 		
 		for (const auto& user : users)
 		{
-			rs.append(ToJson(*user));
+			rs.append(ToJson(user));
 		}
 		const auto resp = HttpResponse::newHttpJsonResponse(rs);
 		resp->setStatusCode(k200OK);
@@ -51,7 +51,7 @@ void IndexController::Get(const HttpRequestPtr& req, std::function<void(const Ht
 		Json::Value ret;
 		if (user != nullptr)
 		{
-			ret = ToJson(*user);
+			ret = ToJson(user);
 		}
 		else
 		{

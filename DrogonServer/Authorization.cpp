@@ -16,6 +16,15 @@ void Auth::Authorization::doFilter(const drogon::HttpRequestPtr& req, drogon::Fi
 		fcb(resp);
 		return;
 	}
+	if(!rawToken.starts_with("Bearer"))
+	{
+		Json::Value json;
+		json["debug_message"] = "Invalid token format";
+		auto resp = drogon::HttpResponse::newHttpJsonResponse(json);
+		resp->setStatusCode(drogon::HttpStatusCode::k401Unauthorized);
+		fcb(resp);
+		return;
+	}
 	auto token = rawToken.substr(rawToken.find_first_of(" ") + 1);
 	auto privateKey = ConfigProvider::GetInstance()->GetPrivateRSAKey();
 	auto publicKey = ConfigProvider::GetInstance()->GetPublicRSAKey();

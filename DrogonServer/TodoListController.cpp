@@ -5,11 +5,12 @@ void TodoListController::GetAll(const HttpRequestPtr& req, std::function<void(co
 	try
 	{
 		TodoListService cmd;
-		const std::vector<std::shared_ptr<TodoList>> todo_lists = cmd.GetAllTodoLists();
+		auto task = std::future(std::async(std::launch::async, [&cmd]() { return cmd.GetAllTodoLists(); }));
+		const auto todo_lists(task.get());
 		Json::Value rs;
 		for (const auto& todo_list : todo_lists)
 		{
-			rs.append(ToJson(*todo_list));
+			rs.append(ToJson(todo_list));
 		}
 		const auto resp = HttpResponse::newHttpJsonResponse(rs);
 		resp->setStatusCode(k200OK);
@@ -45,11 +46,12 @@ void TodoListController::Get(const HttpRequestPtr& req, std::function<void(const
 	try
 	{
 		TodoListService cmd;
-		const std::shared_ptr<TodoList> todo_lists(cmd.GetTodoListById(p1));
+		auto task = std::future(std::async(std::launch::async, [&cmd, p1]() { return cmd.GetTodoListById(p1); }));
+		const auto todo_list = task.get();
 		Json::Value ret;
-		if (todo_lists != nullptr)
+		if (todo_list != nullptr)
 		{
-			ret = ToJson(*todo_lists);
+			ret = ToJson(todo_list);
 		}
 		else
 		{

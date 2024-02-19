@@ -161,7 +161,7 @@ public:
 								includes.erase(std::remove_if(includes.begin(), includes.end(), [&](std::string s) { return s == D.name; }), includes.end());
 #ifdef ASYNC
 								auto inner_items_future = std::async(std::launch::async, &BaseQuery::GetAll<inner_elem_type>, this, table_name + "Id = '" + item.get()->GetId() + "'", includes);
-								auto inner_items = inner_items_future.get();
+								auto inner_items(inner_items_future.get());
 #else
 								auto inner_items = GetAll<inner_elem_type>(table_name + "Id = '" + item.get()->GetId() + "'", includes);
 #endif // ASYNC

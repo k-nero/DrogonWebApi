@@ -2,8 +2,6 @@
 #include <jwt-cpp/jwt.h> 
 #include <drogon/drogon.h>
 #include "ConfigProvider.h"
-#include "ApplicationUser.h"
-#include "ApplicationUserCommand.h"
 #include <boost/log/trivial.hpp>
 
 namespace Auth
