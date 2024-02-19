@@ -18,6 +18,10 @@
 
 #define ASYNC
 
+#ifndef PKEY
+#define PKEY "Id"
+#endif // !PKEY
+
 //TODO: Apply concepts
 template <typename T, typename Z = std::is_base_of<BaseEntity, T>::type>
 class APPLICATION_API BaseQuery
@@ -45,7 +49,7 @@ public:
 
 			std::string table_name = typeid(K).name();
 			table_name = table_name.substr(table_name.find_last_of(' ') + 1);
-			std::string query = "SELECT * FROM [dbo].[" + table_name + "] WHERE Id = :id";
+			std::string query = "SELECT * FROM [dbo].[" + table_name + "] WHERE " PKEY " = :id";
 			SACommand cmd(con, _TSA(query.c_str()));
 			const SAString idStr(id.c_str());
 			cmd.Param(_TSA("id")).setAsString() = idStr;
@@ -84,13 +88,13 @@ public:
 							{
 								std::string inner_table_name = typeid(inner_elem_type).name();
 								inner_table_name = inner_table_name.substr(inner_table_name.find_last_of(' ') + 1);
-								auto id = std::string(cmd.Field(std::string(inner_table_name + "Id").c_str()).asString().GetMultiByteChars());
+								auto id = std::string(cmd.Field(std::string(inner_table_name + PKEY).c_str()).asString().GetMultiByteChars());
 								includes.erase(std::remove_if(includes.begin(), includes.end(), [&](std::string s) { return s == D.name; }), includes.end());
 #ifdef ASYNC
-								auto inner_item_future = std::async(std::launch::async, &BaseQuery::GetSingle<inner_elem_type>, this, "Id =  '" + id + "'", includes);
+								auto inner_item_future = std::async(std::launch::async, &BaseQuery::GetSingle<inner_elem_type>, this, PKEY " =  '" + id + "'", includes);
 								auto inner_item = inner_item_future.get();
 #else
-								auto inner_item = GetSingle<inner_elem_type>("Id =  '" + id + "'", includes);
+								auto inner_item = GetSingle<inner_elem_type>(PKEY " =  '" + id + "'", includes);
 #endif // ASYNC
 								(item.get()->*(D).pointer) = std::any_cast<type>(inner_item);
 							}
@@ -174,10 +178,10 @@ public:
 								auto id = std::string(cmd.Field(std::string(inner_table_name + "Id").c_str()).asString().GetMultiByteChars());
 								includes.erase(std::remove_if(includes.begin(), includes.end(), [&](std::string s) { return s == D.name; }), includes.end());
 #ifdef ASYNC
-								auto inner_item_future = std::async(std::launch::async, &BaseQuery::GetSingle<inner_elem_type>, this, "Id =  '" + id + "'", includes);
+								auto inner_item_future = std::async(std::launch::async, &BaseQuery::GetSingle<inner_elem_type>, this, PKEY " =  '" + id + "'", includes);
 								auto inner_item = inner_item_future.get();
 #else
-								auto inner_item = GetSingle<inner_elem_type>("Id =  '" + id + "'", includes);
+								auto inner_item = GetSingle<inner_elem_type>(PKEY " =  '" + id + "'", includes);
 #endif // ASYNC
 								(item.get()->*(D).pointer) = std::any_cast<type>(inner_item);
 							}
@@ -291,7 +295,7 @@ public:
 								
 								includes.erase(std::remove_if(includes.begin(), includes.end(), [&](std::string s) { return s == D.name; }), includes.end());
 #ifdef ASYNC
-								auto inner_items_future = std::async(std::launch::async, &BaseQuery::GetAll<inner_elem_type>, this, table_name + "Id = '" + item.get()->GetId() + "'", includes);
+								auto inner_items_future = std::async(std::launch::async, &BaseQuery::GetAll<inner_elem_type>, this, table_name +  "Id = '" + item.get()->GetId() + "'", includes);
 								auto inner_items = inner_items_future.get();
 #else 
 								auto inner_items = GetAll<inner_elem_type>(table_name + "Id = '" + item.get()->GetId() + "'", includes);
@@ -309,10 +313,10 @@ public:
 								auto id = std::string(cmd.Field(std::string(inner_table_name + "Id").c_str()).asString().GetMultiByteChars());
 								includes.erase(std::remove_if(includes.begin(), includes.end(), [&](std::string s) { return s == D.name; }), includes.end());
 #ifdef ASYNC
-								auto inner_ptr_item_future = std::async(std::launch::async, &BaseQuery::GetSingle<inner_elem_type>, this, "Id =  '" + id + "'", includes);
+								auto inner_ptr_item_future = std::async(std::launch::async, &BaseQuery::GetSingle<inner_elem_type>, this, PKEY " =  '" + id + "'", includes);
 								auto inner_ptr_item = inner_ptr_item_future.get();
 #else 
-								auto inner_ptr_item = GetSingle<inner_elem_type>("Id =  '" + id + "'", includes);
+								auto inner_ptr_item = GetSingle<inner_elem_type>(PKEY " =  '" + id + "'", includes);
 #endif	// ASYNC
 								(item.get()->*(D).pointer) = std::any_cast<type>(inner_ptr_item);
 							}
@@ -406,10 +410,10 @@ public:
 								auto id = std::string(cmd.Field(std::string(inner_table_name + "Id").c_str()).asString().GetMultiByteChars());
 								includes.erase(std::remove_if(includes.begin(), includes.end(), [&](std::string s) { return s == D.name; }), includes.end());
 #ifdef ASYNC
-								auto inner_item_future = std::async(std::launch::async, &BaseQuery::GetSingle<inner_elem_type>, this, "Id =  '" + id + "'", includes);
+								auto inner_item_future = std::async(std::launch::async, &BaseQuery::GetSingle<inner_elem_type>, this, PKEY " =  '" + id + "'", includes);
 								auto inner_item = inner_item_future.get();
 #else
-								auto inner_item = GetSingle<inner_elem_type>("Id =  '" + id + "'", includes);
+								auto inner_item = GetSingle<inner_elem_type>(PKEY " =  '" + id + "'", includes);
 #endif // ASYNC
 								(item.get()->*(D).pointer) = std::any_cast<type>(inner_item);
 							}
