@@ -15,7 +15,8 @@ public:
 	std::shared_ptr<ApplicationUser> GetApplicationUserByUserName(std::string& userName);
 	std::vector<std::shared_ptr<ApplicationUser>>GetAllApplicationUsers();
 	std::string CreateApplicationUser(ApplicationUser* applicationUser);
-	int UpdateApplicationUser(ApplicationUser* applicationUser);
+	int UpdateApplicationUser(ApplicationUser* applicationUser, const std::string& id);
+	int DeleteApplicationUser(const std::string& id);
 	~ApplicationUserService();
 private:
 	//SAConnection* con;

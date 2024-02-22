@@ -14,7 +14,8 @@ public:
 	std::shared_ptr<TodoItem> GetTodoItemById(const std::string& id);
 	std::vector<std::shared_ptr<TodoItem>>GetAllTodoItems();
 	std::string CreateTodoItem(TodoItem * TodoItem);
-	int UpdateTodoItem(TodoItem* TodoItem);
+	int UpdateTodoItem(TodoItem* TodoItem, const std::string& id);
+	int DeleteTodoItem(const std::string& id);
 	~TodoItemService();
 private:
 	//SAConnection* con;

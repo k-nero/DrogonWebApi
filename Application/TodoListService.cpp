@@ -29,11 +29,17 @@ std::string TodoListService::CreateTodoList(TodoList* todo_list) noexcept(false)
 	return todo_list->GetId();
 }
 
-int TodoListService::UpdateTodoList(TodoList* todo_list) noexcept(false)
+int TodoListService::UpdateTodoList(TodoList* todo_list, const std::string& id) noexcept(false)
 {
-	throw std::exception("Not implemented");
+	TodoListCommand cmd;
+	return cmd.Update(todo_list, id);
 
-	return 0;
+}
+
+int TodoListService::DeleteTodoList(const std::string& id)
+{
+	TodoListCommand cmd;
+	return cmd.Delete(id);
 }
 
 TodoListService::~TodoListService()

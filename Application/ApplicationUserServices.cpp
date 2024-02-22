@@ -34,11 +34,16 @@ std::string ApplicationUserService::CreateApplicationUser(ApplicationUser* appli
 	return id;
 }
 
-int ApplicationUserService::UpdateApplicationUser(ApplicationUser* applicationUser) noexcept(false)
+int ApplicationUserService::UpdateApplicationUser(ApplicationUser* applicationUser, const std::string& id) noexcept(false)
 {
-	DbContext db;
 	ApplicationUserCommand cmd;
-	return cmd.Update(applicationUser);
+	return cmd.Update(applicationUser, id);
+}
+
+int ApplicationUserService::DeleteApplicationUser(const std::string& id)
+{
+	ApplicationUserCommand cmd;
+	return cmd.Delete(id);
 }
 
 ApplicationUserService::~ApplicationUserService()

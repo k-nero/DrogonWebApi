@@ -29,11 +29,16 @@ std::string TodoItemService::CreateTodoItem(TodoItem* TodoItem) noexcept(false)
 	return TodoItem->GetId();
 }
 
-int TodoItemService::UpdateTodoItem(TodoItem* TodoItem) noexcept(false)
+int TodoItemService::UpdateTodoItem(TodoItem* TodoItem, const std::string& id) noexcept(false)
 {
-	throw std::exception("Not implemented");
+	TodoItemCommand cmd;
+	return cmd.Update(TodoItem, id);
+}
 
-	return 0;
+int TodoItemService::DeleteTodoItem(const std::string& id)
+{
+	TodoItemCommand cmd;
+	return cmd.Delete(id);
 }
 
 TodoItemService::~TodoItemService()

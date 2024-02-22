@@ -13,7 +13,8 @@ public:
 	std::shared_ptr<TodoList> GetTodoListById(const std::string& id);
 	std::vector<std::shared_ptr<TodoList>>GetAllTodoLists();
 	std::string CreateTodoList(TodoList* TodoList);
-	int UpdateTodoList(TodoList* TodoList);
+	int UpdateTodoList(TodoList* TodoList, const std::string& id);
+	int DeleteTodoList(const std::string& id);
 	~TodoListService();
 };
 

@@ -124,7 +124,7 @@ public:
 		return 0;
 	}
 
-	virtual int Update(T* item) noexcept(false) override
+	virtual int Update(T* item, const std::string& id) noexcept(false) override
 	{
 		auto con = db->GetConnection();
 		try
@@ -138,7 +138,7 @@ public:
 			boost::mp11::mp_for_each<D>([&](auto D)
 			{
 				std::string field = D.name;
-				if (field != "Id" && field != "CreatedDate")
+				if (field != "Id" && field != "CreatedDate" && is_primitive_type((item->*(D).pointer)))
 				{
 					if (field == "ModifiedDate")
 					{
@@ -192,7 +192,7 @@ public:
 					}
 				}
 			});
-			cmd.Param(_TSA("id")).setAsString() = item->GetId().c_str();
+			cmd.Param(_TSA("id")).setAsString() = id.c_str();
 			cmd.Execute();
 			return (int)cmd.RowsAffected();
 		}
@@ -211,7 +211,7 @@ public:
 		return 0;
 	}
 
-	virtual int Delete(std::string& id) noexcept(false) override
+	virtual int Delete(const std::string& id) noexcept(false) override
 	{
 		auto con = db->GetConnection();
 		try
