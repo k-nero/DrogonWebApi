@@ -28,6 +28,9 @@
     <Filter Include="Header Files\Common">
       <UniqueIdentifier>{20089e9b-fb3d-4548-b948-454a306ca059}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Model">
+      <UniqueIdentifier>{21b8a725-3bfe-4229-8bd1-5aa10f5320d7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -66,6 +69,9 @@
       <Filter>Header Files\Controller</Filter>
     </ClInclude>
     <ClInclude Include="Macros.h">
+      <Filter>Header Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelBinding.h">
       <Filter>Header Files\Common</Filter>
     </ClInclude>
   </ItemGroup>

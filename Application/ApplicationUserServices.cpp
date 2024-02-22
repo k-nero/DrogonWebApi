@@ -25,7 +25,7 @@ std::vector<std::shared_ptr<ApplicationUser>> ApplicationUserService::GetAllAppl
 	return query.GetAll();
 }
 
-int ApplicationUserService::CreateApplicationUser(ApplicationUser* applicationUser) noexcept(false)
+std::string ApplicationUserService::CreateApplicationUser(ApplicationUser* applicationUser) noexcept(false)
 {
 	DbContext db;
 	ApplicationUserCommand cmd;

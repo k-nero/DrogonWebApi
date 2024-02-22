@@ -7,6 +7,9 @@
 #include <iostream>
 #include "DbContext.h"
 
+#ifndef PKEY
+#define PKEY "Id"
+#endif // !PKEY
 
 template <typename T, class D = boost::describe::describe_members<T, boost::describe::mod_any_access | boost::describe::mod_inherited>>
 class APPLICATION_API BaseCommand : public IBaseCommand<T>
@@ -20,7 +23,7 @@ public:
 		}
 	}
 	explicit BaseCommand(DbContext* db) { this->db = std::make_unique<DbContext>(db); }
-	virtual int Create(T* item) noexcept(false) override
+	virtual std::string Create(T* item) noexcept(false) override
 	{
 		auto con = db->GetConnection();
 		try
@@ -40,6 +43,7 @@ public:
 			SACommand cmd(con);
 			cmd.setCommandText(_TSA(query.c_str()));
 			std::vector<std::string> fields;
+			std::string id;
 			boost::mp11::mp_for_each<D>([&](auto D)
 			{
 				std::string field = D.name;
@@ -54,6 +58,13 @@ public:
 					{
 						values += ":" + field + ", ";
 						fields.push_back(field);
+					}
+
+					if (D.name == PKEY)
+					{
+						if(!(item->*(D).pointer).empty())
+
+						(std::string&)item->*(D).pointer = id;
 					}
 				}
 			});
@@ -101,7 +112,7 @@ public:
 				}
 			});
 			cmd.Execute();
-			return (int)cmd.RowsAffected();
+			return id;
 		}
 		catch (SAException& ex)
 		{

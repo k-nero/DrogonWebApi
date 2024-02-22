@@ -12,8 +12,8 @@ public:
 	TodoListService();
 	std::shared_ptr<TodoList> GetTodoListById(const std::string& id);
 	std::vector<std::shared_ptr<TodoList>>GetAllTodoLists();
-	int CreateTodoList(TodoList* TodoList);
-	int UpdateTodoList(TodoList* TodoList);
+	std::string CreateTodoList(TodoList& TodoList);
+	int UpdateTodoList(TodoList& TodoList);
 	~TodoListService();
 };
 

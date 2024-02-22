@@ -241,6 +241,7 @@
     <ClCompile Include="controller\IndexController.cc" />
     <ClCompile Include="main.cpp" />
     <ClInclude Include="Macros.h" />
+    <ClInclude Include="ModelBinding.h" />
     <ClInclude Include="TodoItemController.h" />
     <ClCompile Include="TodoItemController.cpp" />
     <ClCompile Include="TodoListController.cpp" />

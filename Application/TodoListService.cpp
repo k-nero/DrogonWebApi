@@ -21,13 +21,12 @@ std::vector<std::shared_ptr<TodoList>> TodoListService::GetAllTodoLists() noexce
 }
 
 
-int TodoListService::CreateTodoList(TodoList* TodoList) noexcept(false)
+std::string TodoListService::CreateTodoList(TodoList& todo_list) noexcept(false)
 {
 	throw std::exception("Not implemented");
-	return 0;
 }
 
-int TodoListService::UpdateTodoList(TodoList* TodoList) noexcept(false)
+int TodoListService::UpdateTodoList(TodoList& todo_list) noexcept(false)
 {
 	throw std::exception("Not implemented");
 

@@ -7,10 +7,20 @@
 #include <memory.h>
 #include "JsonHelper.h"
 #include <boost/log/trivial.hpp>
+#include "ModelBinding.h"
 
 
 using namespace drogon;
 
+
+namespace drogon
+{
+	template<>
+	inline TodoItem fromRequest(const HttpRequest& req)
+	{
+		return from_request<TodoItem>(req);
+	}
+};
 
 class TodoItemController : public HttpController<TodoItemController>
 {
