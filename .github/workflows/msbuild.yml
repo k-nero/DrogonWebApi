@@ -32,8 +32,9 @@ jobs:
     steps:
     - uses: actions/checkout@v3
       with:
-        submodules: 'recursive'
-        
+          fetch-depth: 0
+          submodules: recursive
+
     - name: Bootstrap vcpkg
       run: ${{ github.workspace }}/vcpkg/bootstrap-vcpkg.bat
 
