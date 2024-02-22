@@ -21,12 +21,15 @@ std::vector<std::shared_ptr<TodoList>> TodoListService::GetAllTodoLists() noexce
 }
 
 
-std::string TodoListService::CreateTodoList(TodoList& todo_list) noexcept(false)
+std::string TodoListService::CreateTodoList(TodoList* todo_list) noexcept(false)
 {
-	throw std::exception("Not implemented");
+	TodoListCommand cmd;
+	todo_list->SetId(CoreHelper::CreateUUID());
+	cmd.Create(todo_list);
+	return todo_list->GetId();
 }
 
-int TodoListService::UpdateTodoList(TodoList& todo_list) noexcept(false)
+int TodoListService::UpdateTodoList(TodoList* todo_list) noexcept(false)
 {
 	throw std::exception("Not implemented");
 

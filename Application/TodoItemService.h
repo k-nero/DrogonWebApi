@@ -13,7 +13,7 @@ public:
 	//explicit TodoItemService(SAConnection* con) { this->con = con; }
 	std::shared_ptr<TodoItem> GetTodoItemById(const std::string& id);
 	std::vector<std::shared_ptr<TodoItem>>GetAllTodoItems();
-	int CreateTodoItem(TodoItem* TodoItem);
+	std::string CreateTodoItem(TodoItem * TodoItem);
 	int UpdateTodoItem(TodoItem* TodoItem);
 	~TodoItemService();
 private:

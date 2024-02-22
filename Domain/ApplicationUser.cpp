@@ -30,6 +30,16 @@ ApplicationUser::ApplicationUser(const std::string& id, const std::string& usern
 	PhoneNumber = phonenumber;
 }
 
+ApplicationUser::ApplicationUser(const std::string& username, const std::string& email, const std::string& passwordhash, const std::string& phonenumber, const std::string& createdDate, const std::string& modifedDate)
+{
+	UserName = username;
+	Email = email;
+	PasswordHash = passwordhash;
+	PhoneNumber = phonenumber;
+	CreatedDate = createdDate;
+	ModifiedDate = modifedDate;
+}
+
 ApplicationUser& ApplicationUser::operator=(ApplicationUser&& applicationuser) noexcept
 {
 	UserName = std::move(applicationuser.UserName);

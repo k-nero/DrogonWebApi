@@ -27,9 +27,11 @@ std::vector<std::shared_ptr<ApplicationUser>> ApplicationUserService::GetAllAppl
 
 std::string ApplicationUserService::CreateApplicationUser(ApplicationUser* applicationUser) noexcept(false)
 {
-	DbContext db;
+	std::string id = CoreHelper::CreateUUID();
+	applicationUser->SetId(id);
 	ApplicationUserCommand cmd;
-	return cmd.Create(applicationUser);
+	cmd.Create(applicationUser);
+	return id;
 }
 
 int ApplicationUserService::UpdateApplicationUser(ApplicationUser* applicationUser) noexcept(false)

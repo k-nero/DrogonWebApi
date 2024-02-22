@@ -72,10 +72,10 @@ public:
 							{
 								includes.erase(std::remove_if(includes.begin(), includes.end(), [&](std::string s) { return s == D.name; }), includes.end());
 #ifdef ASYNC
-								auto inner_items_future = std::async(std::launch::async, &BaseQuery::GetAll<inner_elem_type>, this, table_name + "Id = '" + item.get()->GetId() + "'", includes);
+								auto inner_items_future = std::async(std::launch::async, &BaseQuery::GetAll<inner_elem_type>, this, table_name + "Id = '" + std::string(cmd.Field(PKEY).asString().GetMultiByteChars()) + "'", includes);
 								auto inner_items = inner_items_future.get();
 #else
-								auto inner_items = GetAll<inner_elem_type>(table_name + "Id = '" + item.get()->GetId() + "'", includes);
+								auto inner_items = GetAll<inner_elem_type>(table_name + "Id = '" + std::string(cmd.Field(PKEY).asString().GetMultiByteChars()) + "'", includes);
 
 #endif // ASYNC
 								(item.get()->*(D).pointer) = std::any_cast<type>(inner_items);
@@ -160,10 +160,10 @@ public:
 							{
 								includes.erase(std::remove_if(includes.begin(), includes.end(), [&](std::string s) { return s == D.name; }), includes.end());
 #ifdef ASYNC
-								auto inner_items_future = std::async(std::launch::async, &BaseQuery::GetAll<inner_elem_type>, this, table_name + "Id = '" + item.get()->GetId() + "'", includes);
+								auto inner_items_future = std::async(std::launch::async, &BaseQuery::GetAll<inner_elem_type>, this, table_name + "Id = '" + std::string(cmd.Field(PKEY).asString().GetMultiByteChars()) + "'", includes);
 								auto inner_items(inner_items_future.get());
 #else
-								auto inner_items = GetAll<inner_elem_type>(table_name + "Id = '" + item.get()->GetId() + "'", includes);
+								auto inner_items = GetAll<inner_elem_type>(table_name + "Id = '" + std::string(cmd.Field(PKEY).asString().GetMultiByteChars()) + "'", includes);
 #endif // ASYNC
 								(item.get()->*(D).pointer) = std::any_cast<type>(inner_items);
 							}
@@ -276,7 +276,7 @@ public:
 			std::string base_query = "SELECT * FROM [dbo].[" + table_name + "] WHERE " + query;
 			SACommand cmd(con, _TSA(base_query.c_str()));
 			cmd.Execute();
-			auto item = std::make_shared<K>();
+			std::shared_ptr<K> item;
 			if (cmd.FetchNext())
 			{
 				item = GetFromCmd<K>(cmd);
@@ -295,10 +295,10 @@ public:
 								
 								includes.erase(std::remove_if(includes.begin(), includes.end(), [&](std::string s) { return s == D.name; }), includes.end());
 #ifdef ASYNC
-								auto inner_items_future = std::async(std::launch::async, &BaseQuery::GetAll<inner_elem_type>, this, table_name +  "Id = '" + item.get()->GetId() + "'", includes);
+								auto inner_items_future = std::async(std::launch::async, &BaseQuery::GetAll<inner_elem_type>, this, table_name +  "Id = '" + std::string(cmd.Field(PKEY).asString().GetMultiByteChars()) + "'", includes);
 								auto inner_items = inner_items_future.get();
 #else 
-								auto inner_items = GetAll<inner_elem_type>(table_name + "Id = '" + item.get()->GetId() + "'", includes);
+								auto inner_items = GetAll<inner_elem_type>(table_name + "Id = '" + std::string(cmd.Field(PKEY).asString().GetMultiByteChars()) + "'", includes);
 #endif	// ASYNC
 								(item.get()->*(D).pointer) = std::any_cast<type>(inner_items);
 							}
@@ -392,10 +392,10 @@ public:
 							{
 								includes.erase(std::remove_if(includes.begin(), includes.end(), [&](std::string s) { return s == D.name; }), includes.end());
 #ifdef ASYNC
-								auto inner_items_future = std::async(std::launch::async, &BaseQuery::GetAll<inner_elem_type>, this, table_name + "Id = '" + item.get()->GetId() + "'", includes);
+								auto inner_items_future = std::async(std::launch::async, &BaseQuery::GetAll<inner_elem_type>, this, table_name + "Id = '" + std::string(cmd.Field(PKEY).asString().GetMultiByteChars()) + "'", includes);
 								auto inner_items = inner_items_future.get();
 #else
-								auto inner_items = GetAll<inner_elem_type>(table_name + "Id = '" + item.get()->GetId() + "'", includes);
+								auto inner_items = GetAll<inner_elem_type>(table_name + "Id = '" + std::string(cmd.Field(PKEY).asString().GetMultiByteChars()) + "'", includes);
 #endif // ASYNC
 								(item.get()->*(D).pointer) = std::any_cast<type>(inner_items);
 							}

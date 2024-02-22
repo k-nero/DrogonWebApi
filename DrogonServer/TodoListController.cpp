@@ -96,12 +96,14 @@ void TodoListController::Create(const HttpRequestPtr& req, std::function<void(co
 	try
 	{
 		TodoListService cmd;
-		auto task = std::future(std::async(std::launch::async, [&cmd, &todo_list]() { return cmd.CreateTodoList(todo_list); }));
+		auto task = std::future(std::async(std::launch::async, [&cmd, &todo_list]() { return cmd.CreateTodoList(&todo_list); }));
 		const auto id = task.get();
 		Json::Value ret;
 		if (!id.empty())
 		{
 			ret["id"] = id;
+			ret["status"] = 201;
+			ret["message"] = "Todo list created successfully!";
 		}
 		else
 		{

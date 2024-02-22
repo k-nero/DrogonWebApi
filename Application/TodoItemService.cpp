@@ -21,10 +21,12 @@ std::vector<std::shared_ptr<TodoItem>> TodoItemService::GetAllTodoItems() noexce
 }
 
 
-int TodoItemService::CreateTodoItem(TodoItem* TodoItem) noexcept(false)
+std::string TodoItemService::CreateTodoItem(TodoItem* TodoItem) noexcept(false)
 {
-	throw std::exception("Not implemented");
-	return 0;
+	TodoItemCommand cmd;
+	TodoItem->SetId(CoreHelper::CreateUUID());
+	cmd.Create(TodoItem);
+	return TodoItem->GetId();
 }
 
 int TodoItemService::UpdateTodoItem(TodoItem* TodoItem) noexcept(false)

@@ -27,6 +27,14 @@ TodoList::TodoList(const std::string& id, const std::string& title, const std::s
 	Description = description;
 }
 
+TodoList::TodoList( const std::string& title, const std::string& description, const std::string& createdDate, const std::string& modifedDate) 
+{
+	Title = title;
+	Description = description;
+	CreatedDate = createdDate;
+	ModifiedDate = modifedDate;
+}
+
 TodoList& TodoList::operator=(TodoList&& todoList) noexcept = default;
 
 std::string TodoList::ToString()

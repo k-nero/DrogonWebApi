@@ -14,6 +14,7 @@ public:
 	TodoItem(TodoItem&& todoItem) noexcept;
 	TodoItem& operator=(const TodoItem& todoItem);
 	TodoItem(const std::string& id, const std::string& todoListId, const std::string& title, const std::string& note, bool isCompleted, const std::string& createdDate = "", const std::string& modifedDate = "");
+	TodoItem(const std::string& todoListId, const std::string& title, const std::string& note, bool isCompleted, const std::string& createdDate = "", const std::string& modifedDate = "");
 	TodoItem& operator=(TodoItem&& todoItem) noexcept;
 	virtual std::string ToString();
 

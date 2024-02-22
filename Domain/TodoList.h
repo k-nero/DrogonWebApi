@@ -16,6 +16,7 @@ public:
 	TodoList(TodoList&& todoList) noexcept;
 	TodoList& operator=(const TodoList& todoList);
 	TodoList(const std::string& id, const std::string& title, const std::string& description, const std::string& createdDate = "", const std::string& modifedDate = "");
+	TodoList(const std::string& title, const std::string& description, const std::string& createdDate = "", const std::string& modifedDate = "");
 	TodoList& operator=(TodoList&& todoList) noexcept;
 	virtual std::string ToString();
 

@@ -63,3 +63,10 @@ struct is_non_void : std::false_type {};
 // Specialization for non-void types
 template <typename T>
 struct is_non_void<T, std::enable_if_t<!std::is_same<T, void>::value>> : std::true_type {};
+
+
+inline bool is_primitive_type(auto val)
+{
+	return std::is_arithmetic_v<std::remove_reference_t<decltype(val)>> || std::is_same_v<std::remove_reference_t<decltype(val)>, std::string> || std::is_same_v<std::remove_reference_t<decltype(val)>, std::wstring>
+		|| std::is_same_v<std::remove_reference_t<decltype(val)>, std::string_view> || std::is_same_v<std::remove_reference_t<decltype(val)>, std::wstring_view>;
+}

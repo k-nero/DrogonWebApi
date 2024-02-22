@@ -8,7 +8,7 @@
 template<typename T>
 class APPLICATION_API IBaseCommand
 {
-	virtual std::string Create(T* item) = 0;
+	virtual int Create(T* item) = 0;
 	virtual int Update(T* item) = 0;
 	virtual int Delete(std::string& id ) = 0;
 };

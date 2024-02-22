@@ -89,15 +89,14 @@ void AuthController::Register(const HttpRequestPtr& req, std::function<void(cons
 			}
 			else
 			{
-				std::string guid = CoreHelper::CreateUUID();
 				std::string passwordHash = Bcrypt::HashPassword((*reqJson)["password"].asString());
-				ApplicationUser user(guid, (*reqJson)["username"].asString(), (*reqJson)["email"].asString(), passwordHash, (*reqJson)["phoneNumber"].asString());
+				ApplicationUser user((*reqJson)["username"].asString(), (*reqJson)["email"].asString(), passwordHash, (*reqJson)["phoneNumber"].asString());
 				std::string rs = cmd.CreateApplicationUser(&user);
 				if (!rs.empty())
 				{
 					ret["message"] = "User created successfully!";
 					ret["status"] = k200OK;
-					ret["user"] = ToJson(user);
+					ret["id"] = rs;
 					auto resp = HttpResponse::newHttpJsonResponse(ret);
 					resp->setStatusCode(k200OK);
 					callback(resp);

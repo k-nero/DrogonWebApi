@@ -21,6 +21,8 @@ public:
 
 	ApplicationUser(const std::string& id, const std::string& username, const std::string& email, const std::string& passwordhash, const std::string& phonenumber, const std::string& createdDate = "", const std::string& modifedDate = "");
 
+	ApplicationUser(const std::string& username, const std::string& email, const std::string& passwordhash, const std::string& phonenumber, const std::string& createdDate = "", const std::string& modifedDate = "");
+
 	//Move assignment operator
 	ApplicationUser& operator=(ApplicationUser&& applicationuser) noexcept;
 

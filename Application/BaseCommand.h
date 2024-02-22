@@ -6,6 +6,8 @@
 #include <boost/mp11.hpp>
 #include <iostream>
 #include "DbContext.h"
+#include "CoreHelper.h"
+#include "TypeCheck.h"
 
 #ifndef PKEY
 #define PKEY "Id"
@@ -23,7 +25,7 @@ public:
 		}
 	}
 	explicit BaseCommand(DbContext* db) { this->db = std::make_unique<DbContext>(db); }
-	virtual std::string Create(T* item) noexcept(false) override
+	virtual int Create(T* item) noexcept(false) override
 	{
 		auto con = db->GetConnection();
 		try
@@ -43,11 +45,11 @@ public:
 			SACommand cmd(con);
 			cmd.setCommandText(_TSA(query.c_str()));
 			std::vector<std::string> fields;
-			std::string id;
 			boost::mp11::mp_for_each<D>([&](auto D)
 			{
 				std::string field = D.name;
-				if (D.name != "ModifiedDate")
+
+				if (D.name != "ModifiedDate" && is_primitive_type((item->*(D).pointer)))
 				{
 					query += field + ", ";
 					if (D.name == "CreatedDate")
@@ -58,13 +60,6 @@ public:
 					{
 						values += ":" + field + ", ";
 						fields.push_back(field);
-					}
-
-					if (D.name == PKEY)
-					{
-						if(!(item->*(D).pointer).empty())
-
-						(std::string&)item->*(D).pointer = id;
 					}
 				}
 			});
@@ -112,7 +107,7 @@ public:
 				}
 			});
 			cmd.Execute();
-			return id;
+			return (int )cmd.RowsAffected();
 		}
 		catch (SAException& ex)
 		{

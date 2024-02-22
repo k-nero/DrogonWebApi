@@ -35,6 +35,16 @@ TodoItem::TodoItem(const std::string& id, const std::string& todoListId, const s
 	IsCompleted = isCompleted;
 }
 
+TodoItem::TodoItem( const std::string& todoListId, const std::string& title, const std::string& note, bool isCompleted, const std::string& createdDate, const std::string& modifedDate)
+{
+	TodoListId = todoListId;
+	Title = title;
+	Note = note;
+	IsCompleted = isCompleted;
+	CreatedDate = createdDate;
+	ModifiedDate = modifedDate;
+}
+
 TodoItem& TodoItem::operator=(TodoItem&& todoItem) noexcept = default;
 
 std::string TodoItem::ToString()

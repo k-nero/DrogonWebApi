@@ -5,18 +5,18 @@ BaseEntity::BaseEntity()
 {
 }
 
-BaseEntity::BaseEntity(const BaseEntity& baseentity)
+BaseEntity::BaseEntity(const BaseEntity& base_entity)
 {
-	Id = baseentity.Id;
-	CreatedDate = baseentity.CreatedDate;
-	ModifiedDate = baseentity.ModifiedDate;
+	Id = base_entity.Id;
+	CreatedDate = base_entity.CreatedDate;
+	ModifiedDate = base_entity.ModifiedDate;
 }
 
-BaseEntity::BaseEntity(BaseEntity&& baseentity) noexcept
+BaseEntity::BaseEntity(BaseEntity&& base_entity) noexcept
 {
-	Id = std::move(baseentity.Id);
-	CreatedDate = std::move(baseentity.CreatedDate);
-	ModifiedDate = std::move(baseentity.ModifiedDate);
+	Id = std::move(base_entity.Id);
+	CreatedDate = std::move(base_entity.CreatedDate);
+	ModifiedDate = std::move(base_entity.ModifiedDate);
 }
 
 BaseEntity& BaseEntity::operator=(const BaseEntity& baseentity)
