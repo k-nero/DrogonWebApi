@@ -19,9 +19,11 @@ env:
   # You can convert this to a build matrix if you need coverage of multiple configuration types.
   # https://docs.github.com/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
   BUILD_CONFIGURATION: Release
-
+  VCPKG_FEATURE_FLAGS: dependencygraph
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build:
@@ -29,10 +31,15 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+      with:
+        submodules: 'recursive'
 
+    - name: Run vcpkg
+      run: ${{ github.workspace }}/vcpkg/vcpkg install --dry-run
+      
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v1.0.2
-
+  
     - name: Restore NuGet packages
       working-directory: ${{env.GITHUB_WORKSPACE}}
       run: nuget restore ${{env.SOLUTION_FILE_PATH}}
