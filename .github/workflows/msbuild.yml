@@ -37,6 +37,9 @@ jobs:
     - name: Bootstrap vcpkg
       run: ${{ github.workspace }}/vcpkg/bootstrap-vcpkg.bat
 
+    - name: Update baseline vcpkg
+      run: ${{ github.workspace }}/vcpkg/vcpkg x-update-baseline
+
     - name: Directly invoke `vcpkg install`
       run: ${{ github.workspace }}/vcpkg/vcpkg install
       
