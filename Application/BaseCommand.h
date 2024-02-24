@@ -9,9 +9,6 @@
 #include "CoreHelper.h"
 #include "TypeCheck.h"
 
-#ifndef PKEY
-#define PKEY "Id"
-#endif // !PKEY
 
 template <typename T, class D = boost::describe::describe_members<T, boost::describe::mod_any_access | boost::describe::mod_inherited>>
 class APPLICATION_API BaseCommand : public IBaseCommand<T>
@@ -124,16 +121,16 @@ public:
 		return 0;
 	}
 
-	virtual int Update(T* item, const std::string& id) noexcept(false) override
+	virtual int Update(T* item, const std::string& query) noexcept(false) override
 	{
 		auto con = db->GetConnection();
 		try
 		{
 			std::string table_name = typeid(T).name();
 			table_name = table_name.substr(table_name.find_last_of(' ') + 1);
-			std::string query = "UPDATE [dbo].[" + table_name + "] SET ";
+			std::string command = "UPDATE [dbo].[" + table_name + "] SET ";
 			SACommand cmd(con);
-			cmd.setCommandText(_TSA(query.c_str()));
+			cmd.setCommandText(_TSA(command.c_str()));
 			std::vector<std::string> fields;
 			boost::mp11::mp_for_each<D>([&](auto D)
 			{
@@ -142,17 +139,17 @@ public:
 				{
 					if (field == "ModifiedDate")
 					{
-						query += field + " = GETDATE(), ";
+						command += field + " = GETDATE(), ";
 					}
 					else
 					{
-						query += field + " = :" + field + ", ";
+						command += field + " = :" + field + ", ";
 						fields.push_back(field);
 					}
 				}
 			});
-			query = query.substr(0, query.length() - 2) + " WHERE Id = :id";
-			cmd.setCommandText(_TSA(query.c_str()));
+			command = command.substr(0, command.length() - 2) + " WHERE " + query;
+			cmd.setCommandText(_TSA(command.c_str()));
 			boost::mp11::mp_for_each<D>([&](auto D)
 			{
 				for (auto& f : fields)
@@ -192,7 +189,6 @@ public:
 					}
 				}
 			});
-			cmd.Param(_TSA("id")).setAsString() = id.c_str();
 			cmd.Execute();
 			return (int)cmd.RowsAffected();
 		}
@@ -211,21 +207,17 @@ public:
 		return 0;
 	}
 
-	virtual int Delete(const std::string& id) noexcept(false) override
+	virtual int Delete(const std::string& query) noexcept(false) override
 	{
 		auto con = db->GetConnection();
 		try
 		{
-			if (id.empty())
-			{
-				throw std::exception("Internal error! Id is empty");
-			}
+		
 			std::string table_name = typeid(T).name();
 			table_name = table_name.substr(table_name.find_last_of(' ') + 1);
-			std::string query = "DELETE FROM [dbo].[" + table_name + "] WHERE Id = :id";
+			std::string command = "DELETE FROM [dbo].[" + table_name + "] WHERE " + query;
 			SACommand cmd(con);
-			cmd.setCommandText(_TSA(query.c_str()));
-			cmd.Param(_TSA("id")).setAsString() = id.c_str();
+			cmd.setCommandText(_TSA(command.c_str()));
 			cmd.Execute();
 			return (int)cmd.RowsAffected();
 		}

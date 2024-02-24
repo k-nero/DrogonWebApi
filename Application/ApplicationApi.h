@@ -6,6 +6,12 @@
 #define APPLICATION_API __declspec(dllimport)
 #endif
 
+#ifndef PKEY
+#define PKEY "Id"
+#endif // !PKEY
+
+#define ASYNC
+
 #define EQ(x) _EQ(x, x)
 #define NEQ(x) _NEQ(x, x)
 #define GT(x) _GT(x, x)

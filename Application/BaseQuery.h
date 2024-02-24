@@ -16,12 +16,6 @@
 #include <string>
 #include <vector>
 
-#define ASYNC
-
-#ifndef PKEY
-#define PKEY "Id"
-#endif // !PKEY
-
 //TODO: Apply concepts
 template <typename T, typename Z = std::is_base_of<BaseEntity, T>::type>
 class APPLICATION_API BaseQuery
@@ -46,7 +40,6 @@ public:
 			{
 				throw std::exception("Id is empty");
 			}
-
 			std::string table_name = typeid(K).name();
 			table_name = table_name.substr(table_name.find_last_of(' ') + 1);
 			std::string query = "SELECT * FROM [dbo].[" + table_name + "] WHERE " PKEY " = :id";
@@ -76,7 +69,6 @@ public:
 								auto inner_items = inner_items_future.get();
 #else
 								auto inner_items = GetAll<inner_elem_type>(table_name + "Id = '" + std::string(cmd.Field(PKEY).asString().GetMultiByteChars()) + "'", includes);
-
 #endif // ASYNC
 								(item.get()->*(D).pointer) = std::any_cast<type>(inner_items);
 							}
@@ -99,9 +91,7 @@ public:
 								(item.get()->*(D).pointer) = std::any_cast<type>(inner_item);
 							}
 						}
-
 					}
-
 				});
 			}
 			return item;
@@ -363,7 +353,6 @@ public:
 			}
 
 			base_query = "SELECT * FROM ( SELECT ROW_NUMBER() OVER (ORDER BY CreatedDate) AS RowNum, * FROM [dbo].[" + table_name + "]";
-
 
 			if (query.length() > 1)
 			{

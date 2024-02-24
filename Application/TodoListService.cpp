@@ -29,17 +29,17 @@ std::string TodoListService::CreateTodoList(TodoList* todo_list) noexcept(false)
 	return todo_list->GetId();
 }
 
-int TodoListService::UpdateTodoList(TodoList* todo_list, const std::string& id) noexcept(false)
+int TodoListService::UpdateTodoList(TodoList* todo_list, const std::string& Id) noexcept(false)
 {
 	TodoListCommand cmd;
-	return cmd.Update(todo_list, id);
+	return cmd.Update(todo_list, EQ(Id));
 
 }
 
-int TodoListService::DeleteTodoList(const std::string& id)
+int TodoListService::DeleteTodoList(const std::string& Id)
 {
 	TodoListCommand cmd;
-	return cmd.Delete(id);
+	return cmd.Delete(EQ(Id));
 }
 
 TodoListService::~TodoListService()
