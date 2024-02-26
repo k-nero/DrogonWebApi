@@ -19,9 +19,6 @@
     <Filter Include="Header Files\CQRS\Base">
       <UniqueIdentifier>{58b15587-9f40-4933-b632-777ddd63b225}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\CQRS\Interface">
-      <UniqueIdentifier>{6571c82d-eba5-4895-bbb2-3ebc017e5f3c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Services">
       <UniqueIdentifier>{a0081a3a-c8de-4d36-8487-47d2ba10cda0}</UniqueIdentifier>
     </Filter>
@@ -33,15 +30,6 @@
     </Filter>
     <Filter Include="Source Files\CQRS\ApplicationUser">
       <UniqueIdentifier>{43dce0e7-461d-4843-8336-2a55a445d00a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\CQRS\Interface\ApplicationUser">
-      <UniqueIdentifier>{4ad0d946-904d-4577-a666-fc8c35c3e2f7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\EndpointObject">
-      <UniqueIdentifier>{7973f26f-fbea-4a8a-b040-123dab547ab9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\EndpointObject">
-      <UniqueIdentifier>{e70b6957-2ad6-4ac6-849e-211b5d0b3de1}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Common">
       <UniqueIdentifier>{20946bce-1235-4dfc-ad5d-bfa552f241d7}</UniqueIdentifier>
@@ -55,17 +43,11 @@
     <Filter Include="Header Files\CQRS\TodoList">
       <UniqueIdentifier>{ac2590e4-672e-4f65-85a9-146bd31fdbb1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\CQRS\Interface\TodoList">
-      <UniqueIdentifier>{5280e5ee-b1dc-422d-ba70-4fb8b24fa06c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\CQRS\TodoList">
       <UniqueIdentifier>{75b7f077-ae91-479d-8004-7a3ab62770ac}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\CQRS\TodoItem">
       <UniqueIdentifier>{15d279f7-e1cb-4c8d-b38a-fdeb9dc15449}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\CQRS\Interface\TodoItem">
-      <UniqueIdentifier>{9be5fd49-73d2-43e9-b326-520feb1f4bd3}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\CQRS\TodoItem">
       <UniqueIdentifier>{04f1a55d-d43c-42e5-8d18-be5044852521}</UniqueIdentifier>
@@ -84,12 +66,6 @@
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="IBaseQuery.h">
-      <Filter>Header Files\CQRS\Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="IBaseCommand.h">
-      <Filter>Header Files\CQRS\Interface</Filter>
-    </ClInclude>
     <ClInclude Include="BaseQuery.h">
       <Filter>Header Files\CQRS\Base</Filter>
     </ClInclude>
@@ -99,17 +75,8 @@
     <ClInclude Include="ApplicationUserCommand.h">
       <Filter>Header Files\CQRS\ApplicationUser</Filter>
     </ClInclude>
-    <ClInclude Include="IApplicationUserCommand.h">
-      <Filter>Header Files\CQRS\Interface\ApplicationUser</Filter>
-    </ClInclude>
-    <ClInclude Include="IAppicationUserQuery.h">
-      <Filter>Header Files\CQRS\Interface\ApplicationUser</Filter>
-    </ClInclude>
     <ClInclude Include="ApplicationUserQuery.h">
       <Filter>Header Files\CQRS\ApplicationUser</Filter>
-    </ClInclude>
-    <ClInclude Include="BaseEPObject.h">
-      <Filter>Header Files\EndpointObject</Filter>
     </ClInclude>
     <ClInclude Include="ApplicationUserServices.h">
       <Filter>Header Files\Services</Filter>
@@ -123,14 +90,8 @@
     <ClInclude Include="CommandBuilder.h">
       <Filter>Header Files\Common</Filter>
     </ClInclude>
-    <ClInclude Include="ITodoListQuery.h">
-      <Filter>Header Files\CQRS\Interface\TodoList</Filter>
-    </ClInclude>
     <ClInclude Include="TodoListCommand.h">
       <Filter>Header Files\CQRS\TodoList</Filter>
-    </ClInclude>
-    <ClInclude Include="ITodoListCommand.h">
-      <Filter>Header Files\CQRS\Interface\TodoList</Filter>
     </ClInclude>
     <ClInclude Include="TodoListQuery.h">
       <Filter>Header Files\CQRS\TodoList</Filter>
@@ -144,12 +105,6 @@
     <ClInclude Include="TodoItemCommand.h">
       <Filter>Header Files\CQRS\TodoItem</Filter>
     </ClInclude>
-    <ClInclude Include="ITodoItemCommand.h">
-      <Filter>Header Files\CQRS\Interface\TodoItem</Filter>
-    </ClInclude>
-    <ClInclude Include="ITodoItemQuery.h">
-      <Filter>Header Files\CQRS\Interface\TodoItem</Filter>
-    </ClInclude>
     <ClInclude Include="TodoItemService.h">
       <Filter>Header Files\Services</Filter>
     </ClInclude>
@@ -161,6 +116,12 @@
     </ClInclude>
     <ClInclude Include="TodoItemModel.h">
       <Filter>Header Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="IBaseCommand.h">
+      <Filter>Header Files\CQRS\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="IBaseQuery.h">
+      <Filter>Header Files\CQRS\Base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -175,9 +136,6 @@
     </ClCompile>
     <ClCompile Include="ApplicationUserQuery.cpp">
       <Filter>Source Files\CQRS\ApplicationUser</Filter>
-    </ClCompile>
-    <ClCompile Include="BaseEObject.cpp">
-      <Filter>Source Files\EndpointObject</Filter>
     </ClCompile>
     <ClCompile Include="ApplicationUserServices.cpp">
       <Filter>Source Files\Services</Filter>

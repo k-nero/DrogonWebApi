@@ -1,9 +1,8 @@
 #pragma once
 #include "BaseQuery.h"
-#include "ITodoItemQuery.h"
 #include "ApplicationApi.h"
 
-class APPLICATION_API TodoItemQuery : public BaseQuery<TodoItem>, ITodoItemQuery
+class APPLICATION_API TodoItemQuery : public BaseQuery<TodoItem>
 {
 public:
 	TodoItemQuery();

@@ -233,19 +233,13 @@
     <ClInclude Include="ApplicationUserCommand.h" />
     <ClInclude Include="ApplicationUserServices.h" />
     <ClInclude Include="ApplicationUserQuery.h" />
-    <ClInclude Include="BaseEPObject.h" />
     <ClInclude Include="BaseQuery.h" />
     <ClInclude Include="BaseCommand.h" />
     <ClInclude Include="CommandBuilder.h" />
-    <ClInclude Include="IAppicationUserQuery.h" />
-    <ClInclude Include="IApplicationUserCommand.h" />
     <ClInclude Include="IBaseQuery.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="ApplicationApi.h" />
     <ClInclude Include="IBaseCommand.h" />
-    <ClInclude Include="ITodoItemCommand.h" />
-    <ClInclude Include="ITodoItemQuery.h" />
-    <ClInclude Include="ITodoListQuery.h" />
     <ClInclude Include="Mapper.h" />
     <ClInclude Include="PaginationObject.h" />
     <ClInclude Include="pch.h" />
@@ -258,7 +252,6 @@
     <ClCompile Include="ApplicationUserCommand.cpp" />
     <ClCompile Include="ApplicationUserServices.cpp" />
     <ClCompile Include="ApplicationUserQuery.cpp" />
-    <ClCompile Include="BaseEObject.cpp" />
     <ClCompile Include="CommandBuilder.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClInclude Include="TodoItemQuery.h" />
@@ -269,7 +262,6 @@
     <ClCompile Include="TodoListService.cpp" />
     <ClInclude Include="TodoListModel.h" />
     <ClInclude Include="TodoListService.h" />
-    <ClInclude Include="ITodoListCommand.h" />
     <ClCompile Include="PaginationObject.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

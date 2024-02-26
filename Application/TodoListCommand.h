@@ -2,9 +2,8 @@
 #include "ApplicationApi.h"
 #include "BaseCommand.h"
 #include "TodoList.h"
-#include "ITodoListCommand.h"
 
-class APPLICATION_API TodoListCommand : public BaseCommand<TodoList>, ITodoListCommand
+class APPLICATION_API TodoListCommand : public BaseCommand<TodoList>
 {
 public:
 	TodoListCommand();

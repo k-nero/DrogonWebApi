@@ -1,9 +1,9 @@
 #pragma once
 #include "BaseQuery.h"
-#include "IAppicationUserQuery.h"
 #include "ApplicationApi.h"
+#include "ApplicationUser.h"
 
-class APPLICATION_API ApplicationUserQuery : public BaseQuery<ApplicationUser>, IApplicationUserQuery
+class APPLICATION_API ApplicationUserQuery : public BaseQuery<ApplicationUser>
 {
 public:
 	ApplicationUserQuery();

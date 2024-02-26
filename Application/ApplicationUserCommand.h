@@ -2,9 +2,8 @@
 #include "ApplicationApi.h"
 #include "BaseCommand.h"
 #include "ApplicationUser.h"
-#include "IApplicationUserCommand.h"
 
-class APPLICATION_API ApplicationUserCommand : public BaseCommand<ApplicationUser>, IApplicationUserCommand
+class APPLICATION_API ApplicationUserCommand : public BaseCommand<ApplicationUser>
 {
 public:
 	ApplicationUserCommand();

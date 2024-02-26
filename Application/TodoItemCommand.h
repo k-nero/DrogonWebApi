@@ -4,11 +4,10 @@
 #include <vector>
 #include "CoreHelper.h"
 #include "ApplicationApi.h"
-#include "ITodoItemCommand.h"
 #include "BaseCommand.h"
 
 
-class APPLICATION_API TodoItemCommand : public BaseCommand<TodoItem>, ITodoItemCommand
+class APPLICATION_API TodoItemCommand : public BaseCommand<TodoItem>
 {
 public:
 	TodoItemCommand();
