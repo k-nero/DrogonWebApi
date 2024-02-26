@@ -1,6 +1,5 @@
 #pragma once
 #include "ApplicationApi.h"
-#include "IBaseCommand.h"
 #include <boost/describe.hpp>
 #include <boost/log/trivial.hpp>
 #include <boost/mp11.hpp>
@@ -11,7 +10,7 @@
 
 
 template <typename T, class D = boost::describe::describe_members<T, boost::describe::mod_any_access | boost::describe::mod_inherited>>
-class APPLICATION_API BaseCommand : public IBaseCommand<T>
+class APPLICATION_API BaseCommand 
 {
 public:
 	BaseCommand()
@@ -22,7 +21,7 @@ public:
 		}
 	}
 	explicit BaseCommand(DbContext* db) { this->db = std::make_unique<DbContext>(db); }
-	virtual int Create(T& item) noexcept(false) override
+	virtual int Create(T& item) noexcept(false)
 	{
 		auto con = db->GetConnection();
 		try
@@ -118,7 +117,7 @@ public:
 		return 0;
 	}
 
-	virtual int Update(T& item, const std::string& query) noexcept(false) override
+	virtual int Update(T& item, const std::string& query) noexcept(false)
 	{
 		auto con = db->GetConnection();
 		try
@@ -204,7 +203,7 @@ public:
 		return 0;
 	}
 
-	virtual int Delete(const std::string& query) noexcept(false) override
+	virtual int Delete(const std::string& query) noexcept(false)
 	{
 		auto con = db->GetConnection();
 		try

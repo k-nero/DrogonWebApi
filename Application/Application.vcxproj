@@ -236,10 +236,8 @@
     <ClInclude Include="BaseQuery.h" />
     <ClInclude Include="BaseCommand.h" />
     <ClInclude Include="CommandBuilder.h" />
-    <ClInclude Include="IBaseQuery.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="ApplicationApi.h" />
-    <ClInclude Include="IBaseCommand.h" />
     <ClInclude Include="Mapper.h" />
     <ClInclude Include="PaginationObject.h" />
     <ClInclude Include="pch.h" />

@@ -117,12 +117,6 @@
     <ClInclude Include="TodoItemModel.h">
       <Filter>Header Files\Model</Filter>
     </ClInclude>
-    <ClInclude Include="IBaseCommand.h">
-      <Filter>Header Files\CQRS\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="IBaseQuery.h">
-      <Filter>Header Files\CQRS\Base</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
