@@ -21,18 +21,20 @@ std::vector<std::shared_ptr<TodoItem>> TodoItemService::GetAllTodoItems() noexce
 }
 
 
-std::string TodoItemService::CreateTodoItem(TodoItem* TodoItem) noexcept(false)
+std::string TodoItemService::CreateTodoItem(TodoItemModel& todo_item_model) noexcept(false)
 {
 	TodoItemCommand cmd;
-	TodoItem->SetId(CoreHelper::CreateUUID());
-	cmd.Create(TodoItem);
-	return TodoItem->GetId();
+	auto todo_item = Mapper::Map<TodoItemModel, TodoItem>(todo_item_model);
+	todo_item.SetId(CoreHelper::CreateUUID());
+	cmd.Create(todo_item);
+	return todo_item.GetId();
 }
 
-int TodoItemService::UpdateTodoItem(TodoItem* TodoItem, const std::string& Id) noexcept(false)
+int TodoItemService::UpdateTodoItem(TodoItemModel& todo_item_model, const std::string& Id) noexcept(false)
 {
 	TodoItemCommand cmd;
-	return cmd.Update(TodoItem, EQ(Id));
+	auto todo_item = Mapper::Map<TodoItemModel, TodoItem>(todo_item_model);
+	return cmd.Update(todo_item, EQ(Id));
 }
 
 int TodoItemService::DeleteTodoItem(const std::string& Id)

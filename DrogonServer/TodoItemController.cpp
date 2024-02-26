@@ -91,12 +91,12 @@ void TodoItemController::Get(const HttpRequestPtr& req, std::function<void(const
 	}
 }
 
-void TodoItemController::Create(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback, TodoItem todo_item)
+void TodoItemController::Create(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback, TodoItemModel todo_item_model)
 {
 	try
 	{
 		TodoItemService cmd;
-		auto task = std::future(std::async(std::launch::async, [&cmd, &todo_item]() { return cmd.CreateTodoItem(&todo_item); }));
+		auto task = std::future(std::async(std::launch::async, [&cmd, &todo_item_model]() { return cmd.CreateTodoItem(todo_item_model); }));
 		const auto id(task.get());
 		Json::Value ret;
 		ret["id"] = id;
@@ -129,12 +129,12 @@ void TodoItemController::Create(const HttpRequestPtr& req, std::function<void(co
 	}
 }
 
-void TodoItemController::Update(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback, std::string p1, TodoItem todo_item)
+void TodoItemController::Update(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback, std::string p1, TodoItemModel todo_item_model)
 {
 	try
 	{
 		TodoItemService cmd;
-		auto task = std::future(std::async(std::launch::async, [&cmd, &todo_item, p1]() { return cmd.UpdateTodoItem(&todo_item, p1); }));
+		auto task = std::future(std::async(std::launch::async, [&cmd, &todo_item_model, p1]() { return cmd.UpdateTodoItem(todo_item_model, p1); }));
 		const auto id(task.get());
 		Json::Value ret;
 		ret["id"] = id;

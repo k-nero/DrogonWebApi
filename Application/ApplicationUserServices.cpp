@@ -25,16 +25,16 @@ std::vector<std::shared_ptr<ApplicationUser>> ApplicationUserService::GetAllAppl
 	return query.GetAll();
 }
 
-std::string ApplicationUserService::CreateApplicationUser(ApplicationUser* applicationUser) noexcept(false)
+std::string ApplicationUserService::CreateApplicationUser(ApplicationUser& applicationUser) noexcept(false)
 {
 	std::string id = CoreHelper::CreateUUID();
-	applicationUser->SetId(id);
+	applicationUser.SetId(id);
 	ApplicationUserCommand cmd;
 	cmd.Create(applicationUser);
 	return id;
 }
 
-int ApplicationUserService::UpdateApplicationUser(ApplicationUser* applicationUser, const std::string& Id) noexcept(false)
+int ApplicationUserService::UpdateApplicationUser(ApplicationUser& applicationUser, const std::string& Id) noexcept(false)
 {
 	ApplicationUserCommand cmd;
 	return cmd.Update(applicationUser, EQ(Id));

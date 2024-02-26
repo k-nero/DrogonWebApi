@@ -22,15 +22,12 @@ public:
 		}
 	}
 	explicit BaseCommand(DbContext* db) { this->db = std::make_unique<DbContext>(db); }
-	virtual int Create(T* item) noexcept(false) override
+	virtual int Create(T& item) noexcept(false) override
 	{
 		auto con = db->GetConnection();
 		try
 		{
-			if (item == nullptr)
-			{
-				throw std::exception("Internal error! Item is null");
-			}
+			
 			if (con == nullptr || !con->isConnected())
 			{
 				throw std::exception("Internal error! Database connection is null or failed");
@@ -46,7 +43,7 @@ public:
 			{
 				std::string field = D.name;
 
-				if (D.name != "ModifiedDate" && is_primitive_type((item->*(D).pointer)))
+				if (D.name != "ModifiedDate" && is_primitive_type((item.*(D).pointer)))
 				{
 					query += field + ", ";
 					if (D.name == "CreatedDate")
@@ -70,33 +67,33 @@ public:
 				{
 					if (D.name == f)
 					{
-						auto value = (item->*(D).pointer);
+						auto value = (item.*(D).pointer);
 						auto void_pointer = (void*)&value;
-						if (std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, int>::value )
+						if (std::is_same<std::remove_reference_t<decltype(item.*(D).pointer)>, int>::value )
 						{
 							cmd.Param(D.name).setAsLong() = *(int*)void_pointer;
 						}
-						else if (std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, long>::value )
+						else if (std::is_same<std::remove_reference_t<decltype(item.*(D).pointer)>, long>::value )
 						{
 							cmd.Param(D.name).setAsLong() = *(long*)void_pointer;
 						}
-						else if (std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, bool>::value )
+						else if (std::is_same<std::remove_reference_t<decltype(item.*(D).pointer)>, bool>::value )
 						{
 							cmd.Param(D.name).setAsBool() = *(bool*)void_pointer;
 						}
-						else if (std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, double>::value
-							|| std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, float>::value )
+						else if (std::is_same<std::remove_reference_t<decltype(item.*(D).pointer)>, double>::value
+							|| std::is_same<std::remove_reference_t<decltype(item.*(D).pointer)>, float>::value )
 						{
 							cmd.Param(D.name).setAsDouble() = *(double*)void_pointer;
 						}
-						else if (std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, std::string>::value 
-							|| std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, std::wstring>::value 
-							|| std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, std::string_view>::value 
-							|| std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, std::wstring_view>::value )
+						else if (std::is_same<std::remove_reference_t<decltype(item.*(D).pointer)>, std::string>::value 
+							|| std::is_same<std::remove_reference_t<decltype(item.*(D).pointer)>, std::wstring>::value 
+							|| std::is_same<std::remove_reference_t<decltype(item.*(D).pointer)>, std::string_view>::value 
+							|| std::is_same<std::remove_reference_t<decltype(item.*(D).pointer)>, std::wstring_view>::value )
 						{
 							cmd.Param(_TSA(D.name)).setAsString() = (*(std::string*)void_pointer).c_str();
 						}
-						else if (std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, std::tm>::value )
+						else if (std::is_same<std::remove_reference_t<decltype(item.*(D).pointer)>, std::tm>::value )
 						{
 							cmd.Param(_TSA(D.name)).setAsDateTime() = SADateTime(*(tm*)void_pointer);
 						}
@@ -121,7 +118,7 @@ public:
 		return 0;
 	}
 
-	virtual int Update(T* item, const std::string& query) noexcept(false) override
+	virtual int Update(T& item, const std::string& query) noexcept(false) override
 	{
 		auto con = db->GetConnection();
 		try
@@ -135,7 +132,7 @@ public:
 			boost::mp11::mp_for_each<D>([&](auto D)
 			{
 				std::string field = D.name;
-				if (field != "Id" && field != "CreatedDate" && is_primitive_type((item->*(D).pointer)))
+				if (field != "Id" && field != "CreatedDate" && is_primitive_type((item.*(D).pointer)))
 				{
 					if (field == "ModifiedDate")
 					{
@@ -156,33 +153,33 @@ public:
 				{
 					if (D.name == f)
 					{
-						auto value = (item->*(D).pointer);
+						auto value = (item.*(D).pointer);
 						auto void_pointer = (void*)&value;
-						if (std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, int>::value )
+						if (std::is_same<std::remove_reference_t<decltype(item.*(D).pointer)>, int>::value )
 						{
 							cmd.Param(D.name).setAsLong() = *(int*)void_pointer;
 						}
-						else if (std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, long>::value )
+						else if (std::is_same<std::remove_reference_t<decltype(item.*(D).pointer)>, long>::value )
 						{
 							cmd.Param(D.name).setAsLong() = *(long*)void_pointer;
 						}
-						else if (std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, bool>::value )
+						else if (std::is_same<std::remove_reference_t<decltype(item.*(D).pointer)>, bool>::value )
 						{
 							cmd.Param(D.name).setAsBool() = *(bool*)void_pointer;
 						}
-						else if (std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, double>::value 
-							|| std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, float>::value)
+						else if (std::is_same<std::remove_reference_t<decltype(item.*(D).pointer)>, double>::value 
+							|| std::is_same<std::remove_reference_t<decltype(item.*(D).pointer)>, float>::value)
 						{
 							cmd.Param(D.name).setAsDouble() = *(double*)void_pointer;
 						}
-						else if (std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, std::string>::value 
-							|| std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, std::wstring>::value 
-							|| std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, std::string_view>::value 
-							|| std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, std::wstring_view>::value )
+						else if (std::is_same<std::remove_reference_t<decltype(item.*(D).pointer)>, std::string>::value 
+							|| std::is_same<std::remove_reference_t<decltype(item.*(D).pointer)>, std::wstring>::value 
+							|| std::is_same<std::remove_reference_t<decltype(item.*(D).pointer)>, std::string_view>::value 
+							|| std::is_same<std::remove_reference_t<decltype(item.*(D).pointer)>, std::wstring_view>::value )
 						{
 							cmd.Param(_TSA(D.name)).setAsString() = (*(std::string*)void_pointer).c_str();
 						}
-						else if (std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, std::tm>::value )
+						else if (std::is_same<std::remove_reference_t<decltype(item.*(D).pointer)>, std::tm>::value )
 						{
 							cmd.Param(_TSA(D.name)).setAsDateTime() = SADateTime(*(tm*)void_pointer);
 						}

@@ -4,7 +4,8 @@
 #include "ApplicationApi.h"
 #include "TodoItemCommand.h"
 #include "TodoItemQuery.h"
-
+#include "TodoItemModel.h"
+#include "Mapper.h"
 
 class APPLICATION_API TodoItemService
 {
@@ -13,8 +14,8 @@ public:
 	//explicit TodoItemService(SAConnection* con) { this->con = con; }
 	std::shared_ptr<TodoItem> GetTodoItemById(const std::string& id);
 	std::vector<std::shared_ptr<TodoItem>>GetAllTodoItems();
-	std::string CreateTodoItem(TodoItem * TodoItem);
-	int UpdateTodoItem(TodoItem* TodoItem, const std::string& id);
+	std::string CreateTodoItem(TodoItemModel& todo_item_model);
+	int UpdateTodoItem(TodoItemModel& todo_item_model, const std::string& id);
 	int DeleteTodoItem(const std::string& id);
 	~TodoItemService();
 private:

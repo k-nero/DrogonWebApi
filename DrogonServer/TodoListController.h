@@ -8,6 +8,7 @@
 #include "JsonHelper.h"
 #include <boost/log/trivial.hpp>
 #include "ModelBinding.h"
+#include "TodoListModel.h"
 
 
 using namespace drogon;
@@ -15,9 +16,9 @@ using namespace drogon;
 namespace drogon
 {
 	template<>
-	inline TodoList fromRequest(const HttpRequest& req)
+	inline TodoListModel fromRequest(const HttpRequest& req)
 	{
-		return from_request<TodoList>(req);
+		return object_parser<TodoListModel>(req);
 	}
 };
 
@@ -36,7 +37,7 @@ public:
 	// your declaration of processing function maybe like this:
 	void GetAll(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback);
 	void Get(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback, std::string p1);
-	void Create(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback, TodoList todo_list);
-	void Update(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback, const std::string id, TodoList todo_list);
+	void Create(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback, TodoListModel todo_list_model);
+	void Update(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback, const std::string id, TodoListModel todo_list_model);
 	void Delete(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback, const std::string id);
 };

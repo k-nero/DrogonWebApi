@@ -3,31 +3,34 @@
 #include <type_traits>
 #include <functional>
 
-/*template<typename T, typename Z = std::is_base_of<BaseEntity, T>::type >
-class CommandBuilder
-{
-
-public:
-	CommandBuilder();
-
-	~CommandBuilder();
-private:
-	std::string _command;
-
-}*/;
-
 namespace CommandBuilder
 {
-	class Where
+	template<typename T>
+	class DbSet
 	{
 	public:
-		Where();
-		~Where();
-		
+		DbSet();
+		~DbSet();
+		DbSet& Where(std::string where)
+		{
+			_where = where;
+			return this;
+		}
+
+		template<typename F>
+		DbSet& Include(F f)
+		{
+			_includes.push_back(typeid(f()).name());
+			return this;
+		}
 
 
 	private:
 		std::string _command;
+		std::string _where;
+		std::string _table;
+		std::vector<std::string> _includes;
+
 	};
 }
 

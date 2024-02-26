@@ -246,9 +246,11 @@
     <ClInclude Include="ITodoItemCommand.h" />
     <ClInclude Include="ITodoItemQuery.h" />
     <ClInclude Include="ITodoListQuery.h" />
+    <ClInclude Include="Mapper.h" />
     <ClInclude Include="PaginationObject.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="TodoItemCommand.h" />
+    <ClInclude Include="TodoItemModel.h" />
     <ClInclude Include="TodoItemService.h" />
     <ClInclude Include="TodoListCommand.h" />
   </ItemGroup>
@@ -260,9 +262,12 @@
     <ClCompile Include="CommandBuilder.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClInclude Include="TodoItemQuery.h" />
+    <ClCompile Include="TodoItemModel.cpp" />
     <ClCompile Include="TodoItemQuery.cpp" />
     <ClCompile Include="TodoItemService.cpp" />
+    <ClCompile Include="TodoListModel.cpp" />
     <ClCompile Include="TodoListService.cpp" />
+    <ClInclude Include="TodoListModel.h" />
     <ClInclude Include="TodoListService.h" />
     <ClInclude Include="ITodoListCommand.h" />
     <ClCompile Include="PaginationObject.cpp" />

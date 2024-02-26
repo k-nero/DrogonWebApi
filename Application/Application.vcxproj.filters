@@ -49,12 +49,6 @@
     <Filter Include="Source Files\Services">
       <UniqueIdentifier>{1161eb53-88cc-4bac-9847-8821d7fc4f0f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Services\Interface">
-      <UniqueIdentifier>{0e29a219-c1b7-4076-8f11-29efe88f4348}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Services\Base">
-      <UniqueIdentifier>{fa33e1ed-b085-40fe-ba3c-0c36111484fe}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Common">
       <UniqueIdentifier>{9149844f-55c9-4af4-ba05-a8fe88616cc9}</UniqueIdentifier>
     </Filter>
@@ -76,8 +70,11 @@
     <Filter Include="Source Files\CQRS\TodoItem">
       <UniqueIdentifier>{04f1a55d-d43c-42e5-8d18-be5044852521}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\CQRS\Base">
-      <UniqueIdentifier>{838272c3-dfea-49bf-82b7-30f427193de5}</UniqueIdentifier>
+    <Filter Include="Header Files\Model">
+      <UniqueIdentifier>{ed85d578-47ba-4d32-a470-3f570e30e713}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Model">
+      <UniqueIdentifier>{50cef1b3-460a-48a0-b20b-4b1e19b45997}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -156,6 +153,15 @@
     <ClInclude Include="TodoItemService.h">
       <Filter>Header Files\Services</Filter>
     </ClInclude>
+    <ClInclude Include="Mapper.h">
+      <Filter>Header Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="TodoListModel.h">
+      <Filter>Header Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="TodoItemModel.h">
+      <Filter>Header Files\Model</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -199,6 +205,12 @@
     </ClCompile>
     <ClCompile Include="TodoItemService.cpp">
       <Filter>Source Files\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="TodoListModel.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="TodoItemModel.cpp">
+      <Filter>Source Files\Model</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -91,12 +91,12 @@ void TodoListController::Get(const HttpRequestPtr& req, std::function<void(const
 	}
 }
 
-void TodoListController::Create(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback, TodoList todo_list)
+void TodoListController::Create(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback, TodoListModel todo_list)
 {
 	try
 	{
 		TodoListService cmd;
-		auto task = std::future(std::async(std::launch::async, [&cmd, &todo_list]() { return cmd.CreateTodoList(&todo_list); }));
+		auto task = std::future(std::async(std::launch::async, [&cmd, &todo_list]() { return cmd.CreateTodoList(todo_list); }));
 		const auto id = task.get();
 		Json::Value ret;
 		if (!id.empty())
@@ -143,12 +143,12 @@ void TodoListController::Create(const HttpRequestPtr& req, std::function<void(co
 	}
 }
 
-void TodoListController::Update(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback, const std::string id, TodoList todo_list)
+void TodoListController::Update(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback, const std::string id, TodoListModel todo_list)
 {
 	try
 	{
 		TodoListService service;
-		auto task = std::future(std::async(std::launch::async, [&service, &todo_list, &id]() { return service.UpdateTodoList(&todo_list, id); }));
+		auto task = std::future(std::async(std::launch::async, [&service, &todo_list, &id]() { return service.UpdateTodoList(todo_list, id); }));
 		const auto rows_affected = task.get();
 		if (rows_affected > 0)
 		{

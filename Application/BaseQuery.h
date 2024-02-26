@@ -243,7 +243,6 @@ public:
 			}
 			else
 			{
-				//TODO: Join table
 			}
 		});
 		return std::shared_ptr<T>(item);

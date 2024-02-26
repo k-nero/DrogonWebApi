@@ -1,7 +1,5 @@
 #include "pch.h"
 #include "TodoListService.h"
-#include "DbContext.h"
-#include "TodoItemQuery.h"
 
 TodoListService::TodoListService()
 {
@@ -21,17 +19,19 @@ std::vector<std::shared_ptr<TodoList>> TodoListService::GetAllTodoLists() noexce
 }
 
 
-std::string TodoListService::CreateTodoList(TodoList* todo_list) noexcept(false)
+std::string TodoListService::CreateTodoList(TodoListModel& todo_list_model) noexcept(false)
 {
 	TodoListCommand cmd;
-	todo_list->SetId(CoreHelper::CreateUUID());
+	auto todo_list = Mapper::Map<TodoListModel, TodoList>(todo_list_model);
+	todo_list.SetId(CoreHelper::CreateUUID());
 	cmd.Create(todo_list);
-	return todo_list->GetId();
+	return todo_list.GetId();
 }
 
-int TodoListService::UpdateTodoList(TodoList* todo_list, const std::string& Id) noexcept(false)
+int TodoListService::UpdateTodoList(TodoListModel& todo_list_model, const std::string& Id) noexcept(false)
 {
 	TodoListCommand cmd;
+	auto todo_list = Mapper::Map<TodoListModel, TodoList>(todo_list_model);
 	return cmd.Update(todo_list, EQ(Id));
 
 }
