@@ -23,7 +23,7 @@ public:
 	explicit BaseCommand(DbContext* db) { this->db = std::make_unique<DbContext>(db); }
 	virtual int Create(T& item) noexcept(false)
 	{
-		auto con = db->GetConnection();
+		std::shared_ptr<SAConnection> con(db->GetConnection());
 		try
 		{
 			
@@ -35,7 +35,7 @@ public:
 			table_name = table_name.substr(table_name.find_last_of(' ') + 1);
 			std::string query = "INSERT INTO [dbo].[" + table_name + "] (";
 			std::string values = " VALUES (";
-			SACommand cmd(con);
+			SACommand cmd(con.get());
 			cmd.setCommandText(_TSA(query.c_str()));
 			std::vector<std::string> fields;
 			boost::mp11::mp_for_each<D>([&](auto D)
@@ -119,13 +119,13 @@ public:
 
 	virtual int Update(T& item, const std::string& query) noexcept(false)
 	{
-		auto con = db->GetConnection();
+				std::shared_ptr<SAConnection> con(db->GetConnection());
 		try
 		{
 			std::string table_name = typeid(T).name();
 			table_name = table_name.substr(table_name.find_last_of(' ') + 1);
 			std::string command = "UPDATE [dbo].[" + table_name + "] SET ";
-			SACommand cmd(con);
+			SACommand cmd(con.get());
 			cmd.setCommandText(_TSA(command.c_str()));
 			std::vector<std::string> fields;
 			boost::mp11::mp_for_each<D>([&](auto D)
@@ -205,14 +205,14 @@ public:
 
 	virtual int Delete(const std::string& query) noexcept(false)
 	{
-		auto con = db->GetConnection();
+				std::shared_ptr<SAConnection> con(db->GetConnection());
 		try
 		{
 		
 			std::string table_name = typeid(T).name();
 			table_name = table_name.substr(table_name.find_last_of(' ') + 1);
 			std::string command = "DELETE FROM [dbo].[" + table_name + "] WHERE " + query;
-			SACommand cmd(con);
+			SACommand cmd(con.get());
 			cmd.setCommandText(_TSA(command.c_str()));
 			cmd.Execute();
 			return (int)cmd.RowsAffected();

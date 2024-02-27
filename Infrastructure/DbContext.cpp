@@ -8,16 +8,24 @@
 DbContext::DbContext() 
 {
 
+	
+
+}
+
+SAConnection* DbContext::GetConnection() noexcept(false)
+{
 	if (ConfigProvider::GetInstance()->GetConnectionString().server.empty())
 	{
 		ConfigProvider::GetInstance()->Initialize();
 	}
 	connectionString = ConfigProvider::GetInstance()->GetConnectionString();
 
-	connection = new SAConnection();
+	auto connection = new SAConnection();
 	try
 	{
+
 		connection->Connect(connectionString.server.c_str(), connectionString.username.c_str(), connectionString.password.c_str(), SA_SQLServer_Client);
+
 		if (!connection->isConnected())
 		{
 			BOOST_LOG_TRIVIAL(fatal) << "Unable to connect to the database";
@@ -48,16 +56,14 @@ DbContext::DbContext()
 	{
 		BOOST_LOG_TRIVIAL(fatal) << "Unknown exception";
 	}
-
-}
-
-SAConnection* DbContext::GetConnection() noexcept(false)
-{
 	return connection;
 }
 
-std::string DbContext::TestConnection() const
+
+
+std::string DbContext::TestConnection() 
 {
+	auto connection = GetConnection();
 	SACommand cmd(connection, "SELECT @@version");
 	cmd.Execute();
 	while (cmd.FetchNext())
@@ -69,29 +75,5 @@ std::string DbContext::TestConnection() const
 
 DbContext::~DbContext()
 {
-	if (connection->isConnected())
-	{
-		try
-		{
-			connection->Disconnect();
-		}
-		catch (SAException& x)
-		{
-			std::cout << "Unable to disconnect " << std::endl;
-			std::cout << "Trying to destroy connection " << std::endl;
-			BOOST_LOG_TRIVIAL(fatal) << x.ErrText();
-			BOOST_LOG_TRIVIAL(error) << x.ErrMessage();
-#ifdef _DEBUG
-			BOOST_LOG_TRIVIAL(debug) << x.ErrNativeCode();
-			BOOST_LOG_TRIVIAL(debug) << x.ErrClass();
-			BOOST_LOG_TRIVIAL(debug) << x.ErrPos();
-#endif // DEBUG
-			connection->Destroy();
-		}
-	}
-	if (connection != nullptr)
-	{
-		delete connection;
-		connection = nullptr;
-	}
+
 }

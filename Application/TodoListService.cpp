@@ -18,6 +18,12 @@ std::vector<std::shared_ptr<TodoList>> TodoListService::GetAllTodoLists() noexce
 	return query.GetAll();
 }
 
+std::shared_ptr<PaginationObject<TodoList>> TodoListService::GetTodoListsByPage(int page, int page_size)
+{
+	TodoListQuery query;
+	return query.GetPagination(page, page_size, "", {"TodoItems"});
+}
+
 
 std::string TodoListService::CreateTodoList(TodoListModel& todo_list_model) noexcept(false)
 {

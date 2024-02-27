@@ -235,6 +235,7 @@
     <ClInclude Include="ApplicationUserQuery.h" />
     <ClInclude Include="BaseQuery.h" />
     <ClInclude Include="BaseCommand.h" />
+    <ClInclude Include="BaseQueryV2.h" />
     <ClInclude Include="CommandBuilder.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="ApplicationApi.h" />

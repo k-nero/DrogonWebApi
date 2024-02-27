@@ -246,3 +246,40 @@ void TodoListController::Delete(const HttpRequestPtr& req, std::function<void(co
 		return;
 	}
 }
+
+void TodoListController::GetPaginated(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback, int page, int limit)
+{
+	try
+	{
+		TodoListService cmd;
+		auto task = std::future(std::async(std::launch::async, [&cmd, page, limit]() { return cmd.GetTodoListsByPage(page, limit); }));
+		const auto todo_lists = task.get();
+		Json::Value rs = ToJson(todo_lists);
+		const auto resp = HttpResponse::newHttpJsonResponse(rs);
+		resp->setStatusCode(k200OK);
+		callback(resp);
+		return;
+	}
+	catch (std::exception& ex)
+	{
+		BOOST_LOG_TRIVIAL(error) << ex.what();
+		Json::Value ret;
+		ret["error"] = ex.what();
+		ret["status"] = 500;
+		const auto resp = HttpResponse::newHttpJsonResponse(ret);
+		resp->setStatusCode(k500InternalServerError);
+		callback(resp);
+		return;
+	}
+	catch (...)
+	{
+		BOOST_LOG_TRIVIAL(error) << "Unknow exception";
+		Json::Value ret;
+		ret["error"] = "Internal Server Error";
+		ret["status"] = 500;
+		const auto resp = HttpResponse::newHttpJsonResponse(ret);
+		resp->setStatusCode(k500InternalServerError);
+		callback(resp);
+		return;
+	}
+}

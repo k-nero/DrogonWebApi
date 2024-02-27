@@ -14,6 +14,7 @@
 #include <memory>
 #include <SQLAPI.h>
 #include <string>
+#include <mutex>
 #include <vector>
 
 //TODO: Apply concepts
@@ -33,7 +34,7 @@ public:
 	template<typename K = T>
 	std::shared_ptr<K> GetById(const std::string& id, std::vector<std::string> includes = {}) noexcept(false)
 	{
-		auto con = db->GetConnection();
+		std::shared_ptr<SAConnection> con(db->GetConnection());
 		try
 		{
 			if (id.empty())
@@ -43,7 +44,7 @@ public:
 			std::string table_name = typeid(K).name();
 			table_name = table_name.substr(table_name.find_last_of(' ') + 1);
 			std::string query = "SELECT * FROM [dbo].[" + table_name + "] WHERE " PKEY " = :id";
-			SACommand cmd(con, _TSA(query.c_str()));
+			SACommand cmd(con.get(), _TSA(query.c_str()));
 			const SAString idStr(id.c_str());
 			cmd.Param(_TSA("id")).setAsString() = idStr;
 			cmd.Execute();
@@ -63,7 +64,8 @@ public:
 
 							if (!std::is_void_v<inner_elem_type>)
 							{
-								includes.erase(std::remove_if(includes.begin(), includes.end(), [&](std::string s) { return s == D.name; }), includes.end());
+								auto includes_copy = includes;
+								includes_copy.erase(std::remove_if(includes_copy.begin(), includes_copy.end(), [&](std::string s) { return s == D.name; }), includes_copy.end());
 #ifdef ASYNC
 								auto inner_items_future = std::async(std::launch::async, &BaseQuery::GetAll<inner_elem_type>, this, table_name + "Id = '" + std::string(cmd.Field(PKEY).asString().GetMultiByteChars()) + "'", includes);
 								auto inner_items = inner_items_future.get();
@@ -81,7 +83,8 @@ public:
 								std::string inner_table_name = typeid(inner_elem_type).name();
 								inner_table_name = inner_table_name.substr(inner_table_name.find_last_of(' ') + 1);
 								auto id = std::string(cmd.Field(std::string(inner_table_name + PKEY).c_str()).asString().GetMultiByteChars());
-								includes.erase(std::remove_if(includes.begin(), includes.end(), [&](std::string s) { return s == D.name; }), includes.end());
+								auto includes_copy = includes;
+								includes_copy.erase(std::remove_if(includes_copy.begin(), includes_copy.end(), [&](std::string s) { return s == D.name; }), includes_copy.end());
 #ifdef ASYNC
 								auto inner_item_future = std::async(std::launch::async, &BaseQuery::GetSingle<inner_elem_type>, this, PKEY " =  '" + id + "'", includes);
 								auto inner_item = inner_item_future.get();
@@ -120,7 +123,7 @@ public:
 	template<typename K = T, std::enable_if_t<std::is_class_v<K>, bool> = true>
 	std::vector<std::shared_ptr<K>> GetAll(std::string query = "", std::vector<std::string> includes = {}) noexcept(false)
 	{
-		auto con = db->GetConnection();
+		std::shared_ptr<SAConnection> con(db->GetConnection());
 		std::vector<std::shared_ptr<K>> items;
 		try
 		{
@@ -131,7 +134,7 @@ public:
 			{
 				base_query += " WHERE " + query;
 			}
-			SACommand cmd(con, _TSA(base_query.c_str()));
+			SACommand cmd(con.get(), _TSA(base_query.c_str()));
 			cmd.Execute();
 			while (cmd.FetchNext())
 			{
@@ -148,7 +151,8 @@ public:
 
 							if (!std::is_void_v<inner_elem_type>)
 							{
-								includes.erase(std::remove_if(includes.begin(), includes.end(), [&](std::string s) { return s == D.name; }), includes.end());
+								auto includes_copy = includes;
+								includes_copy.erase(std::remove_if(includes_copy.begin(), includes_copy.end(), [&](std::string s) { return s == D.name; }), includes_copy.end());
 #ifdef ASYNC
 								auto inner_items_future = std::async(std::launch::async, &BaseQuery::GetAll<inner_elem_type>, this, table_name + "Id = '" + std::string(cmd.Field(PKEY).asString().GetMultiByteChars()) + "'", includes);
 								auto inner_items(inner_items_future.get());
@@ -166,7 +170,8 @@ public:
 								std::string inner_table_name = typeid(inner_elem_type).name();
 								inner_table_name = inner_table_name.substr(inner_table_name.find_last_of(' ') + 1);
 								auto id = std::string(cmd.Field(std::string(inner_table_name + "Id").c_str()).asString().GetMultiByteChars());
-								includes.erase(std::remove_if(includes.begin(), includes.end(), [&](std::string s) { return s == D.name; }), includes.end());
+								auto includes_copy = includes;
+								includes_copy.erase(std::remove_if(includes_copy.begin(), includes_copy.end(), [&](std::string s) { return s == D.name; }), includes_copy.end());
 #ifdef ASYNC
 								auto inner_item_future = std::async(std::launch::async, &BaseQuery::GetSingle<inner_elem_type>, this, PKEY " =  '" + id + "'", includes);
 								auto inner_item = inner_item_future.get();
@@ -257,13 +262,13 @@ public:
 	template<typename K = T, std::enable_if_t<std::is_class_v<K>, bool> = true>
 	std::shared_ptr<K> GetSingle(const std::string query = "", std::vector<std::string> includes = {}) noexcept(false)
 	{
-		auto con = db->GetConnection();
+		std::shared_ptr<SAConnection> con(db->GetConnection());
 		try
 		{
 			std::string table_name = typeid(K).name();
 			table_name = table_name.substr(table_name.find_last_of(' ') + 1);
 			std::string base_query = "SELECT * FROM [dbo].[" + table_name + "] WHERE " + query;
-			SACommand cmd(con, _TSA(base_query.c_str()));
+			SACommand cmd(con.get(), _TSA(base_query.c_str()));
 			cmd.Execute();
 			std::shared_ptr<K> item;
 			if (cmd.FetchNext())
@@ -282,7 +287,8 @@ public:
 							if (!std::is_void_v<inner_elem_type>)
 							{
 								
-								includes.erase(std::remove_if(includes.begin(), includes.end(), [&](std::string s) { return s == D.name; }), includes.end());
+								auto includes_copy = includes;
+								includes_copy.erase(std::remove_if(includes_copy.begin(), includes_copy.end(), [&](std::string s) { return s == D.name; }), includes_copy.end());
 #ifdef ASYNC
 								auto inner_items_future = std::async(std::launch::async, &BaseQuery::GetAll<inner_elem_type>, this, table_name +  "Id = '" + std::string(cmd.Field(PKEY).asString().GetMultiByteChars()) + "'", includes);
 								auto inner_items = inner_items_future.get();
@@ -300,7 +306,8 @@ public:
 								std::string inner_table_name = typeid(inner_elem_type).name();
 								inner_table_name = inner_table_name.substr(inner_table_name.find_last_of(' ') + 1);
 								auto id = std::string(cmd.Field(std::string(inner_table_name + "Id").c_str()).asString().GetMultiByteChars());
-								includes.erase(std::remove_if(includes.begin(), includes.end(), [&](std::string s) { return s == D.name; }), includes.end());
+								auto includes_copy = includes;
+								includes_copy.erase(std::remove_if(includes_copy.begin(), includes_copy.end(), [&](std::string s) { return s == D.name; }), includes_copy.end());
 #ifdef ASYNC
 								auto inner_ptr_item_future = std::async(std::launch::async, &BaseQuery::GetSingle<inner_elem_type>, this, PKEY " =  '" + id + "'", includes);
 								auto inner_ptr_item = inner_ptr_item_future.get();
@@ -331,9 +338,10 @@ public:
 	}
 
 	template<typename K = T>
-	PaginationObject<K> GetPagination(int page, int pageSize, std::string query = "", std::vector<std::string> includes = {}) noexcept(false)
+	std::shared_ptr<PaginationObject<K>> GetPagination(int page, int pageSize, std::string query = "", std::vector<std::string> includes = {}) noexcept(false)
 	{
-		auto con = db->GetConnection();
+		std::shared_ptr<SAConnection> con(db->GetConnection());
+		std::shared_ptr<SAConnection> cout_con(db->GetConnection());
 		try
 		{
 			std::string table_name = typeid(K).name();
@@ -344,12 +352,8 @@ public:
 			{
 				base_query += " WHERE " + query;
 			}
-			SACommand cmd(con, _TSA(base_query.c_str()));
-			cmd.Execute();
-			if (cmd.FetchNext())
-			{
-				count = cmd.Field(1).asLong();
-			}
+			SACommand cmd(cout_con.get(), _TSA(base_query.c_str()));
+			auto cout_task = std::async(std::launch::async, [&cmd]() { cmd.Execute(); });
 
 			base_query = "SELECT * FROM ( SELECT ROW_NUMBER() OVER (ORDER BY CreatedDate) AS RowNum, * FROM [dbo].[" + table_name + "]";
 
@@ -360,7 +364,7 @@ public:
 
 			base_query += " ) AS S WHERE RowNum BETWEEN " + std::to_string((page - 1) * pageSize + 1) + " AND " + std::to_string(page * pageSize) + " ORDER BY RowNum";
 
-			SACommand cmd2(con, _TSA(base_query.c_str()));
+			SACommand cmd2(con.get(), _TSA(base_query.c_str()));
 			cmd2.Execute();
 			std::vector<std::shared_ptr<K>> items;
 			while (cmd2.FetchNext())
@@ -378,12 +382,13 @@ public:
 
 							if (!std::is_void_v<inner_elem_type>)
 							{
-								includes.erase(std::remove_if(includes.begin(), includes.end(), [&](std::string s) { return s == D.name; }), includes.end());
+								auto includes_copy = includes;
+								includes_copy.erase(std::remove_if(includes_copy.begin(), includes_copy.end(), [&](std::string s) { return s == D.name; }), includes_copy.end());
 #ifdef ASYNC
-								auto inner_items_future = std::async(std::launch::async, &BaseQuery::GetAll<inner_elem_type>, this, table_name + "Id = '" + std::string(cmd.Field(PKEY).asString().GetMultiByteChars()) + "'", includes);
+								auto inner_items_future = std::async(std::launch::async, &BaseQuery::GetAll<inner_elem_type>, this, table_name + "Id = '" + std::string(cmd2.Field(PKEY).asString().GetMultiByteChars()) + "'", includes_copy);
 								auto inner_items = inner_items_future.get();
 #else
-								auto inner_items = GetAll<inner_elem_type>(table_name + "Id = '" + std::string(cmd.Field(PKEY).asString().GetMultiByteChars()) + "'", includes);
+								auto inner_items = GetAll<inner_elem_type>(table_name + "Id = '" + std::string(cmd2.Field(PKEY).asString().GetMultiByteChars()) + "'", includes);
 #endif // ASYNC
 								(item.get()->*(D).pointer) = std::any_cast<type>(inner_items);
 							}
@@ -395,8 +400,9 @@ public:
 							{
 								std::string inner_table_name = typeid(inner_elem_type).name();
 								inner_table_name = inner_table_name.substr(inner_table_name.find_last_of(' ') + 1);
-								auto id = std::string(cmd.Field(std::string(inner_table_name + "Id").c_str()).asString().GetMultiByteChars());
-								includes.erase(std::remove_if(includes.begin(), includes.end(), [&](std::string s) { return s == D.name; }), includes.end());
+								auto id = std::string(cmd2.Field(std::string(inner_table_name + "Id").c_str()).asString().GetMultiByteChars());
+								auto includes_copy = includes;
+								includes_copy.erase(std::remove_if(includes_copy.begin(), includes_copy.end(), [&](std::string s) { return s == D.name; }), includes_copy.end());
 #ifdef ASYNC
 								auto inner_item_future = std::async(std::launch::async, &BaseQuery::GetSingle<inner_elem_type>, this, PKEY " =  '" + id + "'", includes);
 								auto inner_item = inner_item_future.get();
@@ -412,7 +418,14 @@ public:
 				});
 				items.push_back(item);
 			}
-			return PaginationObject<K>(items, count, page, pageSize);
+
+			cout_task.get();
+			if (cmd.FetchNext())
+			{
+				count = cmd.Field(1).asLong();
+			}
+
+			return std::make_shared<PaginationObject<K>>(items, count, page, pageSize);
 		}
 		catch (SAException& ex)
 		{
@@ -487,5 +500,6 @@ public:
 	virtual ~BaseQuery() = default;
 
 protected:
+	std::recursive_mutex m;
 	std::unique_ptr<DbContext> db = nullptr;
 };

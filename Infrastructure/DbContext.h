@@ -5,6 +5,9 @@
 #include <string>
 #include "InfrastructureApi.h"
 #include <boost/log/trivial.hpp>
+#include <odbcAPI.h>
+  
+
 
 
 class INFRASTRUCTURE_API DbContext
@@ -14,12 +17,12 @@ public:
 
 	[[nodiscard]] SAConnection * GetConnection();
 
-	[[nodiscard]] std::string TestConnection() const;
+	[[nodiscard]] std::string TestConnection();
+
 
 	~DbContext();
 
 	private:
-	SAConnection * connection{};
 	Database connectionString;
 };
 
