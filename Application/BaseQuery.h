@@ -1,8 +1,9 @@
 #pragma once
+#include "JsonHelper.h"
+
 #include "ApplicationApi.h"
 #include "CoreHelper.h"
 #include "DbContext.h"
-#include "JsonHelper.h"
 #include "PaginationObject.h"
 #include "TodoList.h"
 #include "TypeCheck.h"
@@ -16,6 +17,7 @@
 #include <string>
 #include <mutex>
 #include <vector>
+#include "BaseQueryV2.h"
 
 //TODO: Apply concepts
 template <typename T, typename Z = std::is_base_of<BaseEntity, T>::type>
@@ -48,6 +50,9 @@ public:
 			const SAString idStr(id.c_str());
 			cmd.Param(_TSA("id")).setAsString() = idStr;
 			cmd.Execute();
+#ifdef LOG_SQL_COMMAND
+			BOOST_LOG_TRIVIAL(debug) << query;
+#endif // LOG_SQL_COMMAND
 			auto item = std::make_shared<K>();
 			if (cmd.FetchNext())
 			{
@@ -120,6 +125,18 @@ public:
 		return std::vector<std::shared_ptr<K>>();
 	}
 
+	template<typename K = T, std::enable_if_t<std::is_void_v<K>, bool> = true>
+	auto GetAllEx(std::string query = "", std::vector<std::string> includes = {}) noexcept(false)
+	{
+		return std::vector<std::shared_ptr<K>>();
+	}
+
+	template<typename K = T, std::enable_if_t<std::is_class_v<K>, bool> = true>
+	auto GetAllEx(std::string query = "", std::vector<std::string> includes = {}) noexcept(false)
+	{
+		return std::vector<std::shared_ptr<K>>();
+	}
+
 	template<typename K = T, std::enable_if_t<std::is_class_v<K>, bool> = true>
 	std::vector<std::shared_ptr<K>> GetAll(std::string query = "", std::vector<std::string> includes = {}) noexcept(false)
 	{
@@ -136,6 +153,9 @@ public:
 			}
 			SACommand cmd(con.get(), _TSA(base_query.c_str()));
 			cmd.Execute();
+#ifdef LOG_SQL_COMMAND
+			BOOST_LOG_TRIVIAL(debug) << base_query;
+#endif // LOG_SQL_COMMAND
 			while (cmd.FetchNext())
 			{
 				auto item = GetFromCmd<K>(cmd);
@@ -270,6 +290,9 @@ public:
 			std::string base_query = "SELECT * FROM [dbo].[" + table_name + "] WHERE " + query;
 			SACommand cmd(con.get(), _TSA(base_query.c_str()));
 			cmd.Execute();
+#ifdef LOG_SQL_COMMAND
+			BOOST_LOG_TRIVIAL(debug) << base_query;
+#endif // LOG_SQL_COMMAND
 			std::shared_ptr<K> item;
 			if (cmd.FetchNext())
 			{
@@ -366,6 +389,9 @@ public:
 
 			SACommand cmd2(con.get(), _TSA(base_query.c_str()));
 			cmd2.Execute();
+#ifdef LOG_SQL_COMMAND
+			BOOST_LOG_TRIVIAL(debug) << base_query;
+#endif // LOG_SQL_COMMAND
 			std::vector<std::shared_ptr<K>> items;
 			while (cmd2.FetchNext())
 			{

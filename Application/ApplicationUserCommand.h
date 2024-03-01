@@ -10,4 +10,3 @@ public:
 	//explicit ApplicationUserCommand(SAConnection* con) : BaseCommand(con) {}
 	~ApplicationUserCommand();
 };
-

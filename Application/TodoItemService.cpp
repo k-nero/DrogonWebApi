@@ -10,14 +10,18 @@ TodoItemService::TodoItemService()
 
 std::shared_ptr<TodoItem> TodoItemService::GetTodoItemById(const std::string& Id) noexcept(false)
 {
-	TodoItemQuery todo_item_query;
-	return todo_item_query.GetSingle(EQ(Id), { "TodoList" });
+	/*TodoItemQuery todo_item_query;
+	return todo_item_query.GetSingle(EQ(Id), { "TodoList" });*/
+	Query<TodoItem> query;
+	return query.GetByIdEw(Id, { "TodoList" });
 }
 
 std::vector<std::shared_ptr<TodoItem>> TodoItemService::GetAllTodoItems() noexcept(false)
 {
-	TodoItemQuery query;
-	return query.GetAll();
+	/*TodoItemQuery query;
+	return query.GetAll();*/
+	Query<TodoItem> query;
+	return query.GetPaginatedEw(1, 1, "", {"TodoList"});
 }
 
 

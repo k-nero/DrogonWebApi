@@ -1,8 +1,8 @@
 #pragma once
+#include "JsonHelper.h"
 #include "ApplicationApi.h"
 #include "CoreHelper.h"
 #include "DbContext.h"
-#include "JsonHelper.h"
 #include "PaginationObject.h"
 #include "TodoList.h"
 #include "TypeCheck.h"
@@ -31,7 +31,19 @@ public:
 	~Query() = default;
 
 	template<typename K = T>
-	std::string FastGetById(const std::string& id, std::vector<std::string> includes = {}, std::vector<std::string> select_fields = {}) noexcept(false)
+	std::shared_ptr<K> GetByIdEw(const std::string& id, std::vector<std::string> includes = {}, std::vector<std::string> select_fields = {}) noexcept(false)
+	{
+		boost::json::value json;
+		std::string result = GetByIdEx<K>(id, includes, select_fields);
+		boost::json::parse_options opt;
+		opt.allow_invalid_utf8 = true;
+		json = boost::json::parse(result, boost::json::storage_ptr(), opt);
+		K k = boost::json::value_to<K>(json);
+		return std::make_shared<K>(k);
+	}
+
+	template<typename K = T>
+	std::string GetByIdEx(const std::string& id, std::vector<std::string> includes = {}, std::vector<std::string> select_fields = {}) noexcept(false)
 	{
 		std::shared_ptr<SAConnection> con(db->GetConnection());
 		try
@@ -52,10 +64,13 @@ public:
 				base_query += "SELECT " + selected_field<K>(select_fields);
 			}
 			std::string alias = include_table<K>(includes);
-			std::string from = " FROM [dbo].[" + table_name + "] WHERE Id = '" + id + "' FOR JSON AUTO";
+			std::string from = " FROM [dbo].[" + table_name + "] WHERE Id = '" + id + "' FOR JSON AUTO, WITHOUT_ARRAY_WRAPPER";
 			base_query += alias + from;
 			SACommand cmd(con.get(), _TSA(base_query.c_str()));
 			cmd.Execute();
+#ifdef LOG_SQL_COMMAND
+			BOOST_LOG_TRIVIAL(debug) << base_query;
+#endif // LOG_SQL_COMMAND
 			if (cmd.FetchNext())
 			{
 				return std::string(cmd.Field(1).asString().GetMultiByteChars());
@@ -77,9 +92,20 @@ public:
 		return "";
 	}
 
+	template<typename K = T>
+	std::shared_ptr<K> GetSingleEw(const std::string query = "", std::vector<std::string> includes = {}, std::vector<std::string> select_fields = {}) noexcept(false)
+	{
+		boost::json::value json;
+		std::string result = GetSingleEx<K>(query, includes, select_fields);
+		boost::json::parse_options opt;
+		opt.allow_invalid_utf8 = true;
+		json = boost::json::parse(result, boost::json::storage_ptr(), opt);
+		K k = boost::json::value_to<K>(json);
+		return std::make_shared<K>(k);
+	}
 
 	template<typename K = T>
-	std::string FastGetSingle(const std::string query = "", std::vector<std::string> includes = {}, std::vector<std::string> select_fields = {}) noexcept(false)
+	std::string GetSingleEx(const std::string query = "", std::vector<std::string> includes = {}, std::vector<std::string> select_fields = {}) noexcept(false)
 	{
 		std::shared_ptr<SAConnection> con(db->GetConnection());
 		try
@@ -96,10 +122,13 @@ public:
 				base_query += "SELECT TOP 1 " + selected_field<K>(select_fields);
 			}
 			std::string alias = include_table<K>(includes);
-			std::string from = " FROM [dbo].[" + table_name + "] WHERE Id = '" + query + "' FOR JSON AUTO";
+			std::string from = " FROM [dbo].[" + table_name + "] WHERE Id = '" + query + "' FOR JSON AUTO, WITHOUT_ARRAY_WRAPPER";
 			base_query += alias + from;
 			SACommand cmd(con.get(), _TSA(base_query.c_str()));
 			cmd.Execute();
+#ifdef LOG_SQL_COMMAND
+			BOOST_LOG_TRIVIAL(debug) << base_query;
+#endif // LOG_SQL_COMMAND
 			if (cmd.FetchNext())
 			{
 				return std::string(cmd.Field(1).asString().GetMultiByteChars());
@@ -122,7 +151,19 @@ public:
 	}
 
 	template<typename K = T>
-	std::string FastGetAll(std::string query = "", std::vector<std::string> includes = {}, std::vector<std::string> select_fields = {}) noexcept(false)
+	std::vector<std::shared_ptr<K>> GetAllEw(const std::string query = "", std::vector<std::string> includes = {}, std::vector<std::string> select_fields = {}) noexcept(false)
+	{
+		boost::json::value json;
+		std::string result = GetAllEx<K>(query, includes, select_fields);
+		boost::json::parse_options opt;
+		opt.allow_invalid_utf8 = true;
+		json = boost::json::parse(result, boost::json::storage_ptr(), opt);
+		auto k = boost::json::value_to<std::vector<std::shared_ptr<K>>>(json);
+		return k;
+	}
+
+	template<typename K = T>
+	std::string GetAllEx(std::string query = "", std::vector<std::string> includes = {}, std::vector<std::string> select_fields = {}) noexcept(false)
 	{
 		std::shared_ptr<SAConnection> con(db->GetConnection());
 		try
@@ -139,15 +180,22 @@ public:
 				base_query += "SELECT " + selected_field<K>(select_fields);
 			}
 			std::string alias = include_table<K>(includes);
+			if(query.empty())
+				query = "1=1";
 			std::string from = " FROM [dbo].[" + table_name + "] WHERE " + query + " FOR JSON AUTO";
 			base_query += alias + from;
+#ifdef LOG_SQL_COMMAND
+			BOOST_LOG_TRIVIAL(debug) << base_query;
+#endif // LOG_SQL_COMMAND
 			SACommand cmd(con.get(), _TSA(base_query.c_str()));
 			cmd.Execute();
+			std::string result = "";
+			result.reserve(3048576);
 			if (cmd.FetchNext())
 			{
-				return std::string(cmd.Field(1).asString().GetMultiByteChars());
+				result = std::string(cmd.Field(1).asString().GetMultiByteChars());
 			}
-			return "";
+			return result;
 		}
 		catch (SAException& ex)
 		{
@@ -165,7 +213,19 @@ public:
 	}
 
 	template<typename K = T>
-	std::string FastGetPagi(int page, int pageSize, std::string query = "", std::vector<std::string> includes = {}, , std::vector<std::string> select_fields = {}) noexcept(false)
+	std::vector<std::shared_ptr<K>> GetPaginatedEw(int page, int pageSize, const std::string query = "", std::vector<std::string> includes = {}, std::vector<std::string> select_fields = {}) noexcept(false)
+	{
+		boost::json::value json;
+		std::string result = GetPaginatedEx<K>(page, pageSize, query, includes, select_fields);
+		boost::json::parse_options opt;
+		opt.allow_invalid_utf8 = true;
+		json = boost::json::parse(result, boost::json::storage_ptr(), opt);
+		auto k = boost::json::value_to<std::vector<std::shared_ptr<K>>>(json);
+		return k;
+	}
+
+	template<typename K = T>
+	std::string GetPaginatedEx(int page, int pageSize, std::string query = "", std::vector<std::string> includes = {}, std::vector<std::string> select_fields = {}) noexcept(false)
 	{
 		std::shared_ptr<SAConnection> con(db->GetConnection());
 		try
@@ -173,20 +233,32 @@ public:
 			std::string table_name = std::string(typeid(K).name());
 			table_name = table_name.substr(table_name.find_last_of(' ') + 1);
 			std::string fields = "";
+
+			for (auto& include_field : includes)
+			{
+				fields += "[R]." + include_field + ",";
+			}
+		
 			if (select_fields.empty())
 			{
-				fields = selected_field<K>();
+				fields += selected_field<K>() ;
 			}
 			else
 			{
-				fields = selected_field<K>(select_fields);
+				fields += selected_field<K>(select_fields);
 			}
 			std::string base_query = "SELECT " + fields + " FROM (SELECT ROW_NUMBER() OVER ( ORDER BY CreatedDate ) AS RowNum";
 			std::string alias = include_table<K>(includes);
+			if (query.empty())
+				query = "1=1";
 			std::string from = "  , * FROM [dbo].[" + table_name + "] WHERE " + query + ") AS R WHERE RowNum BETWEEN " + std::to_string((page - 1) * pageSize + 1) + " AND " + std::to_string(page * pageSize) + " ORDER BY RowNum FOR JSON AUTO";
 			base_query += alias + from;
+#ifdef LOG_SQL_COMMAND
+			BOOST_LOG_TRIVIAL(debug) << base_query;
+#endif // LOG_SQL_COMMAND
 			SACommand cmd(con.get(), _TSA(base_query.c_str()));
 			cmd.Execute();
+
 			if (cmd.FetchNext())
 			{
 				return std::string(cmd.Field(1).asString().GetMultiByteChars());
@@ -280,7 +352,7 @@ private:
 			auto value = t.*(D).pointer;
 			if (std::find(table_list.begin(), table_list.end(), D.name) != table_list.end())
 			{
-				alias += ", (SELECT *";
+				alias += ",json_query ((SELECT *";
 				using val_type = std::remove_reference_t<decltype(value)>;
 				using inner_type = has_value_type_t<val_type>;
 
@@ -297,7 +369,7 @@ private:
 						inner_table_name = std::string(typeid(inner_elem_type).name());
 						inner_table_name = inner_table_name.substr(inner_table_name.find_last_of(' ') + 1);
 						alias += include_table<inner_elem_type>(table_list);
-						alias += " FROM [dbo].[" + inner_table_name + "] WHERE [dbo].[" + table_name + "].Id = [dbo].[" + inner_table_name + "]." + table_name + "Id FOR JSON AUTO) AS '" + inner_table_name + "'";
+						alias += " FROM [dbo].[" + inner_table_name + "] WHERE [dbo].[" + table_name + "].Id = [dbo].[" + inner_table_name + "]." + table_name + "Id FOR JSON AUTO, WITHOUT_ARRAY_WRAPPER)) AS '" + std::string(D.name) + "'";
 					}
 				}
 				else if (is_shared_ptr_v<val_type>)
@@ -308,7 +380,7 @@ private:
 						inner_table_name = std::string(typeid(inner_elem_type).name());
 						inner_table_name = inner_table_name.substr(inner_table_name.find_last_of(' ') + 1);
 						alias += include_table<inner_elem_type>(table_list);
-						alias += " FROM [dbo].[" + inner_table_name + "] WHERE [dbo].[" + inner_table_name + "].Id = [dbo].[" + table_name + "]." + inner_table_name + "Id FOR JSON AUTO) AS '" + inner_table_name + "'";
+						alias += " FROM [dbo].[" + inner_table_name + "] WHERE [dbo].[" + inner_table_name + "].Id = [dbo].[" + table_name + "]." + inner_table_name + "Id FOR JSON AUTO, WITHOUT_ARRAY_WRAPPER)) AS '" + std::string(D.name) + "'";
 					}
 				}
 

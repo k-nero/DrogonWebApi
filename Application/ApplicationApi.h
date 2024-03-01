@@ -44,3 +44,5 @@
 
 #define SELECT(x) "SELECT " + std::format("{}", x)
 #define FROM(x) " FROM " + std::format("{}", x)
+
+#define LOG_SQL_COMMAND

@@ -100,6 +100,9 @@ public:
 				}
 			});
 			cmd.Execute();
+#ifdef LOG_SQL_COMMAND
+			BOOST_LOG_TRIVIAL(debug) << query;
+#endif // LOG_SQL_COMMAND
 			return (int )cmd.RowsAffected();
 		}
 		catch (SAException& ex)
@@ -186,6 +189,9 @@ public:
 				}
 			});
 			cmd.Execute();
+#ifdef LOG_SQL_COMMAND
+			BOOST_LOG_TRIVIAL(debug) << command;
+#endif // LOG_SQL_COMMAND
 			return (int)cmd.RowsAffected();
 		}
 		catch (SAException& ex)
@@ -215,6 +221,9 @@ public:
 			SACommand cmd(con.get());
 			cmd.setCommandText(_TSA(command.c_str()));
 			cmd.Execute();
+#ifdef LOG_SQL_COMMAND
+			BOOST_LOG_TRIVIAL(debug) << command;
+#endif // LOG_SQL_COMMAND
 			return (int)cmd.RowsAffected();
 		}
 		catch (SAException& ex)
