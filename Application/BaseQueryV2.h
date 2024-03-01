@@ -28,10 +28,10 @@ public:
 			this->db = std::make_unique<DbContext>();
 		}
 	}
-		~Query() = default;
+	~Query() = default;
 
 	template<typename K = T>
-	std::string FastGetById(const std::string& id, std::vector<std::string> includes = {}) noexcept(false)
+	std::string FastGetById(const std::string& id, std::vector<std::string> includes = {}, std::vector<std::string> select_fields = {}) noexcept(false)
 	{
 		std::shared_ptr<SAConnection> con(db->GetConnection());
 		try
@@ -42,11 +42,19 @@ public:
 			}
 			std::string table_name = std::string(typeid(K).name());
 			table_name = table_name.substr(table_name.find_last_of(' ') + 1);
-			std::string query = "SELECT *";
+			std::string base_query = "";
+			if (select_fields.empty())
+			{
+				base_query += "SELECT *";
+			}
+			else
+			{
+				base_query += "SELECT " + selected_field<K>(select_fields);
+			}
 			std::string alias = include_table<K>(includes);
 			std::string from = " FROM [dbo].[" + table_name + "] WHERE Id = '" + id + "' FOR JSON AUTO";
-			query += alias + from;
-			SACommand cmd(con.get(), _TSA(query.c_str()));
+			base_query += alias + from;
+			SACommand cmd(con.get(), _TSA(base_query.c_str()));
 			cmd.Execute();
 			if (cmd.FetchNext())
 			{
@@ -69,7 +77,174 @@ public:
 		return "";
 	}
 
-public:
+
+	template<typename K = T>
+	std::string FastGetSingle(const std::string query = "", std::vector<std::string> includes = {}, std::vector<std::string> select_fields = {}) noexcept(false)
+	{
+		std::shared_ptr<SAConnection> con(db->GetConnection());
+		try
+		{
+			std::string table_name = std::string(typeid(K).name());
+			table_name = table_name.substr(table_name.find_last_of(' ') + 1);
+			std::string base_query = "";
+			if (select_fields.empty())
+			{
+				base_query += "SELECT TOP 1 *";
+			}
+			else
+			{
+				base_query += "SELECT TOP 1 " + selected_field<K>(select_fields);
+			}
+			std::string alias = include_table<K>(includes);
+			std::string from = " FROM [dbo].[" + table_name + "] WHERE Id = '" + query + "' FOR JSON AUTO";
+			base_query += alias + from;
+			SACommand cmd(con.get(), _TSA(base_query.c_str()));
+			cmd.Execute();
+			if (cmd.FetchNext())
+			{
+				return std::string(cmd.Field(1).asString().GetMultiByteChars());
+			}
+			return "";
+		}
+		catch (SAException& ex)
+		{
+			BOOST_LOG_TRIVIAL(fatal) << ex.ErrText();
+			BOOST_LOG_TRIVIAL(error) << ex.ErrMessage();
+#ifdef _DEBUG
+			BOOST_LOG_TRIVIAL(debug) << ex.CommandText();
+			BOOST_LOG_TRIVIAL(debug) << ex.ErrNativeCode();
+			BOOST_LOG_TRIVIAL(debug) << ex.ErrClass();
+			BOOST_LOG_TRIVIAL(debug) << ex.ErrPos();
+#endif // DEBUG
+			throw std::exception(ex.ErrText().GetMultiByteChars());
+		}
+		return "";
+	}
+
+	template<typename K = T>
+	std::string FastGetAll(std::string query = "", std::vector<std::string> includes = {}, std::vector<std::string> select_fields = {}) noexcept(false)
+	{
+		std::shared_ptr<SAConnection> con(db->GetConnection());
+		try
+		{
+			std::string table_name = std::string(typeid(K).name());
+			table_name = table_name.substr(table_name.find_last_of(' ') + 1);
+			std::string base_query = "";
+			if (select_fields.empty())
+			{
+				base_query += "SELECT *";
+			}
+			else
+			{
+				base_query += "SELECT " + selected_field<K>(select_fields);
+			}
+			std::string alias = include_table<K>(includes);
+			std::string from = " FROM [dbo].[" + table_name + "] WHERE " + query + " FOR JSON AUTO";
+			base_query += alias + from;
+			SACommand cmd(con.get(), _TSA(base_query.c_str()));
+			cmd.Execute();
+			if (cmd.FetchNext())
+			{
+				return std::string(cmd.Field(1).asString().GetMultiByteChars());
+			}
+			return "";
+		}
+		catch (SAException& ex)
+		{
+			BOOST_LOG_TRIVIAL(fatal) << ex.ErrText();
+			BOOST_LOG_TRIVIAL(error) << ex.ErrMessage();
+#ifdef _DEBUG
+			BOOST_LOG_TRIVIAL(debug) << ex.CommandText();
+			BOOST_LOG_TRIVIAL(debug) << ex.ErrNativeCode();
+			BOOST_LOG_TRIVIAL(debug) << ex.ErrClass();
+			BOOST_LOG_TRIVIAL(debug) << ex.ErrPos();
+#endif // DEBUG
+			throw std::exception(ex.ErrText().GetMultiByteChars());
+		}
+		return "";
+	}
+
+	template<typename K = T>
+	std::string FastGetPagi(int page, int pageSize, std::string query = "", std::vector<std::string> includes = {}, , std::vector<std::string> select_fields = {}) noexcept(false)
+	{
+		std::shared_ptr<SAConnection> con(db->GetConnection());
+		try
+		{
+			std::string table_name = std::string(typeid(K).name());
+			table_name = table_name.substr(table_name.find_last_of(' ') + 1);
+			std::string fields = "";
+			if (select_fields.empty())
+			{
+				fields = selected_field<K>();
+			}
+			else
+			{
+				fields = selected_field<K>(select_fields);
+			}
+			std::string base_query = "SELECT " + fields + " FROM (SELECT ROW_NUMBER() OVER ( ORDER BY CreatedDate ) AS RowNum";
+			std::string alias = include_table<K>(includes);
+			std::string from = "  , * FROM [dbo].[" + table_name + "] WHERE " + query + ") AS R WHERE RowNum BETWEEN " + std::to_string((page - 1) * pageSize + 1) + " AND " + std::to_string(page * pageSize) + " ORDER BY RowNum FOR JSON AUTO";
+			base_query += alias + from;
+			SACommand cmd(con.get(), _TSA(base_query.c_str()));
+			cmd.Execute();
+			if (cmd.FetchNext())
+			{
+				return std::string(cmd.Field(1).asString().GetMultiByteChars());
+			}
+			return "";
+		}
+		catch (SAException& ex)
+		{
+			BOOST_LOG_TRIVIAL(fatal) << ex.ErrText();
+			BOOST_LOG_TRIVIAL(error) << ex.ErrMessage();
+#ifdef _DEBUG
+			BOOST_LOG_TRIVIAL(debug) << ex.CommandText();
+			BOOST_LOG_TRIVIAL(debug) << ex.ErrNativeCode();
+			BOOST_LOG_TRIVIAL(debug) << ex.ErrClass();
+			BOOST_LOG_TRIVIAL(debug) << ex.ErrPos();
+#endif // DEBUG
+			throw std::exception(ex.ErrText().GetMultiByteChars());
+		}
+		return "";
+	}
+
+private:
+
+	template<typename Type = T, std::enable_if_t<std::is_class_v<Type>, bool> = true>
+	std::string selected_field(std::vector<std::string> select_fields = {})
+	{
+		std::string fields = "";
+		Type t{};
+		if (select_fields.empty())
+		{
+			boost::mp11::mp_for_each< boost::describe::describe_members<Type, boost::describe::mod_any_access | boost::describe::mod_inherited>>([&](auto D)
+			{
+				auto value = t.*(D).pointer;
+				if (is_primitive_type(value))
+				{
+					fields += "[R]." + std::string(D.name) + ",";
+				}
+			});
+		}
+		else
+		{
+			for (auto& field : select_fields)
+			{
+				fields += "[R]." + field + ",";
+			}
+		}
+		fields.pop_back();
+		return fields;
+	}
+
+	template<typename Type = T, std::enable_if_t<std::is_void_v<Type>, bool> = true>
+	std::string selected_field(std::vector<std::string> select_fields = {})
+	{
+		return "";
+	}
+
+
+
 	template<typename Type = T, std::enable_if_t<std::is_class_v<Type>, bool> = true>
 	int field_count()
 	{
@@ -94,7 +269,7 @@ public:
 
 
 	template <typename Type = T, std::enable_if_t<std::is_class_v<Type>, bool> = true>
-	std::string include_table( std::vector<std::string> table_list )
+	std::string include_table(std::vector<std::string>& table_list)
 	{
 		std::string table_name = std::string(typeid(Type).name());
 		table_name = table_name.substr(table_name.find_last_of(' ') + 1);
@@ -108,7 +283,7 @@ public:
 				alias += ", (SELECT *";
 				using val_type = std::remove_reference_t<decltype(value)>;
 				using inner_type = has_value_type_t<val_type>;
-				
+
 				std::string inner_table_name;
 
 				table_list.erase(std::remove_if(table_list.begin(), table_list.end(), [&](std::string s) { return s == D.name; }), table_list.end());
@@ -143,13 +318,10 @@ public:
 	}
 
 	template <typename Type = T, std::enable_if_t<std::is_void_v<Type>, bool> = true>
-	std::string include_table(std::vector<std::string> table_list)
+	std::string include_table(std::vector<std::string>& table_list)
 	{
 		return "";
 	}
-
-
-	private:
-		std::unique_ptr<DbContext> db;
-
+private:
+	std::unique_ptr<DbContext> db;
 };

@@ -10,7 +10,6 @@ TodoItemService::TodoItemService()
 
 std::shared_ptr<TodoItem> TodoItemService::GetTodoItemById(const std::string& Id) noexcept(false)
 {
-
 	TodoItemQuery todo_item_query;
 	return todo_item_query.GetSingle(EQ(Id), { "TodoList" });
 }
