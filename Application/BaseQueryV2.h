@@ -66,16 +66,28 @@ public:
 			std::string alias = include_table<K>(includes);
 			std::string from = " FROM [dbo].[" + table_name + "] WHERE Id = '" + id + "' FOR JSON AUTO, WITHOUT_ARRAY_WRAPPER";
 			base_query += alias + from;
-			SACommand cmd(con.get(), _TSA(base_query.c_str()));
-			cmd.Execute();
 #ifdef LOG_SQL_COMMAND
 			BOOST_LOG_TRIVIAL(debug) << base_query;
 #endif // LOG_SQL_COMMAND
-			if (cmd.FetchNext())
+			SACommand cmd(con.get(), _TSA(base_query.c_str()));
+			cmd.Execute();
+			std::string result = "";
+			cmd.Field(1).setFieldType(SA_dtLongChar);
+			cmd.Field(1).setLongOrLobReaderMode(SALongOrLobReaderModes_t::SA_LongOrLobReaderManual);
+			while (cmd.FetchNext())
 			{
-				return std::string(cmd.Field(1).asString().GetMultiByteChars());
+				auto HandlingJson = [](SAPieceType_t ePieceType, void* pBuf, size_t nLen, size_t nBlobSize, void* pAddlData) -> void
+				{
+					if (ePieceType == SAPieceType_t::SA_FirstPiece || ePieceType == SAPieceType_t::SA_NextPiece)
+					{
+						auto result = static_cast<std::string*>(pAddlData);
+						result->append(static_cast<char*>(pBuf), nLen);
+					}
+				};
+
+				cmd.Field(1).ReadLongOrLob(HandlingJson, 1024, (void*)&result);
 			}
-			return "";
+			return result;
 		}
 		catch (SAException& ex)
 		{
@@ -124,16 +136,28 @@ public:
 			std::string alias = include_table<K>(includes);
 			std::string from = " FROM [dbo].[" + table_name + "] WHERE Id = '" + query + "' FOR JSON AUTO, WITHOUT_ARRAY_WRAPPER";
 			base_query += alias + from;
-			SACommand cmd(con.get(), _TSA(base_query.c_str()));
-			cmd.Execute();
 #ifdef LOG_SQL_COMMAND
 			BOOST_LOG_TRIVIAL(debug) << base_query;
 #endif // LOG_SQL_COMMAND
-			if (cmd.FetchNext())
+			SACommand cmd(con.get(), _TSA(base_query.c_str()));
+			cmd.Execute();
+			std::string result = "";
+			cmd.Field(1).setFieldType(SA_dtLongChar);
+			cmd.Field(1).setLongOrLobReaderMode(SALongOrLobReaderModes_t::SA_LongOrLobReaderManual);
+			while (cmd.FetchNext())
 			{
-				return std::string(cmd.Field(1).asString().GetMultiByteChars());
+				auto HandlingJson = [](SAPieceType_t ePieceType, void* pBuf, size_t nLen, size_t nBlobSize, void* pAddlData) -> void
+				{
+					if (ePieceType == SAPieceType_t::SA_FirstPiece || ePieceType == SAPieceType_t::SA_NextPiece)
+					{
+						auto result = static_cast<std::string*>(pAddlData);
+						result->append(static_cast<char*>(pBuf), nLen);
+					}
+				};
+
+				cmd.Field(1).ReadLongOrLob(HandlingJson, 1024, (void*)&result);
 			}
-			return "";
+			return result;
 		}
 		catch (SAException& ex)
 		{
@@ -180,7 +204,7 @@ public:
 				base_query += "SELECT " + selected_field<K>(select_fields);
 			}
 			std::string alias = include_table<K>(includes);
-			if(query.empty())
+			if (query.empty())
 				query = "1=1";
 			std::string from = " FROM [dbo].[" + table_name + "] WHERE " + query + " FOR JSON AUTO";
 			base_query += alias + from;
@@ -190,10 +214,20 @@ public:
 			SACommand cmd(con.get(), _TSA(base_query.c_str()));
 			cmd.Execute();
 			std::string result = "";
-			result.reserve(3048576);
-			if (cmd.FetchNext())
+			cmd.Field(1).setFieldType(SA_dtLongChar);
+			cmd.Field(1).setLongOrLobReaderMode(SALongOrLobReaderModes_t::SA_LongOrLobReaderManual);
+			while (cmd.FetchNext())
 			{
-				result = std::string(cmd.Field(1).asString().GetMultiByteChars());
+				auto HandlingJson = [](SAPieceType_t ePieceType, void* pBuf, size_t nLen, size_t nBlobSize, void* pAddlData) -> void
+				{
+					if (ePieceType == SAPieceType_t::SA_FirstPiece || ePieceType == SAPieceType_t::SA_NextPiece)
+					{
+						auto result = static_cast<std::string*>(pAddlData);
+						result->append(static_cast<char*>(pBuf), nLen);
+					}
+				};
+
+				cmd.Field(1).ReadLongOrLob(HandlingJson, 1024, (void*)&result);
 			}
 			return result;
 		}
@@ -238,10 +272,10 @@ public:
 			{
 				fields += "[R]." + include_field + ",";
 			}
-		
+
 			if (select_fields.empty())
 			{
-				fields += selected_field<K>() ;
+				fields += selected_field<K>();
 			}
 			else
 			{
@@ -258,12 +292,24 @@ public:
 #endif // LOG_SQL_COMMAND
 			SACommand cmd(con.get(), _TSA(base_query.c_str()));
 			cmd.Execute();
-
-			if (cmd.FetchNext())
+			cmd.Field(1).setFieldType(SA_dtLongChar);
+			cmd.Field(1).setLongOrLobReaderMode(SALongOrLobReaderModes_t::SA_LongOrLobReaderManual);
+			std::string result = "";
+			//the json output of the result set is single collumn but split to multiple row on large data, need to concatenate them for a single json object	
+			while (cmd.FetchNext())
 			{
-				return std::string(cmd.Field(1).asString().GetMultiByteChars());
+				auto HandlingJson = [](SAPieceType_t ePieceType, void* pBuf, size_t nLen, size_t nBlobSize, void* pAddlData) -> void
+				{
+					if (ePieceType == SAPieceType_t::SA_FirstPiece || ePieceType == SAPieceType_t::SA_NextPiece)
+					{
+						auto result = static_cast<std::string*>(pAddlData);
+						result->append(static_cast<char*>(pBuf), nLen);
+					}
+				};
+
+				cmd.Field(1).ReadLongOrLob(HandlingJson, 1024, (void*)&result);
 			}
-			return "";
+			return result;
 		}
 		catch (SAException& ex)
 		{
@@ -394,6 +440,7 @@ private:
 	{
 		return "";
 	}
+
 private:
 	std::unique_ptr<DbContext> db;
 };

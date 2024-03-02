@@ -21,7 +21,7 @@ std::vector<std::shared_ptr<TodoItem>> TodoItemService::GetAllTodoItems() noexce
 	/*TodoItemQuery query;
 	return query.GetAll();*/
 	Query<TodoItem> query;
-	return query.GetPaginatedEw(1, 1, "", {"TodoList"});
+	return query.GetPaginatedEw(1, 200, "", {"TodoList"});
 }
 
 
