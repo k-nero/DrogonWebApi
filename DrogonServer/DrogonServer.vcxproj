@@ -231,7 +231,7 @@
       <AdditionalLibraryDirectories>$(SolutionDir)\$(IntDir);$(AdditionalLibraryDirectories);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command> xcopy /d /y "$(SolutionDir)lib\SQLAPI\bin\*.*" "$(OutDir)"
+      <Command> xcopy /d /y "$(SolutionDir)lib\SQLAPI\bin\sqlapi.dll" "$(OutDir)"
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>

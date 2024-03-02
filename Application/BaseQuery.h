@@ -49,10 +49,10 @@ public:
 			SACommand cmd(con.get(), _TSA(query.c_str()));
 			const SAString idStr(id.c_str());
 			cmd.Param(_TSA("id")).setAsString() = idStr;
-			cmd.Execute();
 #ifdef LOG_SQL_COMMAND
 			BOOST_LOG_TRIVIAL(debug) << query;
 #endif // LOG_SQL_COMMAND
+			cmd.Execute();
 			auto item = std::make_shared<K>();
 			if (cmd.FetchNext())
 			{
@@ -125,18 +125,6 @@ public:
 		return std::vector<std::shared_ptr<K>>();
 	}
 
-	template<typename K = T, std::enable_if_t<std::is_void_v<K>, bool> = true>
-	auto GetAllEx(std::string query = "", std::vector<std::string> includes = {}) noexcept(false)
-	{
-		return std::vector<std::shared_ptr<K>>();
-	}
-
-	template<typename K = T, std::enable_if_t<std::is_class_v<K>, bool> = true>
-	auto GetAllEx(std::string query = "", std::vector<std::string> includes = {}) noexcept(false)
-	{
-		return std::vector<std::shared_ptr<K>>();
-	}
-
 	template<typename K = T, std::enable_if_t<std::is_class_v<K>, bool> = true>
 	std::vector<std::shared_ptr<K>> GetAll(std::string query = "", std::vector<std::string> includes = {}) noexcept(false)
 	{
@@ -152,10 +140,10 @@ public:
 				base_query += " WHERE " + query;
 			}
 			SACommand cmd(con.get(), _TSA(base_query.c_str()));
-			cmd.Execute();
 #ifdef LOG_SQL_COMMAND
 			BOOST_LOG_TRIVIAL(debug) << base_query;
 #endif // LOG_SQL_COMMAND
+			cmd.Execute();
 			while (cmd.FetchNext())
 			{
 				auto item = GetFromCmd<K>(cmd);
@@ -289,10 +277,11 @@ public:
 			table_name = table_name.substr(table_name.find_last_of(' ') + 1);
 			std::string base_query = "SELECT * FROM [dbo].[" + table_name + "] WHERE " + query;
 			SACommand cmd(con.get(), _TSA(base_query.c_str()));
-			cmd.Execute();
 #ifdef LOG_SQL_COMMAND
 			BOOST_LOG_TRIVIAL(debug) << base_query;
 #endif // LOG_SQL_COMMAND
+			cmd.Execute();
+
 			std::shared_ptr<K> item;
 			if (cmd.FetchNext())
 			{
@@ -388,10 +377,10 @@ public:
 			base_query += " ) AS S WHERE RowNum BETWEEN " + std::to_string((page - 1) * pageSize + 1) + " AND " + std::to_string(page * pageSize) + " ORDER BY RowNum";
 
 			SACommand cmd2(con.get(), _TSA(base_query.c_str()));
-			cmd2.Execute();
 #ifdef LOG_SQL_COMMAND
 			BOOST_LOG_TRIVIAL(debug) << base_query;
 #endif // LOG_SQL_COMMAND
+			cmd2.Execute();
 			std::vector<std::shared_ptr<K>> items;
 			while (cmd2.FetchNext())
 			{
