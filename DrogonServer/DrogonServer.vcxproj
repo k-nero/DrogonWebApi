@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="CLR|Win32">
@@ -238,7 +238,7 @@
   <ItemGroup>
     <ClCompile Include="Authorization.cpp" />
     <ClCompile Include="controller\AuthController.cpp" />
-    <ClCompile Include="controller\IndexController.cc" />
+    <ClCompile Include="controller\UserController.cc" />
     <ClCompile Include="main.cpp" />
     <ClInclude Include="Macros.h" />
     <ClInclude Include="ModelBinding.h" />
@@ -249,7 +249,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Authorization.h" />
-    <ClInclude Include="controller\IndexController.h" />
+    <ClInclude Include="controller\UserController.h" />
     <ClInclude Include="controller\AuthController.h" />
   </ItemGroup>
   <ItemGroup>
@@ -276,6 +276,28 @@
     <CopyFileToFolders Include="public_key.pem">
       <FileType>Document</FileType>
     </CopyFileToFolders>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="swagger\favicon-16x16.png" />
+    <Image Include="swagger\favicon-32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="swagger\index.css" />
+    <None Include="swagger\index.html" />
+    <None Include="swagger\oauth2-redirect.html" />
+    <None Include="swagger\swagger-initializer.js" />
+    <None Include="swagger\swagger-ui-bundle.js" />
+    <None Include="swagger\swagger-ui-bundle.js.map" />
+    <None Include="swagger\swagger-ui-es-bundle-core.js" />
+    <None Include="swagger\swagger-ui-es-bundle-core.js.map" />
+    <None Include="swagger\swagger-ui-es-bundle.js" />
+    <None Include="swagger\swagger-ui-es-bundle.js.map" />
+    <None Include="swagger\swagger-ui-standalone-preset.js" />
+    <None Include="swagger\swagger-ui-standalone-preset.js.map" />
+    <None Include="swagger\swagger-ui.css" />
+    <None Include="swagger\swagger-ui.css.map" />
+    <None Include="swagger\swagger-ui.js" />
+    <None Include="swagger\swagger-ui.js.map" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

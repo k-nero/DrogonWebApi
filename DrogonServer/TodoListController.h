@@ -35,8 +35,8 @@ public:
 		registerMethod(&TodoListController::Delete, "/api/todo-list/{1}", { drogon::HttpMethod::Delete }, false, "TodoListController::Delete");
 	}
 	// your declaration of processing function maybe like this:
-	void GetAll(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback);
 	void Get(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback, std::string p1);
+	void GetAll(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback);
 	void Create(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback, TodoListModel todo_list_model);
 	void Update(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback, const std::string id, TodoListModel todo_list_model);
 	void Delete(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback, const std::string id);

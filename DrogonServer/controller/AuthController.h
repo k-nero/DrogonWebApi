@@ -17,6 +17,7 @@ class AuthController : public HttpController<AuthController>
 public: 
 	static void initPathRouting()
 	{
+
 		// Deprecated
 		registerMethod(&AuthController::Login, "/api/auth/login", { Post }, false, "AuthController::Login");
 		registerMethod(&AuthController::Register, "/api/auth/register", { Post }, false, "AuthController::Register");

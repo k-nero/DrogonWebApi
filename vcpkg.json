@@ -45,6 +45,25 @@
       "version>=": "1.84.0",
       "host": true,
       "platform": "x64"
+    },
+    {
+      "name": "hiredis",
+      "version>=": "1.2.0",
+      "host": true,
+      "platform": "x64",
+      "default-features": false,
+      "features": [
+        {
+          "name": "ssl",
+          "platform": "x64"
+        }
+      ]
+    },
+    {
+      "name": "grpc",
+      "version>=": "1.51.1",
+      "host": true,
+      "platform": "x64"
     }
   ],
   "builtin-baseline": "13bde2ff13192e1b2fdd37bd9b475c7665ae6ae5"

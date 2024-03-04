@@ -10,9 +10,7 @@
 #include "ModelBinding.h"
 #include "TodoItemModel.h"
 
-
 using namespace drogon;
-
 
 namespace drogon
 {
@@ -36,8 +34,8 @@ public:
 		
 	}
 	// your declaration of processing function maybe like this:
-	void GetAll(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback);
 	void Get(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback, std::string p1);
+	void GetAll(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback);
 	void Create(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback, TodoItemModel todo_item_model);
 	void Update(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback, std::string p1, TodoItemModel todo_item_model);
 	void Delete(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback, std::string p1);

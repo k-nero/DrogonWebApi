@@ -4,7 +4,6 @@
 #include "CoreHelper.h"
 #include "DbContext.h"
 #include "PaginationObject.h"
-#include "TodoList.h"
 #include "TypeCheck.h"
 #include <any>
 #include <boost/describe.hpp>
@@ -415,7 +414,7 @@ private:
 						inner_table_name = std::string(typeid(inner_elem_type).name());
 						inner_table_name = inner_table_name.substr(inner_table_name.find_last_of(' ') + 1);
 						alias += include_table<inner_elem_type>(table_list);
-						alias += " FROM [dbo].[" + inner_table_name + "] WHERE [dbo].[" + table_name + "].Id = [dbo].[" + inner_table_name + "]." + table_name + "Id FOR JSON AUTO, WITHOUT_ARRAY_WRAPPER)) AS '" + std::string(D.name) + "'";
+						alias += " FROM [dbo].[" + inner_table_name + "] WHERE [dbo].[" + table_name + "].Id = [dbo].[" + inner_table_name + "]." + table_name + "Id FOR JSON AUTO)) AS '" + std::string(D.name) + "'";
 					}
 				}
 				else if (is_shared_ptr_v<val_type>)
