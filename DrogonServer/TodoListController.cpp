@@ -251,6 +251,9 @@ void TodoListController::GetPaginated(const HttpRequestPtr& req, std::function<v
 {
 	try
 	{
+		page == 0 ? page = 1 : page = page;
+		limit == 0 ? limit = 10 : limit = limit;
+
 		TodoListService cmd;
 		auto task = std::future(std::async(std::launch::async, [&cmd, page, limit]() { return cmd.GetTodoListsByPage(page, limit); }));
 		const auto todo_lists = task.get();

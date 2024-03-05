@@ -138,6 +138,9 @@
     <CopyFileToFolders Include="swagger\swagger-ui-standalone-preset.js.map">
       <Filter>Swagger</Filter>
     </CopyFileToFolders>
+    <CopyFileToFolders Include="swagger\openapi.json">
+      <Filter>Swagger</Filter>
+    </CopyFileToFolders>
   </ItemGroup>
   <ItemGroup>
     <Image Include="swagger\favicon-16x16.png">
