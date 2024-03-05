@@ -1,0 +1,87 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Drogon Api 3.0",
+    "description": "Drogon",
+    "version": "1.0.11"
+  },
+  "servers": [
+    {
+      "url": "https://127.0.0.1/"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Todo List",
+      "description": "Everything about your Todo List",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "http://swagger.io"
+      }
+    }
+  ],
+  "paths": {
+    "/api/todo-list": {
+      "get": {
+        "tags": [
+          "Todo List"
+        ],
+        "summary": "Get todo lists",
+        "description": "",
+        "operationId": "getTodoList",
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearer": {
+        "type": "http",
+        "description": "Test",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      },
+      "drogon_oauth2": {
+        "type": "oauth2",
+        "flows": {
+          "authorizationCode": {
+            "authorizationUrl": "https://example.com/oauth/authorize",
+            "tokenUrl": "https://example.com/oauth/token",
+            "scopes": {
+              "read": "Grants read access",
+              "write": "Grants write access"
+            }
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "bearer": []
+    },
+    {
+      "drogon_oauth2": []
+    }
+  ]
+}

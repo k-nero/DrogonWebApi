@@ -242,7 +242,9 @@
     <ClCompile Include="main.cpp" />
     <ClInclude Include="Macros.h" />
     <ClInclude Include="ModelBinding.h" />
+    <ClInclude Include="SwaggerSpec.h" />
     <ClInclude Include="TodoItemController.h" />
+    <ClCompile Include="SwaggerSpec.cpp" />
     <ClCompile Include="TodoItemController.cpp" />
     <ClCompile Include="TodoListController.cpp" />
     <ClInclude Include="TodoListController.h" />

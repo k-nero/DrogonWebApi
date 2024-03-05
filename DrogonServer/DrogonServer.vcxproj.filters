@@ -54,6 +54,9 @@
     <ClCompile Include="TodoItemController.cpp">
       <Filter>Source Files\Controller</Filter>
     </ClCompile>
+    <ClCompile Include="SwaggerSpec.cpp">
+      <Filter>Source Files\Controller</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="controller\UserController.h">
@@ -76,6 +79,9 @@
     </ClInclude>
     <ClInclude Include="ModelBinding.h">
       <Filter>Header Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="SwaggerSpec.h">
+      <Filter>Header Files\Controller</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
