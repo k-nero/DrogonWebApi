@@ -282,22 +282,92 @@
     <Image Include="swagger\favicon-32x32.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="swagger\index.css" />
-    <None Include="swagger\index.html" />
-    <None Include="swagger\oauth2-redirect.html" />
-    <None Include="swagger\swagger-initializer.js" />
-    <None Include="swagger\swagger-ui-bundle.js" />
-    <None Include="swagger\swagger-ui-bundle.js.map" />
-    <None Include="swagger\swagger-ui-es-bundle-core.js" />
-    <None Include="swagger\swagger-ui-es-bundle-core.js.map" />
-    <None Include="swagger\swagger-ui-es-bundle.js" />
-    <None Include="swagger\swagger-ui-es-bundle.js.map" />
-    <None Include="swagger\swagger-ui-standalone-preset.js" />
-    <None Include="swagger\swagger-ui-standalone-preset.js.map" />
-    <None Include="swagger\swagger-ui.css" />
-    <None Include="swagger\swagger-ui.css.map" />
-    <None Include="swagger\swagger-ui.js" />
-    <None Include="swagger\swagger-ui.js.map" />
+    <CopyFileToFolders Include="swagger\index.css">
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)/swagger</DestinationFolders>
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='CLR|x64'">$(OutDir)/swagger</DestinationFolders>
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(OutDir)/swagger</DestinationFolders>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="swagger\index.html">
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)/swagger</DestinationFolders>
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='CLR|x64'">$(OutDir)/swagger</DestinationFolders>
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(OutDir)/swagger</DestinationFolders>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="swagger\oauth2-redirect.html">
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)/swagger</DestinationFolders>
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='CLR|x64'">$(OutDir)/swagger</DestinationFolders>
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(OutDir)/swagger</DestinationFolders>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="swagger\swagger-initializer.js">
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)/swagger</DestinationFolders>
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='CLR|x64'">$(OutDir)/swagger</DestinationFolders>
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(OutDir)/swagger</DestinationFolders>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="swagger\swagger-ui-bundle.js">
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)/swagger</DestinationFolders>
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='CLR|x64'">$(OutDir)/swagger</DestinationFolders>
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(OutDir)/swagger</DestinationFolders>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="swagger\swagger-ui-bundle.js.map">
+      <FileType>Document</FileType>
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)/swagger</DestinationFolders>
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='CLR|x64'">$(OutDir)/swagger</DestinationFolders>
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(OutDir)/swagger</DestinationFolders>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="swagger\swagger-ui-es-bundle-core.js">
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)/swagger</DestinationFolders>
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='CLR|x64'">$(OutDir)/swagger</DestinationFolders>
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(OutDir)/swagger</DestinationFolders>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="swagger\swagger-ui-es-bundle-core.js.map">
+      <FileType>Document</FileType>
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)/swagger</DestinationFolders>
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='CLR|x64'">$(OutDir)/swagger</DestinationFolders>
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(OutDir)/swagger</DestinationFolders>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="swagger\swagger-ui-es-bundle.js">
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)/swagger</DestinationFolders>
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='CLR|x64'">$(OutDir)/swagger</DestinationFolders>
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(OutDir)/swagger</DestinationFolders>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="swagger\swagger-ui-es-bundle.js.map">
+      <FileType>Document</FileType>
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)/swagger</DestinationFolders>
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='CLR|x64'">$(OutDir)/swagger</DestinationFolders>
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(OutDir)/swagger</DestinationFolders>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="swagger\swagger-ui-standalone-preset.js">
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)/swagger</DestinationFolders>
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='CLR|x64'">$(OutDir)/swagger</DestinationFolders>
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(OutDir)/swagger</DestinationFolders>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="swagger\swagger-ui-standalone-preset.js.map">
+      <FileType>Document</FileType>
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)/swagger</DestinationFolders>
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='CLR|x64'">$(OutDir)/swagger</DestinationFolders>
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(OutDir)/swagger</DestinationFolders>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="swagger\swagger-ui.css">
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)/swagger</DestinationFolders>
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='CLR|x64'">$(OutDir)/swagger</DestinationFolders>
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(OutDir)/swagger</DestinationFolders>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="swagger\swagger-ui.css.map">
+      <FileType>Document</FileType>
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)/swagger</DestinationFolders>
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='CLR|x64'">$(OutDir)/swagger</DestinationFolders>
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(OutDir)/swagger</DestinationFolders>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="swagger\swagger-ui.js">
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)/swagger</DestinationFolders>
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='CLR|x64'">$(OutDir)/swagger</DestinationFolders>
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(OutDir)/swagger</DestinationFolders>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="swagger\swagger-ui.js.map">
+      <FileType>Document</FileType>
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)/swagger</DestinationFolders>
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='CLR|x64'">$(OutDir)/swagger</DestinationFolders>
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(OutDir)/swagger</DestinationFolders>
+    </CopyFileToFolders>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

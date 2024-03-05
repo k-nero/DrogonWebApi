@@ -84,6 +84,54 @@
     <CopyFileToFolders Include="private.key" />
     <CopyFileToFolders Include="private_key.pem" />
     <CopyFileToFolders Include="public_key.pem" />
+    <CopyFileToFolders Include="swagger\index.css">
+      <Filter>Swagger</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="swagger\index.html">
+      <Filter>Swagger</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="swagger\oauth2-redirect.html">
+      <Filter>Swagger</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="swagger\swagger-initializer.js">
+      <Filter>Swagger</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="swagger\swagger-ui.css">
+      <Filter>Swagger</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="swagger\swagger-ui.css.map">
+      <Filter>Swagger</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="swagger\swagger-ui.js">
+      <Filter>Swagger</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="swagger\swagger-ui.js.map">
+      <Filter>Swagger</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="swagger\swagger-ui-bundle.js">
+      <Filter>Swagger</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="swagger\swagger-ui-bundle.js.map">
+      <Filter>Swagger</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="swagger\swagger-ui-es-bundle.js">
+      <Filter>Swagger</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="swagger\swagger-ui-es-bundle.js.map">
+      <Filter>Swagger</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="swagger\swagger-ui-es-bundle-core.js">
+      <Filter>Swagger</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="swagger\swagger-ui-es-bundle-core.js.map">
+      <Filter>Swagger</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="swagger\swagger-ui-standalone-preset.js">
+      <Filter>Swagger</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="swagger\swagger-ui-standalone-preset.js.map">
+      <Filter>Swagger</Filter>
+    </CopyFileToFolders>
   </ItemGroup>
   <ItemGroup>
     <Image Include="swagger\favicon-16x16.png">
@@ -92,55 +140,5 @@
     <Image Include="swagger\favicon-32x32.png">
       <Filter>Resource Files</Filter>
     </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="swagger\index.css">
-      <Filter>Swagger</Filter>
-    </None>
-    <None Include="swagger\index.html">
-      <Filter>Swagger</Filter>
-    </None>
-    <None Include="swagger\oauth2-redirect.html">
-      <Filter>Swagger</Filter>
-    </None>
-    <None Include="swagger\swagger-initializer.js">
-      <Filter>Swagger</Filter>
-    </None>
-    <None Include="swagger\swagger-ui.css">
-      <Filter>Swagger</Filter>
-    </None>
-    <None Include="swagger\swagger-ui.css.map">
-      <Filter>Swagger</Filter>
-    </None>
-    <None Include="swagger\swagger-ui.js">
-      <Filter>Swagger</Filter>
-    </None>
-    <None Include="swagger\swagger-ui.js.map">
-      <Filter>Swagger</Filter>
-    </None>
-    <None Include="swagger\swagger-ui-bundle.js">
-      <Filter>Swagger</Filter>
-    </None>
-    <None Include="swagger\swagger-ui-bundle.js.map">
-      <Filter>Swagger</Filter>
-    </None>
-    <None Include="swagger\swagger-ui-es-bundle.js">
-      <Filter>Swagger</Filter>
-    </None>
-    <None Include="swagger\swagger-ui-es-bundle.js.map">
-      <Filter>Swagger</Filter>
-    </None>
-    <None Include="swagger\swagger-ui-es-bundle-core.js">
-      <Filter>Swagger</Filter>
-    </None>
-    <None Include="swagger\swagger-ui-es-bundle-core.js.map">
-      <Filter>Swagger</Filter>
-    </None>
-    <None Include="swagger\swagger-ui-standalone-preset.js">
-      <Filter>Swagger</Filter>
-    </None>
-    <None Include="swagger\swagger-ui-standalone-preset.js.map">
-      <Filter>Swagger</Filter>
-    </None>
   </ItemGroup>
 </Project>

@@ -59,6 +59,19 @@ void ConfigProvider::Initialize()
 			BOOST_LOG_TRIVIAL(info) << "Please provide a public RSA key in startup project folder ";
 		}
 	}
+	if (redis_host.empty())
+	{
+		redis_host = reader.GetString("redis", "host", "");
+		redis_password = reader.GetString("redis", "password", "");
+		if (redis_host.empty() )
+		{
+			BOOST_LOG_TRIVIAL(error) << "Redis host is not set !"; 
+		}
+		if(redis_password.empty())
+		{
+			BOOST_LOG_TRIVIAL(error) << "Redis password is not set !";
+		}
+	}
 }
 
 ConfigProvider::~ConfigProvider()

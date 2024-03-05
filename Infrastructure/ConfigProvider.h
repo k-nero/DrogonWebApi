@@ -45,10 +45,23 @@ public:
 	{
 		return publicRSAKey;
 	}
+
+	std::string GetRedisHost()
+	{
+		return redis_host;
+	}
+
+	std::string GetRedisPassword()
+	{
+		return redis_password;
+	}
+
 private:
 	Database connectionString;
-	std::string bcryptSecret;
-	std::string privateRSAKey;
-	std::string publicRSAKey;
+	std::string bcryptSecret = "";
+	std::string privateRSAKey = "";
+	std::string publicRSAKey = "";
+	std::string redis_host = "";
+	std::string redis_password = "";
 };
 
