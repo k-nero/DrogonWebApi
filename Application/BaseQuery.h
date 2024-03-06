@@ -440,7 +440,7 @@ public:
 				count = cmd.Field(1).asLong();
 			}
 
-			return std::make_shared<PaginationObject<K>>(items, count, page, pageSize);
+			return std::make_shared<PaginationObject<K>>(items, pageSize, page, pageSize == 0 ? 0 : ceil(count / pageSize));
 		}
 		catch (SAException& ex)
 		{

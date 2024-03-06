@@ -262,6 +262,7 @@
     <ClInclude Include="JsonHelper.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="RedisContext.h" />
+    <ClInclude Include="SwaggerConfig.h" />
     <ClInclude Include="TypeCheck.h" />
   </ItemGroup>
   <ItemGroup>
@@ -279,6 +280,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="RedisContext.cpp" />
+    <ClCompile Include="SwaggerConfig.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

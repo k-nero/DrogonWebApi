@@ -75,6 +75,15 @@ T tag_invoke(boost::json::value_to_tag<T> const&, boost::json::value const& v)
 }
 
 template<class T>
+std::shared_ptr<T> tag_invoke(boost::json::value_to_tag<std::shared_ptr<T>> const&, boost::json::value const& v)
+{
+	auto const& obj = v.as_object();
+	std::shared_ptr<T> pt;
+	pt = std::make_shared<T>(boost::json::value_to<T>(v));
+	return pt;
+}
+
+template<class T>
 std::vector<std::shared_ptr<T>> tag_invoke(boost::json::value_to_tag<std::vector<std::shared_ptr<T>>> const&, boost::json::value const& v)
 {
 	auto const& obj = v.as_array();

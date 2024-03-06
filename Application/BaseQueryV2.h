@@ -33,16 +33,15 @@ public:
 	std::shared_ptr<K> GetByIdEw(const std::string& id, std::vector<std::string> includes = {}, std::vector<std::string> select_fields = {}) noexcept(false)
 	{
 		boost::json::value json;
-		std::string result = GetByIdEx<K>(id, includes, select_fields);
+		auto result = GetByIdEx<K>(id, includes, select_fields);
 		boost::json::parse_options opt;
 		opt.allow_invalid_utf8 = true;
-		json = boost::json::parse(result, boost::json::storage_ptr(), opt);
-		K k = boost::json::value_to<K>(json);
-		return std::make_shared<K>(k);
+		json = boost::json::parse(*result, boost::json::storage_ptr(), opt);
+		return boost::json::value_to<std::shared_ptr<K>>(json);
 	}
 
 	template<typename K = T>
-	std::string GetByIdEx(const std::string& id, std::vector<std::string> includes = {}, std::vector<std::string> select_fields = {}) noexcept(false)
+	std::shared_ptr<std::string> GetByIdEx(const std::string& id, std::vector<std::string> includes = {}, std::vector<std::string> select_fields = {}) noexcept(false)
 	{
 		std::shared_ptr<SAConnection> con(db->GetConnection());
 		try
@@ -70,8 +69,10 @@ public:
 #endif // LOG_SQL_COMMAND
 			SACommand cmd(con.get(), _TSA(base_query.c_str()));
 			cmd.Execute();
-			std::string result = "";
+			auto result = std::make_shared<std::string>();
+			result->reserve(0x800);
 			cmd.Field(1).setFieldType(SA_dtLongChar);
+			cmd.Field(1).setFieldSize(0x800);
 			cmd.Field(1).setLongOrLobReaderMode(SALongOrLobReaderModes_t::SA_LongOrLobReaderManual);
 			while (cmd.FetchNext())
 			{
@@ -84,7 +85,7 @@ public:
 					}
 				};
 
-				cmd.Field(1).ReadLongOrLob(HandlingJson, 1024, (void*)&result);
+				cmd.Field(1).ReadLongOrLob(HandlingJson, 1024, (void*)(result.get()));
 			}
 			return result;
 		}
@@ -100,27 +101,30 @@ public:
 #endif // DEBUG
 			throw std::exception(ex.ErrText().GetMultiByteChars());
 		}
-		return "";
 	}
 
 	template<typename K = T>
 	std::shared_ptr<K> GetSingleEw(const std::string query = "", std::vector<std::string> includes = {}, std::vector<std::string> select_fields = {}) noexcept(false)
 	{
 		boost::json::value json;
-		std::string result = GetSingleEx<K>(query, includes, select_fields);
+		auto result = GetSingleEx<K>(query, includes, select_fields);
 		boost::json::parse_options opt;
 		opt.allow_invalid_utf8 = true;
-		json = boost::json::parse(result, boost::json::storage_ptr(), opt);
-		K k = boost::json::value_to<K>(json);
-		return std::make_shared<K>(k);
+		json = boost::json::parse(*result, boost::json::storage_ptr(), opt);
+		return boost::json::value_to<std::shared_ptr<K>>(json);
 	}
 
 	template<typename K = T>
-	std::string GetSingleEx(const std::string query = "", std::vector<std::string> includes = {}, std::vector<std::string> select_fields = {}) noexcept(false)
+	std::shared_ptr<std::string> GetSingleEx(const std::string query = "", std::vector<std::string> includes = {}, std::vector<std::string> select_fields = {}) noexcept(false)
 	{
 		std::shared_ptr<SAConnection> con(db->GetConnection());
 		try
 		{
+			if(query.empty())
+			{
+				throw std::exception("Query is empty");
+			}
+
 			std::string table_name = std::string(typeid(K).name());
 			table_name = table_name.substr(table_name.find_last_of(' ') + 1);
 			std::string base_query = "";
@@ -140,8 +144,10 @@ public:
 #endif // LOG_SQL_COMMAND
 			SACommand cmd(con.get(), _TSA(base_query.c_str()));
 			cmd.Execute();
-			std::string result = "";
+			auto result = std::make_shared<std::string>();
+			result->reserve(0x800);
 			cmd.Field(1).setFieldType(SA_dtLongChar);
+			cmd.Field(1).setFieldSize(0x800);
 			cmd.Field(1).setLongOrLobReaderMode(SALongOrLobReaderModes_t::SA_LongOrLobReaderManual);
 			while (cmd.FetchNext())
 			{
@@ -154,7 +160,7 @@ public:
 					}
 				};
 
-				cmd.Field(1).ReadLongOrLob(HandlingJson, 1024, (void*)&result);
+				cmd.Field(1).ReadLongOrLob(HandlingJson, 1024, (void*)(result.get()));
 			}
 			return result;
 		}
@@ -170,23 +176,21 @@ public:
 #endif // DEBUG
 			throw std::exception(ex.ErrText().GetMultiByteChars());
 		}
-		return "";
 	}
 
 	template<typename K = T>
 	std::vector<std::shared_ptr<K>> GetAllEw(const std::string query = "", std::vector<std::string> includes = {}, std::vector<std::string> select_fields = {}) noexcept(false)
 	{
 		boost::json::value json;
-		std::string result = GetAllEx<K>(query, includes, select_fields);
+		auto result = GetAllEx<K>(query, includes, select_fields);
 		boost::json::parse_options opt;
 		opt.allow_invalid_utf8 = true;
-		json = boost::json::parse(result, boost::json::storage_ptr(), opt);
-		auto k = boost::json::value_to<std::vector<std::shared_ptr<K>>>(json);
-		return k;
+		json = boost::json::parse(*result, boost::json::storage_ptr(), opt);
+		return boost::json::value_to<std::vector<std::shared_ptr<K>>>(json);
 	}
 
 	template<typename K = T>
-	std::string GetAllEx(std::string query = "", std::vector<std::string> includes = {}, std::vector<std::string> select_fields = {}) noexcept(false)
+	std::shared_ptr<std::string> GetAllEx(std::string query = "", std::vector<std::string> includes = {}, std::vector<std::string> select_fields = {}) noexcept(false)
 	{
 		std::shared_ptr<SAConnection> con(db->GetConnection());
 		try
@@ -212,8 +216,10 @@ public:
 #endif // LOG_SQL_COMMAND
 			SACommand cmd(con.get(), _TSA(base_query.c_str()));
 			cmd.Execute();
-			std::string result = "";
+			auto result = std::make_shared<std::string>();
+			result->reserve(0x200000);
 			cmd.Field(1).setFieldType(SA_dtLongChar);
+			cmd.Field(1).setFieldSize(0x800);
 			cmd.Field(1).setLongOrLobReaderMode(SALongOrLobReaderModes_t::SA_LongOrLobReaderManual);
 			while (cmd.FetchNext())
 			{
@@ -226,7 +232,7 @@ public:
 					}
 				};
 
-				cmd.Field(1).ReadLongOrLob(HandlingJson, 1024, (void*)&result);
+				cmd.Field(1).ReadLongOrLob(HandlingJson, 1024, (void*)(result.get()));
 			}
 			return result;
 		}
@@ -242,29 +248,94 @@ public:
 #endif // DEBUG
 			throw std::exception(ex.ErrText().GetMultiByteChars());
 		}
-		return "";
 	}
 
 	template<typename K = T>
-	std::vector<std::shared_ptr<K>> GetPaginatedEw(int page, int pageSize, const std::string query = "", std::vector<std::string> includes = {}, std::vector<std::string> select_fields = {}) noexcept(false)
+	std::shared_ptr<std::string> GetPaginatedFw(int page, int pageSize, const std::string query = "", std::vector<std::string> includes = {}, std::vector<std::string> select_fields = {}) noexcept(false)
 	{
-		boost::json::value json;
-		std::string result = GetPaginatedEx<K>(page, pageSize, query, includes, select_fields);
+		std::shared_ptr<SAConnection> count_con(db->GetConnection());
+
+		std::string table_name = std::string(typeid(K).name());
+		table_name = table_name.substr(table_name.find_last_of(' ') + 1);
+
+		auto cout_task = std::async(std::launch::async, [&]()
+		{
+			int count = 0;
+			std::string count_query = "SELECT COUNT(*) FROM [dbo].[" + table_name + "]";
+			count_query += " WHERE " + query;
+			SACommand cmd(count_con.get(), _TSA(count_query.c_str()));
+			cmd.Execute();
+
+			if (cmd.FetchNext())
+			{
+				count = cmd.Field(1).asLong();
+			}
+
+			return count;
+		});
+
+		auto result = GetPaginatedEx<K>(page, pageSize, query, includes, select_fields);
+
+		boost::json::value root;
 		boost::json::parse_options opt;
 		opt.allow_invalid_utf8 = true;
-		json = boost::json::parse(result, boost::json::storage_ptr(), opt);
-		auto k = boost::json::value_to<std::vector<std::shared_ptr<K>>>(json);
-		return k;
+		root["data"] = boost::json::parse(*result, boost::json::storage_ptr(), opt);
+		root["m_pageSize"] = pageSize;
+		root["m_currentPage"] = page;
+		root["m_totalPages"] = pageSize == 0 ? 0 : ceil(cout_task.get() / pageSize);
+		return std::make_shared<std::string>(boost::json::serialize(root));
 	}
 
 	template<typename K = T>
-	std::string GetPaginatedEx(int page, int pageSize, std::string query = "", std::vector<std::string> includes = {}, std::vector<std::string> select_fields = {}) noexcept(false)
+	std::shared_ptr<PaginationObject<K>> GetPaginatedEw(int page, int pageSize, const std::string query = "", std::vector<std::string> includes = {}, std::vector<std::string> select_fields = {}) noexcept(false)
+	{
+		std::shared_ptr<SAConnection> count_con(db->GetConnection());
+
+		std::string table_name = std::string(typeid(K).name());
+		table_name = table_name.substr(table_name.find_last_of(' ') + 1);
+
+		auto cout_task = std::async(std::launch::async, [&]()
+		{
+			int count = 0;
+			std::string count_query = "SELECT COUNT(*) FROM [dbo].[" + table_name + "]";
+			count_query += " WHERE " + query;
+			SACommand cmd(count_con.get(), _TSA(count_query.c_str()));
+			cmd.Execute();
+
+			if (cmd.FetchNext())
+			{
+				count = cmd.Field(1).asLong();
+			}
+
+			return count;
+		});
+
+		auto result = GetPaginatedEx<K>(page, pageSize, query, includes, select_fields);
+
+		boost::json::value root;
+		boost::json::parse_options opt;
+		opt.allow_invalid_utf8 = true;
+		root["data"] = boost::json::parse(*result, boost::json::storage_ptr(), opt);
+		root["m_pageSize"] = pageSize;
+		root["m_currentPage"] = page;
+		root["m_totalPages"] = pageSize == 0 ? 0 : ceil(cout_task.get() / pageSize);
+		return boost::json::value_to<std::shared_ptr<PaginationObject<K>>>(root);
+	}
+
+	template<typename K = T>
+	std::shared_ptr<std::string> GetPaginatedEx(int page, int pageSize, std::string query = "", std::vector<std::string> includes = {}, std::vector<std::string> select_fields = {}) noexcept(false)
 	{
 		std::shared_ptr<SAConnection> con(db->GetConnection());
 		try
 		{
+			if (query.empty())
+			{
+				query = "1=1";
+			}
+
 			std::string table_name = std::string(typeid(K).name());
 			table_name = table_name.substr(table_name.find_last_of(' ') + 1);
+
 			std::string fields = "";
 
 			for (auto& include_field : includes)
@@ -282,8 +353,7 @@ public:
 			}
 			std::string base_query = "SELECT " + fields + " FROM (SELECT ROW_NUMBER() OVER ( ORDER BY CreatedDate ) AS RowNum";
 			std::string alias = include_table<K>(includes);
-			if (query.empty())
-				query = "1=1";
+
 			std::string from = "  , * FROM [dbo].[" + table_name + "] WHERE " + query + ") AS R WHERE RowNum BETWEEN " + std::to_string((page - 1) * pageSize + 1) + " AND " + std::to_string(page * pageSize) + " ORDER BY RowNum FOR JSON AUTO";
 			base_query += alias + from;
 #ifdef LOG_SQL_COMMAND
@@ -292,8 +362,10 @@ public:
 			SACommand cmd(con.get(), _TSA(base_query.c_str()));
 			cmd.Execute();
 			cmd.Field(1).setFieldType(SA_dtLongChar);
+			cmd.Field(1).setFieldSize(0x800);
 			cmd.Field(1).setLongOrLobReaderMode(SALongOrLobReaderModes_t::SA_LongOrLobReaderManual);
-			std::string result = "";
+			auto result = std::make_shared<std::string>();
+			result->reserve(0x100000);
 			//the json output of the result set is single collumn but split to multiple row on large data, need to concatenate them for a single json object	
 			while (cmd.FetchNext())
 			{
@@ -306,7 +378,7 @@ public:
 					}
 				};
 
-				cmd.Field(1).ReadLongOrLob(HandlingJson, 1024, (void*)&result);
+				cmd.Field(1).ReadLongOrLob(HandlingJson, 1024, (void*)(result.get()));
 			}
 			return result;
 		}
@@ -322,7 +394,6 @@ public:
 #endif // DEBUG
 			throw std::exception(ex.ErrText().GetMultiByteChars());
 		}
-		return "";
 	}
 
 private:
