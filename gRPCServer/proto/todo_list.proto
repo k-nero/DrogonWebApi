@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package TodoList;
+
+service TodoListService 
+{
+	rpc AddTodoList (AddTodoRequest) returns ( int32 ) {}
+	rpc UpdateTodoList (UpdateTodoRequest) returns ( string ) {}
+	rpc GetTodoList (GetTodoListRequest) returns (TodoList) {}
+	rpc DeleteTodoList (DeleteTodoRequest) returns ( int32 ) {}
+}
+
+message AddTodoRequest 
+{
+	string Title = 2;
+	string Description = 3;
+}
+
+message UpdateTodoRequest  
+{
+	string Id = 1;
+	string Title = 2;
+	string Description = 3;
+}
+
+message GetTodoListRequest 
+{
+	string Id = 1;
+}
+
+message TodoList 
+{
+	string Id = 1;
+	string Title = 2;
+	string Description = 3;
+	string CreatedDate = 4;
+	string ModifiedDate = 5;
+	int32 Version = 6;
+}
+
+message DeleteTodoRequest 
+{
+	string Id = 1;
+}
