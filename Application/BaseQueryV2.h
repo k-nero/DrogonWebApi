@@ -29,6 +29,15 @@ public:
 	}
 	~Query() = default;
 
+	template<typename Z>
+	Z ParseFromJSON(const std::string& json) noexcept(false)
+	{
+		boost::json::parse_options opt;
+		opt.allow_invalid_utf8 = true;
+		boost::json::value value = boost::json::parse(json, boost::json::storage_ptr(), opt);
+		return boost::json::value_to<Z>(value);
+	}
+
 	template<typename K = T>
 	std::shared_ptr<K> GetByIdEw(const std::string& id, std::vector<std::string> includes = {}, std::vector<std::string> select_fields = {}) noexcept(false)
 	{
@@ -315,6 +324,7 @@ public:
 		boost::json::value root;
 		boost::json::parse_options opt;
 		opt.allow_invalid_utf8 = true;
+		root["data"] = boost::json::value::emplace_array();
 		root["data"] = boost::json::parse(*result, boost::json::storage_ptr(), opt);
 		root["m_pageSize"] = pageSize;
 		root["m_currentPage"] = page;

@@ -5,7 +5,7 @@
 #include "hiredis/async.h"
 #include <boost/log/trivial.hpp>
 
-class RedisContext
+class INFRASTRUCTURE_API RedisContext
 {
 public:
 	RedisContext() = default;
@@ -13,6 +13,12 @@ public:
 
 	bool CreateSyncContext(redisOptions opt);
 	bool CreateSyncContext();
+	void SetString(const std::string& key, const std::string& value, int expireSeconds);
+	void refreshTTL(const std::string& key, int expireSeconds);
+	void RemoveKey(const std::string& key);
+	int GetNumOfDb();
+	std::shared_ptr<std::string> GetString(const std::string& key);
+	std::vector<std::string> GetAllActiveKeys(std::string contain = "");
 	void CreateAsyncContext();
 
 private:

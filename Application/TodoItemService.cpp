@@ -2,6 +2,7 @@
 #include "TodoItemService.h"
 #include "DbContext.h"
 #include "TodoListQuery.h"
+#include "RedisContext.h"
 
 TodoItemService::TodoItemService()
 {
@@ -20,8 +21,25 @@ std::vector<std::shared_ptr<TodoItem>> TodoItemService::GetAllTodoItems() noexce
 {
 	/*TodoItemQuery query;
 	return query.GetAll();*/
+	RedisContext ctx;
 	Query<TodoItem> query;
-	return query.GetAllEw("", {"TodoList"});
+
+	ctx.CreateSyncContext();
+
+	auto json = ctx.GetString("TodoItem");
+
+	if (json->empty())
+	{
+		auto json = query.GetAllEx("", { "TodoList" });
+		ctx.SetString("TodoItem", *json, 360);
+		return query.ParseFromJSON<std::vector<std::shared_ptr<TodoItem>>>(*json);
+	}
+
+	ctx.refreshTTL("TodoItem", 360);
+
+	auto keylist = ctx.GetAllActiveKeys("TodoItem");
+
+	return query.ParseFromJSON<std::vector<std::shared_ptr<TodoItem>>>(*json);
 }
 
 
