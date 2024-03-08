@@ -13,8 +13,34 @@ std::shared_ptr<TodoItem> TodoItemService::GetTodoItemById(const std::string& Id
 {
 	/*TodoItemQuery todo_item_query;
 	return todo_item_query.GetSingle(EQ(Id), { "TodoList" });*/
+	RedisContext ctx;
 	Query<TodoItem> query;
-	return query.GetByIdEw(Id, { "TodoList" });
+	std::shared_ptr<std::string> json = nullptr;
+
+	/*std::string table_name = std::string(typeid(TodoItem).name());
+	std::string redis_key = table_name.substr(table_name.find_last_of(' ') + 1) + ":" + Id;*/
+
+	std::string redis_key = "TodoItem:" + Id;
+
+	if (!ctx.CreateSyncContext())
+	{
+		json = query.GetByIdEx(Id, { "TodoList" });
+	}
+	else
+	{
+		json = ctx.GetString(redis_key);
+		if (json->empty())
+		{
+			auto json = query.GetByIdEx(Id, { "TodoList" });
+			ctx.SetString(redis_key, *json, 360);
+		}
+		else
+		{
+			ctx.refreshTTL(redis_key, 360);
+		}
+	}
+
+	return query.ParseFromJSON<std::shared_ptr<TodoItem>>(*json);
 }
 
 std::vector<std::shared_ptr<TodoItem>> TodoItemService::GetAllTodoItems() noexcept(false)
@@ -23,22 +49,27 @@ std::vector<std::shared_ptr<TodoItem>> TodoItemService::GetAllTodoItems() noexce
 	return query.GetAll();*/
 	RedisContext ctx;
 	Query<TodoItem> query;
+	std::shared_ptr<std::string> json = nullptr;
 
-	ctx.CreateSyncContext();
+	std::string redis_key = "TodoItem:";
 
-	auto json = ctx.GetString("TodoItem");
-
-	if (json->empty())
+	if (!ctx.CreateSyncContext())
 	{
-		auto json = query.GetAllEx("", { "TodoList" });
-		ctx.SetString("TodoItem", *json, 360);
-		return query.ParseFromJSON<std::vector<std::shared_ptr<TodoItem>>>(*json);
+		json = query.GetAllEx("", { "TodoList" });
 	}
-
-	ctx.refreshTTL("TodoItem", 360);
-
-	auto keylist = ctx.GetAllActiveKeys("TodoItem");
-
+	else
+	{
+		json = ctx.GetString(redis_key);
+		if (json->empty())
+		{
+			auto json = query.GetAllEx("", { "TodoList" });
+			ctx.SetString(redis_key, *json, 360);
+		}
+		else
+		{
+			ctx.refreshTTL(redis_key, 360);
+		}
+	}
 	return query.ParseFromJSON<std::vector<std::shared_ptr<TodoItem>>>(*json);
 }
 
