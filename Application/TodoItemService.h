@@ -6,6 +6,7 @@
 #include "TodoItemQuery.h"
 #include "TodoItemModel.h"
 #include "Mapper.h"
+#include "RedisContext.h"
 
 class APPLICATION_API TodoItemService
 {

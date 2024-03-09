@@ -1,8 +1,5 @@
 #include "pch.h"
 #include "TodoItemService.h"
-#include "DbContext.h"
-#include "TodoListQuery.h"
-#include "RedisContext.h"
 
 TodoItemService::TodoItemService()
 {
@@ -11,8 +8,6 @@ TodoItemService::TodoItemService()
 
 std::shared_ptr<TodoItem> TodoItemService::GetTodoItemById(const std::string& Id) noexcept(false)
 {
-	/*TodoItemQuery todo_item_query;
-	return todo_item_query.GetSingle(EQ(Id), { "TodoList" });*/
 	RedisContext ctx;
 	Query<TodoItem> query;
 	std::shared_ptr<std::string> json = nullptr;
@@ -31,7 +26,7 @@ std::shared_ptr<TodoItem> TodoItemService::GetTodoItemById(const std::string& Id
 		json = ctx.GetString(redis_key);
 		if (json->empty())
 		{
-			auto json = query.GetByIdEx(Id, { "TodoList" });
+			 json = query.GetByIdEx(Id, { "TodoList" });
 			ctx.SetString(redis_key, *json, 360);
 		}
 		else
@@ -51,7 +46,7 @@ std::vector<std::shared_ptr<TodoItem>> TodoItemService::GetAllTodoItems() noexce
 	Query<TodoItem> query;
 	std::shared_ptr<std::string> json = nullptr;
 
-	std::string redis_key = "TodoItem:";
+	std::string redis_key = "TodoList:TodoItem:";
 
 	if (!ctx.CreateSyncContext())
 	{
@@ -62,7 +57,7 @@ std::vector<std::shared_ptr<TodoItem>> TodoItemService::GetAllTodoItems() noexce
 		json = ctx.GetString(redis_key);
 		if (json->empty())
 		{
-			auto json = query.GetAllEx("", { "TodoList" });
+			 json = query.GetAllEx("", { "TodoList" });
 			ctx.SetString(redis_key, *json, 360);
 		}
 		else
@@ -77,23 +72,74 @@ std::vector<std::shared_ptr<TodoItem>> TodoItemService::GetAllTodoItems() noexce
 std::string TodoItemService::CreateTodoItem(TodoItemModel& todo_item_model) noexcept(false)
 {
 	TodoItemCommand cmd;
+	RedisContext ctx;
+	ctx.CreateSyncContext();
 	auto todo_item = Mapper::Map<TodoItemModel, TodoItem>(todo_item_model);
 	todo_item.SetId(CoreHelper::CreateUUID());
-	cmd.Create(todo_item);
-	return todo_item.GetId();
+	if (cmd.Create(todo_item) > 0)
+	{
+		auto keys = ctx.GetAllActiveKeys();
+		for (auto& key : keys)
+		{
+			if (key.find("TodoItem:") != std::string::npos)
+			{
+				ctx.RemoveKey(key);
+			}
+		}
+
+		return todo_item.GetId();
+	}
+	else
+	{
+		throw std::runtime_error("Failed to create todo item");
+	}
 }
 
 int TodoItemService::UpdateTodoItem(TodoItemModel& todo_item_model, const std::string& Id) noexcept(false)
 {
+	RedisContext ctx;
+	ctx.CreateSyncContext();
 	TodoItemCommand cmd;
 	auto todo_item = Mapper::Map<TodoItemModel, TodoItem>(todo_item_model);
-	return cmd.Update(todo_item, EQ(Id));
+	if (cmd.Update(todo_item, EQ(Id)) > 0)
+	{
+		auto keys = ctx.GetAllActiveKeys();
+		for (auto& key : keys)
+		{
+			if (key.find("TodoItem:") != std::string::npos)
+			{
+				ctx.RemoveKey(key);
+			}
+		}
+		return 1;
+	}
+	else
+	{
+		throw std::runtime_error("TodoItem not found");
+	}
 }
 
 int TodoItemService::DeleteTodoItem(const std::string& Id)
 {
+	RedisContext ctx;
+	ctx.CreateSyncContext();
 	TodoItemCommand cmd;
-	return cmd.Delete(EQ(Id));
+	if (cmd.Delete(EQ(Id)) > 0)
+	{
+		auto keys = ctx.GetAllActiveKeys();
+		for (auto& key : keys)
+		{
+			if (key.find("TodoItem:") != std::string::npos)
+			{
+				ctx.RemoveKey(key);
+			}
+		}
+		return 1;
+	}
+	else
+	{
+		throw std::runtime_error("TodoItem not found");
+	}
 }
 
 TodoItemService::~TodoItemService()

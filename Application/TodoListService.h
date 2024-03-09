@@ -6,7 +6,8 @@
 #include "TodoListQuery.h"
 #include "Mapper.h"
 #include "TodoListModel.h"
-
+#include "PaginationObject.h"
+#include "RedisContext.h"
 
 class APPLICATION_API TodoListService
 {

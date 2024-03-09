@@ -34,6 +34,7 @@ public:
 	{
 		boost::json::parse_options opt;
 		opt.allow_invalid_utf8 = true;
+		opt.allow_comments = true;
 		boost::json::value value = boost::json::parse(json, boost::json::storage_ptr(), opt);
 		return boost::json::value_to<Z>(value);
 	}
@@ -129,7 +130,7 @@ public:
 		std::shared_ptr<SAConnection> con(db->GetConnection());
 		try
 		{
-			if(query.empty())
+			if (query.empty())
 			{
 				throw std::exception("Query is empty");
 			}
@@ -260,43 +261,66 @@ public:
 	}
 
 	template<typename K = T>
-	std::shared_ptr<std::string> GetPaginatedFw(int page, int pageSize, const std::string query = "", std::vector<std::string> includes = {}, std::vector<std::string> select_fields = {}) noexcept(false)
+	std::shared_ptr<std::string> GetPaginatedFw(int page, int pageSize, std::string query = "", std::vector<std::string> includes = {}, std::vector<std::string> select_fields = {}) noexcept(false)
 	{
-		std::shared_ptr<SAConnection> count_con(db->GetConnection());
-
-		std::string table_name = std::string(typeid(K).name());
-		table_name = table_name.substr(table_name.find_last_of(' ') + 1);
-
-		auto cout_task = std::async(std::launch::async, [&]()
+		try
 		{
-			int count = 0;
-			std::string count_query = "SELECT COUNT(*) FROM [dbo].[" + table_name + "]";
-			count_query += " WHERE " + query;
-			SACommand cmd(count_con.get(), _TSA(count_query.c_str()));
-			cmd.Execute();
+			std::shared_ptr<SAConnection> count_con(db->GetConnection());
+			std::string table_name = std::string(typeid(K).name());
+			table_name = table_name.substr(table_name.find_last_of(' ') + 1);
 
-			if (cmd.FetchNext())
+			auto cout_task = std::async(std::launch::async, [&]()
 			{
-				count = cmd.Field(1).asLong();
+				int count = 0;
+				if (query.empty())
+				{
+					query += "1=1";
+				}
+				std::string count_query = "SELECT COUNT(*) FROM [dbo].[" + table_name + "]";
+				count_query += " WHERE " + query;
+				SACommand cmd(count_con.get(), _TSA(count_query.c_str()));
+				cmd.Execute();
+
+				if (cmd.FetchNext())
+				{
+					count = cmd.Field(1).asLong();
+				}
+
+				return count;
+			});
+
+			auto result = GetPaginatedEx<K>(page, pageSize, query, includes, select_fields);
+
+			Json::Value root;
+			std::string errors;
+			auto reader = Json::CharReaderBuilder().newCharReader();
+			if (!reader->parse(result->c_str(), result->c_str() + result->size(), &root["m_data"], &errors))
+			{
+				throw std::exception(errors.c_str());
 			}
+			delete reader;
+			root["m_pageSize"] = pageSize;
+			root["m_currentPage"] = page;
+			root["m_totalPages"] = pageSize == 0 ? 0 : ceil(cout_task.get() / pageSize);
+			return std::make_shared<std::string>(root.toStyledString());
+		}
+		catch (SAException& ex)
+		{
+			BOOST_LOG_TRIVIAL(fatal) << ex.ErrText();
+			BOOST_LOG_TRIVIAL(error) << ex.ErrMessage();
+#ifdef _DEBUG
+			BOOST_LOG_TRIVIAL(debug) << ex.CommandText();
+			BOOST_LOG_TRIVIAL(debug) << ex.ErrNativeCode();
+			BOOST_LOG_TRIVIAL(debug) << ex.ErrClass();
+			BOOST_LOG_TRIVIAL(debug) << ex.ErrPos();
+#endif // DEBUG
+			throw std::exception(ex.ErrText().GetMultiByteChars());
+		}
 
-			return count;
-		});
-
-		auto result = GetPaginatedEx<K>(page, pageSize, query, includes, select_fields);
-
-		boost::json::value root;
-		boost::json::parse_options opt;
-		opt.allow_invalid_utf8 = true;
-		root["data"] = boost::json::parse(*result, boost::json::storage_ptr(), opt);
-		root["m_pageSize"] = pageSize;
-		root["m_currentPage"] = page;
-		root["m_totalPages"] = pageSize == 0 ? 0 : ceil(cout_task.get() / pageSize);
-		return std::make_shared<std::string>(boost::json::serialize(root));
 	}
 
 	template<typename K = T>
-	std::shared_ptr<PaginationObject<K>> GetPaginatedEw(int page, int pageSize, const std::string query = "", std::vector<std::string> includes = {}, std::vector<std::string> select_fields = {}) noexcept(false)
+	std::shared_ptr<PaginationObject<K>> GetPaginatedEw(int page, int pageSize, std::string query = "", std::vector<std::string> includes = {}, std::vector<std::string> select_fields = {}) noexcept(false)
 	{
 		std::shared_ptr<SAConnection> count_con(db->GetConnection());
 
@@ -306,6 +330,12 @@ public:
 		auto cout_task = std::async(std::launch::async, [&]()
 		{
 			int count = 0;
+
+			if (query.empty())
+			{
+				query += "1=1";
+			}
+
 			std::string count_query = "SELECT COUNT(*) FROM [dbo].[" + table_name + "]";
 			count_query += " WHERE " + query;
 			SACommand cmd(count_con.get(), _TSA(count_query.c_str()));
@@ -364,12 +394,13 @@ public:
 			std::string base_query = "SELECT " + fields + " FROM (SELECT ROW_NUMBER() OVER ( ORDER BY CreatedDate ) AS RowNum";
 			std::string alias = include_table<K>(includes);
 
-			std::string from = "  , * FROM [dbo].[" + table_name + "] WHERE " + query + ") AS R WHERE RowNum BETWEEN " + std::to_string((page - 1) * pageSize + 1) + " AND " + std::to_string(page * pageSize) + " ORDER BY RowNum FOR JSON AUTO";
+			std::string from = ", * FROM [dbo].[" + table_name + "] WHERE " + query + ") AS R WHERE RowNum BETWEEN " + std::to_string((page - 1) * pageSize + 1) + " AND " + std::to_string(page * pageSize) + " ORDER BY RowNum FOR JSON AUTO";
 			base_query += alias + from;
 #ifdef LOG_SQL_COMMAND
 			BOOST_LOG_TRIVIAL(debug) << base_query;
 #endif // LOG_SQL_COMMAND
-			SACommand cmd(con.get(), _TSA(base_query.c_str()));
+
+			SACommand cmd(con.get(), base_query.c_str(), SA_CmdSQLStmt);
 			cmd.Execute();
 			cmd.Field(1).setFieldType(SA_dtLongChar);
 			cmd.Field(1).setFieldSize(0x800);
@@ -478,7 +509,7 @@ private:
 			auto value = t.*(D).pointer;
 			if (std::find(table_list.begin(), table_list.end(), D.name) != table_list.end())
 			{
-				alias += ",json_query ((SELECT *";
+				alias += ", JSON_QUERY ((SELECT *";
 				using val_type = std::remove_reference_t<decltype(value)>;
 				using inner_type = has_value_type_t<val_type>;
 
@@ -495,7 +526,7 @@ private:
 						inner_table_name = std::string(typeid(inner_elem_type).name());
 						inner_table_name = inner_table_name.substr(inner_table_name.find_last_of(' ') + 1);
 						alias += include_table<inner_elem_type>(table_list);
-						alias += " FROM [dbo].[" + inner_table_name + "] WHERE [dbo].[" + table_name + "].Id = [dbo].[" + inner_table_name + "]." + table_name + "Id FOR JSON AUTO)) AS '" + std::string(D.name) + "'";
+						alias += " FROM [dbo].[" + inner_table_name + "] WHERE [dbo].[" + table_name + "].[Id] = [dbo].[" + inner_table_name + "].[" + table_name + "Id] FOR JSON AUTO)) AS '" + std::string(D.name) + "'";
 					}
 				}
 				else if (is_shared_ptr_v<val_type>)
@@ -506,10 +537,9 @@ private:
 						inner_table_name = std::string(typeid(inner_elem_type).name());
 						inner_table_name = inner_table_name.substr(inner_table_name.find_last_of(' ') + 1);
 						alias += include_table<inner_elem_type>(table_list);
-						alias += " FROM [dbo].[" + inner_table_name + "] WHERE [dbo].[" + inner_table_name + "].Id = [dbo].[" + table_name + "]." + inner_table_name + "Id FOR JSON AUTO, WITHOUT_ARRAY_WRAPPER)) AS '" + std::string(D.name) + "'";
+						alias += " FROM [dbo].[" + inner_table_name + "] WHERE [dbo].[" + inner_table_name + "].[Id] = [dbo].[" + table_name + "].[" + inner_table_name + "Id] FOR JSON AUTO, WITHOUT_ARRAY_WRAPPER)) AS '" + std::string(D.name) + "'";
 					}
 				}
-
 			}
 		});
 		return alias;
