@@ -140,6 +140,19 @@
       <FileType>Document</FileType>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AsyncServer.cpp" />
+    <ClCompile Include="BaseCallData.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="proto\todo_list.grpc.pb.cc" />
+    <ClCompile Include="proto\todo_list.pb.cc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AsyncServer.h" />
+    <ClInclude Include="BaseCallData.h" />
+    <ClInclude Include="proto\todo_list.grpc.pb.h" />
+    <ClInclude Include="proto\todo_list.pb.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
