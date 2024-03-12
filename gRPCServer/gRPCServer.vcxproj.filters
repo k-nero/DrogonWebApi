@@ -25,6 +25,9 @@
     <Filter Include="Source Files\TodoList">
       <UniqueIdentifier>{0bca64df-78fc-4971-9b0b-77a1cfa2b5d6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Common">
+      <UniqueIdentifier>{1eb638ba-2238-42b0-9480-3b53c1d56252}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -55,6 +58,9 @@
     </ClInclude>
     <ClInclude Include="GetTodoListRPC.h">
       <Filter>Header Files\TodoList</Filter>
+    </ClInclude>
+    <ClInclude Include="Enum.h">
+      <Filter>Header Files\Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
