@@ -32,11 +32,10 @@ void Auth::Authorization::doFilter(const drogon::HttpRequestPtr& req, drogon::Fi
 	{
 		auto decoded = jwt::decode(token);
 		jwt::verify().allow_algorithm(jwt::algorithm::rs512(publicKey, privateKey, "", "")).with_issuer("auth0").verify(decoded);
-		auto payload = decoded.get_payload_claims();
-		auto role = payload.find("role");
-		if (role != payload.end())
+		auto payload = decoded.get_payload_claim("role");
+		if (!payload.as_string().empty())
 		{
-			req->addHeader("role", role->second.as_string());
+			req->addHeader("role", payload.as_string());
 		}
 		fccb();
 	}

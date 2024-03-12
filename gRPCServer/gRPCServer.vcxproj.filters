@@ -19,11 +19,11 @@
     <Filter Include="Proto\TodoList">
       <UniqueIdentifier>{73e4f6eb-502e-4848-912a-8c948bd06a7b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Base">
-      <UniqueIdentifier>{c1774c40-bf82-4a5e-aeca-d1f10691045f}</UniqueIdentifier>
+    <Filter Include="Header Files\TodoList">
+      <UniqueIdentifier>{e04236d0-d44e-4f76-810f-5d7f8488c554}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Base">
-      <UniqueIdentifier>{10282141-f11f-48f7-b0a2-f1e4484b60b5}</UniqueIdentifier>
+    <Filter Include="Source Files\TodoList">
+      <UniqueIdentifier>{0bca64df-78fc-4971-9b0b-77a1cfa2b5d6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -39,8 +39,8 @@
     <ClCompile Include="AsyncServer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BaseCallData.cpp">
-      <Filter>Source Files\Base</Filter>
+    <ClCompile Include="GetTodoListRPC.cpp">
+      <Filter>Source Files\TodoList</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -53,8 +53,8 @@
     <ClInclude Include="AsyncServer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BaseCallData.h">
-      <Filter>Header Files\Base</Filter>
+    <ClInclude Include="GetTodoListRPC.h">
+      <Filter>Header Files\TodoList</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

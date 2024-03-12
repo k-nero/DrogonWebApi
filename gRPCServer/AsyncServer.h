@@ -9,17 +9,11 @@
 #include "absl/flags/flag.h"
 #include "absl/flags/parse.h"
 #include "absl/strings/str_format.h"
+#include <grpcpp/ext/proto_server_reflection_plugin.h>
 
 #include <grpc/support/log.h>
 #include <grpcpp/grpcpp.h>
-
-#ifdef BAZEL_BUILD
-#include "proto/todo_list.grpc.pb.h"
-#else
-#include "proto/todo_list.grpc.pb.h"
-#endif
-
-#include "BaseCallData.h"
+#include "GetTodoListRPC.h"
 
 using grpc::Server;
 using grpc::ServerAsyncResponseWriter;

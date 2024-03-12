@@ -3,6 +3,7 @@
 void AsyncServer::Run(uint16_t port)
 {
 	std::string server_address = absl::StrFormat("0.0.0.0:%d", port);
+	grpc::reflection::InitProtoReflectionServerBuilderPlugin();
 
 	ServerBuilder builder;
 	// Listen on the given address without any authentication mechanism.
@@ -24,7 +25,7 @@ void AsyncServer::Run(uint16_t port)
 void AsyncServer::HandleRpcs()
 {
 	// Spawn a new CallData instance to serve new clients.
-	new BaseCallData(&service_, cq_.get());
+	new GetTodoListRPC(&service_, cq_.get());
 	void* tag;  // uniquely identifies a request.
 	bool ok;
 	while (true)
@@ -36,6 +37,6 @@ void AsyncServer::HandleRpcs()
 		// tells us whether there is any kind of event or cq_ is shutting down.
 		GPR_ASSERT(cq_->Next(&tag, &ok));
 		GPR_ASSERT(ok);
-		static_cast<BaseCallData*>(tag)->Proceed();
+		static_cast<GetTodoListRPC*>(tag)->Proceed();
 	}
 }
