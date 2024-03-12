@@ -367,3 +367,13 @@ FodyWeavers.xsd
 /DrogonServer/private_key.pem
 /DrogonServer/public_key.pem
 /vcpkg_installed
+/certificate.crt
+/config.ini
+/private.key
+/private_key.pem
+/public_key.pem
+/gRPCServer/certificate.crt
+/gRPCServer/config.ini
+/gRPCServer/private.key
+/gRPCServer/private_key.pem
+/gRPCServer/public_key.pem
