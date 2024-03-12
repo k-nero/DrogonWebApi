@@ -1473,7 +1473,7 @@ class GetTodoListResponse final :
   std::string* _internal_mutable_message();
   public:
 
-  // .todo_list.TodoList TodoList = 1;
+  // .todo_list.TodoList todoList = 1;
   bool has_todolist() const;
   private:
   bool _internal_has_todolist() const;
@@ -2571,7 +2571,7 @@ inline void UpdateTodoListResponse::set_allocated_message(std::string* message) 
 
 // GetTodoListResponse
 
-// .todo_list.TodoList TodoList = 1;
+// .todo_list.TodoList todoList = 1;
 inline bool GetTodoListResponse::_internal_has_todolist() const {
   return this != internal_default_instance() && _impl_.todolist_ != nullptr;
 }
@@ -2590,7 +2590,7 @@ inline const ::todo_list::TodoList& GetTodoListResponse::_internal_todolist() co
       ::todo_list::_TodoList_default_instance_);
 }
 inline const ::todo_list::TodoList& GetTodoListResponse::todolist() const {
-  // @@protoc_insertion_point(field_get:todo_list.GetTodoListResponse.TodoList)
+  // @@protoc_insertion_point(field_get:todo_list.GetTodoListResponse.todoList)
   return _internal_todolist();
 }
 inline void GetTodoListResponse::unsafe_arena_set_allocated_todolist(
@@ -2604,7 +2604,7 @@ inline void GetTodoListResponse::unsafe_arena_set_allocated_todolist(
   } else {
     
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:todo_list.GetTodoListResponse.TodoList)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:todo_list.GetTodoListResponse.todoList)
 }
 inline ::todo_list::TodoList* GetTodoListResponse::release_todolist() {
   
@@ -2622,7 +2622,7 @@ inline ::todo_list::TodoList* GetTodoListResponse::release_todolist() {
   return temp;
 }
 inline ::todo_list::TodoList* GetTodoListResponse::unsafe_arena_release_todolist() {
-  // @@protoc_insertion_point(field_release:todo_list.GetTodoListResponse.TodoList)
+  // @@protoc_insertion_point(field_release:todo_list.GetTodoListResponse.todoList)
   
   ::todo_list::TodoList* temp = _impl_.todolist_;
   _impl_.todolist_ = nullptr;
@@ -2638,7 +2638,7 @@ inline ::todo_list::TodoList* GetTodoListResponse::_internal_mutable_todolist() 
 }
 inline ::todo_list::TodoList* GetTodoListResponse::mutable_todolist() {
   ::todo_list::TodoList* _msg = _internal_mutable_todolist();
-  // @@protoc_insertion_point(field_mutable:todo_list.GetTodoListResponse.TodoList)
+  // @@protoc_insertion_point(field_mutable:todo_list.GetTodoListResponse.todoList)
   return _msg;
 }
 inline void GetTodoListResponse::set_allocated_todolist(::todo_list::TodoList* todolist) {
@@ -2658,7 +2658,7 @@ inline void GetTodoListResponse::set_allocated_todolist(::todo_list::TodoList* t
     
   }
   _impl_.todolist_ = todolist;
-  // @@protoc_insertion_point(field_set_allocated:todo_list.GetTodoListResponse.TodoList)
+  // @@protoc_insertion_point(field_set_allocated:todo_list.GetTodoListResponse.todoList)
 }
 
 // int32 status = 2;

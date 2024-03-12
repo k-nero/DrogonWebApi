@@ -50,7 +50,7 @@ message UpdateTodoListResponse
 
 message GetTodoListResponse 
 {
-	TodoList TodoList = 1;
+	TodoList todoList = 1;
 	int32 status = 2;
 	optional string message = 3;
 }

@@ -288,7 +288,7 @@ const char descriptor_table_protodef_todo_5flist_2eproto[] PROTOBUF_SECTION_VARI
   "\030\003 \001(\tH\000\210\001\001B\n\n\010_message\"J\n\026UpdateTodoLis"
   "tResponse\022\016\n\006status\030\001 \001(\005\022\024\n\007message\030\002 \001"
   "(\tH\000\210\001\001B\n\n\010_message\"n\n\023GetTodoListRespon"
-  "se\022%\n\010TodoList\030\001 \001(\0132\023.todo_list.TodoLis"
+  "se\022%\n\010todoList\030\001 \001(\0132\023.todo_list.TodoLis"
   "t\022\016\n\006status\030\002 \001(\005\022\024\n\007message\030\003 \001(\tH\000\210\001\001B"
   "\n\n\010_message\"J\n\026DeleteTodoListResponse\022\016\n"
   "\006status\030\001 \001(\005\022\024\n\007message\030\002 \001(\tH\000\210\001\001B\n\n\010_"
@@ -2359,7 +2359,7 @@ const char* GetTodoListResponse::_InternalParse(const char* ptr, ::_pbi::ParseCo
     uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // .todo_list.TodoList TodoList = 1;
+      // .todo_list.TodoList todoList = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_todolist(), ptr);
@@ -2415,7 +2415,7 @@ uint8_t* GetTodoListResponse::_InternalSerialize(
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // .todo_list.TodoList TodoList = 1;
+  // .todo_list.TodoList todoList = 1;
   if (this->_internal_has_todolist()) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(1, _Internal::todolist(this),
@@ -2462,7 +2462,7 @@ size_t GetTodoListResponse::ByteSizeLong() const {
         this->_internal_message());
   }
 
-  // .todo_list.TodoList TodoList = 1;
+  // .todo_list.TodoList todoList = 1;
   if (this->_internal_has_todolist()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(

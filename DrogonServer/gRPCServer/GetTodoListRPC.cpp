@@ -46,17 +46,17 @@ void GetTodoListRPC::Proceed()
 			return;
 		};
 
-		todo_list::TodoList*rs = new todo_list::TodoList();
-		rs->set_id(todo_list->GetId());
-		rs->set_title(todo_list->GetTitle());
-		rs->set_description(todo_list->GetDescription());
-		rs->set_createddate(todo_list->GetCreatedDate());
-		rs->set_modifieddate(todo_list->GetModifiedDate());
-		rs->set_version(0);
+		todo_list::TodoList rs;
+		rs.set_id(todo_list->GetId());
+		rs.set_title(todo_list->GetTitle());
+		rs.set_description(todo_list->GetDescription());
+		rs.set_createddate(todo_list->GetCreatedDate());
+		rs.set_modifieddate(todo_list->GetModifiedDate());
+		rs.set_version(0);
 
 		reply_.set_message("Success");
 		reply_.set_status(200);
-		reply_.set_allocated_todolist (rs);
+		reply_.set_allocated_todolist (&rs);
 
 		status_ = FINISH;
 		responder_.Finish(reply_, Status::OK, this);

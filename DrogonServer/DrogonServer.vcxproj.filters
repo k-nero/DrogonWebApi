@@ -85,11 +85,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <CopyFileToFolders Include="certificate.crt" />
-    <CopyFileToFolders Include="config.ini" />
-    <CopyFileToFolders Include="private.key" />
-    <CopyFileToFolders Include="private_key.pem" />
-    <CopyFileToFolders Include="public_key.pem" />
     <CopyFileToFolders Include="swagger\index.css">
       <Filter>Swagger</Filter>
     </CopyFileToFolders>
@@ -141,6 +136,11 @@
     <CopyFileToFolders Include="swagger\openapi.json">
       <Filter>Swagger</Filter>
     </CopyFileToFolders>
+    <CopyFileToFolders Include="certificate.crt" />
+    <CopyFileToFolders Include="config.ini" />
+    <CopyFileToFolders Include="private.key" />
+    <CopyFileToFolders Include="private_key.pem" />
+    <CopyFileToFolders Include="public_key.pem" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="swagger\favicon-16x16.png">

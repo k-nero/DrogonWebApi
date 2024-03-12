@@ -149,24 +149,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <CopyFileToFolders Include="certificate.crt">
+    <CopyFileToFolders Include="..\certificate.crt">
       <FileType>Document</FileType>
     </CopyFileToFolders>
-    <CopyFileToFolders Include="config.ini">
+    <CopyFileToFolders Include="..\config.ini">
       <FileType>Document</FileType>
     </CopyFileToFolders>
-    <CopyFileToFolders Include="private.key">
+    <CopyFileToFolders Include="..\private.key">
       <FileType>Document</FileType>
     </CopyFileToFolders>
-    <CopyFileToFolders Include="private_key.pem">
+    <CopyFileToFolders Include="..\private_key.pem">
+      <FileType>Document</FileType>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="..\public_key.pem">
       <FileType>Document</FileType>
     </CopyFileToFolders>
     <None Include="proto\todo_list.proto">
       <FileType>Document</FileType>
     </None>
-    <CopyFileToFolders Include="public_key.pem">
-      <FileType>Document</FileType>
-    </CopyFileToFolders>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AsyncServer.cpp" />

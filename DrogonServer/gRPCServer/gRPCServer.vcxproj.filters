@@ -69,10 +69,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <CopyFileToFolders Include="certificate.crt" />
-    <CopyFileToFolders Include="config.ini" />
-    <CopyFileToFolders Include="private.key" />
-    <CopyFileToFolders Include="private_key.pem" />
-    <CopyFileToFolders Include="public_key.pem" />
+    <CopyFileToFolders Include="..\certificate.crt" />
+    <CopyFileToFolders Include="..\config.ini" />
+    <CopyFileToFolders Include="..\private.key" />
+    <CopyFileToFolders Include="..\private_key.pem" />
+    <CopyFileToFolders Include="..\public_key.pem" />
   </ItemGroup>
 </Project>
