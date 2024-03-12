@@ -27,6 +27,7 @@ int main()
     drogon::app().enableBrotli(false);
     drogon::app().enableDateHeader(true);
     drogon::app().enableServerHeader(true);
+    drogon::app().setCustom404Page(drogon::HttpResponse::newFileResponse("public/404.html", "", drogon::CT_TEXT_HTML));
 
     //Load config file
     //drogon::app().loadConfigFile("../config.json");

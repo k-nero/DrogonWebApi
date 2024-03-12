@@ -263,6 +263,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Image Include="public\favicon.png" />
     <Image Include="swagger\favicon-16x16.png" />
     <Image Include="swagger\favicon-32x32.png" />
   </ItemGroup>
@@ -377,6 +378,35 @@
     </CopyFileToFolders>
     <CopyFileToFolders Include="public_key.pem">
       <FileType>Document</FileType>
+    </CopyFileToFolders>
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="public\404.html">
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)public</DestinationFolders>
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='CLR|x64'">$(OutDir)public</DestinationFolders>
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(OutDir)public</DestinationFolders>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="public\css\404.css">
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)public/css</DestinationFolders>
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='CLR|x64'">$(OutDir)public/css</DestinationFolders>
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(OutDir)public/css</DestinationFolders>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="public\images\astronaut.svg">
+      <FileType>Document</FileType>
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)public/images</DestinationFolders>
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='CLR|x64'">$(OutDir)public/images</DestinationFolders>
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(OutDir)public/images</DestinationFolders>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="public\images\planet.svg">
+      <FileType>Document</FileType>
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)public/images</DestinationFolders>
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='CLR|x64'">$(OutDir)public/images</DestinationFolders>
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(OutDir)public/images</DestinationFolders>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="public\js\404.js">
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)public/js</DestinationFolders>
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='CLR|x64'">$(OutDir)public/js</DestinationFolders>
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(OutDir)public/js</DestinationFolders>
     </CopyFileToFolders>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

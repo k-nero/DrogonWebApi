@@ -34,6 +34,18 @@
     <Filter Include="Swagger">
       <UniqueIdentifier>{b33b3f4f-c2c4-4ca3-99c1-11588c38590d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Public">
+      <UniqueIdentifier>{5c2d532a-9806-4c53-9f85-fe3ce05d554a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Public\css">
+      <UniqueIdentifier>{e2c97cd4-671b-45fa-99c3-9e78ab2a4de7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Public\images">
+      <UniqueIdentifier>{7cd492a1-bc0c-4595-96e4-d26a16eb66f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Public\js">
+      <UniqueIdentifier>{79ad2816-02fa-4735-8d65-ce80f53f3bca}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -141,12 +153,30 @@
     <CopyFileToFolders Include="private.key" />
     <CopyFileToFolders Include="private_key.pem" />
     <CopyFileToFolders Include="public_key.pem" />
+    <CopyFileToFolders Include="public\css\404.css">
+      <Filter>Public\css</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="public\images\astronaut.svg">
+      <Filter>Public\images</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="public\images\planet.svg">
+      <Filter>Public\images</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="public\js\404.js">
+      <Filter>Public\js</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="public\404.html">
+      <Filter>Public</Filter>
+    </CopyFileToFolders>
   </ItemGroup>
   <ItemGroup>
     <Image Include="swagger\favicon-16x16.png">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="swagger\favicon-32x32.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="public\favicon.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
