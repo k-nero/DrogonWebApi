@@ -28,6 +28,15 @@
     <Filter Include="Header Files\Common">
       <UniqueIdentifier>{1eb638ba-2238-42b0-9480-3b53c1d56252}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Proto\TodoItem">
+      <UniqueIdentifier>{b13dd706-453f-440f-b382-56f440799da7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\TodoItem">
+      <UniqueIdentifier>{e10b25a1-2df7-4d83-9f3f-90cc411d2db3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\TodoItem">
+      <UniqueIdentifier>{a862e6a7-9f04-4696-9f70-d62d13f2efca}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -44,6 +53,15 @@
     </ClCompile>
     <ClCompile Include="GetTodoListRPC.cpp">
       <Filter>Source Files\TodoList</Filter>
+    </ClCompile>
+    <ClCompile Include="proto\todo_item.grpc.pb.cc">
+      <Filter>Proto\TodoItem</Filter>
+    </ClCompile>
+    <ClCompile Include="proto\todo_item.pb.cc">
+      <Filter>Proto\TodoItem</Filter>
+    </ClCompile>
+    <ClCompile Include="GetTodoItemRPC.cpp">
+      <Filter>Source Files\TodoItem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -62,10 +80,22 @@
     <ClInclude Include="Enum.h">
       <Filter>Header Files\Common</Filter>
     </ClInclude>
+    <ClInclude Include="proto\todo_item.grpc.pb.h">
+      <Filter>Proto\TodoItem</Filter>
+    </ClInclude>
+    <ClInclude Include="proto\todo_item.pb.h">
+      <Filter>Proto\TodoItem</Filter>
+    </ClInclude>
+    <ClInclude Include="GetTodoItemRPC.h">
+      <Filter>Header Files\TodoItem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="proto\todo_list.proto">
       <Filter>Proto\TodoList</Filter>
+    </None>
+    <None Include="proto\todo_item.proto">
+      <Filter>Proto\TodoItem</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

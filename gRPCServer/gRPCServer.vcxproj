@@ -161,6 +161,7 @@
     <CopyFileToFolders Include="private_key.pem">
       <FileType>Document</FileType>
     </CopyFileToFolders>
+    <None Include="proto\todo_item.proto" />
     <None Include="proto\todo_list.proto">
       <FileType>Document</FileType>
     </None>
@@ -170,7 +171,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AsyncServer.cpp" />
+    <ClCompile Include="GetTodoItemRPC.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="proto\todo_item.grpc.pb.cc" />
+    <ClCompile Include="proto\todo_item.pb.cc" />
     <ClCompile Include="proto\todo_list.grpc.pb.cc" />
     <ClCompile Include="proto\todo_list.pb.cc" />
     <ClCompile Include="GetTodoListRPC.cpp" />
@@ -178,6 +182,9 @@
   <ItemGroup>
     <ClInclude Include="AsyncServer.h" />
     <ClInclude Include="Enum.h" />
+    <ClInclude Include="GetTodoItemRPC.h" />
+    <ClInclude Include="proto\todo_item.grpc.pb.h" />
+    <ClInclude Include="proto\todo_item.pb.h" />
     <ClInclude Include="proto\todo_list.grpc.pb.h" />
     <ClInclude Include="proto\todo_list.pb.h" />
     <ClInclude Include="GetTodoListRPC.h" />

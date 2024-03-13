@@ -63,6 +63,9 @@ extern GetTodoListRequestDefaultTypeInternal _GetTodoListRequest_default_instanc
 class GetTodoListResponse;
 struct GetTodoListResponseDefaultTypeInternal;
 extern GetTodoListResponseDefaultTypeInternal _GetTodoListResponse_default_instance_;
+class TodoItem;
+struct TodoItemDefaultTypeInternal;
+extern TodoItemDefaultTypeInternal _TodoItem_default_instance_;
 class TodoList;
 struct TodoListDefaultTypeInternal;
 extern TodoListDefaultTypeInternal _TodoList_default_instance_;
@@ -80,6 +83,7 @@ template<> ::todo_list::DeleteTodoListResponse* Arena::CreateMaybeMessage<::todo
 template<> ::todo_list::DeleteTodoRequest* Arena::CreateMaybeMessage<::todo_list::DeleteTodoRequest>(Arena*);
 template<> ::todo_list::GetTodoListRequest* Arena::CreateMaybeMessage<::todo_list::GetTodoListRequest>(Arena*);
 template<> ::todo_list::GetTodoListResponse* Arena::CreateMaybeMessage<::todo_list::GetTodoListResponse>(Arena*);
+template<> ::todo_list::TodoItem* Arena::CreateMaybeMessage<::todo_list::TodoItem>(Arena*);
 template<> ::todo_list::TodoList* Arena::CreateMaybeMessage<::todo_list::TodoList>(Arena*);
 template<> ::todo_list::UpdateTodoListResponse* Arena::CreateMaybeMessage<::todo_list::UpdateTodoListResponse>(Arena*);
 template<> ::todo_list::UpdateTodoRequest* Arena::CreateMaybeMessage<::todo_list::UpdateTodoRequest>(Arena*);
@@ -87,6 +91,261 @@ PROTOBUF_NAMESPACE_CLOSE
 namespace todo_list {
 
 // ===================================================================
+
+class TodoItem final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:todo_list.TodoItem) */ {
+ public:
+  inline TodoItem() : TodoItem(nullptr) {}
+  ~TodoItem() override;
+  explicit PROTOBUF_CONSTEXPR TodoItem(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  TodoItem(const TodoItem& from);
+  TodoItem(TodoItem&& from) noexcept
+    : TodoItem() {
+    *this = ::std::move(from);
+  }
+
+  inline TodoItem& operator=(const TodoItem& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline TodoItem& operator=(TodoItem&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const TodoItem& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const TodoItem* internal_default_instance() {
+    return reinterpret_cast<const TodoItem*>(
+               &_TodoItem_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    0;
+
+  friend void swap(TodoItem& a, TodoItem& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(TodoItem* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(TodoItem* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  TodoItem* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<TodoItem>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const TodoItem& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const TodoItem& from) {
+    TodoItem::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(TodoItem* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "todo_list.TodoItem";
+  }
+  protected:
+  explicit TodoItem(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kIdFieldNumber = 1,
+    kTitleFieldNumber = 2,
+    kNoteFieldNumber = 3,
+    kTodoListIdFieldNumber = 4,
+    kCreatedDateFieldNumber = 6,
+    kModifiedDateFieldNumber = 7,
+    kCompletedFieldNumber = 5,
+    kVersionFieldNumber = 8,
+  };
+  // string id = 1;
+  void clear_id();
+  const std::string& id() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_id(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_id();
+  PROTOBUF_NODISCARD std::string* release_id();
+  void set_allocated_id(std::string* id);
+  private:
+  const std::string& _internal_id() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_id(const std::string& value);
+  std::string* _internal_mutable_id();
+  public:
+
+  // string title = 2;
+  void clear_title();
+  const std::string& title() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_title(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_title();
+  PROTOBUF_NODISCARD std::string* release_title();
+  void set_allocated_title(std::string* title);
+  private:
+  const std::string& _internal_title() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_title(const std::string& value);
+  std::string* _internal_mutable_title();
+  public:
+
+  // string note = 3;
+  void clear_note();
+  const std::string& note() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_note(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_note();
+  PROTOBUF_NODISCARD std::string* release_note();
+  void set_allocated_note(std::string* note);
+  private:
+  const std::string& _internal_note() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_note(const std::string& value);
+  std::string* _internal_mutable_note();
+  public:
+
+  // string todo_list_id = 4;
+  void clear_todo_list_id();
+  const std::string& todo_list_id() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_todo_list_id(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_todo_list_id();
+  PROTOBUF_NODISCARD std::string* release_todo_list_id();
+  void set_allocated_todo_list_id(std::string* todo_list_id);
+  private:
+  const std::string& _internal_todo_list_id() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_todo_list_id(const std::string& value);
+  std::string* _internal_mutable_todo_list_id();
+  public:
+
+  // string created_date = 6;
+  void clear_created_date();
+  const std::string& created_date() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_created_date(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_created_date();
+  PROTOBUF_NODISCARD std::string* release_created_date();
+  void set_allocated_created_date(std::string* created_date);
+  private:
+  const std::string& _internal_created_date() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_created_date(const std::string& value);
+  std::string* _internal_mutable_created_date();
+  public:
+
+  // string modified_date = 7;
+  void clear_modified_date();
+  const std::string& modified_date() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_modified_date(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_modified_date();
+  PROTOBUF_NODISCARD std::string* release_modified_date();
+  void set_allocated_modified_date(std::string* modified_date);
+  private:
+  const std::string& _internal_modified_date() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_modified_date(const std::string& value);
+  std::string* _internal_mutable_modified_date();
+  public:
+
+  // bool completed = 5;
+  void clear_completed();
+  bool completed() const;
+  void set_completed(bool value);
+  private:
+  bool _internal_completed() const;
+  void _internal_set_completed(bool value);
+  public:
+
+  // int32 version = 8;
+  void clear_version();
+  int32_t version() const;
+  void set_version(int32_t value);
+  private:
+  int32_t _internal_version() const;
+  void _internal_set_version(int32_t value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:todo_list.TodoItem)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr id_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr title_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr note_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr todo_list_id_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr created_date_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr modified_date_;
+    bool completed_;
+    int32_t version_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_todo_5flist_2eproto;
+};
+// -------------------------------------------------------------------
 
 class AddTodoRequest final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:todo_list.AddTodoRequest) */ {
@@ -136,7 +395,7 @@ class AddTodoRequest final :
                &_AddTodoRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    0;
+    1;
 
   friend void swap(AddTodoRequest& a, AddTodoRequest& b) {
     a.Swap(&b);
@@ -212,7 +471,7 @@ class AddTodoRequest final :
     kTitleFieldNumber = 2,
     kDescriptionFieldNumber = 3,
   };
-  // string Title = 2;
+  // string title = 2;
   void clear_title();
   const std::string& title() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
@@ -226,7 +485,7 @@ class AddTodoRequest final :
   std::string* _internal_mutable_title();
   public:
 
-  // string Description = 3;
+  // string description = 3;
   void clear_description();
   const std::string& description() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
@@ -305,7 +564,7 @@ class UpdateTodoRequest final :
                &_UpdateTodoRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    1;
+    2;
 
   friend void swap(UpdateTodoRequest& a, UpdateTodoRequest& b) {
     a.Swap(&b);
@@ -382,7 +641,7 @@ class UpdateTodoRequest final :
     kTitleFieldNumber = 2,
     kDescriptionFieldNumber = 3,
   };
-  // string Id = 1;
+  // string id = 1;
   void clear_id();
   const std::string& id() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
@@ -396,7 +655,7 @@ class UpdateTodoRequest final :
   std::string* _internal_mutable_id();
   public:
 
-  // string Title = 2;
+  // string title = 2;
   void clear_title();
   const std::string& title() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
@@ -410,7 +669,7 @@ class UpdateTodoRequest final :
   std::string* _internal_mutable_title();
   public:
 
-  // string Description = 3;
+  // string description = 3;
   void clear_description();
   const std::string& description() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
@@ -490,7 +749,7 @@ class GetTodoListRequest final :
                &_GetTodoListRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    2;
+    3;
 
   friend void swap(GetTodoListRequest& a, GetTodoListRequest& b) {
     a.Swap(&b);
@@ -565,7 +824,7 @@ class GetTodoListRequest final :
   enum : int {
     kIdFieldNumber = 1,
   };
-  // string Id = 1;
+  // string id = 1;
   void clear_id();
   const std::string& id() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
@@ -643,7 +902,7 @@ class TodoList final :
                &_TodoList_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    3;
+    4;
 
   friend void swap(TodoList& a, TodoList& b) {
     a.Swap(&b);
@@ -716,6 +975,7 @@ class TodoList final :
   // accessors -------------------------------------------------------
 
   enum : int {
+    kTodoItemFieldNumber = 7,
     kIdFieldNumber = 1,
     kTitleFieldNumber = 2,
     kDescriptionFieldNumber = 3,
@@ -723,7 +983,25 @@ class TodoList final :
     kModifiedDateFieldNumber = 5,
     kVersionFieldNumber = 6,
   };
-  // string Id = 1;
+  // repeated .todo_list.TodoItem todo_item = 7;
+  int todo_item_size() const;
+  private:
+  int _internal_todo_item_size() const;
+  public:
+  void clear_todo_item();
+  ::todo_list::TodoItem* mutable_todo_item(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::todo_list::TodoItem >*
+      mutable_todo_item();
+  private:
+  const ::todo_list::TodoItem& _internal_todo_item(int index) const;
+  ::todo_list::TodoItem* _internal_add_todo_item();
+  public:
+  const ::todo_list::TodoItem& todo_item(int index) const;
+  ::todo_list::TodoItem* add_todo_item();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::todo_list::TodoItem >&
+      todo_item() const;
+
+  // string id = 1;
   void clear_id();
   const std::string& id() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
@@ -737,7 +1015,7 @@ class TodoList final :
   std::string* _internal_mutable_id();
   public:
 
-  // string Title = 2;
+  // string title = 2;
   void clear_title();
   const std::string& title() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
@@ -751,7 +1029,7 @@ class TodoList final :
   std::string* _internal_mutable_title();
   public:
 
-  // string Description = 3;
+  // string description = 3;
   void clear_description();
   const std::string& description() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
@@ -765,35 +1043,35 @@ class TodoList final :
   std::string* _internal_mutable_description();
   public:
 
-  // string CreatedDate = 4;
-  void clear_createddate();
-  const std::string& createddate() const;
+  // string created_date = 4;
+  void clear_created_date();
+  const std::string& created_date() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_createddate(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_createddate();
-  PROTOBUF_NODISCARD std::string* release_createddate();
-  void set_allocated_createddate(std::string* createddate);
+  void set_created_date(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_created_date();
+  PROTOBUF_NODISCARD std::string* release_created_date();
+  void set_allocated_created_date(std::string* created_date);
   private:
-  const std::string& _internal_createddate() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_createddate(const std::string& value);
-  std::string* _internal_mutable_createddate();
+  const std::string& _internal_created_date() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_created_date(const std::string& value);
+  std::string* _internal_mutable_created_date();
   public:
 
-  // string ModifiedDate = 5;
-  void clear_modifieddate();
-  const std::string& modifieddate() const;
+  // string modified_date = 5;
+  void clear_modified_date();
+  const std::string& modified_date() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_modifieddate(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_modifieddate();
-  PROTOBUF_NODISCARD std::string* release_modifieddate();
-  void set_allocated_modifieddate(std::string* modifieddate);
+  void set_modified_date(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_modified_date();
+  PROTOBUF_NODISCARD std::string* release_modified_date();
+  void set_allocated_modified_date(std::string* modified_date);
   private:
-  const std::string& _internal_modifieddate() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_modifieddate(const std::string& value);
-  std::string* _internal_mutable_modifieddate();
+  const std::string& _internal_modified_date() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_modified_date(const std::string& value);
+  std::string* _internal_mutable_modified_date();
   public:
 
-  // int32 Version = 6;
+  // int32 version = 6;
   void clear_version();
   int32_t version() const;
   void set_version(int32_t value);
@@ -810,11 +1088,12 @@ class TodoList final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::todo_list::TodoItem > todo_item_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr id_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr title_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr description_;
-    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr createddate_;
-    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr modifieddate_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr created_date_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr modified_date_;
     int32_t version_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
@@ -871,7 +1150,7 @@ class DeleteTodoRequest final :
                &_DeleteTodoRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    4;
+    5;
 
   friend void swap(DeleteTodoRequest& a, DeleteTodoRequest& b) {
     a.Swap(&b);
@@ -946,7 +1225,7 @@ class DeleteTodoRequest final :
   enum : int {
     kIdFieldNumber = 1,
   };
-  // string Id = 1;
+  // string id = 1;
   void clear_id();
   const std::string& id() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
@@ -1024,7 +1303,7 @@ class AddTodoListResponse final :
                &_AddTodoListResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    5;
+    6;
 
   friend void swap(AddTodoListResponse& a, AddTodoListResponse& b) {
     a.Swap(&b);
@@ -1101,7 +1380,7 @@ class AddTodoListResponse final :
     kMessageFieldNumber = 3,
     kStatusFieldNumber = 2,
   };
-  // string Id = 1;
+  // string id = 1;
   void clear_id();
   const std::string& id() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
@@ -1209,7 +1488,7 @@ class UpdateTodoListResponse final :
                &_UpdateTodoListResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    6;
+    7;
 
   friend void swap(UpdateTodoListResponse& a, UpdateTodoListResponse& b) {
     a.Swap(&b);
@@ -1378,7 +1657,7 @@ class GetTodoListResponse final :
                &_GetTodoListResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    7;
+    8;
 
   friend void swap(GetTodoListResponse& a, GetTodoListResponse& b) {
     a.Swap(&b);
@@ -1473,23 +1752,23 @@ class GetTodoListResponse final :
   std::string* _internal_mutable_message();
   public:
 
-  // .todo_list.TodoList TodoList = 1;
-  bool has_todolist() const;
+  // .todo_list.TodoList todo_list = 1;
+  bool has_todo_list() const;
   private:
-  bool _internal_has_todolist() const;
+  bool _internal_has_todo_list() const;
   public:
-  void clear_todolist();
-  const ::todo_list::TodoList& todolist() const;
-  PROTOBUF_NODISCARD ::todo_list::TodoList* release_todolist();
-  ::todo_list::TodoList* mutable_todolist();
-  void set_allocated_todolist(::todo_list::TodoList* todolist);
+  void clear_todo_list();
+  const ::todo_list::TodoList& todo_list() const;
+  PROTOBUF_NODISCARD ::todo_list::TodoList* release_todo_list();
+  ::todo_list::TodoList* mutable_todo_list();
+  void set_allocated_todo_list(::todo_list::TodoList* todo_list);
   private:
-  const ::todo_list::TodoList& _internal_todolist() const;
-  ::todo_list::TodoList* _internal_mutable_todolist();
+  const ::todo_list::TodoList& _internal_todo_list() const;
+  ::todo_list::TodoList* _internal_mutable_todo_list();
   public:
-  void unsafe_arena_set_allocated_todolist(
-      ::todo_list::TodoList* todolist);
-  ::todo_list::TodoList* unsafe_arena_release_todolist();
+  void unsafe_arena_set_allocated_todo_list(
+      ::todo_list::TodoList* todo_list);
+  ::todo_list::TodoList* unsafe_arena_release_todo_list();
 
   // int32 status = 2;
   void clear_status();
@@ -1511,7 +1790,7 @@ class GetTodoListResponse final :
     ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr message_;
-    ::todo_list::TodoList* todolist_;
+    ::todo_list::TodoList* todo_list_;
     int32_t status_;
   };
   union { Impl_ _impl_; };
@@ -1567,7 +1846,7 @@ class DeleteTodoListResponse final :
                &_DeleteTodoListResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    8;
+    9;
 
   friend void swap(DeleteTodoListResponse& a, DeleteTodoListResponse& b) {
     a.Swap(&b);
@@ -1695,14 +1974,358 @@ class DeleteTodoListResponse final :
   #pragma GCC diagnostic push
   #pragma GCC diagnostic ignored "-Wstrict-aliasing"
 #endif  // __GNUC__
+// TodoItem
+
+// string id = 1;
+inline void TodoItem::clear_id() {
+  _impl_.id_.ClearToEmpty();
+}
+inline const std::string& TodoItem::id() const {
+  // @@protoc_insertion_point(field_get:todo_list.TodoItem.id)
+  return _internal_id();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void TodoItem::set_id(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.id_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:todo_list.TodoItem.id)
+}
+inline std::string* TodoItem::mutable_id() {
+  std::string* _s = _internal_mutable_id();
+  // @@protoc_insertion_point(field_mutable:todo_list.TodoItem.id)
+  return _s;
+}
+inline const std::string& TodoItem::_internal_id() const {
+  return _impl_.id_.Get();
+}
+inline void TodoItem::_internal_set_id(const std::string& value) {
+  
+  _impl_.id_.Set(value, GetArenaForAllocation());
+}
+inline std::string* TodoItem::_internal_mutable_id() {
+  
+  return _impl_.id_.Mutable(GetArenaForAllocation());
+}
+inline std::string* TodoItem::release_id() {
+  // @@protoc_insertion_point(field_release:todo_list.TodoItem.id)
+  return _impl_.id_.Release();
+}
+inline void TodoItem::set_allocated_id(std::string* id) {
+  if (id != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.id_.SetAllocated(id, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.id_.IsDefault()) {
+    _impl_.id_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:todo_list.TodoItem.id)
+}
+
+// string title = 2;
+inline void TodoItem::clear_title() {
+  _impl_.title_.ClearToEmpty();
+}
+inline const std::string& TodoItem::title() const {
+  // @@protoc_insertion_point(field_get:todo_list.TodoItem.title)
+  return _internal_title();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void TodoItem::set_title(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.title_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:todo_list.TodoItem.title)
+}
+inline std::string* TodoItem::mutable_title() {
+  std::string* _s = _internal_mutable_title();
+  // @@protoc_insertion_point(field_mutable:todo_list.TodoItem.title)
+  return _s;
+}
+inline const std::string& TodoItem::_internal_title() const {
+  return _impl_.title_.Get();
+}
+inline void TodoItem::_internal_set_title(const std::string& value) {
+  
+  _impl_.title_.Set(value, GetArenaForAllocation());
+}
+inline std::string* TodoItem::_internal_mutable_title() {
+  
+  return _impl_.title_.Mutable(GetArenaForAllocation());
+}
+inline std::string* TodoItem::release_title() {
+  // @@protoc_insertion_point(field_release:todo_list.TodoItem.title)
+  return _impl_.title_.Release();
+}
+inline void TodoItem::set_allocated_title(std::string* title) {
+  if (title != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.title_.SetAllocated(title, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.title_.IsDefault()) {
+    _impl_.title_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:todo_list.TodoItem.title)
+}
+
+// string note = 3;
+inline void TodoItem::clear_note() {
+  _impl_.note_.ClearToEmpty();
+}
+inline const std::string& TodoItem::note() const {
+  // @@protoc_insertion_point(field_get:todo_list.TodoItem.note)
+  return _internal_note();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void TodoItem::set_note(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.note_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:todo_list.TodoItem.note)
+}
+inline std::string* TodoItem::mutable_note() {
+  std::string* _s = _internal_mutable_note();
+  // @@protoc_insertion_point(field_mutable:todo_list.TodoItem.note)
+  return _s;
+}
+inline const std::string& TodoItem::_internal_note() const {
+  return _impl_.note_.Get();
+}
+inline void TodoItem::_internal_set_note(const std::string& value) {
+  
+  _impl_.note_.Set(value, GetArenaForAllocation());
+}
+inline std::string* TodoItem::_internal_mutable_note() {
+  
+  return _impl_.note_.Mutable(GetArenaForAllocation());
+}
+inline std::string* TodoItem::release_note() {
+  // @@protoc_insertion_point(field_release:todo_list.TodoItem.note)
+  return _impl_.note_.Release();
+}
+inline void TodoItem::set_allocated_note(std::string* note) {
+  if (note != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.note_.SetAllocated(note, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.note_.IsDefault()) {
+    _impl_.note_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:todo_list.TodoItem.note)
+}
+
+// string todo_list_id = 4;
+inline void TodoItem::clear_todo_list_id() {
+  _impl_.todo_list_id_.ClearToEmpty();
+}
+inline const std::string& TodoItem::todo_list_id() const {
+  // @@protoc_insertion_point(field_get:todo_list.TodoItem.todo_list_id)
+  return _internal_todo_list_id();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void TodoItem::set_todo_list_id(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.todo_list_id_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:todo_list.TodoItem.todo_list_id)
+}
+inline std::string* TodoItem::mutable_todo_list_id() {
+  std::string* _s = _internal_mutable_todo_list_id();
+  // @@protoc_insertion_point(field_mutable:todo_list.TodoItem.todo_list_id)
+  return _s;
+}
+inline const std::string& TodoItem::_internal_todo_list_id() const {
+  return _impl_.todo_list_id_.Get();
+}
+inline void TodoItem::_internal_set_todo_list_id(const std::string& value) {
+  
+  _impl_.todo_list_id_.Set(value, GetArenaForAllocation());
+}
+inline std::string* TodoItem::_internal_mutable_todo_list_id() {
+  
+  return _impl_.todo_list_id_.Mutable(GetArenaForAllocation());
+}
+inline std::string* TodoItem::release_todo_list_id() {
+  // @@protoc_insertion_point(field_release:todo_list.TodoItem.todo_list_id)
+  return _impl_.todo_list_id_.Release();
+}
+inline void TodoItem::set_allocated_todo_list_id(std::string* todo_list_id) {
+  if (todo_list_id != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.todo_list_id_.SetAllocated(todo_list_id, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.todo_list_id_.IsDefault()) {
+    _impl_.todo_list_id_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:todo_list.TodoItem.todo_list_id)
+}
+
+// bool completed = 5;
+inline void TodoItem::clear_completed() {
+  _impl_.completed_ = false;
+}
+inline bool TodoItem::_internal_completed() const {
+  return _impl_.completed_;
+}
+inline bool TodoItem::completed() const {
+  // @@protoc_insertion_point(field_get:todo_list.TodoItem.completed)
+  return _internal_completed();
+}
+inline void TodoItem::_internal_set_completed(bool value) {
+  
+  _impl_.completed_ = value;
+}
+inline void TodoItem::set_completed(bool value) {
+  _internal_set_completed(value);
+  // @@protoc_insertion_point(field_set:todo_list.TodoItem.completed)
+}
+
+// string created_date = 6;
+inline void TodoItem::clear_created_date() {
+  _impl_.created_date_.ClearToEmpty();
+}
+inline const std::string& TodoItem::created_date() const {
+  // @@protoc_insertion_point(field_get:todo_list.TodoItem.created_date)
+  return _internal_created_date();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void TodoItem::set_created_date(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.created_date_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:todo_list.TodoItem.created_date)
+}
+inline std::string* TodoItem::mutable_created_date() {
+  std::string* _s = _internal_mutable_created_date();
+  // @@protoc_insertion_point(field_mutable:todo_list.TodoItem.created_date)
+  return _s;
+}
+inline const std::string& TodoItem::_internal_created_date() const {
+  return _impl_.created_date_.Get();
+}
+inline void TodoItem::_internal_set_created_date(const std::string& value) {
+  
+  _impl_.created_date_.Set(value, GetArenaForAllocation());
+}
+inline std::string* TodoItem::_internal_mutable_created_date() {
+  
+  return _impl_.created_date_.Mutable(GetArenaForAllocation());
+}
+inline std::string* TodoItem::release_created_date() {
+  // @@protoc_insertion_point(field_release:todo_list.TodoItem.created_date)
+  return _impl_.created_date_.Release();
+}
+inline void TodoItem::set_allocated_created_date(std::string* created_date) {
+  if (created_date != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.created_date_.SetAllocated(created_date, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.created_date_.IsDefault()) {
+    _impl_.created_date_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:todo_list.TodoItem.created_date)
+}
+
+// string modified_date = 7;
+inline void TodoItem::clear_modified_date() {
+  _impl_.modified_date_.ClearToEmpty();
+}
+inline const std::string& TodoItem::modified_date() const {
+  // @@protoc_insertion_point(field_get:todo_list.TodoItem.modified_date)
+  return _internal_modified_date();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void TodoItem::set_modified_date(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.modified_date_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:todo_list.TodoItem.modified_date)
+}
+inline std::string* TodoItem::mutable_modified_date() {
+  std::string* _s = _internal_mutable_modified_date();
+  // @@protoc_insertion_point(field_mutable:todo_list.TodoItem.modified_date)
+  return _s;
+}
+inline const std::string& TodoItem::_internal_modified_date() const {
+  return _impl_.modified_date_.Get();
+}
+inline void TodoItem::_internal_set_modified_date(const std::string& value) {
+  
+  _impl_.modified_date_.Set(value, GetArenaForAllocation());
+}
+inline std::string* TodoItem::_internal_mutable_modified_date() {
+  
+  return _impl_.modified_date_.Mutable(GetArenaForAllocation());
+}
+inline std::string* TodoItem::release_modified_date() {
+  // @@protoc_insertion_point(field_release:todo_list.TodoItem.modified_date)
+  return _impl_.modified_date_.Release();
+}
+inline void TodoItem::set_allocated_modified_date(std::string* modified_date) {
+  if (modified_date != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.modified_date_.SetAllocated(modified_date, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.modified_date_.IsDefault()) {
+    _impl_.modified_date_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:todo_list.TodoItem.modified_date)
+}
+
+// int32 version = 8;
+inline void TodoItem::clear_version() {
+  _impl_.version_ = 0;
+}
+inline int32_t TodoItem::_internal_version() const {
+  return _impl_.version_;
+}
+inline int32_t TodoItem::version() const {
+  // @@protoc_insertion_point(field_get:todo_list.TodoItem.version)
+  return _internal_version();
+}
+inline void TodoItem::_internal_set_version(int32_t value) {
+  
+  _impl_.version_ = value;
+}
+inline void TodoItem::set_version(int32_t value) {
+  _internal_set_version(value);
+  // @@protoc_insertion_point(field_set:todo_list.TodoItem.version)
+}
+
+// -------------------------------------------------------------------
+
 // AddTodoRequest
 
-// string Title = 2;
+// string title = 2;
 inline void AddTodoRequest::clear_title() {
   _impl_.title_.ClearToEmpty();
 }
 inline const std::string& AddTodoRequest::title() const {
-  // @@protoc_insertion_point(field_get:todo_list.AddTodoRequest.Title)
+  // @@protoc_insertion_point(field_get:todo_list.AddTodoRequest.title)
   return _internal_title();
 }
 template <typename ArgT0, typename... ArgT>
@@ -1710,11 +2333,11 @@ inline PROTOBUF_ALWAYS_INLINE
 void AddTodoRequest::set_title(ArgT0&& arg0, ArgT... args) {
  
  _impl_.title_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:todo_list.AddTodoRequest.Title)
+  // @@protoc_insertion_point(field_set:todo_list.AddTodoRequest.title)
 }
 inline std::string* AddTodoRequest::mutable_title() {
   std::string* _s = _internal_mutable_title();
-  // @@protoc_insertion_point(field_mutable:todo_list.AddTodoRequest.Title)
+  // @@protoc_insertion_point(field_mutable:todo_list.AddTodoRequest.title)
   return _s;
 }
 inline const std::string& AddTodoRequest::_internal_title() const {
@@ -1729,7 +2352,7 @@ inline std::string* AddTodoRequest::_internal_mutable_title() {
   return _impl_.title_.Mutable(GetArenaForAllocation());
 }
 inline std::string* AddTodoRequest::release_title() {
-  // @@protoc_insertion_point(field_release:todo_list.AddTodoRequest.Title)
+  // @@protoc_insertion_point(field_release:todo_list.AddTodoRequest.title)
   return _impl_.title_.Release();
 }
 inline void AddTodoRequest::set_allocated_title(std::string* title) {
@@ -1744,15 +2367,15 @@ inline void AddTodoRequest::set_allocated_title(std::string* title) {
     _impl_.title_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:todo_list.AddTodoRequest.Title)
+  // @@protoc_insertion_point(field_set_allocated:todo_list.AddTodoRequest.title)
 }
 
-// string Description = 3;
+// string description = 3;
 inline void AddTodoRequest::clear_description() {
   _impl_.description_.ClearToEmpty();
 }
 inline const std::string& AddTodoRequest::description() const {
-  // @@protoc_insertion_point(field_get:todo_list.AddTodoRequest.Description)
+  // @@protoc_insertion_point(field_get:todo_list.AddTodoRequest.description)
   return _internal_description();
 }
 template <typename ArgT0, typename... ArgT>
@@ -1760,11 +2383,11 @@ inline PROTOBUF_ALWAYS_INLINE
 void AddTodoRequest::set_description(ArgT0&& arg0, ArgT... args) {
  
  _impl_.description_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:todo_list.AddTodoRequest.Description)
+  // @@protoc_insertion_point(field_set:todo_list.AddTodoRequest.description)
 }
 inline std::string* AddTodoRequest::mutable_description() {
   std::string* _s = _internal_mutable_description();
-  // @@protoc_insertion_point(field_mutable:todo_list.AddTodoRequest.Description)
+  // @@protoc_insertion_point(field_mutable:todo_list.AddTodoRequest.description)
   return _s;
 }
 inline const std::string& AddTodoRequest::_internal_description() const {
@@ -1779,7 +2402,7 @@ inline std::string* AddTodoRequest::_internal_mutable_description() {
   return _impl_.description_.Mutable(GetArenaForAllocation());
 }
 inline std::string* AddTodoRequest::release_description() {
-  // @@protoc_insertion_point(field_release:todo_list.AddTodoRequest.Description)
+  // @@protoc_insertion_point(field_release:todo_list.AddTodoRequest.description)
   return _impl_.description_.Release();
 }
 inline void AddTodoRequest::set_allocated_description(std::string* description) {
@@ -1794,19 +2417,19 @@ inline void AddTodoRequest::set_allocated_description(std::string* description) 
     _impl_.description_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:todo_list.AddTodoRequest.Description)
+  // @@protoc_insertion_point(field_set_allocated:todo_list.AddTodoRequest.description)
 }
 
 // -------------------------------------------------------------------
 
 // UpdateTodoRequest
 
-// string Id = 1;
+// string id = 1;
 inline void UpdateTodoRequest::clear_id() {
   _impl_.id_.ClearToEmpty();
 }
 inline const std::string& UpdateTodoRequest::id() const {
-  // @@protoc_insertion_point(field_get:todo_list.UpdateTodoRequest.Id)
+  // @@protoc_insertion_point(field_get:todo_list.UpdateTodoRequest.id)
   return _internal_id();
 }
 template <typename ArgT0, typename... ArgT>
@@ -1814,11 +2437,11 @@ inline PROTOBUF_ALWAYS_INLINE
 void UpdateTodoRequest::set_id(ArgT0&& arg0, ArgT... args) {
  
  _impl_.id_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:todo_list.UpdateTodoRequest.Id)
+  // @@protoc_insertion_point(field_set:todo_list.UpdateTodoRequest.id)
 }
 inline std::string* UpdateTodoRequest::mutable_id() {
   std::string* _s = _internal_mutable_id();
-  // @@protoc_insertion_point(field_mutable:todo_list.UpdateTodoRequest.Id)
+  // @@protoc_insertion_point(field_mutable:todo_list.UpdateTodoRequest.id)
   return _s;
 }
 inline const std::string& UpdateTodoRequest::_internal_id() const {
@@ -1833,7 +2456,7 @@ inline std::string* UpdateTodoRequest::_internal_mutable_id() {
   return _impl_.id_.Mutable(GetArenaForAllocation());
 }
 inline std::string* UpdateTodoRequest::release_id() {
-  // @@protoc_insertion_point(field_release:todo_list.UpdateTodoRequest.Id)
+  // @@protoc_insertion_point(field_release:todo_list.UpdateTodoRequest.id)
   return _impl_.id_.Release();
 }
 inline void UpdateTodoRequest::set_allocated_id(std::string* id) {
@@ -1848,15 +2471,15 @@ inline void UpdateTodoRequest::set_allocated_id(std::string* id) {
     _impl_.id_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:todo_list.UpdateTodoRequest.Id)
+  // @@protoc_insertion_point(field_set_allocated:todo_list.UpdateTodoRequest.id)
 }
 
-// string Title = 2;
+// string title = 2;
 inline void UpdateTodoRequest::clear_title() {
   _impl_.title_.ClearToEmpty();
 }
 inline const std::string& UpdateTodoRequest::title() const {
-  // @@protoc_insertion_point(field_get:todo_list.UpdateTodoRequest.Title)
+  // @@protoc_insertion_point(field_get:todo_list.UpdateTodoRequest.title)
   return _internal_title();
 }
 template <typename ArgT0, typename... ArgT>
@@ -1864,11 +2487,11 @@ inline PROTOBUF_ALWAYS_INLINE
 void UpdateTodoRequest::set_title(ArgT0&& arg0, ArgT... args) {
  
  _impl_.title_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:todo_list.UpdateTodoRequest.Title)
+  // @@protoc_insertion_point(field_set:todo_list.UpdateTodoRequest.title)
 }
 inline std::string* UpdateTodoRequest::mutable_title() {
   std::string* _s = _internal_mutable_title();
-  // @@protoc_insertion_point(field_mutable:todo_list.UpdateTodoRequest.Title)
+  // @@protoc_insertion_point(field_mutable:todo_list.UpdateTodoRequest.title)
   return _s;
 }
 inline const std::string& UpdateTodoRequest::_internal_title() const {
@@ -1883,7 +2506,7 @@ inline std::string* UpdateTodoRequest::_internal_mutable_title() {
   return _impl_.title_.Mutable(GetArenaForAllocation());
 }
 inline std::string* UpdateTodoRequest::release_title() {
-  // @@protoc_insertion_point(field_release:todo_list.UpdateTodoRequest.Title)
+  // @@protoc_insertion_point(field_release:todo_list.UpdateTodoRequest.title)
   return _impl_.title_.Release();
 }
 inline void UpdateTodoRequest::set_allocated_title(std::string* title) {
@@ -1898,15 +2521,15 @@ inline void UpdateTodoRequest::set_allocated_title(std::string* title) {
     _impl_.title_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:todo_list.UpdateTodoRequest.Title)
+  // @@protoc_insertion_point(field_set_allocated:todo_list.UpdateTodoRequest.title)
 }
 
-// string Description = 3;
+// string description = 3;
 inline void UpdateTodoRequest::clear_description() {
   _impl_.description_.ClearToEmpty();
 }
 inline const std::string& UpdateTodoRequest::description() const {
-  // @@protoc_insertion_point(field_get:todo_list.UpdateTodoRequest.Description)
+  // @@protoc_insertion_point(field_get:todo_list.UpdateTodoRequest.description)
   return _internal_description();
 }
 template <typename ArgT0, typename... ArgT>
@@ -1914,11 +2537,11 @@ inline PROTOBUF_ALWAYS_INLINE
 void UpdateTodoRequest::set_description(ArgT0&& arg0, ArgT... args) {
  
  _impl_.description_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:todo_list.UpdateTodoRequest.Description)
+  // @@protoc_insertion_point(field_set:todo_list.UpdateTodoRequest.description)
 }
 inline std::string* UpdateTodoRequest::mutable_description() {
   std::string* _s = _internal_mutable_description();
-  // @@protoc_insertion_point(field_mutable:todo_list.UpdateTodoRequest.Description)
+  // @@protoc_insertion_point(field_mutable:todo_list.UpdateTodoRequest.description)
   return _s;
 }
 inline const std::string& UpdateTodoRequest::_internal_description() const {
@@ -1933,7 +2556,7 @@ inline std::string* UpdateTodoRequest::_internal_mutable_description() {
   return _impl_.description_.Mutable(GetArenaForAllocation());
 }
 inline std::string* UpdateTodoRequest::release_description() {
-  // @@protoc_insertion_point(field_release:todo_list.UpdateTodoRequest.Description)
+  // @@protoc_insertion_point(field_release:todo_list.UpdateTodoRequest.description)
   return _impl_.description_.Release();
 }
 inline void UpdateTodoRequest::set_allocated_description(std::string* description) {
@@ -1948,19 +2571,19 @@ inline void UpdateTodoRequest::set_allocated_description(std::string* descriptio
     _impl_.description_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:todo_list.UpdateTodoRequest.Description)
+  // @@protoc_insertion_point(field_set_allocated:todo_list.UpdateTodoRequest.description)
 }
 
 // -------------------------------------------------------------------
 
 // GetTodoListRequest
 
-// string Id = 1;
+// string id = 1;
 inline void GetTodoListRequest::clear_id() {
   _impl_.id_.ClearToEmpty();
 }
 inline const std::string& GetTodoListRequest::id() const {
-  // @@protoc_insertion_point(field_get:todo_list.GetTodoListRequest.Id)
+  // @@protoc_insertion_point(field_get:todo_list.GetTodoListRequest.id)
   return _internal_id();
 }
 template <typename ArgT0, typename... ArgT>
@@ -1968,11 +2591,11 @@ inline PROTOBUF_ALWAYS_INLINE
 void GetTodoListRequest::set_id(ArgT0&& arg0, ArgT... args) {
  
  _impl_.id_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:todo_list.GetTodoListRequest.Id)
+  // @@protoc_insertion_point(field_set:todo_list.GetTodoListRequest.id)
 }
 inline std::string* GetTodoListRequest::mutable_id() {
   std::string* _s = _internal_mutable_id();
-  // @@protoc_insertion_point(field_mutable:todo_list.GetTodoListRequest.Id)
+  // @@protoc_insertion_point(field_mutable:todo_list.GetTodoListRequest.id)
   return _s;
 }
 inline const std::string& GetTodoListRequest::_internal_id() const {
@@ -1987,7 +2610,7 @@ inline std::string* GetTodoListRequest::_internal_mutable_id() {
   return _impl_.id_.Mutable(GetArenaForAllocation());
 }
 inline std::string* GetTodoListRequest::release_id() {
-  // @@protoc_insertion_point(field_release:todo_list.GetTodoListRequest.Id)
+  // @@protoc_insertion_point(field_release:todo_list.GetTodoListRequest.id)
   return _impl_.id_.Release();
 }
 inline void GetTodoListRequest::set_allocated_id(std::string* id) {
@@ -2002,19 +2625,19 @@ inline void GetTodoListRequest::set_allocated_id(std::string* id) {
     _impl_.id_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:todo_list.GetTodoListRequest.Id)
+  // @@protoc_insertion_point(field_set_allocated:todo_list.GetTodoListRequest.id)
 }
 
 // -------------------------------------------------------------------
 
 // TodoList
 
-// string Id = 1;
+// string id = 1;
 inline void TodoList::clear_id() {
   _impl_.id_.ClearToEmpty();
 }
 inline const std::string& TodoList::id() const {
-  // @@protoc_insertion_point(field_get:todo_list.TodoList.Id)
+  // @@protoc_insertion_point(field_get:todo_list.TodoList.id)
   return _internal_id();
 }
 template <typename ArgT0, typename... ArgT>
@@ -2022,11 +2645,11 @@ inline PROTOBUF_ALWAYS_INLINE
 void TodoList::set_id(ArgT0&& arg0, ArgT... args) {
  
  _impl_.id_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:todo_list.TodoList.Id)
+  // @@protoc_insertion_point(field_set:todo_list.TodoList.id)
 }
 inline std::string* TodoList::mutable_id() {
   std::string* _s = _internal_mutable_id();
-  // @@protoc_insertion_point(field_mutable:todo_list.TodoList.Id)
+  // @@protoc_insertion_point(field_mutable:todo_list.TodoList.id)
   return _s;
 }
 inline const std::string& TodoList::_internal_id() const {
@@ -2041,7 +2664,7 @@ inline std::string* TodoList::_internal_mutable_id() {
   return _impl_.id_.Mutable(GetArenaForAllocation());
 }
 inline std::string* TodoList::release_id() {
-  // @@protoc_insertion_point(field_release:todo_list.TodoList.Id)
+  // @@protoc_insertion_point(field_release:todo_list.TodoList.id)
   return _impl_.id_.Release();
 }
 inline void TodoList::set_allocated_id(std::string* id) {
@@ -2056,15 +2679,15 @@ inline void TodoList::set_allocated_id(std::string* id) {
     _impl_.id_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:todo_list.TodoList.Id)
+  // @@protoc_insertion_point(field_set_allocated:todo_list.TodoList.id)
 }
 
-// string Title = 2;
+// string title = 2;
 inline void TodoList::clear_title() {
   _impl_.title_.ClearToEmpty();
 }
 inline const std::string& TodoList::title() const {
-  // @@protoc_insertion_point(field_get:todo_list.TodoList.Title)
+  // @@protoc_insertion_point(field_get:todo_list.TodoList.title)
   return _internal_title();
 }
 template <typename ArgT0, typename... ArgT>
@@ -2072,11 +2695,11 @@ inline PROTOBUF_ALWAYS_INLINE
 void TodoList::set_title(ArgT0&& arg0, ArgT... args) {
  
  _impl_.title_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:todo_list.TodoList.Title)
+  // @@protoc_insertion_point(field_set:todo_list.TodoList.title)
 }
 inline std::string* TodoList::mutable_title() {
   std::string* _s = _internal_mutable_title();
-  // @@protoc_insertion_point(field_mutable:todo_list.TodoList.Title)
+  // @@protoc_insertion_point(field_mutable:todo_list.TodoList.title)
   return _s;
 }
 inline const std::string& TodoList::_internal_title() const {
@@ -2091,7 +2714,7 @@ inline std::string* TodoList::_internal_mutable_title() {
   return _impl_.title_.Mutable(GetArenaForAllocation());
 }
 inline std::string* TodoList::release_title() {
-  // @@protoc_insertion_point(field_release:todo_list.TodoList.Title)
+  // @@protoc_insertion_point(field_release:todo_list.TodoList.title)
   return _impl_.title_.Release();
 }
 inline void TodoList::set_allocated_title(std::string* title) {
@@ -2106,15 +2729,15 @@ inline void TodoList::set_allocated_title(std::string* title) {
     _impl_.title_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:todo_list.TodoList.Title)
+  // @@protoc_insertion_point(field_set_allocated:todo_list.TodoList.title)
 }
 
-// string Description = 3;
+// string description = 3;
 inline void TodoList::clear_description() {
   _impl_.description_.ClearToEmpty();
 }
 inline const std::string& TodoList::description() const {
-  // @@protoc_insertion_point(field_get:todo_list.TodoList.Description)
+  // @@protoc_insertion_point(field_get:todo_list.TodoList.description)
   return _internal_description();
 }
 template <typename ArgT0, typename... ArgT>
@@ -2122,11 +2745,11 @@ inline PROTOBUF_ALWAYS_INLINE
 void TodoList::set_description(ArgT0&& arg0, ArgT... args) {
  
  _impl_.description_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:todo_list.TodoList.Description)
+  // @@protoc_insertion_point(field_set:todo_list.TodoList.description)
 }
 inline std::string* TodoList::mutable_description() {
   std::string* _s = _internal_mutable_description();
-  // @@protoc_insertion_point(field_mutable:todo_list.TodoList.Description)
+  // @@protoc_insertion_point(field_mutable:todo_list.TodoList.description)
   return _s;
 }
 inline const std::string& TodoList::_internal_description() const {
@@ -2141,7 +2764,7 @@ inline std::string* TodoList::_internal_mutable_description() {
   return _impl_.description_.Mutable(GetArenaForAllocation());
 }
 inline std::string* TodoList::release_description() {
-  // @@protoc_insertion_point(field_release:todo_list.TodoList.Description)
+  // @@protoc_insertion_point(field_release:todo_list.TodoList.description)
   return _impl_.description_.Release();
 }
 inline void TodoList::set_allocated_description(std::string* description) {
@@ -2156,110 +2779,110 @@ inline void TodoList::set_allocated_description(std::string* description) {
     _impl_.description_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:todo_list.TodoList.Description)
+  // @@protoc_insertion_point(field_set_allocated:todo_list.TodoList.description)
 }
 
-// string CreatedDate = 4;
-inline void TodoList::clear_createddate() {
-  _impl_.createddate_.ClearToEmpty();
+// string created_date = 4;
+inline void TodoList::clear_created_date() {
+  _impl_.created_date_.ClearToEmpty();
 }
-inline const std::string& TodoList::createddate() const {
-  // @@protoc_insertion_point(field_get:todo_list.TodoList.CreatedDate)
-  return _internal_createddate();
+inline const std::string& TodoList::created_date() const {
+  // @@protoc_insertion_point(field_get:todo_list.TodoList.created_date)
+  return _internal_created_date();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void TodoList::set_createddate(ArgT0&& arg0, ArgT... args) {
+void TodoList::set_created_date(ArgT0&& arg0, ArgT... args) {
  
- _impl_.createddate_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:todo_list.TodoList.CreatedDate)
+ _impl_.created_date_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:todo_list.TodoList.created_date)
 }
-inline std::string* TodoList::mutable_createddate() {
-  std::string* _s = _internal_mutable_createddate();
-  // @@protoc_insertion_point(field_mutable:todo_list.TodoList.CreatedDate)
+inline std::string* TodoList::mutable_created_date() {
+  std::string* _s = _internal_mutable_created_date();
+  // @@protoc_insertion_point(field_mutable:todo_list.TodoList.created_date)
   return _s;
 }
-inline const std::string& TodoList::_internal_createddate() const {
-  return _impl_.createddate_.Get();
+inline const std::string& TodoList::_internal_created_date() const {
+  return _impl_.created_date_.Get();
 }
-inline void TodoList::_internal_set_createddate(const std::string& value) {
+inline void TodoList::_internal_set_created_date(const std::string& value) {
   
-  _impl_.createddate_.Set(value, GetArenaForAllocation());
+  _impl_.created_date_.Set(value, GetArenaForAllocation());
 }
-inline std::string* TodoList::_internal_mutable_createddate() {
+inline std::string* TodoList::_internal_mutable_created_date() {
   
-  return _impl_.createddate_.Mutable(GetArenaForAllocation());
+  return _impl_.created_date_.Mutable(GetArenaForAllocation());
 }
-inline std::string* TodoList::release_createddate() {
-  // @@protoc_insertion_point(field_release:todo_list.TodoList.CreatedDate)
-  return _impl_.createddate_.Release();
+inline std::string* TodoList::release_created_date() {
+  // @@protoc_insertion_point(field_release:todo_list.TodoList.created_date)
+  return _impl_.created_date_.Release();
 }
-inline void TodoList::set_allocated_createddate(std::string* createddate) {
-  if (createddate != nullptr) {
+inline void TodoList::set_allocated_created_date(std::string* created_date) {
+  if (created_date != nullptr) {
     
   } else {
     
   }
-  _impl_.createddate_.SetAllocated(createddate, GetArenaForAllocation());
+  _impl_.created_date_.SetAllocated(created_date, GetArenaForAllocation());
 #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (_impl_.createddate_.IsDefault()) {
-    _impl_.createddate_.Set("", GetArenaForAllocation());
+  if (_impl_.created_date_.IsDefault()) {
+    _impl_.created_date_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:todo_list.TodoList.CreatedDate)
+  // @@protoc_insertion_point(field_set_allocated:todo_list.TodoList.created_date)
 }
 
-// string ModifiedDate = 5;
-inline void TodoList::clear_modifieddate() {
-  _impl_.modifieddate_.ClearToEmpty();
+// string modified_date = 5;
+inline void TodoList::clear_modified_date() {
+  _impl_.modified_date_.ClearToEmpty();
 }
-inline const std::string& TodoList::modifieddate() const {
-  // @@protoc_insertion_point(field_get:todo_list.TodoList.ModifiedDate)
-  return _internal_modifieddate();
+inline const std::string& TodoList::modified_date() const {
+  // @@protoc_insertion_point(field_get:todo_list.TodoList.modified_date)
+  return _internal_modified_date();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void TodoList::set_modifieddate(ArgT0&& arg0, ArgT... args) {
+void TodoList::set_modified_date(ArgT0&& arg0, ArgT... args) {
  
- _impl_.modifieddate_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:todo_list.TodoList.ModifiedDate)
+ _impl_.modified_date_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:todo_list.TodoList.modified_date)
 }
-inline std::string* TodoList::mutable_modifieddate() {
-  std::string* _s = _internal_mutable_modifieddate();
-  // @@protoc_insertion_point(field_mutable:todo_list.TodoList.ModifiedDate)
+inline std::string* TodoList::mutable_modified_date() {
+  std::string* _s = _internal_mutable_modified_date();
+  // @@protoc_insertion_point(field_mutable:todo_list.TodoList.modified_date)
   return _s;
 }
-inline const std::string& TodoList::_internal_modifieddate() const {
-  return _impl_.modifieddate_.Get();
+inline const std::string& TodoList::_internal_modified_date() const {
+  return _impl_.modified_date_.Get();
 }
-inline void TodoList::_internal_set_modifieddate(const std::string& value) {
+inline void TodoList::_internal_set_modified_date(const std::string& value) {
   
-  _impl_.modifieddate_.Set(value, GetArenaForAllocation());
+  _impl_.modified_date_.Set(value, GetArenaForAllocation());
 }
-inline std::string* TodoList::_internal_mutable_modifieddate() {
+inline std::string* TodoList::_internal_mutable_modified_date() {
   
-  return _impl_.modifieddate_.Mutable(GetArenaForAllocation());
+  return _impl_.modified_date_.Mutable(GetArenaForAllocation());
 }
-inline std::string* TodoList::release_modifieddate() {
-  // @@protoc_insertion_point(field_release:todo_list.TodoList.ModifiedDate)
-  return _impl_.modifieddate_.Release();
+inline std::string* TodoList::release_modified_date() {
+  // @@protoc_insertion_point(field_release:todo_list.TodoList.modified_date)
+  return _impl_.modified_date_.Release();
 }
-inline void TodoList::set_allocated_modifieddate(std::string* modifieddate) {
-  if (modifieddate != nullptr) {
+inline void TodoList::set_allocated_modified_date(std::string* modified_date) {
+  if (modified_date != nullptr) {
     
   } else {
     
   }
-  _impl_.modifieddate_.SetAllocated(modifieddate, GetArenaForAllocation());
+  _impl_.modified_date_.SetAllocated(modified_date, GetArenaForAllocation());
 #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (_impl_.modifieddate_.IsDefault()) {
-    _impl_.modifieddate_.Set("", GetArenaForAllocation());
+  if (_impl_.modified_date_.IsDefault()) {
+    _impl_.modified_date_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:todo_list.TodoList.ModifiedDate)
+  // @@protoc_insertion_point(field_set_allocated:todo_list.TodoList.modified_date)
 }
 
-// int32 Version = 6;
+// int32 version = 6;
 inline void TodoList::clear_version() {
   _impl_.version_ = 0;
 }
@@ -2267,7 +2890,7 @@ inline int32_t TodoList::_internal_version() const {
   return _impl_.version_;
 }
 inline int32_t TodoList::version() const {
-  // @@protoc_insertion_point(field_get:todo_list.TodoList.Version)
+  // @@protoc_insertion_point(field_get:todo_list.TodoList.version)
   return _internal_version();
 }
 inline void TodoList::_internal_set_version(int32_t value) {
@@ -2276,19 +2899,59 @@ inline void TodoList::_internal_set_version(int32_t value) {
 }
 inline void TodoList::set_version(int32_t value) {
   _internal_set_version(value);
-  // @@protoc_insertion_point(field_set:todo_list.TodoList.Version)
+  // @@protoc_insertion_point(field_set:todo_list.TodoList.version)
+}
+
+// repeated .todo_list.TodoItem todo_item = 7;
+inline int TodoList::_internal_todo_item_size() const {
+  return _impl_.todo_item_.size();
+}
+inline int TodoList::todo_item_size() const {
+  return _internal_todo_item_size();
+}
+inline void TodoList::clear_todo_item() {
+  _impl_.todo_item_.Clear();
+}
+inline ::todo_list::TodoItem* TodoList::mutable_todo_item(int index) {
+  // @@protoc_insertion_point(field_mutable:todo_list.TodoList.todo_item)
+  return _impl_.todo_item_.Mutable(index);
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::todo_list::TodoItem >*
+TodoList::mutable_todo_item() {
+  // @@protoc_insertion_point(field_mutable_list:todo_list.TodoList.todo_item)
+  return &_impl_.todo_item_;
+}
+inline const ::todo_list::TodoItem& TodoList::_internal_todo_item(int index) const {
+  return _impl_.todo_item_.Get(index);
+}
+inline const ::todo_list::TodoItem& TodoList::todo_item(int index) const {
+  // @@protoc_insertion_point(field_get:todo_list.TodoList.todo_item)
+  return _internal_todo_item(index);
+}
+inline ::todo_list::TodoItem* TodoList::_internal_add_todo_item() {
+  return _impl_.todo_item_.Add();
+}
+inline ::todo_list::TodoItem* TodoList::add_todo_item() {
+  ::todo_list::TodoItem* _add = _internal_add_todo_item();
+  // @@protoc_insertion_point(field_add:todo_list.TodoList.todo_item)
+  return _add;
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::todo_list::TodoItem >&
+TodoList::todo_item() const {
+  // @@protoc_insertion_point(field_list:todo_list.TodoList.todo_item)
+  return _impl_.todo_item_;
 }
 
 // -------------------------------------------------------------------
 
 // DeleteTodoRequest
 
-// string Id = 1;
+// string id = 1;
 inline void DeleteTodoRequest::clear_id() {
   _impl_.id_.ClearToEmpty();
 }
 inline const std::string& DeleteTodoRequest::id() const {
-  // @@protoc_insertion_point(field_get:todo_list.DeleteTodoRequest.Id)
+  // @@protoc_insertion_point(field_get:todo_list.DeleteTodoRequest.id)
   return _internal_id();
 }
 template <typename ArgT0, typename... ArgT>
@@ -2296,11 +2959,11 @@ inline PROTOBUF_ALWAYS_INLINE
 void DeleteTodoRequest::set_id(ArgT0&& arg0, ArgT... args) {
  
  _impl_.id_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:todo_list.DeleteTodoRequest.Id)
+  // @@protoc_insertion_point(field_set:todo_list.DeleteTodoRequest.id)
 }
 inline std::string* DeleteTodoRequest::mutable_id() {
   std::string* _s = _internal_mutable_id();
-  // @@protoc_insertion_point(field_mutable:todo_list.DeleteTodoRequest.Id)
+  // @@protoc_insertion_point(field_mutable:todo_list.DeleteTodoRequest.id)
   return _s;
 }
 inline const std::string& DeleteTodoRequest::_internal_id() const {
@@ -2315,7 +2978,7 @@ inline std::string* DeleteTodoRequest::_internal_mutable_id() {
   return _impl_.id_.Mutable(GetArenaForAllocation());
 }
 inline std::string* DeleteTodoRequest::release_id() {
-  // @@protoc_insertion_point(field_release:todo_list.DeleteTodoRequest.Id)
+  // @@protoc_insertion_point(field_release:todo_list.DeleteTodoRequest.id)
   return _impl_.id_.Release();
 }
 inline void DeleteTodoRequest::set_allocated_id(std::string* id) {
@@ -2330,19 +2993,19 @@ inline void DeleteTodoRequest::set_allocated_id(std::string* id) {
     _impl_.id_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:todo_list.DeleteTodoRequest.Id)
+  // @@protoc_insertion_point(field_set_allocated:todo_list.DeleteTodoRequest.id)
 }
 
 // -------------------------------------------------------------------
 
 // AddTodoListResponse
 
-// string Id = 1;
+// string id = 1;
 inline void AddTodoListResponse::clear_id() {
   _impl_.id_.ClearToEmpty();
 }
 inline const std::string& AddTodoListResponse::id() const {
-  // @@protoc_insertion_point(field_get:todo_list.AddTodoListResponse.Id)
+  // @@protoc_insertion_point(field_get:todo_list.AddTodoListResponse.id)
   return _internal_id();
 }
 template <typename ArgT0, typename... ArgT>
@@ -2350,11 +3013,11 @@ inline PROTOBUF_ALWAYS_INLINE
 void AddTodoListResponse::set_id(ArgT0&& arg0, ArgT... args) {
  
  _impl_.id_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:todo_list.AddTodoListResponse.Id)
+  // @@protoc_insertion_point(field_set:todo_list.AddTodoListResponse.id)
 }
 inline std::string* AddTodoListResponse::mutable_id() {
   std::string* _s = _internal_mutable_id();
-  // @@protoc_insertion_point(field_mutable:todo_list.AddTodoListResponse.Id)
+  // @@protoc_insertion_point(field_mutable:todo_list.AddTodoListResponse.id)
   return _s;
 }
 inline const std::string& AddTodoListResponse::_internal_id() const {
@@ -2369,7 +3032,7 @@ inline std::string* AddTodoListResponse::_internal_mutable_id() {
   return _impl_.id_.Mutable(GetArenaForAllocation());
 }
 inline std::string* AddTodoListResponse::release_id() {
-  // @@protoc_insertion_point(field_release:todo_list.AddTodoListResponse.Id)
+  // @@protoc_insertion_point(field_release:todo_list.AddTodoListResponse.id)
   return _impl_.id_.Release();
 }
 inline void AddTodoListResponse::set_allocated_id(std::string* id) {
@@ -2384,7 +3047,7 @@ inline void AddTodoListResponse::set_allocated_id(std::string* id) {
     _impl_.id_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:todo_list.AddTodoListResponse.Id)
+  // @@protoc_insertion_point(field_set_allocated:todo_list.AddTodoListResponse.id)
 }
 
 // int32 status = 2;
@@ -2571,45 +3234,45 @@ inline void UpdateTodoListResponse::set_allocated_message(std::string* message) 
 
 // GetTodoListResponse
 
-// .todo_list.TodoList TodoList = 1;
-inline bool GetTodoListResponse::_internal_has_todolist() const {
-  return this != internal_default_instance() && _impl_.todolist_ != nullptr;
+// .todo_list.TodoList todo_list = 1;
+inline bool GetTodoListResponse::_internal_has_todo_list() const {
+  return this != internal_default_instance() && _impl_.todo_list_ != nullptr;
 }
-inline bool GetTodoListResponse::has_todolist() const {
-  return _internal_has_todolist();
+inline bool GetTodoListResponse::has_todo_list() const {
+  return _internal_has_todo_list();
 }
-inline void GetTodoListResponse::clear_todolist() {
-  if (GetArenaForAllocation() == nullptr && _impl_.todolist_ != nullptr) {
-    delete _impl_.todolist_;
+inline void GetTodoListResponse::clear_todo_list() {
+  if (GetArenaForAllocation() == nullptr && _impl_.todo_list_ != nullptr) {
+    delete _impl_.todo_list_;
   }
-  _impl_.todolist_ = nullptr;
+  _impl_.todo_list_ = nullptr;
 }
-inline const ::todo_list::TodoList& GetTodoListResponse::_internal_todolist() const {
-  const ::todo_list::TodoList* p = _impl_.todolist_;
+inline const ::todo_list::TodoList& GetTodoListResponse::_internal_todo_list() const {
+  const ::todo_list::TodoList* p = _impl_.todo_list_;
   return p != nullptr ? *p : reinterpret_cast<const ::todo_list::TodoList&>(
       ::todo_list::_TodoList_default_instance_);
 }
-inline const ::todo_list::TodoList& GetTodoListResponse::todolist() const {
-  // @@protoc_insertion_point(field_get:todo_list.GetTodoListResponse.TodoList)
-  return _internal_todolist();
+inline const ::todo_list::TodoList& GetTodoListResponse::todo_list() const {
+  // @@protoc_insertion_point(field_get:todo_list.GetTodoListResponse.todo_list)
+  return _internal_todo_list();
 }
-inline void GetTodoListResponse::unsafe_arena_set_allocated_todolist(
-    ::todo_list::TodoList* todolist) {
+inline void GetTodoListResponse::unsafe_arena_set_allocated_todo_list(
+    ::todo_list::TodoList* todo_list) {
   if (GetArenaForAllocation() == nullptr) {
-    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.todolist_);
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.todo_list_);
   }
-  _impl_.todolist_ = todolist;
-  if (todolist) {
+  _impl_.todo_list_ = todo_list;
+  if (todo_list) {
     
   } else {
     
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:todo_list.GetTodoListResponse.TodoList)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:todo_list.GetTodoListResponse.todo_list)
 }
-inline ::todo_list::TodoList* GetTodoListResponse::release_todolist() {
+inline ::todo_list::TodoList* GetTodoListResponse::release_todo_list() {
   
-  ::todo_list::TodoList* temp = _impl_.todolist_;
-  _impl_.todolist_ = nullptr;
+  ::todo_list::TodoList* temp = _impl_.todo_list_;
+  _impl_.todo_list_ = nullptr;
 #ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
   auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
   temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
@@ -2621,44 +3284,44 @@ inline ::todo_list::TodoList* GetTodoListResponse::release_todolist() {
 #endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
   return temp;
 }
-inline ::todo_list::TodoList* GetTodoListResponse::unsafe_arena_release_todolist() {
-  // @@protoc_insertion_point(field_release:todo_list.GetTodoListResponse.TodoList)
+inline ::todo_list::TodoList* GetTodoListResponse::unsafe_arena_release_todo_list() {
+  // @@protoc_insertion_point(field_release:todo_list.GetTodoListResponse.todo_list)
   
-  ::todo_list::TodoList* temp = _impl_.todolist_;
-  _impl_.todolist_ = nullptr;
+  ::todo_list::TodoList* temp = _impl_.todo_list_;
+  _impl_.todo_list_ = nullptr;
   return temp;
 }
-inline ::todo_list::TodoList* GetTodoListResponse::_internal_mutable_todolist() {
+inline ::todo_list::TodoList* GetTodoListResponse::_internal_mutable_todo_list() {
   
-  if (_impl_.todolist_ == nullptr) {
+  if (_impl_.todo_list_ == nullptr) {
     auto* p = CreateMaybeMessage<::todo_list::TodoList>(GetArenaForAllocation());
-    _impl_.todolist_ = p;
+    _impl_.todo_list_ = p;
   }
-  return _impl_.todolist_;
+  return _impl_.todo_list_;
 }
-inline ::todo_list::TodoList* GetTodoListResponse::mutable_todolist() {
-  ::todo_list::TodoList* _msg = _internal_mutable_todolist();
-  // @@protoc_insertion_point(field_mutable:todo_list.GetTodoListResponse.TodoList)
+inline ::todo_list::TodoList* GetTodoListResponse::mutable_todo_list() {
+  ::todo_list::TodoList* _msg = _internal_mutable_todo_list();
+  // @@protoc_insertion_point(field_mutable:todo_list.GetTodoListResponse.todo_list)
   return _msg;
 }
-inline void GetTodoListResponse::set_allocated_todolist(::todo_list::TodoList* todolist) {
+inline void GetTodoListResponse::set_allocated_todo_list(::todo_list::TodoList* todo_list) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
   if (message_arena == nullptr) {
-    delete _impl_.todolist_;
+    delete _impl_.todo_list_;
   }
-  if (todolist) {
+  if (todo_list) {
     ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(todolist);
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(todo_list);
     if (message_arena != submessage_arena) {
-      todolist = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, todolist, submessage_arena);
+      todo_list = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, todo_list, submessage_arena);
     }
     
   } else {
     
   }
-  _impl_.todolist_ = todolist;
-  // @@protoc_insertion_point(field_set_allocated:todo_list.GetTodoListResponse.TodoList)
+  _impl_.todo_list_ = todo_list;
+  // @@protoc_insertion_point(field_set_allocated:todo_list.GetTodoListResponse.todo_list)
 }
 
 // int32 status = 2;
@@ -2844,6 +3507,8 @@ inline void DeleteTodoListResponse::set_allocated_message(std::string* message) 
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

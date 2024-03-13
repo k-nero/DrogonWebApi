@@ -54,6 +54,16 @@ public:
 	{
 		ModifiedDate = modifiedDate;
 	}
+
+	virtual int GetVersion()
+	{
+		return Version;
+	}
+
+	virtual void SetVersion(int version)
+	{
+		Version = version;
+	}
 	virtual ~BaseEntity();
 protected:
 	/// <summary>

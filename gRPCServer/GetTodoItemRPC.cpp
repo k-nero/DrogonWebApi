@@ -1,8 +1,8 @@
-#include "GetTodoListRPC.h"
-#include "TodoListService.h"
+#include "GetTodoItemRPC.h"
+#include "TodoItemService.h"
 
 
-void GetTodoListRPC::Proceed()
+void GetTodoItemRPC::Proceed()
 {
 	if (status_ == CREATE)
 	{
@@ -14,19 +14,19 @@ void GetTodoListRPC::Proceed()
 		// the tag uniquely identifying the request (so that different CallData
 		// instances can serve different requests concurrently), in this case
 		// the memory address of this CallData instance.
-		service_->RequestGetTodoList(&ctx_, &request_, &responder_, cq_, cq_, this);
+		service_->RequestGetTodoItems(&ctx_, &request_, &responder_, cq_, cq_, this);
 	}
 	else if (status_ == PROCESS)
 	{
 		// Spawn a new CallData instance to serve new clients while we process
 		// the one for this CallData. The instance will deallocate itself as
 		// part of its FINISH state.
-		new GetTodoListRPC(service_, cq_);
+		new GetTodoItemRPC(service_, cq_);
 
 		// The actual processing.
 		std::string id = request_.id();
 
-		if(id.empty())
+		if (id.empty())
 		{
 			reply_.set_message("Bad Request, id is empty");
 			reply_.set_status(400);
@@ -35,8 +35,8 @@ void GetTodoListRPC::Proceed()
 			return;
 		}
 
-		auto todo_list = TodoListService().GetTodoListById(id);
-		if (todo_list == nullptr)
+		auto todo_item = TodoItemService().GetTodoItemById(id);
+		if (todo_item == nullptr)
 		{
 			reply_.set_message("Not Found");
 			reply_.set_status(404);
@@ -45,30 +45,20 @@ void GetTodoListRPC::Proceed()
 			return;
 		};
 
-		todo_list::TodoList*rs = new todo_list::TodoList();
+		todo_item::TodoItem* rs = new todo_item::TodoItem();
 
-		rs->set_id(todo_list->GetId());
-		rs->set_title(todo_list->GetTitle());
-		rs->set_description(todo_list->GetDescription());
-		rs->set_created_date(todo_list->GetCreatedDate());
-		rs->set_modified_date(todo_list->GetModifiedDate());
-		rs->set_version(todo_list->GetVersion());
+		rs->set_id(todo_item->GetId());
+		rs->set_title(todo_item->GetTitle());
+		rs->set_note(todo_item->GetNote());
+		rs->set_completed(todo_item->GetIsCompleted());
+		rs->set_created_date(todo_item->GetCreatedDate());
+		rs->set_modified_date(todo_item->GetModifiedDate());
+		rs->set_todo_list_id(todo_item->GetTodoListId());
+		rs->set_version(todo_item->GetVersion());
 
-		for (auto& todo_item : todo_list->GetTodoItems())
-		{
-			todo_list::TodoItem* item = new todo_list::TodoItem();
-			item->set_id(todo_item->GetId());
-			item->set_title(todo_item->GetTitle());
-			item->set_note(todo_item->GetNote());
-			item->set_completed(todo_item->GetIsCompleted());
-			item->set_created_date(todo_item->GetCreatedDate());
-			item->set_modified_date(todo_item->GetModifiedDate());
-			rs->mutable_todo_item()->AddAllocated(item);
-		}
 
 		reply_.set_message("Success");
 		reply_.set_status(200);
-		reply_.set_allocated_todo_list(rs);
 
 		status_ = FINISH;
 		responder_.Finish(reply_, Status::OK, this);

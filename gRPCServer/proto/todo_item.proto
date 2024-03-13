@@ -1,0 +1,88 @@
+syntax = "proto3";
+
+package todo_item;
+
+message TodoItem 
+{
+  string id = 1;
+  string title = 2;
+  string note = 3;
+  string todo_list_id = 4;
+  bool completed = 5;
+  string created_date = 6;
+  string modified_date = 7;
+  int32 version = 8;
+}
+
+message GetTodoItemsRequest 
+{
+  string id = 1;
+}
+
+message GetTodoItemsResponse 
+{
+  TodoItem items = 1;
+  int32 status = 2;
+  string message = 3;
+}
+
+message CreateTodoItemRequest 
+{
+  string title = 1;
+  string note = 2;
+  string todo_list_id = 3;
+  bool completed = 4;
+}
+
+message CreateTodoItemResponse 
+{
+  string id = 1;
+  int32 status = 2;
+  string message = 3;
+}
+
+message UpdateTodoItemRequest 
+{
+  string id = 1;
+  string title = 2;
+  string note = 3;
+  string todo_list_id = 4;
+  bool completed = 5;
+}
+
+message UpdateTodoItemResponse 
+{
+  int32 status = 1;
+  string message = 2;
+}
+
+message DeleteTodoItemRequest 
+{
+  string id = 1;
+}
+
+message DeleteTodoItemResponse 
+{
+  int32 status = 1;
+  string message = 2;
+}
+
+message GetTodoItemsByTodoListIdRequest 
+{
+  string todo_list_id = 1;
+}
+
+message GetTodoItemsByTodoListIdResponse 
+{
+  TodoItem items = 1;
+  int32 status = 2;
+  string message = 3;
+}
+
+service TodoItemService
+{
+  rpc GetTodoItems (GetTodoItemsRequest) returns (GetTodoItemsResponse) {}
+  rpc CreateTodoItem (CreateTodoItemRequest) returns (CreateTodoItemResponse) {}
+  rpc UpdateTodoItem (UpdateTodoItemRequest) returns (UpdateTodoItemResponse) {}
+  rpc DeleteTodoItem (DeleteTodoItemRequest) returns (DeleteTodoItemResponse) {}
+}
