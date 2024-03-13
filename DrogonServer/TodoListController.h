@@ -18,7 +18,7 @@ namespace drogon
 	template<>
 	inline TodoListModel fromRequest(const HttpRequest& req)
 	{
-		return object_parser<TodoListModel>(req);
+		return bind_model<TodoListModel>(req);
 	}
 };
 

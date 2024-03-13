@@ -1,12 +1,11 @@
 #pragma once
 #include <drogon/HttpRequest.h>
 #include <boost/describe.hpp>
-#include "TodoList.h"
 
 namespace drogon
 {
 	template <typename T, class D = boost::describe::describe_members<T, boost::describe::mod_any_access | boost::describe::mod_inherited> >
-	inline T object_parser(const HttpRequest& req)
+	inline T bind_model(const HttpRequest& req)
 	{
 		T obj{};
 		std::shared_ptr<Json::Value> json = req.getJsonObject();
