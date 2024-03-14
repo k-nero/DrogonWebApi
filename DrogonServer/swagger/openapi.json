@@ -31,7 +31,13 @@
         "operationId": "getTodoList",
         "responses": {
           "200": {
-            "description": "Successful operation"
+            "description": "Successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/TodoList"
+              }
+            }
           }
         },
         "parameters": [
@@ -45,6 +51,115 @@
           {
             "in": "query",
             "name": "limit",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Todo List"
+        ],
+        "summary": "Add a new todo list",
+        "description": "",
+        "operationId": "addTodoList",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Todo List object that needs to be added",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TodoList"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+    "/api/todo-list/{id}": {
+      "get": {
+        "tags": [
+          "Todo List"
+        ],
+        "summary": "Get todo list by id",
+        "description": "",
+        "operationId": "getTodoListById",
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Todo List"
+        ],
+        "summary": "Delete todo list by id",
+        "description": "",
+        "operationId": "deleteTodoListById",
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "Todo List"
+        ],
+        "summary": "Update todo list by id",
+        "description": "",
+        "operationId": "updateTodoListById",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
             "schema": {
               "type": "integer"
             }
@@ -83,5 +198,68 @@
     {
       "drogon_oauth2": []
     }
-  ]
+  ],
+  "definitions": {
+    "TodoList": {
+      "type": "object",
+      "properties": {
+        "Id": {
+          "type": "string"
+        },
+        "CreatedDate": {
+          "type": "string"
+        },
+        "Description": {
+          "type": "string"
+        },
+        "ModifiedDate": {
+          "type": "string"
+        },
+        "Title": {
+          "type": "string"
+        },
+        "Version": {
+          "type": "integer"
+        },
+        "TodoItems": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TodoItem"
+          }
+        }
+      }
+    },
+    "TodoItem": {
+      "type": "object",
+      "properties": {
+        "Id": {
+          "type": "string"
+        },
+        "CreatedDate": {
+          "type": "string"
+        },
+        "Note": {
+          "type": "string"
+        },
+        "ModifiedDate": {
+          "type": "string"
+        },
+        "Title": {
+          "type": "string"
+        },
+        "Version": {
+          "type": "integer"
+        },
+        "TodoListId": {
+          "type": "string"
+        },
+        "TodoList": {
+          "$ref": "#/definitions/TodoList"
+        },
+        "IsComplete": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
 }
