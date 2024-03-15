@@ -58,6 +58,12 @@
     <Filter Include="Source Files\Model">
       <UniqueIdentifier>{50cef1b3-460a-48a0-b20b-4b1e19b45997}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Common\Exception">
+      <UniqueIdentifier>{789210d6-52ac-47af-bcdc-2c1d341afcc2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Common\Exception">
+      <UniqueIdentifier>{5b6cf5ef-058f-453d-92f7-c34a9bfa8a0e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -120,6 +126,9 @@
     <ClInclude Include="BaseQueryV2.h">
       <Filter>Header Files\CQRS\Base</Filter>
     </ClInclude>
+    <ClInclude Include="NotFoundExcept.h">
+      <Filter>Header Files\Common\Exception</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -166,6 +175,9 @@
     </ClCompile>
     <ClCompile Include="TodoItemModel.cpp">
       <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="NotFoundExcept.cpp">
+      <Filter>Source Files\Common\Exception</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

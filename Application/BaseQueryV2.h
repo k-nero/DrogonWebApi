@@ -44,6 +44,10 @@ public:
 	{
 		boost::json::value json;
 		auto result = GetByIdEx<K>(id, includes, select_fields);
+		if(result->empty())
+		{
+			result = std::make_shared<std::string>("{}");
+		}
 		boost::json::parse_options opt;
 		opt.allow_invalid_utf8 = true;
 		json = boost::json::parse(*result, boost::json::storage_ptr(), opt);
@@ -77,7 +81,7 @@ public:
 #ifdef LOG_SQL_COMMAND
 			BOOST_LOG_TRIVIAL(debug) << base_query;
 #endif // LOG_SQL_COMMAND
-			SACommand cmd(con.get(), _TSA(base_query.c_str()));
+			SACommand cmd(con.get(), _TSA(base_query.c_str()), SA_CmdSQLStmtRaw);
 			cmd.Execute();
 			auto result = std::make_shared<std::string>();
 			result->reserve(0x800);
@@ -94,9 +98,9 @@ public:
 						result->append(static_cast<char*>(pBuf), nLen);
 					}
 				};
-
+		
 				cmd.Field(1).ReadLongOrLob(HandlingJson, 1024, (void*)(result.get()));
-			}
+			}			
 			return result;
 		}
 		catch (SAException& ex)
@@ -152,7 +156,7 @@ public:
 #ifdef LOG_SQL_COMMAND
 			BOOST_LOG_TRIVIAL(debug) << base_query;
 #endif // LOG_SQL_COMMAND
-			SACommand cmd(con.get(), _TSA(base_query.c_str()));
+			SACommand cmd(con.get(), _TSA(base_query.c_str()), SA_CmdSQLStmtRaw);
 			cmd.Execute();
 			auto result = std::make_shared<std::string>();
 			result->reserve(0x800);
@@ -193,6 +197,10 @@ public:
 	{
 		boost::json::value json;
 		auto result = GetAllEx<K>(query, includes, select_fields);
+		if(result->empty())
+		{
+			result = std::make_shared<std::string>("[]");
+		}
 		boost::json::parse_options opt;
 		opt.allow_invalid_utf8 = true;
 		json = boost::json::parse(*result, boost::json::storage_ptr(), opt);
@@ -224,7 +232,7 @@ public:
 #ifdef LOG_SQL_COMMAND
 			BOOST_LOG_TRIVIAL(debug) << base_query;
 #endif // LOG_SQL_COMMAND
-			SACommand cmd(con.get(), _TSA(base_query.c_str()));
+			SACommand cmd(con.get(), _TSA(base_query.c_str()), SA_CmdSQLStmtRaw);
 			cmd.Execute();
 			auto result = std::make_shared<std::string>();
 			result->reserve(0x200000);
@@ -243,6 +251,10 @@ public:
 				};
 
 				cmd.Field(1).ReadLongOrLob(HandlingJson, 1024, (void*)(result.get()));
+			}
+			if(result->empty())
+			{
+				result = std::make_shared<std::string>("[]");
 			}
 			return result;
 		}
@@ -278,7 +290,7 @@ public:
 				}
 				std::string count_query = "SELECT COUNT(*) FROM [dbo].[" + table_name + "]";
 				count_query += " WHERE " + query;
-				SACommand cmd(count_con.get(), _TSA(count_query.c_str()));
+				SACommand cmd(count_con.get(), _TSA(count_query.c_str()), SA_CmdSQLStmtRaw);
 				cmd.Execute();
 
 				if (cmd.FetchNext())
@@ -290,7 +302,10 @@ public:
 			});
 
 			auto result = GetPaginatedEx<K>(page, pageSize, query, includes, select_fields);
-
+			if(result->empty())
+			{
+				result = std::make_shared<std::string>("[]");
+			}
 			Json::Value root;
 			std::string errors;
 			auto reader = Json::CharReaderBuilder().newCharReader();
@@ -350,7 +365,10 @@ public:
 		});
 
 		auto result = GetPaginatedEx<K>(page, pageSize, query, includes, select_fields);
-
+		if(result->empty())
+		{
+			result = std::make_shared<std::string>("[]");
+		}
 		boost::json::value root;
 		boost::json::parse_options opt;
 		opt.allow_invalid_utf8 = true;
@@ -400,7 +418,7 @@ public:
 			BOOST_LOG_TRIVIAL(debug) << base_query;
 #endif // LOG_SQL_COMMAND
 
-			SACommand cmd(con.get(), base_query.c_str(), SA_CmdSQLStmt);
+			SACommand cmd(con.get(), base_query.c_str(), SA_CmdSQLStmtRaw);
 			cmd.Execute();
 			cmd.Field(1).setFieldType(SA_dtLongChar);
 			cmd.Field(1).setFieldSize(0x800);

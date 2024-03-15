@@ -240,6 +240,7 @@
     <ClInclude Include="framework.h" />
     <ClInclude Include="ApplicationApi.h" />
     <ClInclude Include="Mapper.h" />
+    <ClInclude Include="NotFoundExcept.h" />
     <ClInclude Include="PaginationObject.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="TodoItemCommand.h" />
@@ -254,6 +255,7 @@
     <ClCompile Include="CommandBuilder.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClInclude Include="TodoItemQuery.h" />
+    <ClCompile Include="NotFoundExcept.cpp" />
     <ClCompile Include="TodoItemModel.cpp" />
     <ClCompile Include="TodoItemQuery.cpp" />
     <ClCompile Include="TodoItemService.cpp" />
