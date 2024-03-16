@@ -260,6 +260,7 @@
     <ClInclude Include="InfrastructureApi.h" />
     <ClInclude Include="IDbContext.h" />
     <ClInclude Include="JsonHelper.h" />
+    <ClInclude Include="ObjToJson.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="RedisContext.h" />
     <ClInclude Include="SwaggerConfig.h" />

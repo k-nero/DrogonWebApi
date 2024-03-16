@@ -27,6 +27,10 @@ std::shared_ptr<TodoItem> TodoItemService::GetTodoItemById(const std::string& Id
 		if (json->empty())
 		{
 			 json = query.GetByIdEx(Id, { "TodoList" });
+			 if (json->empty())
+			 {
+				 throw NotFoundExcept();
+			 }
 			ctx.SetString(redis_key, *json, 360);
 		}
 		else

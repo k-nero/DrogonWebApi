@@ -3,6 +3,10 @@
 #include <list>
 #include <memory>
 #include <map>
+#include <type_traits>
+#include <string>
+#include <string_view>
+#include <any>
 
 template <typename C> struct is_vector : std::false_type {};
 template <typename T, typename A> struct is_vector<std::vector<T, A>> : std::true_type {};
@@ -22,7 +26,7 @@ template <typename C> inline constexpr bool is_unique_ptr_v = is_unique_ptr<C>::
 
 template <typename C> struct is_weak_ptr : std::false_type {};
 template <typename T> struct is_weak_ptr<std::weak_ptr<T>> : std::true_type {};
-template <typename C> inline constexpr bool is_weak_ptr = is_weak_ptr<C>::value;
+template <typename C> inline constexpr bool is_weak_ptr_v = is_weak_ptr<C>::value;
 
 template <typename C> struct is_map : std::false_type {};
 template <typename T, typename A> struct is_map<std::map<T, A>> : std::true_type {};
