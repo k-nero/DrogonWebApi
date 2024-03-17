@@ -11,6 +11,14 @@ template <class T, std::enable_if_t<std::is_same_v<T, int>, bool> = true>
 	return root;
 }
 
+ template <class T, std::enable_if_t<std::is_same_v<T, unsigned int>, bool> = true>
+ static inline Json::Value ObjToJson(T& t)
+ {
+	 Json::Value root = Json::uintValue;
+	 root = t;
+	 return root;
+ }
+
 template <class T, std::enable_if_t<std::is_same_v<T, long>, bool> = true>
 static inline Json::Value ObjToJson(T& t)
 {
@@ -19,10 +27,26 @@ static inline Json::Value ObjToJson(T& t)
 	return root;
 }
 
+template <class T, std::enable_if_t<std::is_same_v<T, unsigned long>, bool> = true>
+static inline Json::Value ObjToJson(T& t)
+{
+	Json::Value root = Json::uintValue;
+	root = t;
+	return root;
+}
+
 template <class T, std::enable_if_t<std::is_same_v<T, long long>, bool> = true>
 static inline Json::Value ObjToJson(T& t)
 {
 	Json::Value root = Json::intValue;
+	root = t;
+	return root;
+}
+
+template <class T, std::enable_if_t<std::is_same_v<T, unsigned long long>, bool> = true>
+static inline Json::Value ObjToJson(T& t)
+{
+	Json::Value root = Json::uintValue;
 	root = t;
 	return root;
 }
@@ -39,6 +63,14 @@ template <class T, std::enable_if_t<std::is_same_v<T, short>, bool> = true>
 static inline Json::Value ObjToJson(T& t)
 {
 	Json::Value root = Json::intValue;
+	root = t;
+	return root;
+}
+
+template <class T, std::enable_if_t<std::is_same_v<T, unsigned short>, bool> = true>
+static inline Json::Value ObjToJson(T& t)
+{
+	Json::Value root = Json::uintValue;
 	root = t;
 	return root;
 }
