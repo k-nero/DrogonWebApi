@@ -377,3 +377,5 @@ FodyWeavers.xsd
 /gRPCServer/private.key
 /gRPCServer/private_key.pem
 /gRPCServer/public_key.pem
+/WebSocketServer/cert.pem
+/WebSocketServer/key.pem
