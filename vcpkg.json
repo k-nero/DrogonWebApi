@@ -64,6 +64,12 @@
       "version>=": "1.51.1",
       "host": true,
       "platform": "x64"
+    },
+    {
+      "name": "uwebsockets",
+      "version>=": "20.60.0",
+      "host": true,
+      "platform": "x64"
     }
   ],
   "builtin-baseline": "34771b62f36be65332087146afd0f762dbea6fac"

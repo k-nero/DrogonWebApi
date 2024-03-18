@@ -13,6 +13,7 @@ public:
 
 	bool CreateSyncContext(redisOptions opt);
 	bool CreateSyncContext();
+	void SelectDb(int dbIndex);
 	void SetString(const std::string& key, const std::string& value, int expireSeconds);
 	void refreshTTL(const std::string& key, int expireSeconds);
 	void RemoveKey(const std::string& key);

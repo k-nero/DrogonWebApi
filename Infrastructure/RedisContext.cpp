@@ -30,11 +30,11 @@ bool RedisContext::CreateSyncContext(redisOptions opt)
 	{
 		if (this->m_syncContext)
 		{
-			printf("Error: %s\n", this->m_syncContext->errstr);
+			BOOST_LOG_TRIVIAL(error) << "Error: " << this->m_syncContext->errstr;
 		}
 		else
 		{
-			printf("Can't allocate redis context\n");
+			BOOST_LOG_TRIVIAL(error) << "Can't allocate redis context";
 		}
 		return false;
 	}
@@ -54,6 +54,23 @@ bool RedisContext::CreateSyncContext()
 	while (0);
 	opt.options = REDIS_OPT_PREFER_IP_UNSPEC;
 	return RedisContext::CreateSyncContext(opt);
+}
+
+void RedisContext::SelectDb(int dbIndex)
+{
+	if (this->m_syncContext == nullptr)
+	{
+		BOOST_LOG_TRIVIAL(error) << "RedisContext::SelectDb: m_syncContext is nullptr";
+		return;
+	}
+
+	redisReply* reply = (redisReply*)redisCommand(this->m_syncContext, "SELECT %d", dbIndex);
+	if (reply == nullptr)
+	{
+		BOOST_LOG_TRIVIAL(error) << "RedisContext::SelectDb: redisCommand failed";
+		return;
+	}
+	freeReplyObject(reply);
 }
 
 void RedisContext::SetString(const std::string& key, const std::string& value, int expireSeconds)

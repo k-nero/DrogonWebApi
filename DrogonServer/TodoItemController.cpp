@@ -4,8 +4,7 @@ void TodoItemController::GetAll(const HttpRequestPtr& req, std::function<void(co
 {
 	try
 	{
-		TodoItemService cmd;
-		auto task = std::future(std::async(std::launch::async, [&cmd]() { return cmd.GetAllTodoItems(); }));
+		auto task = std::future(std::async(std::launch::async, []() { return TodoItemService().GetAllTodoItems(); }));
 		auto todo_lists(task.get());
 		Json::Value rs = ObjToJson(todo_lists);
 		const auto resp = HttpResponse::newHttpJsonResponse(rs);
@@ -41,9 +40,8 @@ void TodoItemController::Get(const HttpRequestPtr& req, std::function<void(const
 {
 	try
 	{
-		TodoItemService cmd;
-		auto task = std::future(std::async(std::launch::async, [&cmd, p1]() { return cmd.GetTodoItemById(p1); }));
-		 auto todo_lists(task.get());
+		auto task = std::future(std::async(std::launch::async, [p1]() { return TodoItemService().GetTodoItemById(p1); }));
+		auto todo_lists(task.get());
 		Json::Value ret;
 		if (todo_lists != nullptr)
 		{
@@ -91,8 +89,7 @@ void TodoItemController::Create(const HttpRequestPtr& req, std::function<void(co
 {
 	try
 	{
-		TodoItemService cmd;
-		auto task = std::future(std::async(std::launch::async, [&cmd, &todo_item_model]() { return cmd.CreateTodoItem(todo_item_model); }));
+		auto task = std::future(std::async(std::launch::async, [&todo_item_model]() { return TodoItemService().CreateTodoItem(todo_item_model); }));
 		const auto id(task.get());
 		Json::Value ret;
 		ret["id"] = id;
@@ -129,8 +126,7 @@ void TodoItemController::Update(const HttpRequestPtr& req, std::function<void(co
 {
 	try
 	{
-		TodoItemService cmd;
-		auto task = std::future(std::async(std::launch::async, [&cmd, &todo_item_model, p1]() { return cmd.UpdateTodoItem(todo_item_model, p1); }));
+		auto task = std::future(std::async(std::launch::async, [&todo_item_model, p1]() { return TodoItemService().UpdateTodoItem(todo_item_model, p1); }));
 		const auto id(task.get());
 		Json::Value ret;
 		ret["id"] = id;
@@ -167,8 +163,7 @@ void TodoItemController::Delete(const HttpRequestPtr& req, std::function<void(co
 {
 	try
 	{
-		TodoItemService cmd;
-		auto task = std::future(std::async(std::launch::async, [&cmd, p1]() { return cmd.DeleteTodoItem(p1); }));
+		auto task = std::future(std::async(std::launch::async, [p1]() { return TodoItemService().DeleteTodoItem(p1); }));
 		const auto id(task.get());
 		Json::Value ret;
 		ret["id"] = id;

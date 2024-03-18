@@ -4,20 +4,20 @@
 #include <json/json.h>
 
 template <class T, std::enable_if_t<std::is_same_v<T, int>, bool> = true>
- static inline Json::Value ObjToJson(T& t)
+static inline Json::Value ObjToJson(T& t)
 {
 	Json::Value root = Json::intValue;
 	root = t;
 	return root;
 }
 
- template <class T, std::enable_if_t<std::is_same_v<T, unsigned int>, bool> = true>
- static inline Json::Value ObjToJson(T& t)
- {
-	 Json::Value root = Json::uintValue;
-	 root = t;
-	 return root;
- }
+template <class T, std::enable_if_t<std::is_same_v<T, unsigned int>, bool> = true>
+static inline Json::Value ObjToJson(T& t)
+{
+	Json::Value root = Json::uintValue;
+	root = t;
+	return root;
+}
 
 template <class T, std::enable_if_t<std::is_same_v<T, long>, bool> = true>
 static inline Json::Value ObjToJson(T& t)
@@ -95,7 +95,7 @@ template <class T, std::enable_if_t<is_shared_ptr_v<T>, bool> = true>
 static inline Json::Value ObjToJson(T& t)
 {
 	Json::Value root = Json::nullValue;
-	if(t)
+	if (t)
 	{
 		root = ObjToJson(*t);
 	}
