@@ -145,6 +145,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="WebSocket.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="cert.pem">
@@ -153,6 +154,9 @@
     <CopyFileToFolders Include="key.pem">
       <FileType>Document</FileType>
     </CopyFileToFolders>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="WebSocket.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

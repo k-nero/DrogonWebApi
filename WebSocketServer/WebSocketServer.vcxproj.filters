@@ -18,6 +18,9 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="WebSocket.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="cert.pem">
@@ -26,5 +29,10 @@
     <CopyFileToFolders Include="key.pem">
       <Filter>Resource Files</Filter>
     </CopyFileToFolders>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="WebSocket.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
