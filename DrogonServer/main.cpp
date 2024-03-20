@@ -19,6 +19,13 @@ int main()
     BOOST_LOG_TRIVIAL(info) << "Drogon server starting...";
 
     //Set HTTP listener address and port
+    drogon::app().registerPostHandlingAdvice(
+        [](const drogon::HttpRequestPtr& req, const drogon::HttpResponsePtr& resp)
+    {
+        resp->addHeader("Access-Control-Allow-Origin", "*");
+        resp->addHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH");
+    });
+
     drogon::app().addListener( "127.0.0.1", 443, true, "certificate.crt", "private.key");
     drogon::app().setLogPath("");
     drogon::app().setLogLevel( trantor::Logger::kTrace );
