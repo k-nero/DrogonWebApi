@@ -381,3 +381,6 @@ FodyWeavers.xsd
 /WebSocketServer/key.pem
 /WebSocketServer/certificate.crt
 /WebSocketServer/private.key
+/WebSocketServer/config.ini
+/WebSocketServer/private_key.pem
+/WebSocketServer/public_key.pem
