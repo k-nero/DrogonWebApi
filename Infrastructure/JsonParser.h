@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "TypeCheck.h"
 #include <boost/describe.hpp>
 #include <json/json.h>
@@ -139,6 +139,10 @@ public:
 		K obj{};
 		boost::mp11::mp_for_each<D1>([&](auto member)
 		{
+			if (json[member.name].isNull())
+			{
+				return;
+			}
 			obj.*(member).pointer = obj_from_json<std::remove_reference_t<decltype(obj.*(member).pointer)>>(json[member.name]);
 		});
 		return obj;
