@@ -58,6 +58,22 @@ inline std::string CoreHelper::ReadTextFile(std::string path)
 	}
 }
 
+inline Json::Value CoreHelper::ParseJson(std::string& json)
+{
+	Json::Value root;
+	Json::CharReaderBuilder builder;
+	Json::CharReader* reader = builder.newCharReader();
+	std::string errors;
+	bool parsingSuccessful = reader->parse(json.c_str(), json.c_str() + json.size(), &root, &errors);
+	delete reader;
+	if (!parsingSuccessful)
+	{
+		root = Json::Value();
+		root["error"] = errors;
+	}
+	return root;
+}
+
 
 
 inline void CoreHelper::SkipBOM(std::ifstream& in)

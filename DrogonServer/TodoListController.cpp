@@ -245,8 +245,8 @@ void TodoListController::GetPaginated(const HttpRequestPtr& req, std::function<v
 		page == 0 ? page = 1 : page = page;
 		limit == 0 ? limit = 10 : limit = limit;
 		auto task = std::future(std::async(std::launch::async, [page, limit]() { return TodoListService().GetTodoListsByPage(page, limit); }));
-		const auto todo_lists = task.get();
-		Json::Value rs = ToJson(todo_lists);
+		auto todo_lists = task.get();
+		Json::Value rs = ObjToJson(todo_lists);
 		const auto resp = HttpResponse::newHttpJsonResponse(rs);
 		resp->setStatusCode(k200OK);
 		callback(resp);

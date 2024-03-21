@@ -26,12 +26,11 @@ void Auth::Authorization::doFilter(const drogon::HttpRequestPtr& req, drogon::Fi
 		return;
 	}
 	auto token = rawToken.substr(rawToken.find_first_of(" ") + 1);
-	auto privateKey = ConfigProvider::GetInstance()->GetPrivateRSAKey();
 	auto publicKey = ConfigProvider::GetInstance()->GetPublicRSAKey();
 	try
 	{
 		auto decoded = jwt::decode(token);
-		jwt::verify().allow_algorithm(jwt::algorithm::rs512(publicKey, privateKey, "", "")).with_issuer("auth0").verify(decoded);
+		jwt::verify().allow_algorithm(jwt::algorithm::rs512(publicKey)).with_issuer("auth0").verify(decoded);
 		auto payload = decoded.get_payload_claim("role");
 		if (!payload.as_string().empty())
 		{

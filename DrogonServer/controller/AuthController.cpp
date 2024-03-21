@@ -26,7 +26,7 @@ void AuthController::Login(const HttpRequestPtr& req, std::function<void(const H
 					.set_payload_claim("role", jwt::claim(std::string{ "Admin" }))
 					.set_payload_claim("iat", jwt::claim(std::chrono::system_clock::now()))
 					.set_payload_claim("exp", jwt::claim(std::chrono::system_clock::now() + std::chrono::hours{ 24 }))
-					.sign(jwt::algorithm::rs512(public_key, private_key, "", ""));
+					.sign(jwt::algorithm::rs512(public_key, private_key));
 				ret["user"] = ToJson(*user);
 				ret["access_token"] = token;
 				auto resp = HttpResponse::newHttpJsonResponse(ret);

@@ -1,18 +1,28 @@
-//#include "CoreHelper.h"
 #include <uwebsockets/App.h>
+#include "CoreHelper.h"
+#include <jwt-cpp/jwt.h> 
+#include "ConfigProvider.h"
+#include "unordered_map"
+#include <json/json.h>
+
 
 struct us_listen_socket_t* global_listen_socket;
+
+struct PerSocketData
+{
+	/* Fill with user data */
+	std::string socket_id;
+	std::string user_id;
+};
+
+static std::unordered_map<std::string, uWS::WebSocket<true, true, PerSocketData> * > user_socket_map;
 
 int main()
 {
 
+	ConfigProvider::GetInstance()->Initialize();
+
 	/* ws->getUserData returns one of these */
-	struct PerSocketData
-	{
-		/* Fill with user data */
-		std::vector<std::string> topics;
-		std::string socket_id;
-	};
 
 	uWS::SocketContextOptions options;
 	options.cert_file_name = "certificate.crt";
@@ -52,6 +62,33 @@ int main()
 						res
 					};
 
+					std::string user_id;
+					std::string soc_id;
+
+					auto publicKey = ConfigProvider::GetInstance()->GetPublicRSAKey();
+					try
+					{
+						std::string access_token(req->getHeader("authorization"));
+						if (access_token.empty())
+						{
+							upgradeData->aborted = true;
+							std::cout << "Unauthorized";
+							res->writeStatus("401 Unauthorized")->end("Unauthorized");
+							return;
+						}
+
+						auto decoded = jwt::decode(access_token);
+						jwt::verify().allow_algorithm(jwt::algorithm::rs512(publicKey)).with_issuer("auth0").verify(decoded);
+						user_id = decoded.get_payload_claim("sub").as_string();
+						soc_id = CoreHelper::CreateUUID();
+					}
+					catch (...)
+					{
+						upgradeData->aborted = true;
+						std::cout << "Unknow exception";
+						res->writeStatus("401 Unauthorized")->end("Unauthorized");
+						return;
+					}
 					/* We have to attach an abort handler for us to be aware
 					 * of disconnections while we perform async tasks */
 					res->onAborted([=]()
@@ -70,11 +107,12 @@ int main()
 							* such as res->writeStatus(...)->writeHeader(...)->end(...); or similar.*/
 
 							/* This call will immediately emit .open event */
-						upgradeData->httpRes->cork([upgradeData]()
+
+						upgradeData->httpRes->cork([&]()
 						{
-							upgradeData->httpRes->template upgrade<PerSocketData>({
-								.topics = {},
-								.socket_id = "1234"
+							upgradeData->httpRes->upgrade<PerSocketData>({
+								std::string(soc_id),
+								std::string(user_id)
 									/* We initialize PerSocketData struct here */
 							},	upgradeData->secWebSocketKey,
 								upgradeData->secWebSocketProtocol,
@@ -92,29 +130,55 @@ int main()
 				{
 				/* Open event here, you may access ws->getUserData() which points to a PerSocketData struct */
 					auto perSocketData = ws->getUserData();
-					int i = 100;
-					{
-						std::string topic = std::to_string(i);
-						perSocketData->topics.push_back(topic);
-						ws->subscribe(topic);
-					}
+					user_socket_map[perSocketData->socket_id] = ws;
+					//ws->subscribe("global_soc");
 				},
 				.message = [&app](auto* ws, std::string_view message, uWS::OpCode opCode)
+				{			
+					auto perSocketData = ws->getUserData();
+					auto mess = std::string(message);
+					auto json = CoreHelper::ParseJson(mess);
+
+
+					if (json["type"] == "message")
+					{
+						app->publish(json["channel"].asString(), json["message"].asString(), opCode);
+					}
+					else if (json["type"] == "subscribe")
+					{
+						ws->subscribe(json["channel"].asString());
+					}
+					else if (json["type"] == "unsubscribe")
+					{
+						ws->unsubscribe(json["channel"].asString());
+					}
+					else if (json["type"] == "publish")
+					{
+						
+					}
+					else if (json["type"] == "broadcast")
+					{
+						
+					}
+					else if (json["type"] == "ping")
+					{
+						for (auto& [key, value] : user_socket_map)
+						{
+							value->send("ping all socket", uWS::OpCode::TEXT);
+						}
+					}
+
+					app->publish("global_soc", message, opCode);					
+				},
+				.close = [](auto* ws, int /*code*/, std::string_view /*message*/)
 				{
 					auto perSocketData = ws->getUserData();
-					app->publish(perSocketData->topics[0], message, opCode);
-					//ws->publish(perSocketData->topics[0], message, opCode);
-					
-				},
-				.close = [](auto*/*ws*/, int /*code*/, std::string_view /*message*/)
-				{
-					/* You may access ws->getUserData() here */
+					user_socket_map.erase(perSocketData->socket_id);
 				}}).listen(9001, [](auto* listen_s)
 					{
 					   if (listen_s)
 					   {
 						   std::cout << "Listening on port " << 9001 << std::endl;
-						   //listen_socket = listen_s;
 					   }
 					});
 	   app->run();

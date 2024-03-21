@@ -28,13 +28,20 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="private.key">
-      <Filter>Resource Files</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <CopyFileToFolders Include="certificate.crt">
       <Filter>Resource Files</Filter>
     </CopyFileToFolders>
+    <CopyFileToFolders Include="private.key" />
+    <CopyFileToFolders Include="config.ini">
+      <Filter>Resource Files</Filter>
+    </CopyFileToFolders>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="private_key.pem">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="public_key.pem">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

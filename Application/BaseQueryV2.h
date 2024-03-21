@@ -15,6 +15,7 @@
 #include <string>
 #include <mutex>
 #include <vector>
+#include "JsonParser.h"
 
 template <typename T, typename Z = std::is_base_of<BaseEntity, T>::type>
 class Query
@@ -30,13 +31,15 @@ public:
 	~Query() = default;
 
 	template<typename Z>
-	Z ParseFromJSON(const std::string& json) noexcept(false)
+	Z ParseFromJSON(std::string& json) noexcept(false)
 	{
-		boost::json::parse_options opt;
+		/*boost::json::parse_options opt;
 		opt.allow_invalid_utf8 = true;
 		opt.allow_comments = true;
 		boost::json::value value = boost::json::parse(json, boost::json::storage_ptr(), opt);
-		return boost::json::value_to<Z>(value);
+		return boost::json::value_to<Z>(value);*/
+		auto j = CoreHelper::ParseJson(json);
+		return JsonParser<Z>::obj_from_json(j);
 	}
 
 	template<typename K = T>
