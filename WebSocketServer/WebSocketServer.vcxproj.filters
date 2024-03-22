@@ -18,30 +18,18 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="WebSocket.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="WebSocket.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="certificate.crt">
       <Filter>Resource Files</Filter>
     </CopyFileToFolders>
-    <CopyFileToFolders Include="private.key" />
     <CopyFileToFolders Include="config.ini">
       <Filter>Resource Files</Filter>
     </CopyFileToFolders>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="private_key.pem">
+    <CopyFileToFolders Include="private_key.pem" />
+    <CopyFileToFolders Include="public_key.pem" />
+    <CopyFileToFolders Include="private.key">
       <Filter>Resource Files</Filter>
-    </None>
-    <None Include="public_key.pem">
-      <Filter>Resource Files</Filter>
-    </None>
+    </CopyFileToFolders>
   </ItemGroup>
 </Project>

@@ -149,10 +149,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="WebSocket.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="WebSocket.h" />
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="certificate.crt">
