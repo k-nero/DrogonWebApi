@@ -104,7 +104,7 @@ public:
 	}
 
 	template <class K = T, std::enable_if_t<is_shared_ptr_v<K>, bool> = true>
-	static inline K obj_from_json(Json::Value& json)
+	static inline K obj_from_json( Json::Value& json)
 	{
 		K obj{};
 		using U = typename K::element_type;
@@ -113,7 +113,7 @@ public:
 	}
 
 	template <class K = T, std::enable_if_t<is_weak_ptr_v<K>, bool> = true>
-	static inline K obj_from_json(Json::Value& json)
+	static inline K obj_from_json( Json::Value& json)
 	{
 		K obj{};
 		using U = typename K::element_type;

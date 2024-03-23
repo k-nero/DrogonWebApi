@@ -94,18 +94,28 @@ static inline Json::Value ObjToJson(T& t)
 template <class T, std::enable_if_t<is_shared_ptr_v<T>, bool> = true>
 static inline Json::Value ObjToJson(T& t)
 {
-	Json::Value root = Json::nullValue;
+	Json::Value root;
 	if (t)
 	{
+		root = Json::objectValue;
 		root = ObjToJson(*t);
+		return root;
 	}
+	root = Json::nullValue;
 	return root;
 }
 
 template <class T, std::enable_if_t<is_weak_ptr_v<T>, bool> = true>
 static inline Json::Value ObjToJson(T& t)
 {
-	Json::Value root = ObjToJson(*t);
+	Json::Value root;
+	if (t)
+	{
+		root = Json::objectValue;
+		root = ObjToJson(*t);
+		return root;
+	}
+	root = Json::nullValue;
 	return root;
 }
 
@@ -117,6 +127,42 @@ static inline Json::Value ObjToJson(T& t)
 	{
 		root.append(ObjToJson(i));
 	}
+	return root;
+}
+
+template <class T, std::enable_if_t<is_map_v<T>, bool> = true>
+static inline Json::Value ObjToJson(T& t)
+{
+	Json::Value root = Json::objectValue;
+	for (auto& i : t)
+	{
+		root[ObjToJson(i.first)] = ObjToJson(i.second);
+	}
+	return root;
+}
+
+template <class T, std::enable_if_t<is_list_v<T>, bool> = true>
+static inline Json::Value ObjToJson(T& t)
+{
+	Json::Value root = Json::arrayValue;
+	for (auto& i : t)
+	{
+		root.append(ObjToJson(i));
+	}
+	return root;
+}
+
+template <class T, std::enable_if_t<std::is_pointer_v<T>, bool> = true>
+static inline Json::Value ObjToJson(T& t)
+{
+	Json::Value root;
+	if (t)
+	{
+		root = Json::objectValue;
+		root = ObjToJson(*t);
+		return root;
+	}
+	root = Json::nullValue;
 	return root;
 }
 

@@ -116,6 +116,51 @@ int main()
 		//ws->subscribe("global_soc");
 	};
 
+	auto ws_message = [&app](auto* ws, std::string_view message, uWS::OpCode opCode)
+	{
+		auto perSocketData = ws->getUserData();
+		auto mess = std::string(message);
+		auto json = CoreHelper::ParseJson(mess);
+
+
+		if (json["type"] == "message")
+		{
+			ws->publish(json["channel"].asString(), json["message"].asString(), opCode);
+		}
+		else if (json["type"] == "subscribe")
+		{
+			ws->subscribe(json["channel"].asString());
+			app->publish(json["channel"].asString(), "subscribed", uWS::OpCode::TEXT);
+		}
+		else if (json["type"] == "unsubscribe")
+		{
+			ws->unsubscribe(json["channel"].asString());
+		}
+		else if (json["type"] == "publish")
+		{
+
+		}
+		else if (json["type"] == "broadcast")
+		{
+
+		}
+		else if (json["type"] == "ping")
+		{
+			for (auto& [key, value] : user_socket_map)
+			{
+				value->send("ping all socket", uWS::OpCode::TEXT);
+			}
+		}
+
+		app->publish("global_soc", message, opCode);
+	};
+
+	auto ws_close = [](auto* ws, int code, std::string_view message)
+	{
+		auto perSocketData = ws->getUserData();
+		user_socket_map.erase(perSocketData->user_id);
+	};
+
 	app->ws<PerSocketData>("/*",
 		{
 		.compression = uWS::DISABLED,
@@ -125,49 +170,9 @@ int main()
 		.resetIdleTimeoutOnSend = true,
 		.upgrade = ws_upgrade,
 		.open = ws_open,
-		.message = [&app](auto* ws, std::string_view message, uWS::OpCode opCode)
-		{
-			auto perSocketData = ws->getUserData();
-			auto mess = std::string(message);
-			auto json = CoreHelper::ParseJson(mess);
-
-
-			if (json["type"] == "message")
-			{
-				ws->publish(json["channel"].asString(), json["message"].asString(), opCode);
-			}
-			else if (json["type"] == "subscribe")
-			{
-				ws->subscribe(json["channel"].asString());
-				app->publish(json["channel"].asString(), "subscribed", uWS::OpCode::TEXT);
-			}
-			else if (json["type"] == "unsubscribe")
-			{
-				ws->unsubscribe(json["channel"].asString());
-			}
-			else if (json["type"] == "publish")
-			{
-
-			}
-			else if (json["type"] == "broadcast")
-			{
-
-			}
-			else if (json["type"] == "ping")
-			{
-				for (auto& [key, value] : user_socket_map)
-				{
-					value->send("ping all socket", uWS::OpCode::TEXT);
-				}
-			}
-
-			app->publish("global_soc", message, opCode);
-		},
-		.close = [](auto* ws, int /*code*/, std::string_view /*message*/)
-		{
-			auto perSocketData = ws->getUserData();
-			user_socket_map.erase(perSocketData->user_id);
-		} }).listen(9001, [](auto* listen_s)
+		.message = ws_message,
+		.close = ws_close
+		}).listen(9001, [](auto* listen_s)
 		{
 			if (listen_s)
 			{

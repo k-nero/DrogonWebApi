@@ -1,8 +1,9 @@
 #pragma once
-#include "JsonHelper.h"
 #include "ApplicationApi.h"
 #include "CoreHelper.h"
 #include "DbContext.h"
+#include "JsonHelper.h"
+#include "JsonParser.h"
 #include "PaginationObject.h"
 #include "TypeCheck.h"
 #include <any>
@@ -11,11 +12,10 @@
 #include <boost/mp11.hpp>
 #include <future> 
 #include <memory>
+#include <mutex>
 #include <SQLAPI.h>
 #include <string>
-#include <mutex>
 #include <vector>
-#include "JsonParser.h"
 
 template <typename T, typename Z = std::is_base_of<BaseEntity, T>::type>
 class Query
@@ -33,11 +33,6 @@ public:
 	template<typename Z>
 	Z ParseFromJSON(std::string& json) noexcept(false)
 	{
-		/*boost::json::parse_options opt;
-		opt.allow_invalid_utf8 = true;
-		opt.allow_comments = true;
-		boost::json::value value = boost::json::parse(json, boost::json::storage_ptr(), opt);
-		return boost::json::value_to<Z>(value);*/
 		auto j = CoreHelper::ParseJson(json);
 		return JsonParser<Z>::obj_from_json(j);
 	}
@@ -45,16 +40,13 @@ public:
 	template<typename K = T>
 	std::shared_ptr<K> GetByIdEw(const std::string& id, std::vector<std::string> includes = {}, std::vector<std::string> select_fields = {}) noexcept(false)
 	{
-		boost::json::value json;
 		auto result = GetByIdEx<K>(id, includes, select_fields);
 		if(result->empty())
 		{
-			result = std::make_shared<std::string>("{}");
+			return nullptr;
 		}
-		boost::json::parse_options opt;
-		opt.allow_invalid_utf8 = true;
-		json = boost::json::parse(*result, boost::json::storage_ptr(), opt);
-		return boost::json::value_to<std::shared_ptr<K>>(json);
+		auto json = CoreHelper::ParseJson(result);
+		return JsonParser<Z>::obj_from_json(json);
 	}
 
 	template<typename K = T>
@@ -102,7 +94,7 @@ public:
 					}
 				};
 		
-				cmd.Field(1).ReadLongOrLob(HandlingJson, 1024, (void*)(result.get()));
+				cmd.Field(1).ReadLongOrLob(HandlingJson, 0x800, (void*)(result.get()));
 			}			
 			return result;
 		}
@@ -123,12 +115,13 @@ public:
 	template<typename K = T>
 	std::shared_ptr<K> GetSingleEw(const std::string query = "", std::vector<std::string> includes = {}, std::vector<std::string> select_fields = {}) noexcept(false)
 	{
-		boost::json::value json;
 		auto result = GetSingleEx<K>(query, includes, select_fields);
-		boost::json::parse_options opt;
-		opt.allow_invalid_utf8 = true;
-		json = boost::json::parse(*result, boost::json::storage_ptr(), opt);
-		return boost::json::value_to<std::shared_ptr<K>>(json);
+		if( result->empty())
+		{
+			return nullptr;
+		}
+		auto json = CoreHelper::ParseJson(result);
+		return JsonParser<Z>::obj_from_json(json);
 	}
 
 	template<typename K = T>
@@ -177,7 +170,7 @@ public:
 					}
 				};
 
-				cmd.Field(1).ReadLongOrLob(HandlingJson, 1024, (void*)(result.get()));
+				cmd.Field(1).ReadLongOrLob(HandlingJson, 0x800, (void*)(result.get()));
 			}
 			return result;
 		}
@@ -198,16 +191,13 @@ public:
 	template<typename K = T>
 	std::vector<std::shared_ptr<K>> GetAllEw(const std::string query = "", std::vector<std::string> includes = {}, std::vector<std::string> select_fields = {}) noexcept(false)
 	{
-		boost::json::value json;
 		auto result = GetAllEx<K>(query, includes, select_fields);
 		if(result->empty())
 		{
-			result = std::make_shared<std::string>("[]");
+			return std::vector<std::shared_ptr<K>>();
 		}
-		boost::json::parse_options opt;
-		opt.allow_invalid_utf8 = true;
-		json = boost::json::parse(*result, boost::json::storage_ptr(), opt);
-		return boost::json::value_to<std::vector<std::shared_ptr<K>>>(json);
+		auto json = CoreHelper::ParseJson(result);
+		return JsonParser<Z>::obj_from_json(json);
 	}
 
 	template<typename K = T>
@@ -253,7 +243,7 @@ public:
 					}
 				};
 
-				cmd.Field(1).ReadLongOrLob(HandlingJson, 1024, (void*)(result.get()));
+				cmd.Field(1).ReadLongOrLob(HandlingJson, 0x800, (void*)(result.get()));
 			}
 			if(result->empty())
 			{
@@ -370,17 +360,14 @@ public:
 		auto result = GetPaginatedEx<K>(page, pageSize, query, includes, select_fields);
 		if(result->empty())
 		{
-			result = std::make_shared<std::string>("[]");
+			return nullptr;
 		}
-		boost::json::value root;
-		boost::json::parse_options opt;
-		opt.allow_invalid_utf8 = true;
-		root["data"] = boost::json::value::emplace_array();
-		root["data"] = boost::json::parse(*result, boost::json::storage_ptr(), opt);
-		root["m_pageSize"] = pageSize;
-		root["m_currentPage"] = page;
-		root["m_totalPages"] = pageSize == 0 ? 0 : ceil(cout_task.get() / pageSize);
-		return boost::json::value_to<std::shared_ptr<PaginationObject<K>>>(root);
+
+		auto json["m_data"] = CoreHelper::ParseJson(result);
+		json["m_pageSize"] = pageSize;
+		json["m_currentPage"] = page;
+		json["m_totalPages"] = pageSize == 0 ? 0 : ceil(cout_task.get() / pageSize);
+		return JsonParser<std::shared_ptr<PaginationObject<K>>>::obj_from_json(json);
 	}
 
 	template<typename K = T>
@@ -427,7 +414,7 @@ public:
 			cmd.Field(1).setFieldSize(0x800);
 			cmd.Field(1).setLongOrLobReaderMode(SALongOrLobReaderModes_t::SA_LongOrLobReaderManual);
 			auto result = std::make_shared<std::string>();
-			result->reserve(0x100000);
+			result->reserve(page * pageSize * 0x800);
 			//the json output of the result set is single collumn but split to multiple row on large data, need to concatenate them for a single json object	
 			while (cmd.FetchNext())
 			{
@@ -440,7 +427,7 @@ public:
 					}
 				};
 
-				cmd.Field(1).ReadLongOrLob(HandlingJson, 1024, (void*)(result.get()));
+				cmd.Field(1).ReadLongOrLob(HandlingJson, 0x800, (void*)(result.get()));
 			}
 			return result;
 		}

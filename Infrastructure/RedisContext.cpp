@@ -167,7 +167,7 @@ std::shared_ptr<std::string> RedisContext::GetString(const std::string& key)
 	if (this->m_syncContext == nullptr)
 	{
 		BOOST_LOG_TRIVIAL(error) << "RedisContext::GetString: m_syncContext is nullptr";
-		return std::make_shared<std::string>("");
+		return nullptr;
 	}
 
 	redisReply* reply = (redisReply*)redisCommand(this->m_syncContext, "GET %s", key.c_str());
@@ -179,7 +179,7 @@ std::shared_ptr<std::string> RedisContext::GetString(const std::string& key)
 
 	if (reply->type == REDIS_REPLY_NIL)
 	{
-		return std::make_shared<std::string>("");
+		return nullptr;
 	}
 
 	auto value = std::make_shared<std::string>(reply->str);

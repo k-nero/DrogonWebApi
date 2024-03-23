@@ -24,7 +24,7 @@ std::shared_ptr<TodoItem> TodoItemService::GetTodoItemById(const std::string& Id
 	else
 	{
 		json = ctx.GetString(redis_key);
-		if (json->empty())
+		if (json == nullptr)
 		{
 			 json = query.GetByIdEx(Id, { "TodoList" });
 			 if (json->empty())
@@ -59,7 +59,7 @@ std::vector<std::shared_ptr<TodoItem>> TodoItemService::GetAllTodoItems() noexce
 	else
 	{
 		json = ctx.GetString(redis_key);
-		if (json->empty())
+		if (json == nullptr)
 		{
 			 json = query.GetAllEx("", { "TodoList" });
 			ctx.SetString(redis_key, *json, 360);
