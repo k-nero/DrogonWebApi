@@ -1,10 +1,7 @@
 #include "pch.h"
 #include "TodoItemService.h"
 
-TodoItemService::TodoItemService()
-{
-
-}
+TodoItemService::TodoItemService() = default;
 
 std::shared_ptr<TodoItem> TodoItemService::GetTodoItemById(const std::string& Id) noexcept(false)
 {
@@ -146,7 +143,4 @@ int TodoItemService::DeleteTodoItem(const std::string& Id)
 	}
 }
 
-TodoItemService::~TodoItemService()
-{
-
-}
+TodoItemService::~TodoItemService() = default;

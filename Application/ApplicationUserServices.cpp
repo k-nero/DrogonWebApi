@@ -1,11 +1,6 @@
 #include "pch.h"
 #include "ApplicationUserServices.h"
 
-ApplicationUserService::ApplicationUserService()
-{
-
-}
-
 std::shared_ptr<ApplicationUser> ApplicationUserService::GetApplicationUserById(const std::string& id) noexcept(false)
 {
 	Query<ApplicationUser> query;
@@ -43,10 +38,5 @@ int ApplicationUserService::DeleteApplicationUser(const std::string& Id)
 {
 	BaseCommand<ApplicationUser> cmd;
 	return cmd.Delete(EQ(Id));
-}
-
-ApplicationUserService::~ApplicationUserService()
-{
-
 }
 

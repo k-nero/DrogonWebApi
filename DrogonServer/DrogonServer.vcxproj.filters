@@ -51,12 +51,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="controller\UserController.cc">
-      <Filter>Source Files\Controller</Filter>
-    </ClCompile>
-    <ClCompile Include="controller\AuthController.cpp">
-      <Filter>Source Files\Controller</Filter>
-    </ClCompile>
     <ClCompile Include="Authorization.cpp">
       <Filter>Source Files\Middleware</Filter>
     </ClCompile>
@@ -69,14 +63,14 @@
     <ClCompile Include="SwaggerSpec.cpp">
       <Filter>Source Files\Controller</Filter>
     </ClCompile>
+    <ClCompile Include="AuthController.cpp">
+      <Filter>Source Files\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="UserController.cpp">
+      <Filter>Source Files\Controller</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="controller\UserController.h">
-      <Filter>Header Files\Controller</Filter>
-    </ClInclude>
-    <ClInclude Include="controller\AuthController.h">
-      <Filter>Header Files\Controller</Filter>
-    </ClInclude>
     <ClInclude Include="Authorization.h">
       <Filter>Header Files\Middleware</Filter>
     </ClInclude>
@@ -93,6 +87,12 @@
       <Filter>Header Files\Common</Filter>
     </ClInclude>
     <ClInclude Include="SwaggerSpec.h">
+      <Filter>Header Files\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="AuthController.h">
+      <Filter>Header Files\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="UserController.h">
       <Filter>Header Files\Controller</Filter>
     </ClInclude>
   </ItemGroup>

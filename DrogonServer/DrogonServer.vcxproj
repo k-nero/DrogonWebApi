@@ -236,10 +236,11 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AuthController.cpp" />
     <ClCompile Include="Authorization.cpp" />
-    <ClCompile Include="controller\AuthController.cpp" />
-    <ClCompile Include="controller\UserController.cc" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="UserController.cpp" />
+    <ClInclude Include="AuthController.h" />
     <ClInclude Include="Macros.h" />
     <ClInclude Include="ModelBinding.h" />
     <ClInclude Include="SwaggerSpec.h" />
@@ -248,11 +249,10 @@
     <ClCompile Include="TodoItemController.cpp" />
     <ClCompile Include="TodoListController.cpp" />
     <ClInclude Include="TodoListController.h" />
+    <ClInclude Include="UserController.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Authorization.h" />
-    <ClInclude Include="controller\UserController.h" />
-    <ClInclude Include="controller\AuthController.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Application\Application.vcxproj">

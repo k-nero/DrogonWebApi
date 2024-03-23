@@ -1,10 +1,7 @@
 #include "pch.h"
 #include "TodoListService.h"
 
-TodoListService::TodoListService()
-{
-
-}
+TodoListService::TodoListService() = default;
 
 std::shared_ptr<TodoList> TodoListService::GetTodoListById(const std::string& Id) noexcept(false)
 {
@@ -166,8 +163,5 @@ int TodoListService::DeleteTodoList(const std::string& Id)
 	}
 }
 
-TodoListService::~TodoListService()
-{
-
-}
+TodoListService::~TodoListService() = default;
 
