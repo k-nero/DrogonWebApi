@@ -103,7 +103,7 @@ void TodoListController::Create(const HttpRequestPtr& req, std::function<void(co
 			ret["error"] = "Internal Server Error";
 			ret["status"] = 500;
 			const auto resp = HttpResponse::newHttpJsonResponse(ret);
-			resp->setStatusCode(k500InternalServerError);
+			resp->setStatusCode(k422UnprocessableEntity);
 			callback(resp);
 			return;
 		}

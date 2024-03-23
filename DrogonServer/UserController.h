@@ -3,10 +3,7 @@
 #include <drogon/HttpController.h>
 #include "ApplicationUserServices.h"
 #include <ApplicationUser.h>
-#include <DbContext.h>
-#include <memory.h>
 #include "ObjToJson.h"
-#include <boost/log/trivial.hpp>
 
 using namespace drogon;
 

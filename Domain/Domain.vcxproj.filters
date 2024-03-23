@@ -19,6 +19,12 @@
     <Filter Include="Source Files\Common">
       <UniqueIdentifier>{b0fcc887-4e3f-46be-9f22-a2709f945ac3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Common\Internal">
+      <UniqueIdentifier>{3dbcf1f7-6af5-493d-819d-e9621b0ec6e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Common\Internal">
+      <UniqueIdentifier>{f88036fd-630e-484a-bde1-91d85a8b324d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ApplicationUser.h">
@@ -36,11 +42,11 @@
     <ClInclude Include="DomainApi.h">
       <Filter>Header Files\Common</Filter>
     </ClInclude>
-    <ClInclude Include="framework.h">
-      <Filter>Header Files\Common</Filter>
-    </ClInclude>
     <ClInclude Include="pch.h">
-      <Filter>Header Files\Common</Filter>
+      <Filter>Header Files\Common\Internal</Filter>
+    </ClInclude>
+    <ClInclude Include="framework.h">
+      <Filter>Header Files\Common\Internal</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -57,10 +63,10 @@
       <Filter>Source Files\Common</Filter>
     </ClCompile>
     <ClCompile Include="dllmain.cpp">
-      <Filter>Source Files\Common</Filter>
+      <Filter>Source Files\Common\Internal</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp">
-      <Filter>Source Files\Common</Filter>
+      <Filter>Source Files\Common\Internal</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

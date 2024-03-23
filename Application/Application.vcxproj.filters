@@ -40,14 +40,14 @@
     <Filter Include="Header Files\Common\EntityFramework">
       <UniqueIdentifier>{c6a7bc36-d359-402a-bdf2-e9e2461896e3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Common\Internal">
+      <UniqueIdentifier>{d70fc509-9c9d-4168-b0dc-acdd7ab0571f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Common\Internal">
+      <UniqueIdentifier>{27910e7a-0f6f-4b89-b88f-6d6afa417115}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="framework.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="pch.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ApplicationUserServices.h">
       <Filter>Header Files\Services</Filter>
     </ClInclude>
@@ -87,14 +87,14 @@
     <ClInclude Include="BaseQueryV2.h">
       <Filter>Header Files\Common\EntityFramework</Filter>
     </ClInclude>
+    <ClInclude Include="framework.h">
+      <Filter>Header Files\Common\Internal</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>Header Files\Common\Internal</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="dllmain.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="pch.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ApplicationUserServices.cpp">
       <Filter>Source Files\Services</Filter>
     </ClCompile>
@@ -118,6 +118,12 @@
     </ClCompile>
     <ClCompile Include="NotFoundExcept.cpp">
       <Filter>Source Files\Common\Exception</Filter>
+    </ClCompile>
+    <ClCompile Include="dllmain.cpp">
+      <Filter>Source Files\Common\Internal</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>Source Files\Common\Internal</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

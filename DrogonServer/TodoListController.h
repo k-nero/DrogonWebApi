@@ -3,9 +3,6 @@
 #include <drogon/HttpController.h>
 #include "TodoListService.h"
 #include <TodoList.h>
-#include <DbContext.h>
-#include <memory.h>
-#include <boost/log/trivial.hpp>
 #include "ModelBinding.h"
 #include "TodoListModel.h"
 #include "ObjToJson.h"

@@ -3,10 +3,7 @@
 #include <drogon/HttpController.h>
 #include "TodoItemService.h"
 #include <TodoItem.h>
-#include <DbContext.h>
-#include <memory.h>
 #include "ObjToJson.h"
-#include <boost/log/trivial.hpp>
 #include "ModelBinding.h"
 #include "TodoItemModel.h"
 

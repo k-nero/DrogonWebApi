@@ -5,10 +5,8 @@
 #include "CoreHelper.h"
 #include "ApplicationUserServices.h"
 #include "ApplicationUser.h"
-#include "DbContext.h"
 #include "BcryptPW.h"
 #include "JsonHelper.h"
-#include <boost/log/trivial.hpp>
 
 using namespace drogon;
 
