@@ -95,7 +95,7 @@ std::shared_ptr<PaginationObject<TodoList>> TodoListService::GetTodoListsByPage(
 
 std::string TodoListService::CreateTodoList(TodoListModel& todo_list_model) noexcept(false)
 {
-	TodoListCommand cmd;
+	BaseCommand<TodoList> cmd;
 	RedisContext ctx;
 	ctx.CreateSyncContext();
 	auto todo_list = Mapper::Map<TodoListModel, TodoList>(todo_list_model);
@@ -121,7 +121,7 @@ std::string TodoListService::CreateTodoList(TodoListModel& todo_list_model) noex
 
 int TodoListService::UpdateTodoList(TodoListModel& todo_list_model, const std::string& Id) noexcept(false)
 {
-	TodoListCommand cmd;
+	BaseCommand<TodoList> cmd;
 	RedisContext ctx;
 	ctx.CreateSyncContext();
 	auto todo_list = Mapper::Map<TodoListModel, TodoList>(todo_list_model);
@@ -145,7 +145,7 @@ int TodoListService::UpdateTodoList(TodoListModel& todo_list_model, const std::s
 
 int TodoListService::DeleteTodoList(const std::string& Id)
 {
-	TodoListCommand cmd;
+	BaseCommand<TodoList> cmd;
 	RedisContext ctx;
 	ctx.CreateSyncContext();
 	if (cmd.Delete(EQ(Id)) > 0)

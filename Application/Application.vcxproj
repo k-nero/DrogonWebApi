@@ -233,9 +233,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="ApplicationUserCommand.h" />
     <ClInclude Include="ApplicationUserServices.h" />
-    <ClInclude Include="ApplicationUserQuery.h" />
     <ClInclude Include="BaseQuery.h" />
     <ClInclude Include="BaseCommand.h" />
     <ClInclude Include="BaseQueryV2.h" />
@@ -246,21 +244,15 @@
     <ClInclude Include="NotFoundExcept.h" />
     <ClInclude Include="PaginationObject.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="TodoItemCommand.h" />
     <ClInclude Include="TodoItemModel.h" />
     <ClInclude Include="TodoItemService.h" />
-    <ClInclude Include="TodoListCommand.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ApplicationUserCommand.cpp" />
     <ClCompile Include="ApplicationUserServices.cpp" />
-    <ClCompile Include="ApplicationUserQuery.cpp" />
     <ClCompile Include="CommandBuilder.cpp" />
     <ClCompile Include="dllmain.cpp" />
-    <ClInclude Include="TodoItemQuery.h" />
     <ClCompile Include="NotFoundExcept.cpp" />
     <ClCompile Include="TodoItemModel.cpp" />
-    <ClCompile Include="TodoItemQuery.cpp" />
     <ClCompile Include="TodoItemService.cpp" />
     <ClCompile Include="TodoListModel.cpp" />
     <ClCompile Include="TodoListService.cpp" />
@@ -275,10 +267,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="TodoItemCommand.cpp" />
-    <ClCompile Include="TodoListCommand.cpp" />
-    <ClCompile Include="TodoListQuery.cpp" />
-    <ClInclude Include="TodoListQuery.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Domain\Domain.vcxproj">

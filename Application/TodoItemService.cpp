@@ -75,7 +75,7 @@ std::vector<std::shared_ptr<TodoItem>> TodoItemService::GetAllTodoItems() noexce
 
 std::string TodoItemService::CreateTodoItem(TodoItemModel& todo_item_model) noexcept(false)
 {
-	TodoItemCommand cmd;
+	BaseCommand<TodoItem> cmd;
 	RedisContext ctx;
 	ctx.CreateSyncContext();
 	auto todo_item = Mapper::Map<TodoItemModel, TodoItem>(todo_item_model);
@@ -103,7 +103,7 @@ int TodoItemService::UpdateTodoItem(TodoItemModel& todo_item_model, const std::s
 {
 	RedisContext ctx;
 	ctx.CreateSyncContext();
-	TodoItemCommand cmd;
+	BaseCommand<TodoItem> cmd;
 	auto todo_item = Mapper::Map<TodoItemModel, TodoItem>(todo_item_model);
 	if (cmd.Update(todo_item, EQ(Id)) > 0)
 	{
@@ -127,7 +127,7 @@ int TodoItemService::DeleteTodoItem(const std::string& Id)
 {
 	RedisContext ctx;
 	ctx.CreateSyncContext();
-	TodoItemCommand cmd;
+	BaseCommand<TodoItem> cmd;
 	if (cmd.Delete(EQ(Id)) > 0)
 	{
 		auto keys = ctx.GetAllActiveKeys();

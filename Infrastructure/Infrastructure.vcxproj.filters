@@ -13,20 +13,23 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\Common">
+      <UniqueIdentifier>{73dc5ce8-1681-49e6-ab80-847c6268258f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Common">
+      <UniqueIdentifier>{ee2021f6-39c0-410a-a7e4-f0a532dd1ac3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Json">
+      <UniqueIdentifier>{67aa469c-6acb-4d0d-9463-c62bf81e71ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Database">
+      <UniqueIdentifier>{ede232c4-7f63-43e1-8726-013bd2880b7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Database">
+      <UniqueIdentifier>{f7ad2d72-a72f-41e6-9a06-7572c8e2e63c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="framework.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="pch.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DbContext.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IDbContext.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ConfigProvider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -36,38 +39,41 @@
     <ClInclude Include="CoreHelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="InfrastructureApi.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="JsonHelper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="TypeCheck.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RedisContext.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SwaggerConfig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>Header Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="framework.h">
+      <Filter>Header Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="InfrastructureApi.h">
+      <Filter>Header Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="JsonHelper.h">
+      <Filter>Header Files\Json</Filter>
+    </ClInclude>
     <ClInclude Include="ObjToJson.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Json</Filter>
     </ClInclude>
     <ClInclude Include="JsonParser.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="DbContext.h">
+      <Filter>Header Files\Database</Filter>
+    </ClInclude>
+    <ClInclude Include="RedisContext.h">
+      <Filter>Header Files\Database</Filter>
+    </ClInclude>
+    <ClInclude Include="IDbContext.h">
+      <Filter>Header Files\Database</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="dllmain.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="pch.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DbContext.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ConfigProvider.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -77,11 +83,20 @@
     <ClCompile Include="CoreHelper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RedisContext.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SwaggerConfig.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dllmain.cpp">
+      <Filter>Source Files\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>Source Files\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="RedisContext.cpp">
+      <Filter>Source Files\Database</Filter>
+    </ClCompile>
+    <ClCompile Include="DbContext.cpp">
+      <Filter>Source Files\Database</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -2,8 +2,8 @@
 #include <TodoList.h>
 #include "CoreHelper.h"
 #include "ApplicationApi.h"
-#include "TodoListCommand.h"
-#include "TodoListQuery.h"
+#include "BaseQuery.h"
+#include "BaseCommand.h"
 #include "Mapper.h"
 #include "TodoListModel.h"
 #include "PaginationObject.h"

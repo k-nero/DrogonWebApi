@@ -45,8 +45,8 @@ public:
 		{
 			return nullptr;
 		}
-		auto json = CoreHelper::ParseJson(result);
-		return JsonParser<Z>::obj_from_json(json);
+		auto json = CoreHelper::ParseJson(*result);
+		return JsonParser<std::shared_ptr<K>>::obj_from_json(json);
 	}
 
 	template<typename K = T>
@@ -120,8 +120,8 @@ public:
 		{
 			return nullptr;
 		}
-		auto json = CoreHelper::ParseJson(result);
-		return JsonParser<Z>::obj_from_json(json);
+		auto json = CoreHelper::ParseJson(*result);
+		return JsonParser<std::shared_ptr<K>>::obj_from_json(json);
 	}
 
 	template<typename K = T>
@@ -196,8 +196,8 @@ public:
 		{
 			return std::vector<std::shared_ptr<K>>();
 		}
-		auto json = CoreHelper::ParseJson(result);
-		return JsonParser<Z>::obj_from_json(json);
+		auto json = CoreHelper::ParseJson(*result);
+		return JsonParser<std::vector<std::shared_ptr<K>>>::obj_from_json(json);
 	}
 
 	template<typename K = T>

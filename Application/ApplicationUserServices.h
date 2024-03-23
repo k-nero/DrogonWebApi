@@ -2,8 +2,8 @@
 #include <ApplicationUser.h>
 #include "CoreHelper.h"
 #include "ApplicationApi.h"
-#include "ApplicationUserCommand.h"
-#include "ApplicationUserQuery.h"
+#include "BaseQuery.h"
+#include "BaseCommand.h"
 
 
 class APPLICATION_API ApplicationUserService

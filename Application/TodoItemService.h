@@ -2,12 +2,12 @@
 #include <TodoItem.h>
 #include "CoreHelper.h"
 #include "ApplicationApi.h"
-#include "TodoItemCommand.h"
-#include "TodoItemQuery.h"
 #include "TodoItemModel.h"
 #include "Mapper.h"
 #include "NotFoundExcept.h"
 #include "RedisContext.h"
+#include "BaseQuery.h"
+#include "BaseCommand.h"
 
 class APPLICATION_API TodoItemService
 {
