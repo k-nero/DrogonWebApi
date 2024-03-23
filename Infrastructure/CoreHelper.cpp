@@ -35,7 +35,8 @@ inline tm CoreHelper::GetSystemTime()
 	return tm;
 }
 
-inline std::string CoreHelper::ReadTextFile(std::string path)
+[[nodiscard]]
+inline std::string CoreHelper::ReadTextFile(std::string path) noexcept(false)
 {
 	try
 	{
