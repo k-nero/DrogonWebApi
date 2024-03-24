@@ -1,9 +1,5 @@
 #pragma once
-#include <string>
-#include "json/json.h"
 #include "BaseEntity.h"
-#include "DomainApi.h"
-
 class DOMAIN_API ApplicationUser : public BaseEntity
 {
 	BOOST_DESCRIBE_CLASS(ApplicationUser, (BaseEntity), (), (UserName, Email, PasswordHash, PhoneNumber), ())

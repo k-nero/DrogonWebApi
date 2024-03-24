@@ -41,7 +41,7 @@ public:
 	std::shared_ptr<K> GetByIdEw(const std::string& id, std::vector<std::string> includes = {}, std::vector<std::string> select_fields = {}) noexcept(false)
 	{
 		auto result = GetByIdEx<K>(id, includes, select_fields);
-		if(result->empty())
+		if(result == nullptr)
 		{
 			return nullptr;
 		}
@@ -95,7 +95,13 @@ public:
 				};
 		
 				cmd.Field(1).ReadLongOrLob(HandlingJson, 0x800, (void*)(result.get()));
-			}			
+			}
+
+			if (result->empty())
+			{
+				return nullptr;
+			}
+			result->shrink_to_fit();
 			return result;
 		}
 		catch (SAException& ex)
@@ -116,7 +122,7 @@ public:
 	std::shared_ptr<K> GetSingleEw(const std::string query = "", std::vector<std::string> includes = {}, std::vector<std::string> select_fields = {}) noexcept(false)
 	{
 		auto result = GetSingleEx<K>(query, includes, select_fields);
-		if( result->empty())
+		if( result == nullptr)
 		{
 			return nullptr;
 		}
@@ -172,6 +178,13 @@ public:
 
 				cmd.Field(1).ReadLongOrLob(HandlingJson, 0x800, (void*)(result.get()));
 			}
+
+			if (result->empty())
+			{
+				return nullptr;
+			}
+
+			result->shrink_to_fit();
 			return result;
 		}
 		catch (SAException& ex)
@@ -192,7 +205,7 @@ public:
 	std::vector<std::shared_ptr<K>> GetAllEw(const std::string query = "", std::vector<std::string> includes = {}, std::vector<std::string> select_fields = {}) noexcept(false)
 	{
 		auto result = GetAllEx<K>(query, includes, select_fields);
-		if(result->empty())
+		if(result == nullptr)
 		{
 			return std::vector<std::shared_ptr<K>>();
 		}
@@ -247,8 +260,9 @@ public:
 			}
 			if(result->empty())
 			{
-				result = std::make_shared<std::string>("[]");
+				return nullptr;
 			}
+			result->shrink_to_fit();
 			return result;
 		}
 		catch (SAException& ex)
@@ -295,9 +309,9 @@ public:
 			});
 
 			auto result = GetPaginatedEx<K>(page, pageSize, query, includes, select_fields);
-			if(result->empty())
+			if(result == nullptr)
 			{
-				result = std::make_shared<std::string>("[]");
+				return nullptr;
 			}
 			Json::Value root;
 			std::string errors;
@@ -358,7 +372,7 @@ public:
 		});
 
 		auto result = GetPaginatedEx<K>(page, pageSize, query, includes, select_fields);
-		if(result->empty())
+		if(result == nullptr)
 		{
 			return nullptr;
 		}
@@ -429,6 +443,13 @@ public:
 
 				cmd.Field(1).ReadLongOrLob(HandlingJson, 0x800, (void*)(result.get()));
 			}
+
+			if (result->empty())
+			{
+				return nullptr;
+			}
+
+			result->shrink_to_fit();
 			return result;
 		}
 		catch (SAException& ex)

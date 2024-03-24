@@ -414,7 +414,7 @@
   </ImportGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties swagger_4openapi_1json__JsonSchema="https://github.com/OAI/OpenAPI-Specification/blob/main/schemas/v3.0/schema.json" />
+      <UserProperties swagger_4openapi_1json__JsonSchema="schema.json" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

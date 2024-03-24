@@ -24,11 +24,14 @@ std::shared_ptr<TodoItem> TodoItemService::GetTodoItemById(const std::string& Id
 		if (json == nullptr)
 		{
 			 json = query.GetByIdEx(Id, { "TodoList" });
-			 if (json->empty())
+			 if (json == nullptr)
 			 {
-				 throw NotFoundExcept();
+				 json = std::make_shared<std::string>("{}");
 			 }
-			ctx.SetString(redis_key, *json, 360);
+			 else
+			 {
+				 ctx.SetString(redis_key, *json, 360);
+			 }
 		}
 		else
 		{
@@ -41,8 +44,6 @@ std::shared_ptr<TodoItem> TodoItemService::GetTodoItemById(const std::string& Id
 
 std::vector<std::shared_ptr<TodoItem>> TodoItemService::GetAllTodoItems() noexcept(false)
 {
-	/*TodoItemQuery query;
-	return query.GetAll();*/
 	RedisContext ctx;
 	Query<TodoItem> query;
 	std::shared_ptr<std::string> json = nullptr;
@@ -58,8 +59,15 @@ std::vector<std::shared_ptr<TodoItem>> TodoItemService::GetAllTodoItems() noexce
 		json = ctx.GetString(redis_key);
 		if (json == nullptr)
 		{
-			 json = query.GetAllEx("", { "TodoList" });
-			ctx.SetString(redis_key, *json, 360);
+			json = query.GetAllEx("", { "TodoList" });
+			if (json == nullptr)
+			{
+				json = std::make_shared<std::string>("[]");
+			}
+			else
+			{
+				ctx.SetString(redis_key, *json, 360);
+			}
 		}
 		else
 		{

@@ -1,5 +1,5 @@
 {
-  "swagger": "2.0",
+  "openapi": "3.0.3",
   "info": {
     "title": "Drogon Api 3.0",
     "description": "Drogon",
@@ -32,10 +32,14 @@
         "responses": {
           "200": {
             "description": "Successful operation",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/TodoList"
+            "content" : {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TodoList"
+                  }
+                }
               }
             }
           }
@@ -64,17 +68,17 @@
         "summary": "Add a new todo list",
         "description": "",
         "operationId": "addTodoList",
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "Todo List object that needs to be added",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/TodoList"
+        "requestBody": {
+          "description": "Todo List object that needs to be added",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TodoList"
+              }
             }
           }
-        ],
+        },
         "responses": {
           "200": {
             "description": "Successful operation"
@@ -168,7 +172,78 @@
       }
     }
   },
+  "security": [
+    {
+      "bearer": []
+    },
+    {
+      "drogon_oauth2": []
+    }
+  ],
   "components": {
+    "schemas": {
+      "TodoList": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "string"
+          },
+          "CreatedDate": {
+            "type": "string"
+          },
+          "Description": {
+            "type": "string"
+          },
+          "ModifiedDate": {
+            "type": "string"
+          },
+          "Title": {
+            "type": "string"
+          },
+          "Version": {
+            "type": "integer"
+          },
+          "TodoItems": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TodoItem"
+            }
+          }
+        }
+      },
+      "TodoItem": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "string"
+          },
+          "CreatedDate": {
+            "type": "string"
+          },
+          "Note": {
+            "type": "string"
+          },
+          "ModifiedDate": {
+            "type": "string"
+          },
+          "Title": {
+            "type": "string"
+          },
+          "Version": {
+            "type": "integer"
+          },
+          "TodoListId": {
+            "type": "string"
+          },
+          "TodoList": {
+            "$ref": "#/components/schemas/TodoList"
+          },
+          "IsComplete": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
     "securitySchemes": {
       "bearer": {
         "type": "http",
@@ -187,77 +262,6 @@
               "write": "Grants write access"
             }
           }
-        }
-      }
-    }
-  },
-  "security": [
-    {
-      "bearer": []
-    },
-    {
-      "drogon_oauth2": []
-    }
-  ],
-  "definitions": {
-    "TodoList": {
-      "type": "object",
-      "properties": {
-        "Id": {
-          "type": "string"
-        },
-        "CreatedDate": {
-          "type": "string"
-        },
-        "Description": {
-          "type": "string"
-        },
-        "ModifiedDate": {
-          "type": "string"
-        },
-        "Title": {
-          "type": "string"
-        },
-        "Version": {
-          "type": "integer"
-        },
-        "TodoItems": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/TodoItem"
-          }
-        }
-      }
-    },
-    "TodoItem": {
-      "type": "object",
-      "properties": {
-        "Id": {
-          "type": "string"
-        },
-        "CreatedDate": {
-          "type": "string"
-        },
-        "Note": {
-          "type": "string"
-        },
-        "ModifiedDate": {
-          "type": "string"
-        },
-        "Title": {
-          "type": "string"
-        },
-        "Version": {
-          "type": "integer"
-        },
-        "TodoListId": {
-          "type": "string"
-        },
-        "TodoList": {
-          "$ref": "#/definitions/TodoList"
-        },
-        "IsComplete": {
-          "type": "boolean"
         }
       }
     }

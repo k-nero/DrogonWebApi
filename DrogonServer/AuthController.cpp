@@ -103,11 +103,12 @@ void AuthController::Register(const HttpRequestPtr& req, std::function<void(cons
 					return;
 				}
 			}
-			auto resp = HttpResponse::newHttpResponse();
-			resp->setStatusCode(k422UnprocessableEntity);
-			callback(resp);
-			return;
+			
 		}
+		auto resp = HttpResponse::newHttpResponse();
+		resp->setStatusCode(k422UnprocessableEntity);
+		callback(resp);
+		return;
 	}
 	catch (std::exception& ex)
 	{

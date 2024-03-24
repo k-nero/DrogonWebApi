@@ -1,8 +1,6 @@
 #include "Authorization.h"
 
-Auth::Authorization::Authorization()
-{
-}
+Auth::Authorization::Authorization() = default;
 
 void Auth::Authorization::doFilter(const drogon::HttpRequestPtr& req, drogon::FilterCallback&& fcb, drogon::FilterChainCallback&& fccb)
 {
@@ -60,13 +58,9 @@ void Auth::Authorization::doFilter(const drogon::HttpRequestPtr& req, drogon::Fi
 	}
 }
 
-Auth::Authorization::~Authorization()
-{
-}
+Auth::Authorization::~Authorization() = default;
 
-Auth::Admin::Admin()
-{
-}
+Auth::Admin::Admin() = default;
 
 void Auth::Admin::doFilter(const drogon::HttpRequestPtr& req, drogon::FilterCallback&& fcb, drogon::FilterChainCallback&& fccb)
 {
@@ -84,13 +78,9 @@ void Auth::Admin::doFilter(const drogon::HttpRequestPtr& req, drogon::FilterCall
 	fccb();
 }
 
-Auth::Admin::~Admin()
-{
-}
+Auth::Admin::~Admin() = default;
 
-Auth::User::User()
-{
-}
+Auth::User::User() = default;
 
 void Auth::User::doFilter(const drogon::HttpRequestPtr& req, drogon::FilterCallback&& fcb, drogon::FilterChainCallback&& fccb)
 {
@@ -108,6 +98,4 @@ void Auth::User::doFilter(const drogon::HttpRequestPtr& req, drogon::FilterCallb
 	fccb();
 }
 
-Auth::User::~User()
-{
-}
+Auth::User::~User() = default;

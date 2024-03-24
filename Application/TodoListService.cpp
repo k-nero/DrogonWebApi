@@ -48,10 +48,17 @@ std::vector<std::shared_ptr<TodoList>> TodoListService::GetAllTodoLists() noexce
 	else
 	{
 		json = ctx.GetString(redis_key);
-		if (json->empty())
+		if (json == nullptr)
 		{
 			json = query.GetAllEx({ "TodoItems" });
-			ctx.SetString(redis_key, *json, 360);
+			if (json == nullptr)
+			{
+				json = std::make_shared<std::string>("[]");
+			}
+			else
+			{
+				ctx.SetString(redis_key, *json, 360);
+			}
 		}
 		else
 		{
@@ -61,7 +68,7 @@ std::vector<std::shared_ptr<TodoList>> TodoListService::GetAllTodoLists() noexce
 	return query.ParseFromJSON<std::vector<std::shared_ptr<TodoList>>>(*json);
 }
 
-std::shared_ptr<PaginationObject<TodoList>> TodoListService::GetTodoListsByPage(int page, int page_size)
+std::shared_ptr<PaginationObject<TodoList>> TodoListService::GetTodoListsByPage(int page, int page_size) noexcept(false)
 {
 	Query<TodoList> query;
 	RedisContext ctx;
@@ -78,7 +85,15 @@ std::shared_ptr<PaginationObject<TodoList>> TodoListService::GetTodoListsByPage(
 		if (json == nullptr)
 		{
 			json = query.GetPaginatedFw(page, page_size, "", {"TodoItems"});
-			ctx.SetString(redis_key, *json, 360);
+
+			if (json == nullptr)
+			{
+				json = std::make_shared<std::string>("{}");
+			}
+			else
+			{
+				ctx.SetString(redis_key, *json, 360);
+			}
 		}
 		else
 		{
@@ -88,7 +103,6 @@ std::shared_ptr<PaginationObject<TodoList>> TodoListService::GetTodoListsByPage(
 
 	return query.ParseFromJSON<std::shared_ptr<PaginationObject<TodoList>>>(*json);
 }
-
 
 std::string TodoListService::CreateTodoList(TodoListModel& todo_list_model) noexcept(false)
 {
@@ -140,7 +154,7 @@ int TodoListService::UpdateTodoList(TodoListModel& todo_list_model, const std::s
 	}
 }
 
-int TodoListService::DeleteTodoList(const std::string& Id)
+int TodoListService::DeleteTodoList(const std::string& Id) noexcept(false)
 {
 	BaseCommand<TodoList> cmd;
 	RedisContext ctx;

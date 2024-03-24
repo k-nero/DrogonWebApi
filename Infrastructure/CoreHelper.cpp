@@ -9,6 +9,7 @@ CoreHelper::~CoreHelper()
 {
 }
 
+[[nodiscard]]
 inline std::string CoreHelper::CreateUUID()
 {
 
@@ -26,6 +27,7 @@ inline std::string CoreHelper::CreateUUID()
 	return guid;
 }
 
+[[nodiscard]]
 inline tm CoreHelper::GetSystemTime()
 {
 	time_t rawtime;
@@ -59,6 +61,7 @@ inline std::string CoreHelper::ReadTextFile(std::string path) noexcept(false)
 	}
 }
 
+[[nodiscard]]
 inline Json::Value CoreHelper::ParseJson(std::string& json)
 {
 	Json::Value root;
@@ -74,8 +77,6 @@ inline Json::Value CoreHelper::ParseJson(std::string& json)
 	}
 	return root;
 }
-
-
 
 inline void CoreHelper::SkipBOM(std::ifstream& in)
 {

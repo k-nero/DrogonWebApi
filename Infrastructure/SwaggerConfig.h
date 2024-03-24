@@ -45,7 +45,7 @@ namespace SwaggerConfig
 			Json::Value definition = DefinitionBuilder(t);
 			std::string object_name = std::string(typeid(T).name());
 			object_name = object_name.substr(object_name.find_last_of(' ') + 1);
-			swagger["definitions"][object_name] = definition;
+			swagger["components"]["schemas"][object_name] = definition;
 		}
 
 		void AddRoute();
