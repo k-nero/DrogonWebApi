@@ -28,6 +28,7 @@ void ConfigProvider::Initialize()
 		connectionString.server = reader.Get("database", "server", "");
 		connectionString.username = reader.Get("database", "username", "");
 		connectionString.password = reader.Get("database", "password", "");
+		connectionString.type = reader.Get("database", "type", "sqlserver");
 	}
 
 	if (bcryptSecret.empty())

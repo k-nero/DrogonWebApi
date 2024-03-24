@@ -10,6 +10,7 @@ SQLAPIClient::SQLAPIClient()
 	auto connectionString = ConfigProvider::GetInstance()->GetConnectionString();
 	try
 	{
+		connection = new SAConnection();
 		connection->Connect(connectionString.server.c_str(), connectionString.username.c_str(), connectionString.password.c_str(), SA_SQLServer_Client);
 		if (connection != nullptr)
 		{
@@ -128,6 +129,11 @@ inline void SQLAPIClient::BindParameter(const std::string& parameter_name, const
 	cmd->Param(parameter_name.c_str()).setAsLong() = value;
 }
 
+void SQLAPIClient::BindParameter(const std::string& parameter_name, const long long value) noexcept(false)
+{
+	cmd->Param(parameter_name.c_str()).setAsInt64() = value;
+}
+
 inline void SQLAPIClient::BindParameter(const std::string& parameter_name, const bool value) noexcept(false)
 {
 	cmd->Param(parameter_name.c_str()).setAsBool() = value;
@@ -206,4 +212,14 @@ inline std::string SQLAPIClient::GetStringResult(const std::string& column_name)
 inline std::string SQLAPIClient::GetStringResult(const int column_index) noexcept(false)
 {
 	return cmd->Field(column_index).asString().GetMultiByteChars();
+}
+
+void SQLAPIClient::TestClient() noexcept(false)
+{
+	SACommand cmd(connection, "SELECT @@version");
+	cmd.Execute();
+	while (cmd.FetchNext())
+	{
+		BOOST_LOG_TRIVIAL(debug) << cmd.Field(1).asString().GetMultiByteChars();
+	}
 }

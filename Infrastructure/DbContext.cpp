@@ -3,7 +3,6 @@
 
 #include <iostream>
 #include <ostream>
-#include <SQLAPI.h>
 
 DbContext::DbContext() 
 {
@@ -71,6 +70,18 @@ std::string DbContext::TestConnection()
 		return cmd.Field(1).asString().GetMultiByteChars();
 	}
 	return {};
+}
+
+DbClientInterface* DbContext::GetClient() const
+{
+	if (connectionString.type == "sqlserver")
+	{
+		return new SQLAPIClient();
+	}
+	else if (connectionString.type == "SQLite3")
+	{
+		return new SQLite3Client();
+	}
 }
 
 DbContext::~DbContext()

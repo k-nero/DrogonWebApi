@@ -110,5 +110,8 @@
     <ClCompile Include="SQLAPIClient.cpp">
       <Filter>Source Files\Database</Filter>
     </ClCompile>
+    <ClCompile Include="SQLite3Client.cpp">
+      <Filter>Source Files\Database</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

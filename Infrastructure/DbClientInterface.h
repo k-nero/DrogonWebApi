@@ -5,19 +5,18 @@
 #include <memory>
 #include "ConfigProvider.h"
 #include "InfrastructureApi.h"
+#include <boost/log/trivial.hpp>
 
 class INFRASTRUCTURE_API DbClientInterface
 {
 public:
-	DbClientInterface() = default;
-	virtual ~DbClientInterface() = default;
-
 	virtual void CreateCommand(const std::string& command_text) noexcept(false) = 0;
 	virtual void ExecuteCommand() noexcept(false) = 0;
 	virtual bool FetchNext() noexcept(false) = 0;
 	virtual void BindParameter(const std::string& parameter_name, const std::string& value) noexcept(false) = 0;
 	virtual void BindParameter(const std::string& parameter_name, const int value) noexcept(false) = 0;
 	virtual void BindParameter(const std::string& parameter_name, const long value) noexcept(false) = 0;
+	virtual void BindParameter(const std::string& parameter_name, const long long value) noexcept(false) = 0;
 	virtual void BindParameter(const std::string& parameter_name, const bool value) noexcept(false) = 0;
 	virtual void BindParameter(const std::string& parameter_name, const double value) noexcept(false) = 0;
 	virtual void BindParameter(const std::string& parameter_name, const std::tm value) noexcept(false) = 0;
@@ -39,4 +38,8 @@ public:
 	virtual std::shared_ptr<std::string> GetJsonStringResult(const std::string& column_name) noexcept(false) = 0;
 	virtual std::shared_ptr<std::string> GetJsonStringResult(const int column_index) noexcept(false) = 0;
 	//virtual std::shared_ptr<Table> GetTableResult() noexcept(false) = 0;
+	virtual void TestClient() noexcept(false) = 0;
+
 };
+
+typedef DbClientInterface DbClient;

@@ -8,6 +8,7 @@
 #include "ConfigProvider.h"
 #include <boost/log/trivial.hpp>
 #include <drogon/drogon.h>
+#include "DbContext.h"
 
 int main()
 {

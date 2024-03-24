@@ -45,9 +45,14 @@ inline void SQLite3Client::BindParameter(const std::string& parameter_name, cons
 	this->stmt->bind(parameter_name, value);
 }
 
-inline void SQLite3Client::BindParameter(const std::string& parameter_name, const long value) noexcept(false)
+void SQLite3Client::BindParameter(const std::string& parameter_name, const long long value) noexcept(false)
 {
 	this->stmt->bind(parameter_name, value);
+}
+
+inline void SQLite3Client::BindParameter(const std::string& parameter_name, const long value) noexcept(false)
+{
+	this->stmt->bind(parameter_name, (long long)value);
 }
 
 inline void SQLite3Client::BindParameter(const std::string& parameter_name, const bool value) noexcept(false)
@@ -129,4 +134,9 @@ inline std::string SQLite3Client::GetStringResult(const std::string& column_name
 inline std::string SQLite3Client::GetStringResult(const int column_index) noexcept(false)
 {
 	return stmt->getColumn(column_index).getText();
+}
+
+void SQLite3Client::TestClient() noexcept(false)
+{
+	BOOST_LOG_TRIVIAL(debug) << "SQLite3Client::TestClient()";
 }

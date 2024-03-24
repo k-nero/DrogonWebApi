@@ -9,6 +9,8 @@
 #include "InfrastructureApi.h"
 #include <boost/log/trivial.hpp>
 #include <json/json.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 class INFRASTRUCTURE_API CoreHelper
 {
@@ -24,3 +26,4 @@ public:
 private:
 	static void SkipBOM(std::ifstream& in);
 };
+

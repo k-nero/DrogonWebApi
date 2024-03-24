@@ -49,7 +49,7 @@ tm CoreHelper::GetSystemTimeFromString(std::string time)
 {
 	std::tm t{};
 
-	if (std::sscanf(time.data(), "%d-%d-%d %d %d %d",
+	if (sscanf_s(time.data(), "%d-%d-%d %d %d %d",
 		&t.tm_year,
 		&t.tm_mon,
 		&t.tm_mday,
@@ -59,7 +59,6 @@ tm CoreHelper::GetSystemTimeFromString(std::string time)
 	) != 6)
 	{
 		throw std::runtime_error("Invalid date format: " + std::string(time));
-
 	}
 
 	t.tm_year -= 1900;

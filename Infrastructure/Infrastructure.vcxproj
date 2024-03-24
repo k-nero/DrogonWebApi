@@ -171,7 +171,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;INFRASTRUCTURE_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;INFRASTRUCTURE_EXPORTS;_WINDOWS;_USRDLL;SQLITECPP_COMPILE_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
@@ -287,6 +287,7 @@
     </ClCompile>
     <ClCompile Include="RedisContext.cpp" />
     <ClCompile Include="SQLAPIClient.cpp" />
+    <ClCompile Include="SQLite3Client.cpp" />
     <ClCompile Include="SwaggerConfig.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

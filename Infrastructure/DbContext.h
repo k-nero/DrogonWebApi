@@ -6,8 +6,9 @@
 #include "InfrastructureApi.h"
 #include <boost/log/trivial.hpp>
 #include <odbcAPI.h>
-  
-
+#include "DbClientInterface.h"
+#include "SQLAPIClient.h"
+#include "SQLite3Client.h"
 
 
 class INFRASTRUCTURE_API DbContext
@@ -18,6 +19,8 @@ public:
 	[[nodiscard]] SAConnection * GetConnection();
 
 	[[nodiscard]] std::string TestConnection();
+
+	DbClientInterface* GetClient();
 
 
 	~DbContext();

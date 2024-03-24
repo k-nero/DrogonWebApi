@@ -8,6 +8,7 @@
 
 struct INFRASTRUCTURE_API Database
 {
+	std::string type;
 	std::string server;
 	std::string username;
 	std::string password;

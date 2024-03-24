@@ -25,6 +25,7 @@ public:
 	void BindParameter(const std::string& parameter_name, const std::string& value) noexcept(false) override;
 	void BindParameter(const std::string& parameter_name, const int value) noexcept(false) override;
 	void BindParameter(const std::string& parameter_name, const long value) noexcept(false) override;
+	void BindParameter(const std::string& parameter_name, const long long value) noexcept(false) override;
 	void BindParameter(const std::string& parameter_name, const bool value) noexcept(false) override;
 	void BindParameter(const std::string& parameter_name, const double value) noexcept(false) override;
 	void BindParameter(const std::string& parameter_name, const std::tm value) noexcept(false) override;
@@ -42,6 +43,8 @@ public:
 	std::tm GetDateTimeResult(const int column_index) noexcept(false) override;
 	std::string GetStringResult(const std::string& column_name) noexcept(false) override;
 	std::string GetStringResult(const int column_index) noexcept(false) override;
+	void TestClient() noexcept(false) override;
+
 protected:
 	SAConnection* connection = nullptr;
 	std::shared_ptr<SACommand> cmd;
