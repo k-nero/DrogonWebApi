@@ -7,8 +7,6 @@
 DbContext::DbContext() 
 {
 
-	
-
 }
 
 SAConnection* DbContext::GetConnection() noexcept(false)

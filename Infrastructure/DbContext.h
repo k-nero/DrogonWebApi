@@ -20,7 +20,7 @@ public:
 
 	[[nodiscard]] std::string TestConnection();
 
-	DbClientInterface* GetClient();
+	DbClientInterface* GetClient() const;
 
 
 	~DbContext();
