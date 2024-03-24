@@ -258,6 +258,9 @@
     <ProjectReference Include="..\Application\Application.vcxproj">
       <Project>{15924752-b77c-4b82-b80c-22cc6af3175d}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\Domain\Domain.vcxproj">
+      <Project>{63024791-e272-4acf-bf1c-569121ac388d}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\Infrastructure\Infrastructure.vcxproj">
       <Project>{b65be107-58be-43dd-8244-ccb27f0b6dcb}</Project>
     </ProjectReference>

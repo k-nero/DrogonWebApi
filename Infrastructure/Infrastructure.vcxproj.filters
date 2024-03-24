@@ -28,6 +28,9 @@
     <Filter Include="Source Files\Database">
       <UniqueIdentifier>{f7ad2d72-a72f-41e6-9a06-7572c8e2e63c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Common\Internal">
+      <UniqueIdentifier>{7dcfd87c-6ef3-43f2-bfee-1c46be656ebf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConfigProvider.h">
@@ -44,12 +47,6 @@
     </ClInclude>
     <ClInclude Include="SwaggerConfig.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="pch.h">
-      <Filter>Header Files\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="framework.h">
-      <Filter>Header Files\Common</Filter>
     </ClInclude>
     <ClInclude Include="InfrastructureApi.h">
       <Filter>Header Files\Common</Filter>
@@ -69,7 +66,19 @@
     <ClInclude Include="RedisContext.h">
       <Filter>Header Files\Database</Filter>
     </ClInclude>
-    <ClInclude Include="IDbContext.h">
+    <ClInclude Include="SQLAPIClient.h">
+      <Filter>Header Files\Database</Filter>
+    </ClInclude>
+    <ClInclude Include="DbClientInterface.h">
+      <Filter>Header Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="framework.h">
+      <Filter>Header Files\Common\Internal</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>Header Files\Common\Internal</Filter>
+    </ClInclude>
+    <ClInclude Include="SQLite3Client.h">
       <Filter>Header Files\Database</Filter>
     </ClInclude>
   </ItemGroup>
@@ -96,6 +105,9 @@
       <Filter>Source Files\Database</Filter>
     </ClCompile>
     <ClCompile Include="DbContext.cpp">
+      <Filter>Source Files\Database</Filter>
+    </ClCompile>
+    <ClCompile Include="SQLAPIClient.cpp">
       <Filter>Source Files\Database</Filter>
     </ClCompile>
   </ItemGroup>

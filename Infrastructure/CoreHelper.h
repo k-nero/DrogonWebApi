@@ -17,6 +17,8 @@ public:
 	~CoreHelper();
 	static std::string CreateUUID();
 	static tm GetSystemTime();
+	static std::string GetSystemTimeAsString(tm tm);
+	static tm GetSystemTimeFromString(std::string time);
 	static std::string ReadTextFile(std::string path);
 	static Json::Value ParseJson(std::string& json);
 private:

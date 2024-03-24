@@ -38,6 +38,39 @@ inline tm CoreHelper::GetSystemTime()
 }
 
 [[nodiscard]]
+inline std::string CoreHelper::GetSystemTimeAsString(tm tm)
+{
+	char buffer[80];
+	strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", &tm);
+	return std::string(buffer);
+}
+
+tm CoreHelper::GetSystemTimeFromString(std::string time)
+{
+	std::tm t{};
+
+	if (std::sscanf(time.data(), "%d-%d-%d %d %d %d",
+		&t.tm_year,
+		&t.tm_mon,
+		&t.tm_mday,
+		&t.tm_hour,
+		&t.tm_min,
+		&t.tm_sec
+	) != 6)
+	{
+		throw std::runtime_error("Invalid date format: " + std::string(time));
+
+	}
+
+	t.tm_year -= 1900;
+	--t.tm_mon;
+	t.tm_isdst = -1;  // guess if DST should be in effect when calling mktime
+	errno = 0;
+	std::mktime(&t);
+
+	return t;
+}
+[[nodiscard]]
 inline std::string CoreHelper::ReadTextFile(std::string path) noexcept(false)
 {
 	try
@@ -90,3 +123,5 @@ inline void CoreHelper::SkipBOM(std::ifstream& in)
 	}
 	in.seekg(0);
 }
+
+

@@ -213,7 +213,7 @@ public:
 	}
 
 	[[deprecated]]
-	std::shared_ptr<T> GetFromCommand(SACommand& cmd, std::vector<std::string> includes = {}) noexcept(false)
+	std::shared_ptr<T> GetFromCommand(SACommand& cmd) noexcept(false)
 	{
 		T* item = new T();
 		boost::mp11::mp_for_each<boost::describe::describe_members<T, boost::describe::mod_any_access | boost::describe::mod_inherited>>([&](auto D)
@@ -457,13 +457,13 @@ public:
 	}
 
 	template<typename K = T, std::enable_if_t<std::is_void_v<K>, bool> = true>
-	auto GetFromCmd(SACommand& cmd, std::vector<std::string> includes = {}) noexcept(false)
+	auto GetFromCmd(SACommand& cmd) noexcept(false)
 	{
 		return nullptr;
 	}
 
 	template<typename K = T, std::enable_if_t<std::is_class_v<K>, bool> = true>
-	std::shared_ptr<K> GetFromCmd(SACommand& cmd, std::vector<std::string> includes = {}) noexcept(false)
+	std::shared_ptr<K> GetFromCmd(SACommand& cmd) noexcept(false)
 	{
 		K* item = new K();
 		boost::mp11::mp_for_each<boost::describe::describe_members<K, boost::describe::mod_any_access | boost::describe::mod_inherited>>([&](auto D)
