@@ -25,15 +25,11 @@ bool SQLite3Client::FetchNext() noexcept(false)
 	return stmt->executeStep();
 }
 
-std::shared_ptr<std::string> SQLite3Client::GetJsonStringResult(const std::string& column_name) noexcept(false)
+void SQLite3Client::GetJsonStringResult(std::shared_ptr<std::string>& result) noexcept(false)
 {
-	return std::shared_ptr<std::string>();
+	
 }
 
-std::shared_ptr<std::string> SQLite3Client::GetJsonStringResult(const int column_index) noexcept(false)
-{
-	return std::shared_ptr<std::string>();
-}
 
 inline void SQLite3Client::BindParameter(const std::string& parameter_name, const std::string& value) noexcept(false)
 {
@@ -86,12 +82,12 @@ inline int SQLite3Client::GetIntResult(const int column_index) noexcept(false)
 	return stmt->getColumn(column_index).getInt();
 }
 
-inline long SQLite3Client::GetLongResult(const std::string& column_name) noexcept(false)
+inline long long SQLite3Client::GetLongResult(const std::string& column_name) noexcept(false)
 {
 	return stmt->getColumn(column_name.c_str()).getInt64();
 }
 
-inline long SQLite3Client::GetLongResult(const int column_index) noexcept(false)
+inline long long SQLite3Client::GetLongResult(const int column_index) noexcept(false)
 {
 	return stmt->getColumn(column_index).getInt64();
 }

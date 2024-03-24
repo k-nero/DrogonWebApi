@@ -117,6 +117,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)Application;$(SolutionDir)Domain;$(SolutionDir)Infrastructure;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <DisableSpecificWarnings>4251;4275</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

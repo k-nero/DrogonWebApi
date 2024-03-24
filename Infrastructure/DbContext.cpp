@@ -80,6 +80,12 @@ DbClientInterface* DbContext::GetClient() const
 	{
 		return new SQLite3Client();
 	}
+	else
+	{
+		BOOST_LOG_TRIVIAL(fatal) << "Unknown database type";
+		throw std::exception("Unknown database type");
+	}
+	
 }
 
 DbContext::~DbContext()

@@ -17,7 +17,7 @@ public:
 	void SetString(const std::string& key, const std::string& value, int expireSeconds);
 	void refreshTTL(const std::string& key, int expireSeconds);
 	void RemoveKey(const std::string& key);
-	int GetNumOfDb();
+	long long GetNumOfDb();
 	std::shared_ptr<std::string> GetString(const std::string& key);
 	std::vector<std::string> GetAllActiveKeys(std::string contain = "");
 	void CreateAsyncContext();

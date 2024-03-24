@@ -17,12 +17,8 @@ public:
 	DbContext() noexcept(false);
 
 	[[nodiscard]] SAConnection * GetConnection();
-
 	[[nodiscard]] std::string TestConnection();
-
 	DbClientInterface* GetClient() const;
-
-
 	~DbContext();
 
 	private:

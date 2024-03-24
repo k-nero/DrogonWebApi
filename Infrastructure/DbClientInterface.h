@@ -24,8 +24,8 @@ public:
 
 	virtual int GetIntResult(const std::string& column_name) noexcept(false) = 0;
 	virtual int GetIntResult(const int column_index) noexcept(false) = 0;
-	virtual long GetLongResult(const std::string& column_name) noexcept(false) = 0;
-	virtual long GetLongResult(const int column_index) noexcept(false) = 0;
+	virtual long long GetLongResult(const std::string& column_name) noexcept(false) = 0;
+	virtual long long GetLongResult(const int column_index) noexcept(false) = 0;
 	virtual bool GetBoolResult(const std::string& column_name) noexcept(false) = 0;
 	virtual bool GetBoolResult(const int column_index) noexcept(false) = 0;
 	virtual double GetDoubleResult(const std::string& column_name) noexcept(false) = 0;
@@ -35,8 +35,7 @@ public:
 	virtual std::string GetStringResult(const std::string& column_name) noexcept(false) = 0;
 	virtual std::string GetStringResult(const int column_index) noexcept(false) = 0;
 
-	virtual std::shared_ptr<std::string> GetJsonStringResult(const std::string& column_name) noexcept(false) = 0;
-	virtual std::shared_ptr<std::string> GetJsonStringResult(const int column_index) noexcept(false) = 0;
+	virtual void GetJsonStringResult(std::shared_ptr<std::string>& result ) noexcept(false) = 0;
 	//virtual std::shared_ptr<Table> GetTableResult() noexcept(false) = 0;
 	virtual void TestClient() noexcept(false) = 0;
 

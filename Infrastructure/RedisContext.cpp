@@ -137,7 +137,7 @@ void RedisContext::RemoveKey(const std::string& key)
 	freeReplyObject(reply);
 }
 
-int RedisContext::GetNumOfDb()
+long long RedisContext::GetNumOfDb()
 {
 	if (this->m_syncContext == nullptr)
 	{
@@ -151,7 +151,7 @@ int RedisContext::GetNumOfDb()
 		BOOST_LOG_TRIVIAL(error) << "RedisContext::GetNumOfDb: redisCommand failed";
 		return 0;
 	}
-	int numOfDb = 0;
+	long long numOfDb = 0;
 
 	if (reply->type == REDIS_REPLY_ARRAY)
 	{

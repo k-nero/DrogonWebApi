@@ -21,8 +21,7 @@ public:
 	void CreateCommand(const std::string& command_text) noexcept(false) override;
 	void ExecuteCommand() noexcept(false) override;
 	bool FetchNext() noexcept(false) override;
-	std::shared_ptr<std::string> GetJsonStringResult(const std::string& column_name) noexcept(false) override;
-	std::shared_ptr<std::string> GetJsonStringResult(const int column_index) noexcept(false) override;
+	void GetJsonStringResult(std::shared_ptr<std::string>& result) noexcept(false) override;
 
 	void BindParameter(const std::string& parameter_name, const std::string& value) noexcept(false) override;
 	void BindParameter(const std::string& parameter_name, const int value) noexcept(false) override;
@@ -35,8 +34,8 @@ public:
 
 	int GetIntResult(const std::string& column_name) noexcept(false) override;
 	int GetIntResult(const int column_index) noexcept(false) override;
-	long GetLongResult(const std::string& column_name) noexcept(false) override;
-	long GetLongResult(const int column_index) noexcept(false) override;
+	long long GetLongResult(const std::string& column_name) noexcept(false) override;
+	long long GetLongResult(const int column_index) noexcept(false) override;
 	bool GetBoolResult(const std::string& column_name) noexcept(false) override;
 	bool GetBoolResult(const int column_index) noexcept(false) override;
 	double GetDoubleResult(const std::string& column_name) noexcept(false) override;

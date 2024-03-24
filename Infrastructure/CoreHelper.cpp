@@ -1,13 +1,8 @@
 #include "pch.h"
 #include "CoreHelper.h"
 
-CoreHelper::CoreHelper()
-{
-}
-
-CoreHelper::~CoreHelper()
-{
-}
+CoreHelper::CoreHelper() = default;
+CoreHelper::~CoreHelper() = default;
 
 [[nodiscard]]
 inline std::string CoreHelper::CreateUUID()
@@ -45,7 +40,8 @@ inline std::string CoreHelper::GetSystemTimeAsString(tm tm)
 	return std::string(buffer);
 }
 
-tm CoreHelper::GetSystemTimeFromString(std::string time)
+[[nodiscard]]
+inline tm CoreHelper::GetSystemTimeFromString(std::string time)
 {
 	std::tm t{};
 
@@ -58,7 +54,7 @@ tm CoreHelper::GetSystemTimeFromString(std::string time)
 		&t.tm_sec
 	) != 6)
 	{
-		throw std::runtime_error("Invalid date format: " + std::string(time));
+		throw std::runtime_error("Invalid date format: " + time);
 	}
 
 	t.tm_year -= 1900;
