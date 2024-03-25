@@ -1,11 +1,5 @@
 #pragma once
-#include <SQLAPI.h>
-#include <INIReader.h>
-#include "ConfigProvider.h"
-#include <string>
 #include "InfrastructureApi.h"
-#include <boost/log/trivial.hpp>
-#include <odbcAPI.h>
 #include "DbClientInterface.h"
 #include "SQLAPIClient.h"
 #include "SQLite3Client.h"

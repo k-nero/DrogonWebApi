@@ -19,6 +19,8 @@ int main()
     std::cout << drogon::banner;
     BOOST_LOG_TRIVIAL(info) << "Drogon server starting...";
 
+    ConfigProvider::GetInstance()->Initialize();
+
     //Set HTTP listener address and port
     drogon::app().registerPostHandlingAdvice(
         [](const drogon::HttpRequestPtr& req, const drogon::HttpResponsePtr& resp)

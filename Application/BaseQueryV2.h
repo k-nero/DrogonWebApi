@@ -52,7 +52,8 @@ public:
 	template<typename K = T>
 	std::shared_ptr<std::string> GetByIdEx(const std::string& id, std::vector<std::string> includes = {}, std::vector<std::string> select_fields = {}) noexcept(false)
 	{
-		std::shared_ptr<SAConnection> con(db->GetConnection());
+		//std::shared_ptr<SAConnection> con(db->GetConnection());
+		std::shared_ptr<DbClient> client(db->GetClient());
 		try
 		{
 			if (id.empty())
@@ -76,27 +77,11 @@ public:
 #ifdef LOG_SQL_COMMAND
 			BOOST_LOG_TRIVIAL(debug) << base_query;
 #endif // LOG_SQL_COMMAND
-			SACommand cmd(con.get(), _TSA(base_query.c_str()), SA_CmdSQLStmtRaw);
-			cmd.Execute();
+			client->CreateCommand(base_query);
+			client->ExecuteCommand();
 			auto result = std::make_shared<std::string>();
 			result->reserve(0x800);
-			cmd.Field(1).setFieldType(SA_dtLongChar);
-			cmd.Field(1).setFieldSize(0x800);
-			cmd.Field(1).setLongOrLobReaderMode(SALongOrLobReaderModes_t::SA_LongOrLobReaderManual);
-			while (cmd.FetchNext())
-			{
-				auto HandlingJson = [](SAPieceType_t ePieceType, void* pBuf, size_t nLen, size_t nBlobSize, void* pAddlData) -> void
-				{
-					if (ePieceType == SAPieceType_t::SA_FirstPiece || ePieceType == SAPieceType_t::SA_NextPiece)
-					{
-						auto result = static_cast<std::string*>(pAddlData);
-						result->append(static_cast<char*>(pBuf), nLen);
-					}
-				};
-		
-				cmd.Field(1).ReadLongOrLob(HandlingJson, 0x800, (void*)(result.get()));
-			}
-
+			client->GetJsonStringResult(result);
 			if (result->empty())
 			{
 				return nullptr;
@@ -133,9 +118,10 @@ public:
 	template<typename K = T>
 	std::shared_ptr<std::string> GetSingleEx(const std::string query = "", std::vector<std::string> includes = {}, std::vector<std::string> select_fields = {}) noexcept(false)
 	{
-		std::shared_ptr<SAConnection> con(db->GetConnection());
 		try
 		{
+			std::shared_ptr<DbClient> client(db->GetClient());
+
 			if (query.empty())
 			{
 				throw std::exception("Query is empty");
@@ -158,27 +144,11 @@ public:
 #ifdef LOG_SQL_COMMAND
 			BOOST_LOG_TRIVIAL(debug) << base_query;
 #endif // LOG_SQL_COMMAND
-			SACommand cmd(con.get(), _TSA(base_query.c_str()), SA_CmdSQLStmtRaw);
-			cmd.Execute();
+			client->CreateCommand(base_query);
+			client->ExecuteCommand();
 			auto result = std::make_shared<std::string>();
 			result->reserve(0x800);
-			cmd.Field(1).setFieldType(SA_dtLongChar);
-			cmd.Field(1).setFieldSize(0x800);
-			cmd.Field(1).setLongOrLobReaderMode(SALongOrLobReaderModes_t::SA_LongOrLobReaderManual);
-			while (cmd.FetchNext())
-			{
-				auto HandlingJson = [](SAPieceType_t ePieceType, void* pBuf, size_t nLen, size_t nBlobSize, void* pAddlData) -> void
-				{
-					if (ePieceType == SAPieceType_t::SA_FirstPiece || ePieceType == SAPieceType_t::SA_NextPiece)
-					{
-						auto result = static_cast<std::string*>(pAddlData);
-						result->append(static_cast<char*>(pBuf), nLen);
-					}
-				};
-
-				cmd.Field(1).ReadLongOrLob(HandlingJson, 0x800, (void*)(result.get()));
-			}
-
+			client->GetJsonStringResult(result);
 			if (result->empty())
 			{
 				return nullptr;
@@ -216,9 +186,9 @@ public:
 	template<typename K = T>
 	std::shared_ptr<std::string> GetAllEx(std::string query = "", std::vector<std::string> includes = {}, std::vector<std::string> select_fields = {}) noexcept(false)
 	{
-		std::shared_ptr<SAConnection> con(db->GetConnection());
 		try
 		{
+			std::shared_ptr<DbClient> client(db->GetClient());
 			std::string table_name = std::string(typeid(K).name());
 			table_name = table_name.substr(table_name.find_last_of(' ') + 1);
 			std::string base_query = "";
@@ -238,26 +208,11 @@ public:
 #ifdef LOG_SQL_COMMAND
 			BOOST_LOG_TRIVIAL(debug) << base_query;
 #endif // LOG_SQL_COMMAND
-			SACommand cmd(con.get(), _TSA(base_query.c_str()), SA_CmdSQLStmtRaw);
-			cmd.Execute();
+			client->CreateCommand(base_query.c_str());
+			client->ExecuteCommand();
 			auto result = std::make_shared<std::string>();
 			result->reserve(0x200000);
-			cmd.Field(1).setFieldType(SA_dtLongChar);
-			cmd.Field(1).setFieldSize(0x800);
-			cmd.Field(1).setLongOrLobReaderMode(SALongOrLobReaderModes_t::SA_LongOrLobReaderManual);
-			while (cmd.FetchNext())
-			{
-				auto HandlingJson = [](SAPieceType_t ePieceType, void* pBuf, size_t nLen, size_t nBlobSize, void* pAddlData) -> void
-				{
-					if (ePieceType == SAPieceType_t::SA_FirstPiece || ePieceType == SAPieceType_t::SA_NextPiece)
-					{
-						auto result = static_cast<std::string*>(pAddlData);
-						result->append(static_cast<char*>(pBuf), nLen);
-					}
-				};
-
-				cmd.Field(1).ReadLongOrLob(HandlingJson, 0x800, (void*)(result.get()));
-			}
+			client->GetJsonStringResult(result);
 			if(result->empty())
 			{
 				return nullptr;
@@ -284,7 +239,7 @@ public:
 	{
 		try
 		{
-			std::shared_ptr<SAConnection> count_con(db->GetConnection());
+			std::shared_ptr<DbClient> client(db->GetClient());
 			std::string table_name = std::string(typeid(K).name());
 			table_name = table_name.substr(table_name.find_last_of(' ') + 1);
 
@@ -297,12 +252,12 @@ public:
 				}
 				std::string count_query = "SELECT COUNT(*) FROM [dbo].[" + table_name + "]";
 				count_query += " WHERE " + query;
-				SACommand cmd(count_con.get(), _TSA(count_query.c_str()), SA_CmdSQLStmtRaw);
-				cmd.Execute();
+				client->CreateCommand(count_query);
+				client->ExecuteCommand();
 
-				if (cmd.FetchNext())
+				if (client->FetchNext())
 				{
-					count = cmd.Field(1).asLong();
+					count = client->GetLongResult(1);
 				}
 
 				return count;
@@ -344,7 +299,7 @@ public:
 	template<typename K = T>
 	std::shared_ptr<PaginationObject<K>> GetPaginatedEw(int page, int pageSize, std::string query = "", std::vector<std::string> includes = {}, std::vector<std::string> select_fields = {}) noexcept(false)
 	{
-		std::shared_ptr<SAConnection> count_con(db->GetConnection());
+		std::shared_ptr<DbClient> client(db->GetClient());
 
 		std::string table_name = std::string(typeid(K).name());
 		table_name = table_name.substr(table_name.find_last_of(' ') + 1);
@@ -360,12 +315,12 @@ public:
 
 			std::string count_query = "SELECT COUNT(*) FROM [dbo].[" + table_name + "]";
 			count_query += " WHERE " + query;
-			SACommand cmd(count_con.get(), _TSA(count_query.c_str()));
-			cmd.Execute();
+			client->CreateCommand(count_query);
+			client->ExecuteCommand();
 
-			if (cmd.FetchNext())
+			if (client->FetchNext())
 			{
-				count = cmd.Field(1).asLong();
+				count = client->GetLongResult(1);
 			}
 
 			return count;
@@ -387,7 +342,7 @@ public:
 	template<typename K = T>
 	std::shared_ptr<std::string> GetPaginatedEx(int page, int pageSize, std::string query = "", std::vector<std::string> includes = {}, std::vector<std::string> select_fields = {}) noexcept(false)
 	{
-		std::shared_ptr<SAConnection> con(db->GetConnection());
+		std::shared_ptr<DbClient> client(db->GetClient());
 		try
 		{
 			if (query.empty())
@@ -422,27 +377,13 @@ public:
 			BOOST_LOG_TRIVIAL(debug) << base_query;
 #endif // LOG_SQL_COMMAND
 
-			SACommand cmd(con.get(), base_query.c_str(), SA_CmdSQLStmtRaw);
-			cmd.Execute();
-			cmd.Field(1).setFieldType(SA_dtLongChar);
-			cmd.Field(1).setFieldSize(0x800);
-			cmd.Field(1).setLongOrLobReaderMode(SALongOrLobReaderModes_t::SA_LongOrLobReaderManual);
+			client->CreateCommand(base_query);
+			client->ExecuteCommand();
+			
 			auto result = std::make_shared<std::string>();
 			result->reserve(page * pageSize * 0x800);
-			//the json output of the result set is single collumn but split to multiple row on large data, need to concatenate them for a single json object	
-			while (cmd.FetchNext())
-			{
-				auto HandlingJson = [](SAPieceType_t ePieceType, void* pBuf, size_t nLen, size_t nBlobSize, void* pAddlData) -> void
-				{
-					if (ePieceType == SAPieceType_t::SA_FirstPiece || ePieceType == SAPieceType_t::SA_NextPiece)
-					{
-						auto result = static_cast<std::string*>(pAddlData);
-						result->append(static_cast<char*>(pBuf), nLen);
-					}
-				};
-
-				cmd.Field(1).ReadLongOrLob(HandlingJson, 0x800, (void*)(result.get()));
-			}
+			//the json output of the result set is single collumn but split to multiple row on large data, need to concatenate them for a single json object
+			client->GetJsonStringResult(result);
 
 			if (result->empty())
 			{
@@ -523,8 +464,6 @@ private:
 	{
 		return 0;
 	}
-
-
 
 	template <typename Type = T, std::enable_if_t<std::is_class_v<Type>, bool> = true>
 	std::string include_table(std::vector<std::string>& table_list)

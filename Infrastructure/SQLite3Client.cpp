@@ -117,6 +117,7 @@ inline std::tm SQLite3Client::GetDateTimeResult(const std::string& column_name) 
 	return CoreHelper::GetSystemTimeFromString(stmt->getColumn(column_name.c_str()).getText());
 }
 
+
 inline std::tm SQLite3Client::GetDateTimeResult(const int column_index) noexcept(false)
 {
 	return CoreHelper::GetSystemTimeFromString(stmt->getColumn(column_index).getText());
@@ -130,6 +131,11 @@ inline std::string SQLite3Client::GetStringResult(const std::string& column_name
 inline std::string SQLite3Client::GetStringResult(const int column_index) noexcept(false)
 {
 	return stmt->getColumn(column_index).getText();
+}
+
+long long SQLite3Client::AffectedRows() noexcept(false)
+{
+	return stmt->getChanges();
 }
 
 void SQLite3Client::TestClient() noexcept(false)

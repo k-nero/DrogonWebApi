@@ -54,7 +54,8 @@ SQLAPIClient::~SQLAPIClient()
 
 void SQLAPIClient::CreateCommand(const std::string& command_text) noexcept(false)
 {
-	cmd = std::make_shared<SACommand>(connection, command_text.c_str(), SA_CmdSQLStmtRaw);
+	cmd = std::make_shared<SACommand>(connection);
+	cmd->setCommandText(_TSA(command_text.c_str()), SA_CmdSQLStmt);
 }
 
 void SQLAPIClient::ExecuteCommand() noexcept(false)
@@ -185,6 +186,11 @@ inline std::string SQLAPIClient::GetStringResult(const std::string& column_name)
 inline std::string SQLAPIClient::GetStringResult(const int column_index) noexcept(false)
 {
 	return cmd->Field(column_index).asString().GetMultiByteChars();
+}
+
+long long SQLAPIClient::AffectedRows() noexcept(false)
+{
+	return cmd->RowsAffected();
 }
 
 void SQLAPIClient::TestClient() noexcept(false)

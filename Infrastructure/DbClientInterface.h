@@ -3,9 +3,7 @@
 #include <string>
 
 #include <memory>
-#include "ConfigProvider.h"
 #include "InfrastructureApi.h"
-#include <boost/log/trivial.hpp>
 
 class INFRASTRUCTURE_API DbClientInterface
 {
@@ -34,6 +32,8 @@ public:
 	virtual std::tm GetDateTimeResult(const int column_index) noexcept(false) = 0;
 	virtual std::string GetStringResult(const std::string& column_name) noexcept(false) = 0;
 	virtual std::string GetStringResult(const int column_index) noexcept(false) = 0;
+
+	virtual long long AffectedRows() noexcept(false) = 0;
 
 	virtual void GetJsonStringResult(std::shared_ptr<std::string>& result ) noexcept(false) = 0;
 	//virtual std::shared_ptr<Table> GetTableResult() noexcept(false) = 0;

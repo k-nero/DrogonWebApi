@@ -1,13 +1,7 @@
 #pragma once
 #include "DbClientInterface.h"
 #include <SQLiteCpp/SQLiteCpp.h>
-#include "DbContext.h"
 #include "InfrastructureApi.h"
-#include <typeinfo>
-#include <type_traits>
-#include <boost/describe.hpp>
-#include <boost/mp11.hpp>
-#include <memory>
 #include "CoreHelper.h"
 
 
@@ -44,6 +38,7 @@ public:
 	std::tm GetDateTimeResult(const int column_index) noexcept(false) override;
 	std::string GetStringResult(const std::string& column_name) noexcept(false) override;
 	std::string GetStringResult(const int column_index) noexcept(false) override;
+	long long AffectedRows() noexcept(false) override;
 	void TestClient() noexcept(false) override;
 
 protected:

@@ -23,20 +23,13 @@ public:
 	explicit BaseCommand(DbContext* db) { this->db = std::make_unique<DbContext>(db); }
 	virtual int Create(T& item) noexcept(false)
 	{
-		std::shared_ptr<SAConnection> con(db->GetConnection());
+		std::shared_ptr<DbClient> client(db->GetClient());
 		try
 		{
-
-			if (con == nullptr || !con->isConnected())
-			{
-				throw std::exception("Internal error! Database connection is null or failed");
-			}
 			std::string table_name = typeid(T).name();
 			table_name = table_name.substr(table_name.find_last_of(' ') + 1);
 			std::string query = "INSERT INTO [dbo].[" + table_name + "] (";
 			std::string values = " VALUES (";
-			SACommand cmd(con.get());
-			cmd.setCommandText(_TSA(query.c_str()));
 			std::vector<std::string> fields;
 			boost::mp11::mp_for_each<D>([&](auto D)
 			{
@@ -59,7 +52,7 @@ public:
 			query = query.substr(0, query.length() - 2) + ")";
 			values = values.substr(0, values.length() - 2) + ")";
 			query += values;
-			cmd.setCommandText(_TSA((query).c_str()));
+			client->CreateCommand(query);
 			boost::mp11::mp_for_each<D>([&](auto D)
 			{
 				for (auto& f : fields)
@@ -68,33 +61,34 @@ public:
 					{
 						auto value = (item.*(D).pointer);
 						auto void_pointer = (void*)&value;
-						if (std::is_same<std::remove_reference_t<decltype(item.*(D).pointer)>, int>::value)
+						if (std::is_same<std::remove_reference_t<decltype(value)>, int>::value)
 						{
-							cmd.Param(D.name).setAsLong() = *(int*)void_pointer;
+							client->BindParameter(D.name, *(int*)void_pointer);
 						}
-						else if (std::is_same<std::remove_reference_t<decltype(item.*(D).pointer)>, long>::value)
+						else if (std::is_same<std::remove_reference_t<decltype(value)>, long>::value)
 						{
-							cmd.Param(D.name).setAsLong() = *(long*)void_pointer;
+							
+							client->BindParameter(D.name, *(long*)void_pointer);
 						}
-						else if (std::is_same<std::remove_reference_t<decltype(item.*(D).pointer)>, bool>::value)
+						else if (std::is_same<std::remove_reference_t<decltype(value)>, bool>::value)
 						{
-							cmd.Param(D.name).setAsBool() = *(bool*)void_pointer;
+							client->BindParameter(D.name, *(bool*)void_pointer);
 						}
-						else if (std::is_same<std::remove_reference_t<decltype(item.*(D).pointer)>, double>::value
-							|| std::is_same<std::remove_reference_t<decltype(item.*(D).pointer)>, float>::value)
+						else if (std::is_same<std::remove_reference_t<decltype(value)>, double>::value
+							|| std::is_same<std::remove_reference_t<decltype(value)>, float>::value)
 						{
-							cmd.Param(D.name).setAsDouble() = *(double*)void_pointer;
+							client->BindParameter(D.name, *(double*)void_pointer);
 						}
-						else if (std::is_same<std::remove_reference_t<decltype(item.*(D).pointer)>, std::string>::value
-							|| std::is_same<std::remove_reference_t<decltype(item.*(D).pointer)>, std::wstring>::value
-							|| std::is_same<std::remove_reference_t<decltype(item.*(D).pointer)>, std::string_view>::value
-							|| std::is_same<std::remove_reference_t<decltype(item.*(D).pointer)>, std::wstring_view>::value)
+						else if (std::is_same<std::remove_reference_t<decltype(value)>, std::string>::value
+							|| std::is_same<std::remove_reference_t<decltype(value)>, std::wstring>::value
+							|| std::is_same<std::remove_reference_t<decltype(value)>, std::string_view>::value
+							|| std::is_same<std::remove_reference_t<decltype(value)>, std::wstring_view>::value)
 						{
-							cmd.Param(_TSA(D.name)).setAsString() = (*(std::string*)void_pointer).c_str();
+							client->BindParameter(D.name, (*(std::string*)void_pointer));
 						}
-						else if (std::is_same<std::remove_reference_t<decltype(item.*(D).pointer)>, std::tm>::value)
+						else if (std::is_same<std::remove_reference_t<decltype(value)>, std::tm>::value)
 						{
-							cmd.Param(_TSA(D.name)).setAsDateTime() = SADateTime(*(tm*)void_pointer);
+							client->BindParameter(D.name, *(tm*)void_pointer);
 						}
 					}
 				}
@@ -102,8 +96,8 @@ public:
 #ifdef LOG_SQL_COMMAND
 			BOOST_LOG_TRIVIAL(debug) << query;
 #endif // LOG_SQL_COMMAND
-			cmd.Execute();
-			return (int)cmd.RowsAffected();
+			client->ExecuteCommand();
+			return (int)client->AffectedRows();
 		}
 		catch (SAException& ex)
 		{
@@ -122,14 +116,12 @@ public:
 
 	virtual int Update(T& item, const std::string& query) noexcept(false)
 	{
-		std::shared_ptr<SAConnection> con(db->GetConnection());
+		std::shared_ptr<DbClient> client(db->GetClient());
 		try
 		{
 			std::string table_name = typeid(T).name();
 			table_name = table_name.substr(table_name.find_last_of(' ') + 1);
 			std::string command = "UPDATE [dbo].[" + table_name + "] SET ";
-			SACommand cmd(con.get());
-			cmd.setCommandText(_TSA(command.c_str()));
 			std::vector<std::string> fields;
 			boost::mp11::mp_for_each<D>([&](auto D)
 			{
@@ -148,7 +140,7 @@ public:
 				}
 			});
 			command = command.substr(0, command.length() - 2) + " WHERE " + query;
-			cmd.setCommandText(_TSA(command.c_str()));
+			client->CreateCommand(command);
 			boost::mp11::mp_for_each<D>([&](auto D)
 			{
 				for (auto& f : fields)
@@ -159,31 +151,31 @@ public:
 						auto void_pointer = (void*)&value;
 						if (std::is_same<std::remove_reference_t<decltype(item.*(D).pointer)>, int>::value)
 						{
-							cmd.Param(D.name).setAsLong() = *(int*)void_pointer;
+							client->BindParameter(D.name, *(int*)void_pointer);
 						}
 						else if (std::is_same<std::remove_reference_t<decltype(item.*(D).pointer)>, long>::value)
 						{
-							cmd.Param(D.name).setAsLong() = *(long*)void_pointer;
+							client->BindParameter(D.name, *(long*)void_pointer);
 						}
 						else if (std::is_same<std::remove_reference_t<decltype(item.*(D).pointer)>, bool>::value)
 						{
-							cmd.Param(D.name).setAsBool() = *(bool*)void_pointer;
+							client->BindParameter(D.name, *(bool*)void_pointer);
 						}
 						else if (std::is_same<std::remove_reference_t<decltype(item.*(D).pointer)>, double>::value
 							|| std::is_same<std::remove_reference_t<decltype(item.*(D).pointer)>, float>::value)
 						{
-							cmd.Param(D.name).setAsDouble() = *(double*)void_pointer;
+							client->BindParameter(D.name, *(double*)void_pointer);
 						}
 						else if (std::is_same<std::remove_reference_t<decltype(item.*(D).pointer)>, std::string>::value
 							|| std::is_same<std::remove_reference_t<decltype(item.*(D).pointer)>, std::wstring>::value
 							|| std::is_same<std::remove_reference_t<decltype(item.*(D).pointer)>, std::string_view>::value
 							|| std::is_same<std::remove_reference_t<decltype(item.*(D).pointer)>, std::wstring_view>::value)
 						{
-							cmd.Param(_TSA(D.name)).setAsString() = (*(std::string*)void_pointer).c_str();
+							client->BindParameter(D.name, (*(std::string*)void_pointer));
 						}
 						else if (std::is_same<std::remove_reference_t<decltype(item.*(D).pointer)>, std::tm>::value)
 						{
-							cmd.Param(_TSA(D.name)).setAsDateTime() = SADateTime(*(tm*)void_pointer);
+							client->BindParameter(D.name, *(tm*)void_pointer);
 						}
 					}
 				}
@@ -191,8 +183,8 @@ public:
 #ifdef LOG_SQL_COMMAND
 			BOOST_LOG_TRIVIAL(debug) << command;
 #endif // LOG_SQL_COMMAND
-			cmd.Execute();
-			return (int)cmd.RowsAffected();
+			client->ExecuteCommand();
+			return (int)client->AffectedRows();
 		}
 		catch (SAException& ex)
 		{
@@ -211,20 +203,19 @@ public:
 
 	virtual int Delete(const std::string& query) noexcept(false)
 	{
-		std::shared_ptr<SAConnection> con(db->GetConnection());
+		std::shared_ptr<DbClient> client(db->GetClient());
 		try
 		{
 
 			std::string table_name = typeid(T).name();
 			table_name = table_name.substr(table_name.find_last_of(' ') + 1);
 			std::string command = "DELETE FROM [dbo].[" + table_name + "] WHERE " + query;
-			SACommand cmd(con.get());
-			cmd.setCommandText(_TSA(command.c_str()));
+			client->CreateCommand(command);
 #ifdef LOG_SQL_COMMAND
 			BOOST_LOG_TRIVIAL(debug) << command;
 #endif // LOG_SQL_COMMAND
-			cmd.Execute();
-			return (int)cmd.RowsAffected();
+			client->ExecuteCommand();
+			return (int)client->AffectedRows();
 		}
 		catch (SAException& ex)
 		{
@@ -243,4 +234,5 @@ public:
 	virtual ~BaseCommand() = default;
 protected:
 	std::unique_ptr<DbContext> db = nullptr;
+
 };

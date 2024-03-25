@@ -1,12 +1,9 @@
 #include "pch.h"
 #include "DbContext.h"
 
-#include <iostream>
-#include <ostream>
-
 DbContext::DbContext() 
 {
-
+	connectionString = ConfigProvider::GetInstance()->GetConnectionString();
 }
 
 SAConnection* DbContext::GetConnection() noexcept(false)
@@ -15,7 +12,6 @@ SAConnection* DbContext::GetConnection() noexcept(false)
 	{
 		ConfigProvider::GetInstance()->Initialize();
 	}
-	connectionString = ConfigProvider::GetInstance()->GetConnectionString();
 
 	auto connection = new SAConnection();
 	try
@@ -72,6 +68,7 @@ std::string DbContext::TestConnection()
 
 DbClientInterface* DbContext::GetClient() const
 {
+
 	if (connectionString.type == "sqlserver")
 	{
 		return new SQLAPIClient();
