@@ -175,7 +175,7 @@ inline std::tm SQLAPIClient::GetDateTimeResult(const std::string& column_name) n
 
 inline std::tm SQLAPIClient::GetDateTimeResult(const int column_index) noexcept(false)
 {
-	return cmd->Field(column_index).asDateTime();
+	return std::tm(cmd->Field(column_index).asDateTime());
 }
 
 inline std::string SQLAPIClient::GetStringResult(const std::string& column_name) noexcept(false)
