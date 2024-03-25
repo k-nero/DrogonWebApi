@@ -442,8 +442,6 @@ private:
 		return "";
 	}
 
-
-
 	template<typename Type = T, std::enable_if_t<std::is_class_v<Type>, bool> = true>
 	int field_count()
 	{

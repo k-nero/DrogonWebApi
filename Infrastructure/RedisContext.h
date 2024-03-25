@@ -4,13 +4,12 @@
 #include "hiredis/hiredis.h"
 #include "hiredis/async.h"
 #include <boost/log/trivial.hpp>
+#include <mutex>
+#include <shared_mutex>
 
 class INFRASTRUCTURE_API RedisContext
 {
 public:
-	RedisContext() = default;
-	~RedisContext();
-
 	bool CreateSyncContext(redisOptions opt);
 	bool CreateSyncContext();
 	void SelectDb(int dbIndex);
@@ -20,10 +19,22 @@ public:
 	long long GetNumOfDb();
 	std::shared_ptr<std::string> GetString(const std::string& key);
 	std::vector<std::string> GetAllActiveKeys(std::string contain = "");
-	void CreateAsyncContext();
+
+	void SetStringAsync(const std::string& key, const std::string& value, int expireSeconds);
+	void refreshTTLAsync(const std::string& key, int expireSeconds);
+	std::shared_ptr<std::string> GetStringAsync(const std::string& key);
+	bool CreateAsyncContext();
+
+	static RedisContext& GetInstance()
+	{
+		static RedisContext instance;
+		return instance;
+	}
 
 private:
+	RedisContext() = default;
+	~RedisContext();
 	redisContext* m_syncContext = nullptr;
 	redisAsyncContext* m_asyncContext = nullptr;
+	mutable std::shared_mutex mutex_;
 };
-

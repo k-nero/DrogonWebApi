@@ -5,7 +5,7 @@ TodoItemService::TodoItemService() = default;
 
 std::shared_ptr<TodoItem> TodoItemService::GetTodoItemById(const std::string& Id) noexcept(false)
 {
-	RedisContext ctx;
+	auto& ctx = RedisContext::GetInstance();
 	Query<TodoItem> query;
 	std::shared_ptr<std::string> json = nullptr;
 
@@ -44,7 +44,7 @@ std::shared_ptr<TodoItem> TodoItemService::GetTodoItemById(const std::string& Id
 
 std::vector<std::shared_ptr<TodoItem>> TodoItemService::GetAllTodoItems() noexcept(false)
 {
-	RedisContext ctx;
+	auto& ctx = RedisContext::GetInstance();
 	Query<TodoItem> query;
 	std::shared_ptr<std::string> json = nullptr;
 
@@ -81,7 +81,7 @@ std::vector<std::shared_ptr<TodoItem>> TodoItemService::GetAllTodoItems() noexce
 std::string TodoItemService::CreateTodoItem(TodoItemModel& todo_item_model) noexcept(false)
 {
 	BaseCommand<TodoItem> cmd;
-	RedisContext ctx;
+	auto& ctx = RedisContext::GetInstance();
 	ctx.CreateSyncContext();
 	auto todo_item = Mapper::Map<TodoItemModel, TodoItem>(todo_item_model);
 	todo_item.SetId(CoreHelper::CreateUUID());
@@ -106,7 +106,7 @@ std::string TodoItemService::CreateTodoItem(TodoItemModel& todo_item_model) noex
 
 int TodoItemService::UpdateTodoItem(TodoItemModel& todo_item_model, const std::string& Id) noexcept(false)
 {
-	RedisContext ctx;
+	auto& ctx = RedisContext::GetInstance();
 	ctx.CreateSyncContext();
 	BaseCommand<TodoItem> cmd;
 	auto todo_item = Mapper::Map<TodoItemModel, TodoItem>(todo_item_model);
@@ -130,7 +130,7 @@ int TodoItemService::UpdateTodoItem(TodoItemModel& todo_item_model, const std::s
 
 int TodoItemService::DeleteTodoItem(const std::string& Id)
 {
-	RedisContext ctx;
+	auto& ctx = RedisContext::GetInstance();
 	ctx.CreateSyncContext();
 	BaseCommand<TodoItem> cmd;
 	if (cmd.Delete(EQ(Id)) > 0)

@@ -22,13 +22,18 @@ This project is using SQLAPI++ for database connection, you can download it from
 - Currently using MSSQL, the connection param can be found in config.ini
 ### Build
 - Create file config.ini in DrogonWebApp/DrogonServer 
+- Example config.ini:
 ```ini
 [database]
+type = sqlserver
 server = (localdb)\MSSQLLocalDB@Drogon
 username = sa
 password = 12345
 [bcrypt]
 secret = secret
+[redis]
+host = 192.168.59.128
+password = sysadmin
 ```
 - Create private_key.pem and public_key.pem in DrogonWebApp/DrogonServer for JWT 
 - Create private.key and certificate.crt in DrogonWebApp/DrogonServer to use Https

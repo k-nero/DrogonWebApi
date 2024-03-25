@@ -27,7 +27,7 @@ bool SQLite3Client::FetchNext() noexcept(false)
 
 void SQLite3Client::GetJsonStringResult(std::shared_ptr<std::string>& result) noexcept(false)
 {
-	
+	//TODO: Implement this ASAP
 }
 
 

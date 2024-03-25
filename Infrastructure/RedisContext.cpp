@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "RedisContext.h"
 
+
 RedisContext::~RedisContext()
 {
 	if (this->m_syncContext != nullptr)
@@ -45,19 +46,22 @@ bool RedisContext::CreateSyncContext(redisOptions opt)
 
 bool RedisContext::CreateSyncContext()
 {
+	if(this->m_syncContext != nullptr)
+	{
+		return true;
+	}
 	redisOptions opt = { 0 };
 	auto m_host = ConfigProvider::GetInstance()->GetRedisHost();
-	do
-	{
-		(&opt)->type = REDIS_CONN_TCP; (&opt)->endpoint.tcp.ip = m_host.c_str(); (&opt)->endpoint.tcp.port = 6379;
-	}
-	while (0);
-	opt.options = REDIS_OPT_PREFER_IP_UNSPEC;
+	(&opt)->type = REDIS_CONN_TCP;
+	(&opt)->endpoint.tcp.ip = m_host.c_str();
+	(&opt)->endpoint.tcp.port = 6379;
+	opt.options |= REDIS_OPT_PREFER_IP_UNSPEC | REDIS_OPT_REUSEADDR;
 	return RedisContext::CreateSyncContext(opt);
 }
 
 void RedisContext::SelectDb(int dbIndex)
 {
+	std::unique_lock lock(mutex_);
 	if (this->m_syncContext == nullptr)
 	{
 		BOOST_LOG_TRIVIAL(error) << "RedisContext::SelectDb: m_syncContext is nullptr";
@@ -75,6 +79,7 @@ void RedisContext::SelectDb(int dbIndex)
 
 void RedisContext::SetString(const std::string& key, const std::string& value, int expireSeconds)
 {
+	std::unique_lock lock(mutex_);
 	if (this->m_syncContext == nullptr)
 	{
 		BOOST_LOG_TRIVIAL(error) << "RedisContext::SetString: m_syncContext is nullptr";
@@ -104,6 +109,7 @@ void RedisContext::SetString(const std::string& key, const std::string& value, i
 
 void RedisContext::refreshTTL(const std::string& key, int expireSeconds)
 {
+	std::unique_lock lock(mutex_);
 	if (this->m_syncContext == nullptr)
 	{
 		BOOST_LOG_TRIVIAL(error) << "RedisContext::refreshTTL: m_syncContext is nullptr";
@@ -121,6 +127,7 @@ void RedisContext::refreshTTL(const std::string& key, int expireSeconds)
 
 void RedisContext::RemoveKey(const std::string& key)
 {
+	std::unique_lock lock(mutex_);
 	if (this->m_syncContext == nullptr)
 	{
 		BOOST_LOG_TRIVIAL(error) << "RedisContext::RemoveKey: m_syncContext is nullptr";
@@ -139,6 +146,7 @@ void RedisContext::RemoveKey(const std::string& key)
 
 long long RedisContext::GetNumOfDb()
 {
+	std::unique_lock lock(mutex_);
 	if (this->m_syncContext == nullptr)
 	{
 		BOOST_LOG_TRIVIAL(error) << "RedisContext::GetNumOfDb: m_syncContext is nullptr";
@@ -164,6 +172,7 @@ long long RedisContext::GetNumOfDb()
 
 std::shared_ptr<std::string> RedisContext::GetString(const std::string& key)
 {
+	std::unique_lock lock(mutex_);
 	if (this->m_syncContext == nullptr)
 	{
 		BOOST_LOG_TRIVIAL(error) << "RedisContext::GetString: m_syncContext is nullptr";
@@ -174,14 +183,18 @@ std::shared_ptr<std::string> RedisContext::GetString(const std::string& key)
 	if (reply == nullptr)
 	{
 		BOOST_LOG_TRIVIAL(error) << "RedisContext::GetString: redisCommand failed";
-		return std::make_shared<std::string>("");
+		BOOST_LOG_TRIVIAL(error) << "Error: " << this->m_syncContext->errstr;
+		return nullptr;
 	}
 
 	if (reply->type == REDIS_REPLY_NIL)
 	{
 		return nullptr;
 	}
-
+	if (reply->str == nullptr)
+	{
+		return nullptr;
+	}
 	auto value = std::make_shared<std::string>(reply->str);
 	freeReplyObject(reply);
 	return value;
@@ -189,14 +202,13 @@ std::shared_ptr<std::string> RedisContext::GetString(const std::string& key)
 
 std::vector<std::string> RedisContext::GetAllActiveKeys(std::string contain)
 {
-
+	std::unique_lock lock(mutex_);
 	if (this->m_syncContext == nullptr)
 	{
 		BOOST_LOG_TRIVIAL(error) << "RedisContext::GetAllActiveKeys: m_syncContext is nullptr";
 		return std::vector<std::string>();
 	}
 
-	//auto numofDb = RedisContext::GetNumOfDb();
 	std::vector<std::string> keys;
 
 	redisReply* reply = (redisReply*)redisCommand(this->m_syncContext, "KEYS *");
@@ -222,4 +234,141 @@ std::vector<std::string> RedisContext::GetAllActiveKeys(std::string contain)
 	}
 	freeReplyObject(reply);
 	return keys;
+}
+
+void RedisContext::SetStringAsync(const std::string& key, const std::string& value, int expireSeconds)
+{
+	if (this->m_asyncContext == nullptr)
+	{
+		BOOST_LOG_TRIVIAL(error) << "RedisContext::SetStringAsync: m_asyncContext is nullptr";
+		return;
+	}
+
+	redisAsyncCommand(this->m_asyncContext, [](redisAsyncContext* c, void* r, void* privdata)
+	{
+		if (r == nullptr)
+		{
+			BOOST_LOG_TRIVIAL(error) << "RedisContext::SetStringAsync: redisAsyncCommand failed";
+			return;
+		}
+		freeReplyObject((redisReply*)r);
+	}, nullptr, "SET %s %b", key.c_str(), value.c_str(), value.length());
+}
+
+void RedisContext::refreshTTLAsync(const std::string& key, int expireSeconds)
+{
+	if (this->m_asyncContext == nullptr)
+	{
+		BOOST_LOG_TRIVIAL(error) << "RedisContext::refreshTTLAsync: m_asyncContext is nullptr";
+		return;
+	}
+
+	redisAsyncCommand(this->m_asyncContext, [](redisAsyncContext* c, void* r, void* privdata)
+	{
+		if (r == nullptr)
+		{
+			BOOST_LOG_TRIVIAL(error) << "RedisContext::refreshTTLAsync: redisAsyncCommand failed";
+			return;
+		}
+		freeReplyObject((redisReply*)r);
+	}, nullptr, "EXPIRE %s %d", key.c_str(), expireSeconds);
+}
+
+std::shared_ptr<std::string> RedisContext::GetStringAsync(const std::string& key)
+{
+	if (this->m_asyncContext == nullptr)
+	{
+		BOOST_LOG_TRIVIAL(error) << "RedisContext::GetStringAsync: m_asyncContext is nullptr";
+		return nullptr;
+	}
+
+	std::shared_ptr<std::string> str = std::make_shared<std::string>();
+
+	redisAsyncCommand(this->m_asyncContext, [](redisAsyncContext* c, void* r, void* privdata)
+	{
+		if (r == nullptr)
+		{
+			BOOST_LOG_TRIVIAL(error) << "RedisContext::GetStringAsync: redisAsyncCommand failed";
+			return;
+		}
+
+		redisReply* reply = (redisReply*)r;
+		if (reply->type == REDIS_REPLY_NIL)
+		{
+			return;
+		}
+		if (reply->str == nullptr)
+		{
+			return;
+		}
+		auto str = (std::string*)privdata;
+		*str = reply->str;
+		freeReplyObject(reply);
+	}, str.get(), "GET %s", key.c_str());
+
+	if (str->empty())
+	{
+		return nullptr;
+	}
+
+	return str;
+}
+
+bool RedisContext::CreateAsyncContext()
+{
+	if (this->m_asyncContext != nullptr)
+	{
+		return true;
+	}
+
+	std::string m_password = ConfigProvider::GetInstance()->GetRedisPassword();
+
+	redisOptions opt = { 0 };
+	auto m_host = ConfigProvider::GetInstance()->GetRedisHost();
+	(&opt)->type = REDIS_CONN_TCP;
+	(&opt)->endpoint.tcp.ip = m_host.c_str();
+	(&opt)->endpoint.tcp.port = 6379;
+	opt.options |= REDIS_OPT_PREFER_IP_UNSPEC | REDIS_OPT_REUSEADDR | REDIS_OPT_NONBLOCK;
+
+	auto c = redisAsyncConnectWithOptions(&opt);
+	if (c == nullptr || c->err)
+	{
+		if (c)
+		{
+			BOOST_LOG_TRIVIAL(error) << "Error: " << c->errstr;
+		}
+		else
+		{
+			BOOST_LOG_TRIVIAL(error) << "Can't allocate redis context";
+		}
+		return false;
+	}
+	else
+	{
+		this->m_asyncContext = c;
+		this->m_asyncContext->data = this;
+
+		redisAsyncSetConnectCallback(this->m_asyncContext, [](const struct redisAsyncContext* c, int status)
+		{
+			if (status != REDIS_OK)
+			{
+				BOOST_LOG_TRIVIAL(error) << "Error: " << c->errstr;
+				return;
+			}
+			BOOST_LOG_TRIVIAL(info) << "Connected...";
+		});
+
+		redisAsyncSetDisconnectCallback(this->m_asyncContext, [](const struct redisAsyncContext* c, int status)
+		{
+			if (status != REDIS_OK)
+			{
+				BOOST_LOG_TRIVIAL(error) << "Error: " << c->errstr;
+				return;
+			}
+			BOOST_LOG_TRIVIAL(info) << "Disconnected...";
+		});
+	}
+	redisAsyncCommand(this->m_asyncContext, nullptr, nullptr, "AUTH %s", m_password.c_str());
+	
+	return true;
 }
