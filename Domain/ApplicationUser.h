@@ -1,8 +1,15 @@
 #pragma once
 #include "BaseEntity.h"
+#include "ChatParticipant.h"
+#include "memory"
+#include "vector"
+
+class ChatParticipant;
+class ContactList;
+
 class DOMAIN_API ApplicationUser : public BaseEntity
 {
-	BOOST_DESCRIBE_CLASS(ApplicationUser, (BaseEntity), (), (UserName, Email, PasswordHash, PhoneNumber), ())
+	BOOST_DESCRIBE_CLASS(ApplicationUser, (BaseEntity), (), (UserName, Email, PasswordHash, PhoneNumber, ContactListId, ContactList), ())
 public:
 	ApplicationUser();
 
@@ -65,4 +72,8 @@ protected:
 	std::string Email = {};
 	std::string PasswordHash = {};
 	std::string PhoneNumber = {};
+	std::string ContactListId = {};
+
+	std::vector<std::shared_ptr<ChatParticipant>> ChatParticipants = {};
+	std::shared_ptr<ContactList> ContactList = nullptr;
 };

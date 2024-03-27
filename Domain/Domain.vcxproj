@@ -226,8 +226,16 @@
   <ItemGroup>
     <ClInclude Include="ApplicationUser.h" />
     <ClInclude Include="BaseEntity.h" />
+    <ClInclude Include="ChatParticipant.h" />
+    <ClInclude Include="ChatRoom.h" />
+    <ClInclude Include="Contact.h" />
+    <ClInclude Include="ContactList.h" />
     <ClInclude Include="DomainApi.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="Message.h" />
+    <ClInclude Include="MessageAttach.h" />
+    <ClInclude Include="MessageReaction.h" />
+    <ClInclude Include="MessageSeenBy.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="TodoItem.h" />
     <ClInclude Include="TodoList.h" />
@@ -235,7 +243,15 @@
   <ItemGroup>
     <ClCompile Include="ApplicationUser.cpp" />
     <ClCompile Include="BaseEntity.cpp" />
+    <ClCompile Include="ChatParticipant.cpp" />
+    <ClCompile Include="ChatRoom.cpp" />
+    <ClCompile Include="Contact.cpp" />
+    <ClCompile Include="ContactList.cpp" />
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="Message.cpp" />
+    <ClCompile Include="MessageAttach.cpp" />
+    <ClCompile Include="MessageReaction.cpp" />
+    <ClCompile Include="MessageSeenBy.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='CLR|x64'">Create</PrecompiledHeader>
