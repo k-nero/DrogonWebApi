@@ -31,6 +31,18 @@
     <Filter Include="Header Files\Common\Internal">
       <UniqueIdentifier>{7dcfd87c-6ef3-43f2-bfee-1c46be656ebf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Database\MSSQL">
+      <UniqueIdentifier>{91a529ff-57dc-4bfe-97a2-5b720c4e61b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Database\SQLITE3">
+      <UniqueIdentifier>{77ac6e86-a446-4854-8fee-bc20fe6091a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Database\MSSQL">
+      <UniqueIdentifier>{5d69d3ea-9658-44ae-93b9-e76ab2035e92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Database\SQLITE3">
+      <UniqueIdentifier>{70a0c691-6019-47c6-a8ec-9f4d0c0fd1ae}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConfigProvider.h">
@@ -66,9 +78,6 @@
     <ClInclude Include="RedisContext.h">
       <Filter>Header Files\Database</Filter>
     </ClInclude>
-    <ClInclude Include="SQLAPIClient.h">
-      <Filter>Header Files\Database</Filter>
-    </ClInclude>
     <ClInclude Include="DbClientInterface.h">
       <Filter>Header Files\Common</Filter>
     </ClInclude>
@@ -78,8 +87,17 @@
     <ClInclude Include="pch.h">
       <Filter>Header Files\Common\Internal</Filter>
     </ClInclude>
+    <ClInclude Include="SQLAPIClient.h">
+      <Filter>Header Files\Database\MSSQL</Filter>
+    </ClInclude>
     <ClInclude Include="SQLite3Client.h">
-      <Filter>Header Files\Database</Filter>
+      <Filter>Header Files\Database\SQLITE3</Filter>
+    </ClInclude>
+    <ClInclude Include="DbCommandInterface.h">
+      <Filter>Header Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="MSSQLCommand.h">
+      <Filter>Header Files\Database\MSSQL</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -108,10 +126,10 @@
       <Filter>Source Files\Database</Filter>
     </ClCompile>
     <ClCompile Include="SQLAPIClient.cpp">
-      <Filter>Source Files\Database</Filter>
+      <Filter>Source Files\Database\MSSQL</Filter>
     </ClCompile>
     <ClCompile Include="SQLite3Client.cpp">
-      <Filter>Source Files\Database</Filter>
+      <Filter>Source Files\Database\SQLITE3</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

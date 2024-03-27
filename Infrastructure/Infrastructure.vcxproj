@@ -258,11 +258,13 @@
     <ClInclude Include="ConfigProvider.h" />
     <ClInclude Include="CoreHelper.h" />
     <ClInclude Include="DbClientInterface.h" />
+    <ClInclude Include="DbCommandInterface.h" />
     <ClInclude Include="DbContext.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="InfrastructureApi.h" />
     <ClInclude Include="JsonHelper.h" />
     <ClInclude Include="JsonParser.h" />
+    <ClInclude Include="MSSQLCommand.h" />
     <ClInclude Include="ObjToJson.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="RedisContext.h" />
