@@ -22,7 +22,7 @@ std::shared_ptr<TodoList> TodoListService::GetTodoListById(const std::string& Id
 			json = todo_list_query.GetByIdEx(Id, { "TodoItems" });
 			if (json == nullptr)
 			{
-				throw NotFoundExcept();
+				return nullptr;
 			}
 			ctx.SetString(redis_key, *json, 360);
 		}
@@ -83,16 +83,14 @@ std::shared_ptr<PaginationObject<TodoList>> TodoListService::GetTodoListsByPage(
 		json = ctx.GetString(redis_key);
 		if (json == nullptr)
 		{
-			json = query.GetPaginatedFw(page, page_size, "", {"TodoItems"});
+			json = query.GetPaginatedFw(page, page_size, "", { "TodoItems" });
 
 			if (json == nullptr)
 			{
-				json = std::make_shared<std::string>("{}");
+				return nullptr;
 			}
-			else
-			{
-				ctx.SetString(redis_key, *json, 360);
-			}
+
+			ctx.SetString(redis_key, *json, 360);
 		}
 		else
 		{
