@@ -10,7 +10,7 @@ ApplicationUser::ApplicationUser(const ApplicationUser& applicationuser) : BaseE
 	PasswordHash = applicationuser.PasswordHash;
 	PhoneNumber = applicationuser.PhoneNumber;
 	ContactListId = applicationuser.ContactListId;
-
+	// Shalow copy
 	chatParticipants = applicationuser.chatParticipants;
 	contactList = applicationuser.contactList;
 }
@@ -35,7 +35,7 @@ ApplicationUser& ApplicationUser::operator=(const ApplicationUser& applicationus
 	PasswordHash = applicationuser.PasswordHash;
 	PhoneNumber = applicationuser.PhoneNumber;
 	ContactListId = applicationuser.ContactListId;
-
+	// Shalow copy
 	chatParticipants = applicationuser.chatParticipants;
 	contactList = applicationuser.contactList;
 	return *this;
@@ -85,18 +85,5 @@ std::string ApplicationUser::ToString()
 		"CreatedDate: " + CreatedDate + "\n"
 		"ModifiedDate: " + ModifiedDate + "\n";
 }
-
-//Json::Value ApplicationUser::ToJson()
-//{
-//	Json::Value json;
-//	json["id"] = Id;
-//	json["username"] = UserName;
-//	json["email"] = Email;
-//	json["passwordHash"] = PasswordHash;
-//	json["phoneNumber"] = PhoneNumber;
-//	json["createdDate"] = CreatedDate;
-//	json["modifiedDate"] = ModifiedDate;
-//	return json;
-//}
 
 ApplicationUser::~ApplicationUser() = default;
