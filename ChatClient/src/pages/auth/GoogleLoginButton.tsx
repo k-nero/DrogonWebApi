@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import app from "@/firebase";
 import { Authentication } from "@/utils/function/Auth.ts";
 import { AuthResponse } from "@/utils/type/AuthResponse.ts";
