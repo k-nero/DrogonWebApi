@@ -3,7 +3,8 @@ import authImg from "/assets/img/signin-ill.jpg";
 import Footer from "@/components/footer/FooterAuthDefault.tsx";
 import React from "react";
 
-const AuthLayout = ({ children }: { children: React.ReactNode }) => {
+function AuthLayout({ children }: { children: React.ReactNode })
+{
     return (
         <div>
             <div className="relative float-right h-full min-h-screen w-full !bg-white dark:!bg-navy-900">
@@ -45,6 +46,6 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
             </div>
         </div>
     );
-};
+}
 
 export default AuthLayout;
