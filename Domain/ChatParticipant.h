@@ -7,11 +7,11 @@ class ChatParticipant;
 class ApplicationUser;
 class ChatRoom;
 
-class ChatParticipant : public BaseEntity
+class DOMAIN_API ChatParticipant : public BaseEntity
 {
 	BOOST_DESCRIBE_CLASS(ChatParticipant, (BaseEntity), (), (ChatRoomId, ApplicationUserId, ApplicationUser, ChatRoom), ())
 public:
-	ChatParticipant();
+	ChatParticipant() = default;
 	~ChatParticipant() = default;
 protected:
 	std::string ChatRoomId = "";

@@ -3,13 +3,14 @@
 #include "ChatParticipant.h"
 #include "memory"
 #include "vector"
+#include "ContactList.h"
 
-class ChatParticipant;
 class ContactList;
+class ChatParticipant;
 
 class DOMAIN_API ApplicationUser : public BaseEntity
 {
-	BOOST_DESCRIBE_CLASS(ApplicationUser, (BaseEntity), (), (UserName, Email, PasswordHash, PhoneNumber, ContactListId, ContactList), ())
+	BOOST_DESCRIBE_CLASS(ApplicationUser, (BaseEntity), (), (UserName, Email, PasswordHash, PhoneNumber, ContactListId, chatParticipants, contactList), ())
 public:
 	ApplicationUser();
 
@@ -20,11 +21,11 @@ public:
 	ApplicationUser(ApplicationUser&& applicationuser) noexcept;
 
 	//Copy assignment operator
-	ApplicationUser& operator=(const ApplicationUser& applicationuser);
+	ApplicationUser& operator=(const ApplicationUser& applicationUser);
 
-	ApplicationUser(const std::string& id, const std::string& username, const std::string& email, const std::string& passwordhash, const std::string& phonenumber, const std::string& createdDate = "", const std::string& modifedDate = "");
+	ApplicationUser(const std::string& id, const std::string& username, const std::string& email, const std::string& passwordhash, const std::string& phonenumber, const std::string& contactListId, const std::string& createdDate = "", const std::string& modifedDate = "");
 
-	ApplicationUser(const std::string& username, const std::string& email, const std::string& passwordhash, const std::string& phonenumber, const std::string& createdDate = "", const std::string& modifedDate = "");
+	ApplicationUser(const std::string& username, const std::string& email, const std::string& passwordhash, const std::string& phonenumber, const std::string& contactListId, const std::string& createdDate = "", const std::string& modifedDate = "");
 
 	//Move assignment operator
 	ApplicationUser& operator=(ApplicationUser&& applicationuser) noexcept;
@@ -74,6 +75,6 @@ protected:
 	std::string PhoneNumber = {};
 	std::string ContactListId = {};
 
-	std::vector<std::shared_ptr<ChatParticipant>> ChatParticipants = {};
-	std::shared_ptr<ContactList> ContactList = nullptr;
+	std::vector<std::shared_ptr<ChatParticipant>> chatParticipants = {};
+	std::shared_ptr<ContactList> contactList = nullptr;
 };

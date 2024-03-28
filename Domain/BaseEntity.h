@@ -9,7 +9,7 @@
 /// </summary>
 class DOMAIN_API BaseEntity
 {
-	BOOST_DESCRIBE_CLASS(BaseEntity, (), (), (Id, CreatedDate, ModifiedDate, Version), ())
+	BOOST_DESCRIBE_CLASS(BaseEntity, (), (), (Id, CreatedDate, ModifiedDate), ())
 
 public:
 	BaseEntity();
@@ -55,15 +55,6 @@ public:
 		ModifiedDate = modifiedDate;
 	}
 
-	virtual int GetVersion()
-	{
-		return Version;
-	}
-
-	virtual void SetVersion(int version)
-	{
-		Version = version;
-	}
 	virtual ~BaseEntity();
 protected:
 	/// <summary>
@@ -72,6 +63,5 @@ protected:
 	std::string Id = "";
 	std::string CreatedDate = "";
 	std::string ModifiedDate = "";
-	int Version = 0;
 };
 

@@ -8,11 +8,11 @@ class ChatParticipant;
 class ApplicationUser;
 class Message;
 
-class ChatRoom : public BaseEntity
+class DOMAIN_API ChatRoom : public BaseEntity
 {
 	BOOST_DESCRIBE_CLASS(ChatRoom, (BaseEntity), (), (RoomName, RoomDescription, RoomImageUrl, ChatParticipants), ())
 public:
-	ChatRoom();
+	ChatRoom() = default;
 	~ChatRoom() = default;
 
 protected:

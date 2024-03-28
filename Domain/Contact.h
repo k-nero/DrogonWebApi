@@ -3,11 +3,14 @@
 #include "ApplicationUser.h"
 #include "ContactList.h"
 
-class Contact : public BaseEntity
+class ApplicationUser;
+class ContactList;
+
+class DOMAIN_API Contact : public BaseEntity
 {
 	BOOST_DESCRIBE_CLASS(Contact, (BaseEntity), (), (ApplicationUserId, ContactListId, ApplicationUser, ContactList), ())
 public:
-	Contact();
+	Contact() = default;
 	~Contact() = default;
 protected:
 	std::string ApplicationUserId = "";

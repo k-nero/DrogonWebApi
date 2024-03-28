@@ -20,7 +20,12 @@ BaseEntity::BaseEntity(BaseEntity&& base_entity) noexcept
 }
 
 BaseEntity& BaseEntity::operator=(const BaseEntity& baseentity)
-= default;
+{
+	Id = baseentity.Id;
+	CreatedDate = baseentity.CreatedDate;
+	ModifiedDate = baseentity.ModifiedDate;
+	return *this;
+}
 
 BaseEntity::BaseEntity(const std::string& id, const std::string& createdDate, const std::string& modifedDate)
 {
@@ -30,7 +35,12 @@ BaseEntity::BaseEntity(const std::string& id, const std::string& createdDate, co
 }
 
 BaseEntity& BaseEntity::operator=(BaseEntity&& baseentity) noexcept
-= default;
+{
+	Id = std::move(baseentity.Id);
+	CreatedDate = std::move(baseentity.CreatedDate);
+	ModifiedDate = std::move(baseentity.ModifiedDate);
+	return *this;
+}
 
 std::string BaseEntity::ToString()
 {

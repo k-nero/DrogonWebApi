@@ -12,7 +12,7 @@ public:
 	{
 		K obj;
 		obj = json.asInt();
-		return obj;
+		return std::move(obj);
 	}
 
 	template <class K = T, std::enable_if_t<std::is_same_v<K, unsigned int>, bool> = true>
@@ -20,7 +20,7 @@ public:
 	{
 		K obj;
 		obj = json.asUInt();
-		return obj;
+		return std::move(obj);
 	}
 
 	template <class K = T, std::enable_if_t<std::is_same_v<K, long long>, bool> = true>
@@ -28,7 +28,7 @@ public:
 	{
 		K obj;
 		obj = json.asInt64();
-		return obj;
+		return std::move(obj);
 	}
 
 	template <class K = T, std::enable_if_t<std::is_same_v<K, long>, bool> = true>
@@ -36,7 +36,7 @@ public:
 	{
 		K obj;
 		obj = json.asInt64();
-		return obj;
+		return std::move(obj);
 	}
 
 	template <class K = T, std::enable_if_t<std::is_same_v<K, unsigned long>, bool> = true>
@@ -44,7 +44,7 @@ public:
 	{
 		K obj;
 		obj = json.asInt64();
-		return obj;
+		return std::move(obj);
 	}
 
 	template <class K = T, std::enable_if_t<std::is_same_v<K, unsigned long long>, bool> = true>
@@ -52,7 +52,7 @@ public:
 	{
 		K obj;
 		obj = json.asUInt64();
-		return obj;
+		return std::move(obj);
 	}
 
 	template <class K = T, std::enable_if_t<std::is_same_v<K, short>, bool> = true>
@@ -60,7 +60,7 @@ public:
 	{
 		K obj;
 		obj = json.asInt();
-		return obj;
+		return std::move(obj);
 	}
 
 	template <class K = T, std::enable_if_t<std::is_same_v<K, unsigned short>, bool> = true>
@@ -68,7 +68,7 @@ public:
 	{
 		K obj;
 		obj = json.asUInt();
-		return obj;
+		return std::move(obj);
 	}
 
 	template <class K = T, std::enable_if_t<std::is_same_v<K, float>, bool> = true>
@@ -76,7 +76,7 @@ public:
 	{
 		K obj;
 		obj = json.asFloat();
-		return obj;
+		return std::move(obj);
 	}
 
 	template <class K = T, std::enable_if_t<std::is_same_v<K, double>, bool> = true>
@@ -84,7 +84,7 @@ public:
 	{
 		K obj;
 		obj = json.asDouble();
-		return obj;
+		return std::move(obj);
 	}
 
 	template <class K = T, std::enable_if_t<is_string_v<K>, bool> = true>
@@ -92,7 +92,7 @@ public:
 	{
 		K obj;
 		obj = json.asString();
-		return obj;
+		return std::move(obj);
 	}
 
 	template <class K = T, std::enable_if_t<std::is_same_v<K, bool>, bool> = true>
@@ -100,7 +100,7 @@ public:
 	{
 		K obj;
 		obj = json.asBool();
-		return obj;
+		return std::move(obj);
 	}
 
 	template <class K = T, std::enable_if_t<is_shared_ptr_v<K>, bool> = true>
@@ -109,7 +109,7 @@ public:
 		K obj{};
 		using U = typename K::element_type;
 		obj = std::make_shared<U>(obj_from_json<U>(json));
-		return obj;
+		return std::move(obj);
 	}
 
 	template <class K = T, std::enable_if_t<is_weak_ptr_v<K>, bool> = true>
@@ -118,7 +118,7 @@ public:
 		K obj{};
 		using U = typename K::element_type;
 		obj = std::make_shared<U>(obj_from_json<U>(json));
-		return obj;
+		return std::move(obj);
 	}
 
 	template <class K = T, std::enable_if_t<is_vector_v<K>, bool> = true>
@@ -130,7 +130,7 @@ public:
 		{
 			obj.push_back(obj_from_json<U>(j));
 		}
-		return obj;
+		return std::move(obj);
 	}
 
 	template <class K = T, class D1 = boost::describe::describe_members<K, boost::describe::mod_any_access | boost::describe::mod_inherited>>
@@ -145,6 +145,6 @@ public:
 			}
 			obj.*(member).pointer = obj_from_json<std::remove_reference_t<decltype(obj.*(member).pointer)>>(json[member.name]);
 		});
-		return obj;
+		return std::move(obj);
 	}
 };

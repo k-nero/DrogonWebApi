@@ -1,14 +1,16 @@
 #pragma once
 #include "BaseEntity.h"
 #include "Contact.h"
+#include "ApplicationUser.h"
 
 class Contact;
+class ApplicationUser;
 
-class ContactList : public BaseEntity
+class DOMAIN_API ContactList : public BaseEntity
 {
 	BOOST_DESCRIBE_CLASS(ContactList, (BaseEntity), (), (ApplicationUserId, Contacts), ())
 public:
-	ContactList();
+	ContactList() = default;
 	~ContactList() = default;
 
 protected:

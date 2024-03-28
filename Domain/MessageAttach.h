@@ -5,11 +5,11 @@
 
 class Message;
 
-class MessageAttach : public BaseEntity
+class DOMAIN_API MessageAttach : public BaseEntity
 {
 	BOOST_DESCRIBE_CLASS(MessageAttach, (BaseEntity), (), (AttachName, AttactUrl, MessageId, AttachType, Message), ())
 public:
-	MessageAttach();
+	MessageAttach() = default;
 	~MessageAttach() = default;
 protected:
 	std::string AttachName = "";

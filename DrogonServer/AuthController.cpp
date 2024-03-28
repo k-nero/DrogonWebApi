@@ -90,7 +90,7 @@ void AuthController::Register(const HttpRequestPtr& req, std::function<void(cons
 			else
 			{
 				std::string passwordHash = Bcrypt::HashPassword((*reqJson)["password"].asString());
-				ApplicationUser user((*reqJson)["username"].asString(), (*reqJson)["email"].asString(), passwordHash, (*reqJson)["phoneNumber"].asString());
+				ApplicationUser user((*reqJson)["username"].asString(), (*reqJson)["email"].asString(), passwordHash, (*reqJson)["phoneNumber"].asString(), "null");
 				std::string rs = cmd.CreateApplicationUser(user);
 				if (!rs.empty())
 				{

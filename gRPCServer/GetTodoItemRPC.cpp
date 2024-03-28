@@ -54,7 +54,6 @@ void GetTodoItemRPC::Proceed()
 		rs->set_created_date(todo_item->GetCreatedDate());
 		rs->set_modified_date(todo_item->GetModifiedDate());
 		rs->set_todo_list_id(todo_item->GetTodoListId());
-		rs->set_version(todo_item->GetVersion());
 
 
 		reply_.set_message("Success");

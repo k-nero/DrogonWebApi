@@ -25,7 +25,17 @@ TodoItem::TodoItem(TodoItem&& todoItem) noexcept : BaseEntity(todoItem)
 	TodoList = std::move(todoItem.TodoList);
 }
 
-TodoItem& TodoItem::operator=(const TodoItem& todoItem) = default;
+TodoItem& TodoItem::operator=(const TodoItem& todoItem)
+{
+	BaseEntity::operator=(todoItem);
+	Id = todoItem.Id;
+	TodoListId = todoItem.TodoListId;
+	Title = todoItem.Title;
+	Note = todoItem.Note;
+	IsCompleted = todoItem.IsCompleted;
+	TodoList = todoItem.TodoList;
+	return *this;
+}
 
 TodoItem::TodoItem(const std::string& id, const std::string& todoListId, const std::string& title, const std::string& note, bool isCompleted, const std::string& createdDate, const std::string& modifedDate) : BaseEntity(id, createdDate, modifedDate)
 {
@@ -35,7 +45,7 @@ TodoItem::TodoItem(const std::string& id, const std::string& todoListId, const s
 	IsCompleted = isCompleted;
 }
 
-TodoItem::TodoItem( const std::string& todoListId, const std::string& title, const std::string& note, bool isCompleted, const std::string& createdDate, const std::string& modifedDate)
+TodoItem::TodoItem(const std::string& todoListId, const std::string& title, const std::string& note, bool isCompleted, const std::string& createdDate, const std::string& modifedDate)
 {
 	TodoListId = todoListId;
 	Title = title;
@@ -45,7 +55,17 @@ TodoItem::TodoItem( const std::string& todoListId, const std::string& title, con
 	ModifiedDate = modifedDate;
 }
 
-TodoItem& TodoItem::operator=(TodoItem&& todoItem) noexcept = default;
+TodoItem& TodoItem::operator=(TodoItem&& todoItem) noexcept
+{
+	BaseEntity::operator=(todoItem);
+	Id = std::move(todoItem.Id);
+	TodoListId = std::move(todoItem.TodoListId);
+	Title = std::move(todoItem.Title);
+	Note = std::move(todoItem.Note);
+	IsCompleted = todoItem.IsCompleted;
+	TodoList = std::move(todoItem.TodoList);
+	return *this;
+}
 
 std::string TodoItem::ToString()
 {

@@ -52,7 +52,6 @@ void GetTodoListRPC::Proceed()
 		rs->set_description(todo_list->GetDescription());
 		rs->set_created_date(todo_list->GetCreatedDate());
 		rs->set_modified_date(todo_list->GetModifiedDate());
-		rs->set_version(todo_list->GetVersion());
 
 		for (auto& todo_item : todo_list->GetTodoItems())
 		{

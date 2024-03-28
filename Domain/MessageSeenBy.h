@@ -4,11 +4,11 @@
 #include "Message.h"
 
 
-class MessageSeenBy : public BaseEntity
+class DOMAIN_API MessageSeenBy : public BaseEntity
 {
 	BOOST_DESCRIBE_CLASS(MessageSeenBy, (BaseEntity), (), (MessageId, ApplicationUserId, Message, ApplicationUser), ())
 public:
-	MessageSeenBy();
+	MessageSeenBy() = default;
 	~MessageSeenBy() = default;
 protected:
 	std::string MessageId = "";

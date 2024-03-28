@@ -12,11 +12,11 @@ class MessageAttach;
 class MessageSeenBy;
 class MessageReaction;
 
-class Message : public BaseEntity
+class DOMAIN_API Message : public BaseEntity
 {
-	BOOST_DESCRIBE_CLASS(Message, (BaseEntity), (), (TextMessage, ApplicationUserId, ChatRoomId, ApplicationUser, ChatRoom, MessageAttachs, MessageReactions), ())
+	BOOST_DESCRIBE_CLASS(Message, (BaseEntity), (), (TextMessage, ApplicationUserId, ChatRoomId, ApplicationUser, ChatRoom, MessageAttachs, MessageReactions, MessageSeenBys), ())
 public:
-	Message();
+	Message() = default;
 	~Message() = default;
 
 protected:

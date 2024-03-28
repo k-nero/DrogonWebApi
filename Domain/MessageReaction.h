@@ -1,11 +1,11 @@
 #pragma once
 #include "BaseEntity.h"
 #include "Message.h"
-class MessageReaction : public BaseEntity
+class DOMAIN_API MessageReaction : public BaseEntity
 {
 	BOOST_DESCRIBE_CLASS(MessageReaction, (BaseEntity), (), (MessageId, ApplicationUserId, ReactionType, Message, ApplicationUser), ())
 public:
-	MessageReaction();
+	MessageReaction() = default;
 	~MessageReaction() = default;
 
 protected:
