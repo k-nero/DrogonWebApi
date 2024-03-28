@@ -385,3 +385,4 @@ FodyWeavers.xsd
 /WebSocketServer/private_key.pem
 /WebSocketServer/public_key.pem
 /tools/sqlite
+/ChatClient/.env
