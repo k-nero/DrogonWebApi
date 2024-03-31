@@ -20,6 +20,8 @@ public:
 	std::shared_ptr<std::string> GetString(const std::string& key);
 	std::vector<std::string> GetAllActiveKeys(std::string contain = "");
 
+	int RemoveKeyContaining(const std::string& key_word);
+
 	void SetStringAsync(const std::string& key, const std::string& value, int expireSeconds);
 	void refreshTTLAsync(const std::string& key, int expireSeconds);
 	std::shared_ptr<std::string> GetStringAsync(const std::string& key);

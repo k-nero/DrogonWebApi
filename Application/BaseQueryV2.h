@@ -331,12 +331,11 @@ public:
 		{
 			return nullptr;
 		}
-
-		auto json["m_data"] = CoreHelper::ParseJson(result);
-		json["m_pageSize"] = pageSize;
-		json["m_currentPage"] = page;
-		json["m_totalPages"] = pageSize == 0 ? 0 : ceil(cout_task.get() / pageSize);
-		return JsonParser<std::shared_ptr<PaginationObject<K>>>::obj_from_json(json);
+		Json::Value root = CoreHelper::ParseJson(*result);
+		root["m_pageSize"] = pageSize;
+		root["m_currentPage"] = page;
+		root["m_totalPages"] = pageSize == 0 ? 0 : ceil(cout_task.get() / pageSize);
+		return JsonParser<std::shared_ptr<PaginationObject<K>>>::obj_from_json(root);
 	}
 
 	template<typename K = T>

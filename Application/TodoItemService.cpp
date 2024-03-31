@@ -87,15 +87,7 @@ std::string TodoItemService::CreateTodoItem(TodoItemModel& todo_item_model) noex
 	todo_item.SetId(CoreHelper::CreateUUID());
 	if (cmd.Create(todo_item) > 0)
 	{
-		auto keys = ctx.GetAllActiveKeys();
-		for (auto& key : keys)
-		{
-			if (key.find("TodoItem:") != std::string::npos)
-			{
-				ctx.RemoveKey(key);
-			}
-		}
-
+		ctx.RemoveKeyContaining("TodoItem:");
 		return todo_item.GetId();
 	}
 	else
@@ -112,14 +104,7 @@ int TodoItemService::UpdateTodoItem(TodoItemModel& todo_item_model, const std::s
 	auto todo_item = Mapper::Map<TodoItemModel, TodoItem>(todo_item_model);
 	if (cmd.Update(todo_item, EQ(Id)) > 0)
 	{
-		auto keys = ctx.GetAllActiveKeys();
-		for (auto& key : keys)
-		{
-			if (key.find("TodoItem:") != std::string::npos)
-			{
-				ctx.RemoveKey(key);
-			}
-		}
+		ctx.RemoveKeyContaining("TodoItem:");
 		return 1;
 	}
 	else
@@ -135,14 +120,7 @@ int TodoItemService::DeleteTodoItem(const std::string& Id)
 	BaseCommand<TodoItem> cmd;
 	if (cmd.Delete(EQ(Id)) > 0)
 	{
-		auto keys = ctx.GetAllActiveKeys();
-		for (auto& key : keys)
-		{
-			if (key.find("TodoItem:") != std::string::npos)
-			{
-				ctx.RemoveKey(key);
-			}
-		}
+		ctx.RemoveKeyContaining("TodoItem:");
 		return 1;
 	}
 	else

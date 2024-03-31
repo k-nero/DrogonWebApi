@@ -100,7 +100,6 @@ inline Json::Value CoreHelper::ParseJson(std::string& json)
 	delete reader;
 	if (!parsingSuccessful)
 	{
-		root = Json::Value();
 		root["error"] = errors;
 	}
 	return root;

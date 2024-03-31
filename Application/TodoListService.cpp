@@ -110,15 +110,7 @@ std::string TodoListService::CreateTodoList(TodoListModel& todo_list_model) noex
 	todo_list.SetId(CoreHelper::CreateUUID());
 	if (cmd.Create(todo_list) > 0)
 	{
-		auto keys = ctx.GetAllActiveKeys();
-		for (auto& key : keys)
-		{
-			if (key.find("TodoList:") != std::string::npos)
-			{
-				ctx.RemoveKey(key);
-			}
-		}
-
+		ctx.RemoveKeyContaining("TodoList:");
 		return todo_list.GetId();
 	}
 	else
@@ -135,14 +127,7 @@ int TodoListService::UpdateTodoList(TodoListModel& todo_list_model, const std::s
 	auto todo_list = Mapper::Map<TodoListModel, TodoList>(todo_list_model);
 	if (cmd.Update(todo_list, EQ(Id)) > 0)
 	{
-		auto keys = ctx.GetAllActiveKeys();
-		for (auto& key : keys)
-		{
-			if (key.find("TodoList:") != std::string::npos)
-			{
-				ctx.RemoveKey(key);
-			}
-		}
+		ctx.RemoveKeyContaining("TodoList:");
 		return 1;
 	}
 	else
@@ -158,14 +143,7 @@ int TodoListService::DeleteTodoList(const std::string& Id) noexcept(false)
 	ctx.CreateSyncContext();
 	if (cmd.Delete(EQ(Id)) > 0)
 	{
-		auto keys = ctx.GetAllActiveKeys();
-		for (auto& key : keys)
-		{
-			if (key.find("TodoList:") != std::string::npos)
-			{
-				ctx.RemoveKey(key);
-			}
-		}
+		ctx.RemoveKeyContaining("TodoList:");
 		return 1;
 	}
 	else

@@ -8,13 +8,14 @@ class ContactList;
 
 class DOMAIN_API Contact : public BaseEntity
 {
-	BOOST_DESCRIBE_CLASS(Contact, (BaseEntity), (), (ApplicationUserId, ContactListId, ApplicationUser, ContactList), ())
+	BOOST_DESCRIBE_CLASS(Contact, (BaseEntity), (), (ApplicationUserId, ContactListId, Tag, ApplicationUser, ContactList), ())
 public:
 	Contact() = default;
 	~Contact() = default;
 protected:
 	std::string ApplicationUserId = "";
 	std::string ContactListId = "";
+	std::string Tag = "";
 
 	std::shared_ptr<ApplicationUser> ApplicationUser = {};
 	std::shared_ptr<ContactList> ContactList = {};

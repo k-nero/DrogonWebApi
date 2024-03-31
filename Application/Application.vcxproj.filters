@@ -37,14 +37,14 @@
     <Filter Include="Source Files\Common\Exception">
       <UniqueIdentifier>{5b6cf5ef-058f-453d-92f7-c34a9bfa8a0e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Common\EntityFramework">
-      <UniqueIdentifier>{c6a7bc36-d359-402a-bdf2-e9e2461896e3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Common\Internal">
       <UniqueIdentifier>{d70fc509-9c9d-4168-b0dc-acdd7ab0571f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Common\Internal">
       <UniqueIdentifier>{27910e7a-0f6f-4b89-b88f-6d6afa417115}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Common\ORM">
+      <UniqueIdentifier>{c6a7bc36-d359-402a-bdf2-e9e2461896e3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -79,19 +79,67 @@
       <Filter>Header Files\Common\Exception</Filter>
     </ClInclude>
     <ClInclude Include="BaseCommand.h">
-      <Filter>Header Files\Common\EntityFramework</Filter>
+      <Filter>Header Files\Common\ORM</Filter>
     </ClInclude>
     <ClInclude Include="BaseQuery.h">
-      <Filter>Header Files\Common\EntityFramework</Filter>
+      <Filter>Header Files\Common\ORM</Filter>
     </ClInclude>
     <ClInclude Include="BaseQueryV2.h">
-      <Filter>Header Files\Common\EntityFramework</Filter>
+      <Filter>Header Files\Common\ORM</Filter>
     </ClInclude>
     <ClInclude Include="framework.h">
       <Filter>Header Files\Common\Internal</Filter>
     </ClInclude>
     <ClInclude Include="pch.h">
       <Filter>Header Files\Common\Internal</Filter>
+    </ClInclude>
+    <ClInclude Include="ChatRoomService.h">
+      <Filter>Header Files\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="ChatRoomModel.h">
+      <Filter>Header Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="ChatParticipantModel.h">
+      <Filter>Header Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="ContactModel.h">
+      <Filter>Header Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="ContactListModel.h">
+      <Filter>Header Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="MessageModel.h">
+      <Filter>Header Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="MessageAttachModel.h">
+      <Filter>Header Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="MessageReactionModel.h">
+      <Filter>Header Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="MessageSeenByModel.h">
+      <Filter>Header Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="ChatParticipantService.h">
+      <Filter>Header Files\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="ContactService.h">
+      <Filter>Header Files\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="ContactListService.h">
+      <Filter>Header Files\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="MessageService.h">
+      <Filter>Header Files\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="MessageAttachService.h">
+      <Filter>Header Files\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="MessageReactionService.h">
+      <Filter>Header Files\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="MessageSeenByService.h">
+      <Filter>Header Files\Services</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -124,6 +172,54 @@
     </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>Source Files\Common\Internal</Filter>
+    </ClCompile>
+    <ClCompile Include="ChatRoomService.cpp">
+      <Filter>Source Files\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="ChatRoomModel.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="ChatParticipantModel.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="ContactModel.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="ContactListModel.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="MessageModel.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="MessageAttachModel.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="MessageReactionModel.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="MessageSeenByModel.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="ChatParticipantService.cpp">
+      <Filter>Source Files\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="ContactService.cpp">
+      <Filter>Source Files\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="ContactListService.cpp">
+      <Filter>Source Files\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="MessageService.cpp">
+      <Filter>Source Files\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="MessageAttachService.cpp">
+      <Filter>Source Files\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="MessageReactionService.cpp">
+      <Filter>Source Files\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="MessageSeenByService.cpp">
+      <Filter>Source Files\Services</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

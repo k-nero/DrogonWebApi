@@ -236,6 +236,27 @@ std::vector<std::string> RedisContext::GetAllActiveKeys(std::string contain)
 	return keys;
 }
 
+int RedisContext::RemoveKeyContaining(const std::string& key_word)
+{
+	if (this->m_syncContext == nullptr)
+	{
+		BOOST_LOG_TRIVIAL(error) << "Redis context is nullptr";
+		return 0;
+	}
+
+	auto keys = this->GetAllActiveKeys();
+	int count = 0;
+	for (auto& key : keys)
+	{
+		if (key.find(key_word) != std::string::npos)
+		{
+			this->RemoveKey(key);
+			count++;
+		}
+	}
+	return count;
+}
+
 void RedisContext::SetStringAsync(const std::string& key, const std::string& value, int expireSeconds)
 {
 	if (this->m_asyncContext == nullptr)
