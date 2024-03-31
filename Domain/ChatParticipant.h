@@ -3,7 +3,6 @@
 #include "ApplicationUser.h"
 #include "ChatRoom.h"
 
-class ChatParticipant;
 class ApplicationUser;
 class ChatRoom;
 

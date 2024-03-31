@@ -1,4 +1,4 @@
-#pragma 
+#pragma once
 #include <boost/describe.hpp>
 #include <string>
 

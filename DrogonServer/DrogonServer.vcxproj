@@ -238,10 +238,26 @@
   <ItemGroup>
     <ClCompile Include="AuthController.cpp" />
     <ClCompile Include="Authorization.cpp" />
+    <ClCompile Include="ChatParticipantController.cpp" />
+    <ClCompile Include="ChatRoomController.cpp" />
+    <ClCompile Include="ContactController.cpp" />
+    <ClCompile Include="ContactListController.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MessageAttachController.cpp" />
+    <ClCompile Include="MessageController.cpp" />
+    <ClCompile Include="MessageReactionController.cpp" />
+    <ClCompile Include="MessageSeenByController.cpp" />
     <ClCompile Include="UserController.cpp" />
     <ClInclude Include="AuthController.h" />
+    <ClInclude Include="ChatParticipantController.h" />
+    <ClInclude Include="ChatRoomController.h" />
+    <ClInclude Include="ContactController.h" />
+    <ClInclude Include="ContactListController.h" />
     <ClInclude Include="Macros.h" />
+    <ClInclude Include="MessageAttachController.h" />
+    <ClInclude Include="MessageController.h" />
+    <ClInclude Include="MessageReactionController.h" />
+    <ClInclude Include="MessageSeenByController.h" />
     <ClInclude Include="ModelBinding.h" />
     <ClInclude Include="SwaggerSpec.h" />
     <ClInclude Include="TodoItemController.h" />
