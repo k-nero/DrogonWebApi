@@ -1,5 +1,7 @@
 import ChatLayout from "@/layouts/chats";
 import { useLocation } from "react-router-dom";
+import ChatBoxHeader from "@/pages/chat/components/ChatBoxHeader.tsx";
+import MessageBox from "@/pages/chat/components/MessageBox.tsx";
 
 
 function ChatPage()
@@ -9,8 +11,9 @@ function ChatPage()
 
   return (
       <ChatLayout>
-          <div>
-              <h1>ChatBox id {chat_id}</h1>
+          <ChatBoxHeader/>
+          <div className="w-fit h-fit">
+              <MessageBox/>
           </div>
       </ChatLayout>
   );

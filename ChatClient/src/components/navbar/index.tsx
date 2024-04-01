@@ -4,6 +4,7 @@ import React from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { AiOutlineAppstore, AiOutlineMessage } from "react-icons/ai";
 import { FiPhoneCall } from "react-icons/fi";
+import { CiLogout } from "react-icons/ci";
 
 const navLinks = [
     {
@@ -79,7 +80,7 @@ function Navbar()
                         <GoQuestion className="block m-auto"/>
                     </button>
                     <button>
-                        <IoExitOutline className="block m-auto"/>
+                        <CiLogout className="block m-auto"/>
                     </button>
                 </div>
             </div>
