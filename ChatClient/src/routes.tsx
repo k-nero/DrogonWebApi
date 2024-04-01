@@ -1,7 +1,10 @@
 import { createBrowserRouter } from "react-router-dom";
 import SignIn from "./pages/auth/SignIn.tsx";
 import ChatPage from "@/pages/chat";
-import ChatRoom from "@/pages/chat/room";
+import Contact from "@/pages/contact";
+import Messages from "@/pages/messages";
+import Moments from "@/pages/moments";
+import Settings from "@/pages/settings";
 
 export type RoutesType = {
     name: string;
@@ -16,17 +19,37 @@ const routes: RoutesType[] = [
     {
         name: "Authentication",
         path: "/auth/sign-in",
-        element: <SignIn />
+        element: <SignIn/>
+    },
+    {
+        name: "Contact",
+        path: "/contacts",
+        element: <Contact/>,
+    },
+    {
+        name: "Messages",
+        path: "/messages",
+        element: <Messages/>,
+    },
+    {
+        name: "Moment",
+        path: "/moments",
+        element: <Moments/>,
+    },
+    {
+        name: "Settings",
+        path: "/settings",
+        element: <Settings/>,
     },
     {
         name: "Chat",
-        path: "/chat",
-        element: <ChatPage />,
+        path: "/chats",
+        element: <ChatPage/>,
         children: [
             {
                 name: "Chat",
-                path: "/chat/:chat_id",
-                element: <ChatRoom />
+                path: "/chats/:id",
+                element: <ChatPage/>
             }
         ]
     }

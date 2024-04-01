@@ -1,9 +1,17 @@
-import ChatLayout from "@/layouts/chat";
+import ChatLayout from "@/layouts/chats";
+import { useLocation } from "react-router-dom";
 
-function ChatPage() {
+
+function ChatPage()
+{
+    const location = useLocation();
+    const chat_id = location.pathname.split("/")[2];
+
   return (
       <ChatLayout>
-        Chat
+          <div>
+              <h1>ChatBox id {chat_id}</h1>
+          </div>
       </ChatLayout>
   );
 }
