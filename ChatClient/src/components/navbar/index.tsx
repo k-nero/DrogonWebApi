@@ -1,10 +1,10 @@
 import { GoPeople, GoQuestion } from "react-icons/go";
-import { IoExitOutline, IoSettingsOutline } from "react-icons/io5";
+import { IoSettingsOutline } from "react-icons/io5";
 import React from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { AiOutlineAppstore, AiOutlineMessage } from "react-icons/ai";
-import { FiPhoneCall } from "react-icons/fi";
 import { CiLogout } from "react-icons/ci";
+import { MdCamera } from "react-icons/md";
 
 const navLinks = [
     {
@@ -23,7 +23,7 @@ const navLinks = [
         name: "Messages"
     },
     {
-        icon: FiPhoneCall,
+        icon: MdCamera ,
         path: "/moments",
         name: "Moments"
     },

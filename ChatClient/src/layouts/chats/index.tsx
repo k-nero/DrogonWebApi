@@ -44,11 +44,11 @@ function ChatLayout({ children }: { children: React.ReactNode })
     }
 
     return (
-        <div className="grid grid-cols-12 w-full h-full">
+        <div className="grid grid-cols-12 w-full h-full max-h-screen">
             <Navbar/>
             <div className="min-h-screen col-span-11">
                 <div className="grid grid-cols-12">
-                    <div className="p-5 mx-2 col-span-3 min-h-screen border-r-2">
+                    <div className="p-5 col-span-3 min-h-screen border-r-2">
                         <div className="flex justify-between">
                             <h1 className="font-bold text-2xl">Messages</h1>
                             <button>
