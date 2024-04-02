@@ -25,7 +25,7 @@ const Chats = [
 
 function ChatLayout({ children }: { children: React.ReactNode })
 {
-    const [userLocal, setUser] = useLocalStorage("user", {});
+    const [userLocal, setUser] = useLocalStorage("auth_credential", {});
 
     function ChatList()
     {
@@ -82,7 +82,6 @@ function ChatLayout({ children }: { children: React.ReactNode })
                         {children}
                     </div>
                 </div>
-
             </div>
         </div>
     );

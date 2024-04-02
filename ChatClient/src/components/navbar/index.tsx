@@ -40,7 +40,7 @@ const navLinks = [
 function Navbar()
 {
     const location = useLocation();
-    const [userLocal, setUser] = useLocalStorage("auth_credential", {});
+    const [userLocal] = useLocalStorage("auth_credential", {});
     const credential: AuthResponse = userLocal;
     function activeRoute(routeName: string)
     {

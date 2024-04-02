@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 // Simplified useLocalStorage hook
-export default function useLocalStorage(key, initialValue) {
+export default function useLocalStorage(key : string, initialValue ) {
     const [storedValue, setStoredValue] = useState(() => {
         try
         {
@@ -18,8 +18,7 @@ export default function useLocalStorage(key, initialValue) {
     const setValue = (value) => {
         try
         {
-            const valueToStore =
-                value instanceof Function ? value(storedValue) : value;
+            const valueToStore =  value instanceof Function ? value(storedValue) : value;
             setStoredValue(valueToStore);
             window.localStorage.setItem(key, JSON.stringify(valueToStore));
         }

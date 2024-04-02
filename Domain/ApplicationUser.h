@@ -10,7 +10,7 @@ class ChatParticipant;
 
 class DOMAIN_API ApplicationUser : public BaseEntity
 {
-	BOOST_DESCRIBE_CLASS(ApplicationUser, (BaseEntity), (), (UserName, Email, PasswordHash, PhoneNumber, ContactListId, AvatarUrl, chatParticipants, contactList), ())
+	BOOST_DESCRIBE_CLASS(ApplicationUser, (BaseEntity), (), (UserName, Email, PasswordHash, PhoneNumber, AvatarUrl, chatParticipants, contactList), ())
 public:
 	ApplicationUser();
 
@@ -23,9 +23,9 @@ public:
 	//Copy assignment operator
 	ApplicationUser& operator=(const ApplicationUser& applicationUser);
 
-	ApplicationUser(const std::string& id, const std::string& username, const std::string& email, const std::string& passwordhash, const std::string& phonenumber, const std::string& contactListId, const std::string& createdDate = "", const std::string& modifedDate = "");
+	ApplicationUser(const std::string& id, const std::string& username, const std::string& email, const std::string& passwordhash, const std::string& phonenumber, const std::string& createdDate = "", const std::string& modifedDate = "");
 
-	ApplicationUser(const std::string& username, const std::string& email, const std::string& passwordhash, const std::string& phonenumber, const std::string& contactListId, const std::string& createdDate = "", const std::string& modifedDate = "");
+	ApplicationUser(const std::string& username, const std::string& email, const std::string& passwordhash, const std::string& phonenumber, const std::string& createdDate = "", const std::string& modifedDate = "");
 
 	//Move assignment operator
 	ApplicationUser& operator=(ApplicationUser&& applicationuser) noexcept;
@@ -66,15 +66,6 @@ public:
 		PhoneNumber = phonenumber;
 	}
 
-	virtual std::string GetContactListId()
-	{
-		return ContactListId;
-	}
-	virtual void SetContactListId(const std::string& contactListId)
-	{
-		ContactListId = contactListId;
-	}
-
 	virtual std::string GetAvatarUrl()
 	{
 		return AvatarUrl;
@@ -91,8 +82,7 @@ protected:
 	std::string Email = {};
 	std::string PasswordHash = {};
 	std::string PhoneNumber = {};
-	std::string ContactListId = {};
 	std::string AvatarUrl = {};
 	std::vector<std::shared_ptr<ChatParticipant>> chatParticipants = {};
-	std::shared_ptr<ContactList> contactList = nullptr;
+	std::vector<std::shared_ptr<ContactList>> contactList = {};
 };

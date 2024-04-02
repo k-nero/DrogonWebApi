@@ -9,7 +9,6 @@ ApplicationUser::ApplicationUser(const ApplicationUser& applicationuser) : BaseE
 	Email = applicationuser.Email;
 	PasswordHash = applicationuser.PasswordHash;
 	PhoneNumber = applicationuser.PhoneNumber;
-	ContactListId = applicationuser.ContactListId;
 	AvatarUrl = applicationuser.AvatarUrl;
 	// Shalow copy
 	chatParticipants = applicationuser.chatParticipants;
@@ -22,7 +21,6 @@ ApplicationUser::ApplicationUser(ApplicationUser&& applicationuser) noexcept : B
 	Email = std::move(applicationuser.Email);
 	PasswordHash = std::move(applicationuser.PasswordHash);
 	PhoneNumber = std::move(applicationuser.PhoneNumber);
-	ContactListId = std::move(applicationuser.ContactListId);
 	AvatarUrl = std::move(applicationuser.AvatarUrl);
 
 	chatParticipants = std::move(applicationuser.chatParticipants);
@@ -36,7 +34,6 @@ ApplicationUser& ApplicationUser::operator=(const ApplicationUser& applicationus
 	Email = applicationuser.Email;
 	PasswordHash = applicationuser.PasswordHash;
 	PhoneNumber = applicationuser.PhoneNumber;
-	ContactListId = applicationuser.ContactListId;
 	AvatarUrl = applicationuser.AvatarUrl;
 	// Shalow copy
 	chatParticipants = applicationuser.chatParticipants;
@@ -44,22 +41,20 @@ ApplicationUser& ApplicationUser::operator=(const ApplicationUser& applicationus
 	return *this;
 }
 
-ApplicationUser::ApplicationUser(const std::string& id, const std::string& username, const std::string& email, const std::string& passwordhash, const std::string& phonenumber, const std::string& contactListId, const std::string& createdDate, const std::string& modifedDate) : BaseEntity(id, createdDate, modifedDate)
+ApplicationUser::ApplicationUser(const std::string& id, const std::string& username, const std::string& email, const std::string& passwordhash, const std::string& phonenumber, const std::string& createdDate, const std::string& modifedDate) : BaseEntity(id, createdDate, modifedDate)
 {
 	UserName = username;
 	Email = email;
 	PasswordHash = passwordhash;
 	PhoneNumber = phonenumber;
-	ContactListId = contactListId;
 }
 
-ApplicationUser::ApplicationUser(const std::string& username, const std::string& email, const std::string& passwordhash, const std::string& phonenumber, const std::string& contactListId, const std::string& createdDate, const std::string& modifedDate)
+ApplicationUser::ApplicationUser(const std::string& username, const std::string& email, const std::string& passwordhash, const std::string& phonenumber, const std::string& createdDate, const std::string& modifedDate)
 {
 	UserName = username;
 	Email = email;
 	PasswordHash = passwordhash;
 	PhoneNumber = phonenumber;
-	ContactListId = contactListId;
 	CreatedDate = createdDate;
 	ModifiedDate = modifedDate;
 }
@@ -71,7 +66,6 @@ ApplicationUser& ApplicationUser::operator=(ApplicationUser&& applicationuser) n
 	Email = std::move(applicationuser.Email);
 	PasswordHash = std::move(applicationuser.PasswordHash);
 	PhoneNumber = std::move(applicationuser.PhoneNumber);
-	ContactListId = std::move(applicationuser.ContactListId);
 	AvatarUrl = std::move(applicationuser.AvatarUrl);
 
 	chatParticipants = std::move(applicationuser.chatParticipants);

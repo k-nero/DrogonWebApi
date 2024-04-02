@@ -90,10 +90,17 @@ void AuthController::Register(const HttpRequestPtr& req, std::function<void(cons
 			else
 			{
 				std::string passwordHash = Bcrypt::HashPassword((*reqJson)["password"].asString());
-				ApplicationUser user((*reqJson)["username"].asString(), (*reqJson)["email"].asString(), passwordHash, (*reqJson)["phoneNumber"].asString(), "null");
+				ApplicationUser user((*reqJson)["username"].asString(), (*reqJson)["email"].asString(), passwordHash, (*reqJson)["phoneNumber"].asString());
 				std::string rs = cmd.CreateApplicationUser(user);
 				if (!rs.empty())
 				{
+
+					std::async(std::launch::async, [&rs]() 
+					{
+						ContactListModel contactList(rs, "Friends");
+						ContactListService().CreateContactList(contactList);
+					});
+
 					ret["message"] = "User created successfully!";
 					ret["status"] = k200OK;
 					ret["id"] = rs;

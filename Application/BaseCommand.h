@@ -34,19 +34,30 @@ public:
 			boost::mp11::mp_for_each<D>([&](auto D)
 			{
 				std::string field = D.name;
-
-				if (D.name != "ModifiedDate" && is_primitive_type((item.*(D).pointer)))
+				auto value = (item.*(D).pointer);
+				auto void_pointer = (void*)&value;
+				if (is_primitive_type(value))
 				{
-					query += field + ", ";
 					if (D.name == "CreatedDate")
 					{
 						values += "GETDATE(), ";
 					}
 					else
 					{
+						if (std::is_same<std::remove_reference_t<decltype(value)>, std::string>::value
+							|| std::is_same<std::remove_reference_t<decltype(value)>, std::wstring>::value
+							|| std::is_same<std::remove_reference_t<decltype(value)>, std::string_view>::value
+							|| std::is_same<std::remove_reference_t<decltype(value)>, std::wstring_view>::value)
+						{
+							if ((*(std::string*)void_pointer).empty())
+							{
+								return;
+							}
+						}
 						values += ":" + field + ", ";
 						fields.push_back(field);
 					}
+					query += field + ", ";
 				}
 			});
 			query = query.substr(0, query.length() - 2) + ")";
