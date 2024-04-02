@@ -243,7 +243,7 @@ public:
 			std::string table_name = std::string(typeid(K).name());
 			table_name = table_name.substr(table_name.find_last_of(' ') + 1);
 
-			auto cout_task = std::async(std::launch::async, [&]()
+			auto count_task = std::async(std::launch::async, [&]()
 			{
 				int count = 0;
 				if (query.empty())
@@ -269,16 +269,10 @@ public:
 				return nullptr;
 			}
 			Json::Value root;
-			std::string errors;
-			auto reader = Json::CharReaderBuilder().newCharReader();
-			if (!reader->parse(result->c_str(), result->c_str() + result->size(), &root["m_data"], &errors))
-			{
-				throw std::exception(errors.c_str());
-			}
-			delete reader;
+			root["m_data"] = CoreHelper::ParseJson(*result);
 			root["m_pageSize"] = pageSize;
 			root["m_currentPage"] = page;
-			root["m_totalPages"] = pageSize == 0 ? 0 : ceil(cout_task.get() / pageSize);
+			root["m_totalPages"] = pageSize == 0 ? 0 : ceil((float)count_task.get() / (float)pageSize);
 			return std::make_shared<std::string>(root.toStyledString());
 		}
 		catch (SAException& ex)
@@ -304,7 +298,7 @@ public:
 		std::string table_name = std::string(typeid(K).name());
 		table_name = table_name.substr(table_name.find_last_of(' ') + 1);
 
-		auto cout_task = std::async(std::launch::async, [&]()
+		auto count_task = std::async(std::launch::async, [&]()
 		{
 			int count = 0;
 
@@ -331,10 +325,11 @@ public:
 		{
 			return nullptr;
 		}
-		Json::Value root = CoreHelper::ParseJson(*result);
+		Json::Value root;
+		root["m_data"] = CoreHelper::ParseJson(*result);
 		root["m_pageSize"] = pageSize;
 		root["m_currentPage"] = page;
-		root["m_totalPages"] = pageSize == 0 ? 0 : ceil(cout_task.get() / pageSize);
+		root["m_totalPages"] = pageSize == 0 ? 0 : ceil((float)count_task.get() / (float)pageSize);
 		return JsonParser<std::shared_ptr<PaginationObject<K>>>::obj_from_json(root);
 	}
 

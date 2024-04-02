@@ -238,13 +238,21 @@ void ContactListController::Delete(const HttpRequestPtr& req, std::function<void
 	}
 }
 
-void ContactListController::GetPaginated(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback, int page, int limit)
+void ContactListController::GetPaginated(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback, int page, int limit, std::string user_id)
 {
 	try
 	{
 		page == 0 ? page = 1 : page = page;
 		limit == 0 ? limit = 10 : limit = limit;
-		auto task = std::future(std::async(std::launch::async, [page, limit]() { return ContactListService().GetContactListsByPage(page, limit); }));
+		std::future<std::shared_ptr<PaginationObject<ContactList>>> task;
+		if (user_id.empty())
+		{
+			task = std::async(std::launch::async, [page, limit]() { return ContactListService().GetContactListsByPage(page, limit); });
+		}
+		else
+		{
+			task = std::async(std::launch::async, [page, limit, user_id]() { return ContactListService().GetContactListsByUserId(page, limit, user_id); });
+		}
 		auto result = task.get();
 		Json::Value rs = ObjToJson(result);
 		const auto resp = HttpResponse::newHttpJsonResponse(rs);

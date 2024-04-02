@@ -20,22 +20,28 @@ function ChatPage()
 
     return (
         <ChatLayout>
-            <div className={`w-full h-full ${isPanelOpen ? "grid grid-cols-10" : ""}`}>
-                <div className={`w-full h-full ${isPanelOpen ? "col-span-6" : ""}`}>
-                    <ChatBoxHeader setIsPanel={setIsPanel}/>
-                    <div className="bg-gray-100 bg-opacity-90 p-4 flex flex-col justify-between h-[90%]">
-                        <MessageBox/>
-                        <MessageInput/>
+            {
+                chat_id ?
+                <div className={`w-full h-full ${isPanelOpen ? "grid grid-cols-10" : ""}`}>
+                    <div className={`w-full h-full ${isPanelOpen ? "col-span-6" : ""}`}>
+                        <ChatBoxHeader setIsPanel={setIsPanel}/>
+                        <div className="bg-gray-100 bg-opacity-90 p-4 flex flex-col justify-between h-[90%]">
+                            <MessageBox/>
+                            <MessageInput/>
+                        </div>
                     </div>
+                    {
+                        isPanelOpen &&
+                        <div className="col-span-4">
+                            <ChatPanel setIsPanel={setIsPanel}/>
+                        </div>
+                    }
                 </div>
-                {
-                    isPanelOpen &&
-                    <div className="col-span-4">
-                        <ChatPanel setIsPanel={setIsPanel}/>
+                    :
+                    <div className="flex items-center justify-center h-full">
+                        <h1 className="text-2xl ">Select a chat to start conversion </h1>
                     </div>
-                }
-            </div>
-
+            }
         </ChatLayout>
     );
 }

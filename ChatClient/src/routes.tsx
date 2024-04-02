@@ -24,7 +24,14 @@ const routes: RoutesType[] = [
     {
         name: "Contact",
         path: "/contacts",
-        element: <Contact/>
+        element: <Contact/>,
+        children: [
+            {
+                name: "Contact",
+                path: "/contacts/:id",
+                element: <Contact/>
+            }
+        ]
     },
     {
         name: "Messages",

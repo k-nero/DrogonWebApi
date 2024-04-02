@@ -27,7 +27,7 @@ function GoogleLoginButton()
         const accountResponse: AuthResponse = await Authentication(idToken);
         setUser(accountResponse.user);
         console.log({
-            accessToken: accountResponse.accessToken
+            accessToken: accountResponse.access_token
         });
 
         alert(`Login successfully, Welcome back: ${accountResponse.user.UserName} 👋`);

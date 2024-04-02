@@ -48,15 +48,13 @@ const image = (
 const items: CollapseProps["items"] = [
     {
         key: "file",
-        label: <p className="font-bold text-[15px] py-3 ">Recent Files</p>,
+        label: <p className="font-bold text-[15px]">Recent Files</p>,
         children: fileList,
-        showArrow: false
     },
     {
         key: "image",
-        label: <p className="font-bold text-[15px] py-3">Recent Images</p>,
+        label: <p className="font-bold text-[15px]">Recent Images</p>,
         children: image,
-        showArrow: false,
     },
 
 
@@ -80,7 +78,7 @@ function ChatPanel({ setIsPanel }: { setIsPanel: () => void })
                 <h1 className="font-bold">Notifications</h1>
                 <Switch className="text-teal-500" />
             </div>
-            <Collapse activeKey={["file", "image"]} items={items} className="text-teal-500 bg-white text-1xl border-b-2" bordered={false}/>
+            <Collapse defaultActiveKey={["file", "image"]} expandIconPosition={"end"} items={items} className="text-teal-500 bg-white text-1xl border-b-2" bordered={false} />
         </div>
     );
 }

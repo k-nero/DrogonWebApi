@@ -14,6 +14,7 @@ public:
 	std::shared_ptr<ContactList> GetContactListById(const std::string& id);
 	std::vector<std::shared_ptr<ContactList>>GetAllContactLists();
 	std::shared_ptr<PaginationObject<ContactList>> GetContactListsByPage(int page, int page_size);
+	std::shared_ptr<PaginationObject<ContactList>> GetContactListsByUserId(int page, int page_size, std::string user_id);
 	std::string CreateContactList(ContactListModel& todo_list_model);
 	int UpdateContactList(ContactListModel& todo_list_model, const std::string& id);
 	int DeleteContactList(const std::string& id);
