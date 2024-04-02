@@ -25,7 +25,7 @@ function ChatBoxHeader({setIsPanel} : {setIsPanel: () => void})
                     <button className="p-3 rounded-full border-2">
                         <BsCameraVideoFill className="text-teal-600 text-2xl"/>
                     </button>
-                    <button className="p-3 rounded-full border-2" onClick={() => setIsPanel()}>
+                    <button className="p-3 rounded-full border-2" onClick={setIsPanel}>
                         <BsThreeDots className="text-2xl opacity-50"/>
                     </button>
                 </div>

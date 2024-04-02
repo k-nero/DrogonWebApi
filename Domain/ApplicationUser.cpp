@@ -10,6 +10,7 @@ ApplicationUser::ApplicationUser(const ApplicationUser& applicationuser) : BaseE
 	PasswordHash = applicationuser.PasswordHash;
 	PhoneNumber = applicationuser.PhoneNumber;
 	ContactListId = applicationuser.ContactListId;
+	AvatarUrl = applicationuser.AvatarUrl;
 	// Shalow copy
 	chatParticipants = applicationuser.chatParticipants;
 	contactList = applicationuser.contactList;
@@ -22,6 +23,7 @@ ApplicationUser::ApplicationUser(ApplicationUser&& applicationuser) noexcept : B
 	PasswordHash = std::move(applicationuser.PasswordHash);
 	PhoneNumber = std::move(applicationuser.PhoneNumber);
 	ContactListId = std::move(applicationuser.ContactListId);
+	AvatarUrl = std::move(applicationuser.AvatarUrl);
 
 	chatParticipants = std::move(applicationuser.chatParticipants);
 	contactList = std::move(applicationuser.contactList);
@@ -35,6 +37,7 @@ ApplicationUser& ApplicationUser::operator=(const ApplicationUser& applicationus
 	PasswordHash = applicationuser.PasswordHash;
 	PhoneNumber = applicationuser.PhoneNumber;
 	ContactListId = applicationuser.ContactListId;
+	AvatarUrl = applicationuser.AvatarUrl;
 	// Shalow copy
 	chatParticipants = applicationuser.chatParticipants;
 	contactList = applicationuser.contactList;
@@ -69,6 +72,7 @@ ApplicationUser& ApplicationUser::operator=(ApplicationUser&& applicationuser) n
 	PasswordHash = std::move(applicationuser.PasswordHash);
 	PhoneNumber = std::move(applicationuser.PhoneNumber);
 	ContactListId = std::move(applicationuser.ContactListId);
+	AvatarUrl = std::move(applicationuser.AvatarUrl);
 
 	chatParticipants = std::move(applicationuser.chatParticipants);
 	contactList = std::move(applicationuser.contactList);

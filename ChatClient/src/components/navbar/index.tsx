@@ -5,6 +5,8 @@ import { NavLink, useLocation } from "react-router-dom";
 import { AiOutlineAppstore, AiOutlineMessage } from "react-icons/ai";
 import { CiLogout } from "react-icons/ci";
 import { MdCamera } from "react-icons/md";
+import useLocalStorage from "@/utils/hooks/useLocalStorage.ts";
+import { AuthResponse } from "@/utils/type/AuthResponse.ts";
 
 const navLinks = [
     {
@@ -38,7 +40,8 @@ const navLinks = [
 function Navbar()
 {
     const location = useLocation();
-
+    const [userLocal, setUser] = useLocalStorage("auth_credential", {});
+    const credential: AuthResponse = userLocal;
     function activeRoute(routeName: string)
     {
         return location.pathname.split("?")[0].startsWith(routeName);
@@ -71,7 +74,7 @@ function Navbar()
             <div className="flex flex-col justify-between h-full">
                 <div className="grid-cols-1 grid gap-y-8">
                     <button className="">
-                        <img src="https://via.placeholder.com/150" alt="profile" className="block m-auto rounded-full w-12 h-12"/>
+                        <img src={`${credential.user.AvatarUrl}`} alt="profile" className="block m-auto rounded-full w-12 h-12"/>
                     </button>
                     <CreateNavLink/>
                 </div>

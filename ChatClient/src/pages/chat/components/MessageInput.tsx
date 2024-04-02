@@ -2,7 +2,6 @@ import { GoDeviceCameraVideo } from "react-icons/go";
 import { GrAttachment } from "react-icons/gr";
 import { IoMicOutline, IoSendSharp } from "react-icons/io5";
 import { FaRegClipboard } from "react-icons/fa6";
-import { BsThreeDotsVertical } from "react-icons/bs";
 import { LuSmile } from "react-icons/lu";
 import { HiDotsVertical } from "react-icons/hi";
 

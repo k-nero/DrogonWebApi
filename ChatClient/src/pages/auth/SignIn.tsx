@@ -2,8 +2,38 @@ import InputField from "@/components/form/input.tsx";
 import AuthLayout from "@/layouts/auth";
 import GoogleLoginButton from "./GoogleLoginButton";
 import { Checkbox } from "antd";
+import React, { useState } from "react";
+import { AuthResponse } from "@/utils/type/AuthResponse.ts";
+import useLocalStorage from "@/utils/hooks/useLocalStorage";
 
-export default function SignIn() {
+function SignIn()
+{
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [,setUser] = useLocalStorage("auth_credential", {});
+
+    async function handleSubmit(e: React.MouseEvent<HTMLButtonElement>)
+    {
+        e.preventDefault();
+        const res = await fetch("https://127.0.0.1:443/api/auth/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                username: email,
+                password: password,
+            }),
+        });
+
+        const data: AuthResponse = await res.json();
+        if(res.status === 200)
+        {
+            setUser(data);
+            window.location.href = "/chats";
+        }
+    }
+
     return (
         <AuthLayout>
             <div className="mb-16 mt-16 flex h-full w-full items-center justify-center px-2 md:mx-0 md:px-0 lg:mb-10 lg:items-center lg:justify-start">
@@ -31,6 +61,7 @@ export default function SignIn() {
                             placeholder="mail@simmmple.com"
                             id="email"
                             type="text"
+                            onChange={(e) => setEmail(e.target.value)}
                             // defaultValue="raekyo_admin@gmail.com"
                         />
 
@@ -43,6 +74,7 @@ export default function SignIn() {
                             placeholder="Min. 8 characters"
                             id="password"
                             type="password"
+                            onChange={(e) => setPassword(e.target.value)}
                             // defaultValue="2024RaeKyoAdmin"
                         />
                         {/* Checkbox */}
@@ -62,10 +94,8 @@ export default function SignIn() {
                         </div>
                         <button
                             type="submit"
-                            onClick={() =>
-                                alert(
-                                    "Function is in progress, please try \"Sign in with Google\""
-                                )
+                            onClick={(e) =>
+                                handleSubmit(e)
                             }
                             className="linear mt-2 w-full rounded-xl bg-brand-500 py-[12px] text-base font-medium text-white transition duration-200 hover:bg-brand-600 active:bg-brand-700 dark:bg-brand-400 dark:text-white dark:hover:bg-brand-300 dark:active:bg-brand-200"
                         >
@@ -88,3 +118,5 @@ export default function SignIn() {
         </AuthLayout>
     );
 }
+
+export default SignIn;

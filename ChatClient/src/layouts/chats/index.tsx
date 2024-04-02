@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import { BsThreeDots } from "react-icons/bs";
 import InputField from "@/components/form/input.tsx";
 import Navbar from "@/components/navbar";
+import useLocalStorage from "@/utils/hooks/useLocalStorage";
 
 const Chats = [
     {
@@ -21,8 +22,11 @@ const Chats = [
     }
 ];
 
+
 function ChatLayout({ children }: { children: React.ReactNode })
 {
+    const [userLocal, setUser] = useLocalStorage("user", {});
+
     function ChatList()
     {
         return Chats.map((chat, index) => {

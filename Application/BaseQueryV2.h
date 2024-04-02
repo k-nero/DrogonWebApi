@@ -139,7 +139,7 @@ public:
 				base_query += "SELECT TOP 1 " + selected_field<K>(select_fields);
 			}
 			std::string alias = include_table<K>(includes);
-			std::string from = " FROM [dbo].[" + table_name + "] WHERE Id = '" + query + "' FOR JSON AUTO, WITHOUT_ARRAY_WRAPPER";
+			std::string from = " FROM [dbo].[" + table_name + "] WHERE " + query + " FOR JSON AUTO, WITHOUT_ARRAY_WRAPPER";
 			base_query += alias + from;
 #ifdef LOG_SQL_COMMAND
 			BOOST_LOG_TRIVIAL(debug) << base_query;

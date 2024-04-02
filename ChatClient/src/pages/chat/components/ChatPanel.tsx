@@ -8,16 +8,28 @@ const fileList = (
     <div>
         <div className="flex justify-between">
             <h1 className="">FileName</h1>
-            <BsThreeDots className="text-2xl opacity-50"/>
-        </div> <div className="flex justify-between">
+            <button>
+                <BsThreeDots className="text-2xl opacity-50"/>
+            </button>
+        </div>
+        <div className="flex justify-between">
             <h1 className="">FileName</h1>
-            <BsThreeDots className="text-2xl opacity-50"/>
-        </div> <div className="flex justify-between">
+            <button>
+                <BsThreeDots className="text-2xl opacity-50"/>
+            </button>
+        </div>
+        <div className="flex justify-between">
             <h1 className="">FileName</h1>
-            <BsThreeDots className="text-2xl opacity-50"/>
-        </div> <div className="flex justify-between">
+            <button>
+                <BsThreeDots className="text-2xl opacity-50"/>
+            </button>
+        </div>
+        <div className="flex justify-between">
             <h1 className="">FileName</h1>
+            <button>
             <BsThreeDots className="text-2xl opacity-50"/>
+        </button>
+
         </div>
     </div>
 );

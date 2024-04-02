@@ -19,15 +19,7 @@ int main()
     std::cout << drogon::banner;
     BOOST_LOG_TRIVIAL(info) << "Drogon server starting...";
 
-    ConfigProvider::GetInstance()->Initialize();
-
     //Set HTTP listener address and port
-    drogon::app().registerPostHandlingAdvice(
-        [](const drogon::HttpRequestPtr& req, const drogon::HttpResponsePtr& resp)
-    {
-        resp->addHeader("Access-Control-Allow-Origin", "*");
-        resp->addHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH");
-    });
 
     drogon::app().addListener( "127.0.0.1", 443, true, "certificate.crt", "private.key");
     drogon::app().setLogPath("");
@@ -40,9 +32,36 @@ int main()
     drogon::app().setCustom404Page(drogon::HttpResponse::newFileResponse("public/404.html", "", drogon::CT_TEXT_HTML));
 
     //Load config file
-    //drogon::app().loadConfigFile("../config.json");
     //Run HTTP framework,the method will block in the internal event loop
     ConfigProvider::GetInstance()->Initialize();
+
+
+   
+
+    drogon::app().registerPreRoutingAdvice([](const drogon::HttpRequestPtr& req, drogon::FilterCallback&& stop, drogon::FilterChainCallback&& pass)
+    {
+        // Let anything not starting with /api or not a preflight request through
+        if (!req->path().starts_with("/api") || req->method() != drogon::Options)
+        {
+            pass();
+            return;
+        }
+
+        auto resp = drogon::HttpResponse::newHttpResponse();
+        resp->addHeader("Access-Control-Allow-Origin", "http://localhost:5173");
+        resp->addHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        resp->addHeader("Access-Control-Allow-Headers", "*");
+        // Add other CORS headers you need
+        stop(resp); // stops processing the request and sends the response
+    });
+
+    drogon::app().registerPostHandlingAdvice([](const drogon::HttpRequestPtr& req, const drogon::HttpResponsePtr& resp)
+    {
+        resp->addHeader("Access-Control-Allow-Origin", "http://localhost:5173");
+        resp->addHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH");
+        resp->addHeader("Access-Control-Allow-Headers", "*");
+    });
+
     BOOST_LOG_TRIVIAL(info) << "Drogon server started at 127.0.0.1:443";
     BOOST_LOG_TRIVIAL(info) << "Drogon server running with 16 thread";
     drogon::app().run();

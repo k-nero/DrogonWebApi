@@ -8,7 +8,9 @@ interface ApplicationUser
     AvatarUrl?: string;
     CreatedDate: Date;
     ModifiedDate?: Date;
-    ContactId: string;
+    ContactListId: string;
+    chatParticipants: never[],
+    ContactList: never,
 }
 
 export default ApplicationUser;

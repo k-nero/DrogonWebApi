@@ -1,3 +1,5 @@
+import React from "react";
+
 const InputField = (props: {
     id: string;
     label: string;
@@ -9,6 +11,7 @@ const InputField = (props: {
     type?: string;
     required?: boolean;
     defaultValue?: string;
+    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }) => {
     const {
         label,
@@ -21,6 +24,7 @@ const InputField = (props: {
         required,
         disabled,
         defaultValue,
+        onChange,
     } = props;
 
     return (
@@ -34,6 +38,7 @@ const InputField = (props: {
                 {label}
             </label>
             <input
+                onChange={onChange}
                 disabled={disabled}
                 type={type}
                 required={required}
