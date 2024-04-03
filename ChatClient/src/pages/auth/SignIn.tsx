@@ -5,6 +5,8 @@ import { Checkbox } from "antd";
 import React, { useState } from "react";
 import { AuthResponse } from "@/utils/type/AuthResponse.ts";
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
+const baseUrl = new URL(`${import.meta.env.VITE_API_URL}`);
+
 
 function SignIn()
 {
@@ -15,7 +17,7 @@ function SignIn()
     async function handleSubmit(e: React.MouseEvent<HTMLButtonElement>)
     {
         e.preventDefault();
-        const res = await fetch("https://127.0.0.1:443/api/auth/login", {
+        const res = await fetch(`${baseUrl}/auth/login`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

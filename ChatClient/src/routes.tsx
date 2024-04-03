@@ -5,6 +5,12 @@ import Contact from "@/pages/contact";
 import Messages from "@/pages/messages";
 import Moments from "@/pages/moments";
 import Settings from "@/pages/settings";
+import FriendRequestReceived from "@/pages/contact/friend-request-received";
+import FriendRequestSent from "@/pages/contact/friend-request-sent";
+import BlockedContact from "@/pages/contact/blocked";
+import SuggestedContact from "@/pages/contact/suggested";
+import ContactList from "@/pages/contact/contact-list";
+import Chat from "@/pages/chat/chat";
 
 export type RoutesType = {
     name: string;
@@ -28,8 +34,28 @@ const routes: RoutesType[] = [
         children: [
             {
                 name: "Contact",
-                path: "/contacts/:id",
-                element: <Contact/>
+                path: "/contacts/all",
+                element: <ContactList/>
+            },
+            {
+                name: "Friends Request Received",
+                path: "/contacts/friends-request-received",
+                element: <FriendRequestReceived/>
+            },
+            {
+                name: "Friends Request Sent",
+                path: "/contacts/friends-request-sent",
+                element: <FriendRequestSent/>
+            },
+            {
+                name: "Blocked",
+                path: "/contacts/blocked",
+                element: <BlockedContact/>
+            },
+            {
+                name: "Suggested",
+                path: "/contacts/suggested",
+                element: <SuggestedContact/>
             }
         ]
     },
@@ -56,7 +82,7 @@ const routes: RoutesType[] = [
             {
                 name: "Chat",
                 path: "/chats/:id",
-                element: <ChatPage/>
+                element: <Chat/>
             }
         ]
     }

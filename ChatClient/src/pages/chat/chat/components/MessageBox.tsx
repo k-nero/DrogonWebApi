@@ -1,4 +1,4 @@
-import Message from "@/pages/chat/components/Message.tsx";
+import Message from "@/pages/chat/chat/components/Message.tsx";
 
 function MessageBox()
 {

@@ -21,7 +21,7 @@ int main()
 
     //Set HTTP listener address and port
 
-    drogon::app().addListener( "127.0.0.1", 443, true, "certificate.crt", "private.key");
+    drogon::app().addListener( "0.0.0.0", 443, true, "certificate.crt", "private.key");
     drogon::app().setLogPath("");
     drogon::app().setLogLevel( trantor::Logger::kTrace );
     drogon::app().setThreadNum( 16 );
@@ -48,7 +48,7 @@ int main()
         }
 
         auto resp = drogon::HttpResponse::newHttpResponse();
-        resp->addHeader("Access-Control-Allow-Origin", "http://localhost:5173");
+        resp->addHeader("Access-Control-Allow-Origin", "*");
         resp->addHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
         resp->addHeader("Access-Control-Allow-Headers", "*");
         // Add other CORS headers you need
@@ -57,7 +57,7 @@ int main()
 
     drogon::app().registerPostHandlingAdvice([](const drogon::HttpRequestPtr& req, const drogon::HttpResponsePtr& resp)
     {
-        resp->addHeader("Access-Control-Allow-Origin", "http://localhost:5173");
+        resp->addHeader("Access-Control-Allow-Origin", "*");
         resp->addHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH");
         resp->addHeader("Access-Control-Allow-Headers", "*");
     });
