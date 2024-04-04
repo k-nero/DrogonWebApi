@@ -50,11 +50,13 @@ bool RedisContext::CreateSyncContext()
 	{
 		return true;
 	}
+	timeval timeout{ 1, 500000 }; // 1.5 seconds
 	redisOptions opt = { 0 };
 	auto m_host = ConfigProvider::GetInstance()->GetRedisHost();
-	(&opt)->type = REDIS_CONN_TCP;
-	(&opt)->endpoint.tcp.ip = m_host.c_str();
-	(&opt)->endpoint.tcp.port = 6379;
+	opt.type = REDIS_CONN_TCP;
+	opt.endpoint.tcp.ip = m_host.c_str();
+	opt.endpoint.tcp.port = 6379;
+	opt.connect_timeout = &timeout;
 	opt.options |= REDIS_OPT_PREFER_IP_UNSPEC | REDIS_OPT_REUSEADDR;
 	return RedisContext::CreateSyncContext(opt);
 }

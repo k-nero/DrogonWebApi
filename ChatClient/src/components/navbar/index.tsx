@@ -16,8 +16,8 @@ const navLinks = [
     },
     {
         icon: GoPeople,
-        path: "/contacts",
-        name: "Contacts"
+        path: "/peoples",
+        name: "People"
     },
     {
         icon: AiOutlineMessage,

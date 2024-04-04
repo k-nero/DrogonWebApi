@@ -97,7 +97,7 @@ public:
 		K obj{};
 		for (auto& j : json)
 		{
-			obj.push_back(obj_from_json<K::value_type>(j));
+			obj.push_back(std::move(obj_from_json<K::value_type>(j)));
 		}
 		return obj;
 	}
@@ -112,8 +112,14 @@ public:
 			{
 				return;
 			}
-			obj.*(member).pointer = obj_from_json<std::remove_reference_t<decltype(obj.*(member).pointer)>>(json[member.name]);
+			obj.*(member).pointer = std::move(obj_from_json<std::remove_reference_t<decltype(obj.*(member).pointer)>>(json[member.name]));
 		});
 		return obj;
+	}
+
+	template <class K = T>
+	static inline K obj_from_json(Json::Value&& json)
+	{
+		return obj_from_json<K>(std::forward<Json::Value&>(json));
 	}
 };

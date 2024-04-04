@@ -29,32 +29,32 @@ const routes: RoutesType[] = [
     },
     {
         name: "Contact",
-        path: "/contacts",
+        path: "/peoples",
         element: <Contact/>,
         children: [
             {
                 name: "Contact",
-                path: "/contacts/all",
+                path: "/peoples/contact",
                 element: <ContactList/>
             },
             {
                 name: "Friends Request Received",
-                path: "/contacts/friends-request-received",
+                path: "/peoples/friends-request-received",
                 element: <FriendRequestReceived/>
             },
             {
                 name: "Friends Request Sent",
-                path: "/contacts/friends-request-sent",
+                path: "/peoples/friends-request-sent",
                 element: <FriendRequestSent/>
             },
             {
                 name: "Blocked",
-                path: "/contacts/blocked",
+                path: "/peoples/blocked",
                 element: <BlockedContact/>
             },
             {
                 name: "Suggested",
-                path: "/contacts/suggested",
+                path: "/peoples/suggested",
                 element: <SuggestedContact/>
             }
         ]

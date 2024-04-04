@@ -8,23 +8,23 @@ const contact_links = [
 
     {
         name: "All",
-        link: "/contacts/all",
+        link: "/peoples/contact",
     },
     {
         name: "Suggested",
-        link: "/contacts/suggested",
+        link: "/peoples/suggested",
     },
     {
         name: "Friends Request Received",
-        link: "/contacts/friends-request-received",
+        link: "/peoples/friends-request-received",
     },
     {
         name: "Friends Request Sent",
-        link: "/contacts/friends-request-sent",
+        link: "/peoples/friends-request-sent",
     },
     {
         name: "Blocked",
-        link: "/contacts/blocked",
+        link: "/peoples/blocked",
     }
 ];
 
@@ -54,7 +54,7 @@ function ContactLayout({ children }: { children: React.ReactNode })
                     <div className="grid grid-cols-12">
                         <div className="p-5 col-span-3 border-r-2 min-h-screen max-h-screen">
                             <div className="flex justify-between">
-                                <h1 className="font-bold text-2xl">Contacts</h1>
+                                <h1 className="font-bold text-2xl">People</h1>
                                 <button>
                                     <BsThreeDots className="text-2xl opacity-50"/>
                                 </button>
@@ -63,7 +63,7 @@ function ContactLayout({ children }: { children: React.ReactNode })
                                 <InputField
                                     variant="auth"
                                     extra="mb-3"
-                                    placeholder="Search for contact"
+                                    placeholder="Search for people"
                                     type="text"
                                     label={""}
                                     id={""}

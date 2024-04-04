@@ -30,14 +30,19 @@ public:
 	}
 	~Query() = default;
 
-	template<typename Z>
+	template<typename Z> [[nodiscard]]
 	Z ParseFromJSON(std::string& json) noexcept(false)
 	{
-		auto j = CoreHelper::ParseJson(json);
-		return JsonParser<Z>::obj_from_json(j);
+		return std::move(JsonParser<Z>::obj_from_json(CoreHelper::ParseJson(json)));
+	}
+	
+	template<typename Z> [[nodiscard]]
+	Z ParseFromJSON(std::string&& json) noexcept(false)
+	{
+		return std::move(JsonParser<Z>::obj_from_json(CoreHelper::ParseJson(std::forward<std::string&>(json))));
 	}
 
-	template<typename K = T>
+	template<typename K = T> [[nodiscard]]
 	std::shared_ptr<K> GetByIdEw(const std::string& id, std::vector<std::string> includes = {}, std::vector<std::string> select_fields = {}) noexcept(false)
 	{
 		auto result = GetByIdEx<K>(id, includes, select_fields);
@@ -46,7 +51,7 @@ public:
 			return nullptr;
 		}
 		auto json = CoreHelper::ParseJson(*result);
-		return JsonParser<std::shared_ptr<K>>::obj_from_json(json);
+		return std::move(JsonParser<std::shared_ptr<K>>::obj_from_json(json));
 	}
 
 	template<typename K = T>
@@ -103,7 +108,7 @@ public:
 		}
 	}
 
-	template<typename K = T>
+	template<typename K = T> [[nodiscard]]
 	std::shared_ptr<K> GetSingleEw(const std::string query = "", std::vector<std::string> includes = {}, std::vector<std::string> select_fields = {}) noexcept(false)
 	{
 		auto result = GetSingleEx<K>(query, includes, select_fields);
@@ -112,7 +117,7 @@ public:
 			return nullptr;
 		}
 		auto json = CoreHelper::ParseJson(*result);
-		return JsonParser<std::shared_ptr<K>>::obj_from_json(json);
+		return std::move(JsonParser<std::shared_ptr<K>>::obj_from_json(json));
 	}
 
 	template<typename K = T>
@@ -171,7 +176,7 @@ public:
 		}
 	}
 
-	template<typename K = T>
+	template<typename K = T> [[nodiscard]]
 	std::vector<std::shared_ptr<K>> GetAllEw(const std::string query = "", std::vector<std::string> includes = {}, std::vector<std::string> select_fields = {}) noexcept(false)
 	{
 		auto result = GetAllEx<K>(query, includes, select_fields);
@@ -180,7 +185,7 @@ public:
 			return std::vector<std::shared_ptr<K>>();
 		}
 		auto json = CoreHelper::ParseJson(*result);
-		return JsonParser<std::vector<std::shared_ptr<K>>>::obj_from_json(json);
+		return std::move(JsonParser<std::vector<std::shared_ptr<K>>>::obj_from_json(json));
 	}
 
 	template<typename K = T>
@@ -234,7 +239,7 @@ public:
 		}
 	}
 
-	template<typename K = T>
+	template<typename K = T> [[nodiscard]]
 	std::shared_ptr<std::string> GetPaginatedFw(int page, int pageSize, std::string query = "", std::vector<std::string> includes = {}, std::vector<std::string> select_fields = {}) noexcept(false)
 	{
 		try
@@ -245,7 +250,7 @@ public:
 
 			auto count_task = std::async(std::launch::async, [&]()
 			{
-				int count = 0;
+				long long count = 0;
 				if (query.empty())
 				{
 					query += "1=1";
@@ -272,7 +277,7 @@ public:
 			root["m_data"] = CoreHelper::ParseJson(*result);
 			root["m_pageSize"] = pageSize;
 			root["m_currentPage"] = page;
-			root["m_totalPages"] = pageSize == 0 ? 0 : ceil((float)count_task.get() / (float)pageSize);
+			root["m_totalPages"] = pageSize == 0 ? 0 : ceil((double)count_task.get() / (double)pageSize);
 			return std::make_shared<std::string>(root.toStyledString());
 		}
 		catch (SAException& ex)
@@ -289,8 +294,7 @@ public:
 		}
 
 	}
-
-	template<typename K = T>
+	template<typename K = T> [[nodiscard]]
 	std::shared_ptr<PaginationObject<K>> GetPaginatedEw(int page, int pageSize, std::string query = "", std::vector<std::string> includes = {}, std::vector<std::string> select_fields = {}) noexcept(false)
 	{
 		std::shared_ptr<DbClient> client(db->GetClient());
@@ -300,7 +304,7 @@ public:
 
 		auto count_task = std::async(std::launch::async, [&]()
 		{
-			int count = 0;
+			long long count = 0;
 
 			if (query.empty())
 			{
@@ -329,8 +333,8 @@ public:
 		root["m_data"] = CoreHelper::ParseJson(*result);
 		root["m_pageSize"] = pageSize;
 		root["m_currentPage"] = page;
-		root["m_totalPages"] = pageSize == 0 ? 0 : ceil((float)count_task.get() / (float)pageSize);
-		return JsonParser<std::shared_ptr<PaginationObject<K>>>::obj_from_json(root);
+		root["m_totalPages"] = pageSize == 0 ? 0 : ceil((double)count_task.get() / (double)pageSize);
+		return std::move(JsonParser<std::shared_ptr<PaginationObject<K>>>::obj_from_json(root));
 	}
 
 	template<typename K = T>

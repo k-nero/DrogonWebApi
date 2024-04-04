@@ -10,7 +10,7 @@ std::shared_ptr<ChatParticipant> ChatParticipantService::GetChatParticipantById(
 std::vector<std::shared_ptr<ChatParticipant>> ChatParticipantService::GetAllChatParticipants()
 {
 	Query<ChatParticipant> query;
-	return query.GetAllEw();
+	return std::move(query.GetAllEw());
 }
 
 std::shared_ptr<PaginationObject<ChatParticipant>> ChatParticipantService::GetChatParticipantsByPage(int page, int page_size)

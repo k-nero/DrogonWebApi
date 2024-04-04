@@ -10,7 +10,7 @@ function MessageInput()
     return (
         <div className="p-8 rounded-xl m-8 bg-white">
             <div>
-                <textarea placeholder="Type a message" className="w-full bg-transparent outline-none pb-4 border-b-2" />
+                <textarea placeholder="Type a message" className="w-full bg-transparent outline-none pb-4 border-b-2 resize-none" />
             </div>
             <div className="flex justify-between text-2xl mt-4">
                 <div className="flex gap-3">

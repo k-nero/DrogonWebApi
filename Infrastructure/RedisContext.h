@@ -6,6 +6,7 @@
 #include <boost/log/trivial.hpp>
 #include <mutex>
 #include <shared_mutex>
+#include <WinSock2.h>
 
 class INFRASTRUCTURE_API RedisContext
 {

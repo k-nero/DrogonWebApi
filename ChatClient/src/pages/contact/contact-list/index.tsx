@@ -64,7 +64,7 @@ function ContactList()
                 <Collapse.Panel header={<div className="text-xl font-bold">{contact_list.Name}</div>} key="1">
                     {contact_list.Contacts.map((contact, index) => {
                         return (
-                            <NavLink key={contact.Id} to={`/contacts/${contact.Id}`} className={`flex items-center p-3 ${index === contact_list.Contacts.length - 1 ? "" : "border-b-2" }`}>
+                            <NavLink key={contact.Id} to={`/peoples/contact/${contact.Id}`} className={`flex items-center p-3 ${index === contact_list.Contacts.length - 1 ? "" : "border-b-2" }`}>
                                 <img src={contact.ApplicationUser.AvatarUrl} alt={contact.ApplicationUser.UserName} className="w-12 h-12 rounded-full"/>
                                 <div className="ml-3">
                                     <h1 className="font-bold">{contact.ApplicationUser.UserName}</h1>

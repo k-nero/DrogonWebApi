@@ -4,9 +4,9 @@ void ChatParticipantController::GetAll(const HttpRequestPtr& req, std::function<
 {
 	try
 	{
-		auto task = std::future(std::async(std::launch::async, []() { return ChatParticipantService().GetAllChatParticipants(); }));
+		auto task(std::async(std::launch::async, []() { return ChatParticipantService().GetAllChatParticipants(); }));
 		auto result(task.get());
-		Json::Value rs = ObjToJson(result);
+		Json::Value rs(std::move(ObjToJson(result)));
 		const auto resp = HttpResponse::newHttpJsonResponse(rs);
 		resp->setStatusCode(k200OK);
 		callback(resp);
@@ -40,8 +40,8 @@ void ChatParticipantController::Get(const HttpRequestPtr& req, std::function<voi
 {
 	try
 	{
-		auto task = std::future(std::async(std::launch::async, [p1]() { return ChatParticipantService().GetChatParticipantById(p1); }));
-		std::shared_ptr<ChatParticipant> result = task.get();
+		auto task(std::async(std::launch::async, [p1]() { return ChatParticipantService().GetChatParticipantById(p1); }));
+		auto result(task.get());
 		Json::Value ret;
 		if (result != nullptr)
 		{
@@ -89,7 +89,7 @@ void ChatParticipantController::Create(const HttpRequestPtr& req, std::function<
 {
 	try
 	{
-		auto task = std::future(std::async(std::launch::async, [&model]() { return ChatParticipantService().CreateChatParticipant(model); }));
+		auto task(std::async(std::launch::async, [&model]() { return ChatParticipantService().CreateChatParticipant(model); }));
 		const auto id = task.get();
 		Json::Value ret;
 		if (!id.empty())
@@ -140,7 +140,7 @@ void ChatParticipantController::Update(const HttpRequestPtr& req, std::function<
 {
 	try
 	{
-		auto task = std::future(std::async(std::launch::async, [&model, &id]() { return ChatParticipantService().UpdateChatParticipant(model, id); }));
+		auto task(std::async(std::launch::async, [&model, &id]() { return ChatParticipantService().UpdateChatParticipant(model, id); }));
 		const auto rows_affected = task.get();
 		if (rows_affected > 0)
 		{
@@ -191,7 +191,7 @@ void ChatParticipantController::Delete(const HttpRequestPtr& req, std::function<
 {
 	try
 	{
-		auto task = std::future(std::async(std::launch::async, [&id]() { return ChatParticipantService().DeleteChatParticipant(id); }));
+		auto task(std::async(std::launch::async, [&id]() { return ChatParticipantService().DeleteChatParticipant(id); }));
 		const auto rows_affected = task.get();
 		if (rows_affected > 0)
 		{
@@ -244,9 +244,9 @@ void ChatParticipantController::GetPaginated(const HttpRequestPtr& req, std::fun
 	{
 		page == 0 ? page = 1 : page = page;
 		limit == 0 ? limit = 10 : limit = limit;
-		auto task = std::future(std::async(std::launch::async, [page, limit]() { return ChatParticipantService().GetChatParticipantsByPage(page, limit); }));
-		auto result = task.get();
-		Json::Value rs = ObjToJson(result);
+		auto task(std::async(std::launch::async, [page, limit]() { return ChatParticipantService().GetChatParticipantsByPage(page, limit); }));
+		auto result(task.get());
+		Json::Value rs(std::move(ObjToJson(result)));
 		const auto resp = HttpResponse::newHttpJsonResponse(rs);
 		resp->setStatusCode(k200OK);
 		callback(resp);
