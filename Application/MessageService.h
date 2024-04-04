@@ -14,6 +14,7 @@ public:
 	std::shared_ptr<Message> GetMessageById(const std::string& id);
 	std::vector<std::shared_ptr<Message>>GetAllMessages();
 	std::shared_ptr<PaginationObject<Message>> GetMessagesByPage(int page, int page_size);
+	std::shared_ptr<PaginationObject<Message>> GetMessagesByChat(int page, int page_size, std::string chat_id);
 	std::string CreateMessage(MessageModel& todo_list_model);
 	int UpdateMessage(MessageModel& todo_list_model, const std::string& id);
 	int DeleteMessage(const std::string& id);

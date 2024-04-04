@@ -12,7 +12,6 @@ function Chat()
     const chat_id = location.pathname.split("/")[2];
     const [isPanelOpen, setIsPanelOpen] = useState(false);
 
-
     function setIsPanel()
     {
         setIsPanelOpen(!isPanelOpen);
@@ -22,18 +21,18 @@ function Chat()
         <>
             {
                 chat_id ?
-                    <div className={`w-full h-full ${isPanelOpen ? "grid grid-cols-10" : ""}`}>
-                        <div className={`w-full h-full ${isPanelOpen ? "col-span-6" : ""}`}>
-                            <ChatBoxHeader setIsPanel={setIsPanel}/>
-                            <div className="bg-gray-100 bg-opacity-90 p-4 flex flex-col justify-between h-[90%]">
-                                <MessageBox/>
+                    <div className={`w-full h-fit ${isPanelOpen ? "grid grid-cols-10" : ""}`}>
+                        <div className={`w-full h-fit ${isPanelOpen ? "col-span-6" : ""}`}>
+                            <ChatBoxHeader setIsPanel={setIsPanel} chat_id={chat_id}/>
+                            <div className="bg-gray-100 bg-opacity-90 p-4 flex flex-col justify-between h-[90vh]">
+                                <MessageBox chat_id={chat_id}/>
                                 <MessageInput/>
                             </div>
                         </div>
                         {
                             isPanelOpen &&
-                            <div className="col-span-4">
-                                <ChatPanel setIsPanel={setIsPanel}/>
+                            <div className="col-span-4 ">
+                                <ChatPanel setIsPanel={setIsPanel} />
                             </div>
                         }
                     </div>

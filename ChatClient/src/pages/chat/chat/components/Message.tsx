@@ -1,6 +1,15 @@
-function Message()
+import MessageType from "@/utils/type/MessageType.ts";
+import useLocalStorage from "@/utils/hooks/useLocalStorage.ts";
+import { AuthResponse } from "@/utils/type/AuthResponse.ts";
+
+function Message({message} : {message: MessageType})
 {
-    const incoming = true;
+
+    const [userLocal] = useLocalStorage("auth_credential", {});
+    const credential: AuthResponse = userLocal;
+
+    const incoming = message.ApplicationUserId !== credential.user.Id;
+
     if(incoming)
     {
         return (
@@ -11,11 +20,16 @@ function Message()
                     </div>
                     <div>
                         <div className="bg-white p-3 mx-3 rounded-xl max-w-96">
-                            <p className="text-sm">Hello this is a test message</p>
+                            <p className="text-sm">{message.TextMessage}</p>
                         </div>
                     </div>
                 </div>
-                <p className="text-xs text-gray-500 text-left ml-9 p-1">12:00 PM</p>
+                <p className="text-xs text-gray-500 text-left ml-9 p-1">{
+                    new Date(message.CreatedDate).toLocaleTimeString("en-US", {
+                        hour: "2-digit",
+                        minute: "2-digit"
+                    })
+                }</p>
             </div>
         );
     }
@@ -26,14 +40,19 @@ function Message()
                 <div className="w-full flex justify-end">
                     <div>
                         <div className="bg-white p-3 mx-3 rounded-xl max-w-96">
-                            <p className="text-sm">Hello this is a test message</p>
+                            <p className="text-sm">{message.TextMessage}</p>
                         </div>
                     </div>
                     <div className="mt-auto">
                         <img src="https://via.placeholder.com/150" alt="John Doe" className="w-6 h-6 rounded-full"/>
                     </div>
                 </div>
-                <p className="text-xs text-gray-500 text-right mr-9 p-1">12:00 PM</p>
+                <p className="text-xs text-gray-500 text-right mr-9 p-1">{
+                    new Date(message.CreatedDate).toLocaleTimeString("en-US", {
+                        hour: "2-digit",
+                        minute: "2-digit"
+                    })
+                }</p>
             </div>
         );
     }

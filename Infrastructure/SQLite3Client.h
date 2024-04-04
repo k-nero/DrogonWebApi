@@ -10,7 +10,7 @@ class INFRASTRUCTURE_API SQLite3Client : public DbClientInterface
 {
 public:
 	SQLite3Client();
-	~SQLite3Client();
+	~SQLite3Client() override;
 
 	void CreateCommand(const std::string& command_text) noexcept(false) override;
 	void ExecuteCommand() noexcept(false) override;

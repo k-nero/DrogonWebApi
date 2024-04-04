@@ -238,16 +238,15 @@ void MessageController::Delete(const HttpRequestPtr& req, std::function<void(con
 	}
 }
 
-void MessageController::GetPaginated(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback, int page, int limit)
+void MessageController::GetPaginated(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback, std::string chat_id, int page, int limit)
 {
 	try
 	{
 		page == 0 ? page = 1 : page = page;
 		limit == 0 ? limit = 10 : limit = limit;
-		auto task = std::future(std::async(std::launch::async, [page, limit]() { return MessageService().GetMessagesByPage(page, limit); }));
+		auto task = std::future(std::async(std::launch::async, [page, limit, chat_id]() { return MessageService().GetMessagesByChat(page, limit, chat_id); }));
 		auto result = task.get();
-		Json::Value rs = ObjToJson(result);
-		const auto resp = HttpResponse::newHttpJsonResponse(rs);
+		const auto resp = HttpResponse::newHttpJsonResponse(ObjToJson(result));
 		resp->setStatusCode(k200OK);
 		callback(resp);
 		return;

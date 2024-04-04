@@ -39,6 +39,7 @@ public:
 	//virtual std::shared_ptr<Table> GetTableResult() noexcept(false) = 0;
 	virtual void TestClient() noexcept(false) = 0;
 
+	virtual ~DbClientInterface() = default;
 };
 
 typedef DbClientInterface DbClient;

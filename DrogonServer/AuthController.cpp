@@ -95,7 +95,7 @@ void AuthController::Register(const HttpRequestPtr& req, std::function<void(cons
 				if (!rs.empty())
 				{
 
-					std::async(std::launch::async, [&rs]() 
+					auto t = std::async(std::launch::async, [&rs]() 
 					{
 						ContactListModel contactList(rs, "Friends");
 						ContactListService().CreateContactList(contactList);

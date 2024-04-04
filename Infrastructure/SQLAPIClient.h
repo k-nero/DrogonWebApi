@@ -9,7 +9,7 @@ class INFRASTRUCTURE_API SQLAPIClient : public DbClientInterface
 {
 public:
 	SQLAPIClient();
-	~SQLAPIClient();
+	~SQLAPIClient() override;
 
 	void CreateCommand(const std::string& command_text) noexcept(false) override;
 	void ExecuteCommand() noexcept(false) override;
