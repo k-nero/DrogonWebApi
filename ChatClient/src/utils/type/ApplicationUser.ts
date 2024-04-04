@@ -1,14 +1,12 @@
-interface ApplicationUser
+import BaseType from "@/utils/type/BaseType.ts";
+
+interface ApplicationUser extends BaseType
 {
-    Id: string;
     UserName: string;
     PasswordHash: string;
     Email: string;
     PhoneNumber?: string;
     AvatarUrl?: string;
-    CreatedDate: Date;
-    ModifiedDate?: Date;
-    ContactListId: string;
     chatParticipants: never[],
     ContactList: never,
 }

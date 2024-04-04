@@ -25,11 +25,11 @@ class ChatParticipantController : public HttpController<ChatParticipantControlle
 public:
 	static void initPathRouting()
 	{
-		registerMethod(&ChatParticipantController::Get, "/api/chat-participant/{1}", { drogon::HttpMethod::Get }, false, "ChatParticipantController::Get"); // path is /IndexController
-		registerMethod(&ChatParticipantController::GetPaginated, "/api/chat-participant?page={1}&limit={2}", { drogon::HttpMethod::Get }, false, "ChatParticipantController::GetAll");
-		registerMethod(&ChatParticipantController::Create, "/api/chat-participant", { drogon::HttpMethod::Post }, false, "ChatParticipantController::Create");
-		registerMethod(&ChatParticipantController::Update, "/api/chat-participant/{1}", { drogon::HttpMethod::Patch }, false, "ChatParticipantController::Update");
-		registerMethod(&ChatParticipantController::Delete, "/api/chat-participant/{1}", { drogon::HttpMethod::Delete }, false, "ChatParticipantController::Delete");
+		registerMethod(&ChatParticipantController::Get, "/api/chat-participant/{1}", { drogon::HttpMethod::Get, "Auth::Authorization" }, false, "ChatParticipantController::Get"); // path is /IndexController
+		registerMethod(&ChatParticipantController::GetPaginated, "/api/chat-participant?page={1}&limit={2}", { drogon::HttpMethod::Get, "Auth::Authorization" }, false, "ChatParticipantController::GetAll");
+		registerMethod(&ChatParticipantController::Create, "/api/chat-participant", { drogon::HttpMethod::Post, "Auth::Authorization" }, false, "ChatParticipantController::Create");
+		registerMethod(&ChatParticipantController::Update, "/api/chat-participant/{1}", { drogon::HttpMethod::Patch, "Auth::Authorization" }, false, "ChatParticipantController::Update");
+		registerMethod(&ChatParticipantController::Delete, "/api/chat-participant/{1}", { drogon::HttpMethod::Delete, "Auth::Authorization" }, false, "ChatParticipantController::Delete");
 	}
 	// your declaration of processing function maybe like this:
 	void Get(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback, std::string p1);

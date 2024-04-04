@@ -12,6 +12,7 @@ function Chat()
     const chat_id = location.pathname.split("/")[2];
     const [isPanelOpen, setIsPanelOpen] = useState(false);
 
+
     function setIsPanel()
     {
         setIsPanelOpen(!isPanelOpen);

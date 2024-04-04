@@ -13,10 +13,10 @@ std::vector<std::shared_ptr<ChatParticipant>> ChatParticipantService::GetAllChat
 	return std::move(query.GetAllEw());
 }
 
-std::shared_ptr<PaginationObject<ChatParticipant>> ChatParticipantService::GetChatParticipantsByPage(int page, int page_size)
+std::shared_ptr<PaginationObject<ChatParticipant>> ChatParticipantService::GetChatParticipantsByPage(int page, int page_size, std::string ApplicationUserId)
 {
 	Query<ChatParticipant> query;
-	return query.GetPaginatedEw(page, page_size);
+	return query.GetPaginatedEw(page, page_size, EQ(ApplicationUserId), {"ChatRoom"});
 }
 
 std::string ChatParticipantService::CreateChatParticipant(ChatParticipantModel& model)

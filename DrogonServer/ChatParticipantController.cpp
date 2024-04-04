@@ -244,7 +244,10 @@ void ChatParticipantController::GetPaginated(const HttpRequestPtr& req, std::fun
 	{
 		page == 0 ? page = 1 : page = page;
 		limit == 0 ? limit = 10 : limit = limit;
-		auto task(std::async(std::launch::async, [page, limit]() { return ChatParticipantService().GetChatParticipantsByPage(page, limit); }));
+
+		auto& userids = req->getHeader("user_id");
+
+		auto task(std::async(std::launch::async, [page, limit, userids]() { return ChatParticipantService().GetChatParticipantsByPage(page, limit, userids); }));
 		auto result(task.get());
 		Json::Value rs(std::move(ObjToJson(result)));
 		const auto resp = HttpResponse::newHttpJsonResponse(rs);
