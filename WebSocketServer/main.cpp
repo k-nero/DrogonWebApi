@@ -125,7 +125,12 @@ int main()
 
 		if (json["type"] == "message")
 		{
-			ws->publish(json["channel"].asString(), json["message"].asString(), opCode);
+			if (json["message"].isNull())
+			{
+				return;
+			}
+
+			app->publish(json["channel"].asString(), json["message"].toStyledString(), opCode);
 		}
 		else if (json["type"] == "subscribe")
 		{

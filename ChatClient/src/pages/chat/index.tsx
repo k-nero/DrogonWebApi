@@ -15,13 +15,22 @@ function ChatPage()
 
     const [messageMap, setMessageMap] = useState<Map<string, MessageType[]>>(new Map<string, MessageType[]>());
 
+    webSocket.onmessage = (event) => {
+        const message: MessageType = JSON.parse(event.data);
+        console.log(message);
+        setMessageMap((prev) => {
+            return new Map(prev.set(message.ChatRoomId, [...prev.get(message.ChatRoomId) || [], message]));
+        });
+    };
+
+
     useEffect( () => {
         Query<PaginatedType<ChatParticipant>>( "/chat-participant" ).then((r) => {
             setchats(r);
-            r.m_data.map((chat) => {
+            r?.m_data?.map((chat) => {
                 Query<PaginatedType<MessageType>>(`/message?chat_id=${chat.ChatRoomId}`).then((r) => {
                     setMessageMap((prev) => {
-                        return new Map(prev.set(chat.ChatRoomId, r.m_data));
+                        return new Map(prev.set(chat.ChatRoomId, r?.m_data.reverse()));
                     });
                 });
 

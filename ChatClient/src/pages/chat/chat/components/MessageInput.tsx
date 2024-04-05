@@ -6,8 +6,11 @@ import { LuSmile } from "react-icons/lu";
 import { HiDotsVertical } from "react-icons/hi";
 import useLocalStorage from "@/utils/hooks/useLocalStorage.ts";
 import { AuthResponse } from "@/utils/type/AuthResponse.ts";
-import { useState } from "react";
+import { createRef, useState } from "react";
 import { useLocation } from "react-router-dom";
+import webSocket from "@/utils/function/WebSocket.ts";
+import Query from "@/utils/function/Query.ts";
+import MessageType from "@/utils/type/MessageType.ts";
 const baseUrl = new URL(`${import.meta.env.VITE_API_URL}`);
 
 
@@ -15,7 +18,7 @@ function MessageInput()
 {
     const [localUser] = useLocalStorage("auth_credential", {});
     const user: AuthResponse = localUser;
-
+    const textMessage = createRef<HTMLTextAreaElement>();
     const location = useLocation();
     const chat_id = location.pathname.split("/")[2];
 
@@ -38,15 +41,29 @@ function MessageInput()
 
         if(res.ok)
         {
+
             setMessage("");
+            const rs = await res.json();
+            const message = await Query<MessageType>(`/message/${rs.id}`);
+            webSocket.send(JSON.stringify({
+                type: "message",
+                channel: chat_id,
+                message: message
+            }));
         }
 
     }
 
     return (
         <div className="p-8 rounded-xl m-8 bg-white">
+            <form onSubmit={(e) => {
+                e.preventDefault();
+                e.currentTarget.reset();
+                sendMessage().then(() => {});
+
+            }}>
             <div>
-                <textarea placeholder="Type a message" onChange={
+                <textarea placeholder="Type a message" ref={textMessage} onChange={
                     (e) => {
                         setMessage(e.target.value);
                     }
@@ -81,11 +98,11 @@ function MessageInput()
                 </div>
 
                 <div className="justify-items-end">
-                    <button className="text-teal-500 font-bold" onClick={sendMessage}><IoSendSharp/></button>
+                    <button className="text-teal-500 font-bold" type="submit" ><IoSendSharp/></button>
                 </div>
 
             </div>
-
+            </form>
         </div>
     );
 }

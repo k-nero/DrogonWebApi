@@ -6,7 +6,6 @@ function MessageBox({messages} : {messages: MessageType[] | undefined })
 {
     useEffect(() => {
         const messages = document.getElementById("messages");
-        console.log("scrolling");
         if(messages)
         {
             messages.scrollTop = messages.scrollHeight;
