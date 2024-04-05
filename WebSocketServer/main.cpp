@@ -28,7 +28,7 @@ int main()
 
 	auto app = std::make_unique<uWS::SSLApp>(options);
 
-	auto ws_upgrade = [](auto* res, auto* req, auto* context)
+	auto ws_upgrade = [](auto* res, uWS::HttpRequest* req, auto* context)
 	{
 		struct UpgradeData
 		{
@@ -53,7 +53,7 @@ int main()
 		auto publicKey = ConfigProvider::GetInstance()->GetPublicRSAKey();
 		try
 		{
-			std::string access_token(req->getHeader("authorization"));
+			std::string access_token(req->getQuery("authorization"));
 			if (access_token.empty())
 			{
 				upgradeData->aborted = true;

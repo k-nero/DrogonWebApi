@@ -46,6 +46,9 @@ void Auth::Authorization::doFilter(const drogon::HttpRequestPtr& req, drogon::Fi
 		Json::Value json;
 		json["debug_message"] = e.what();
 		auto resp = drogon::HttpResponse::newHttpJsonResponse(json);
+		resp->addHeader("Access-Control-Allow-Origin", "*");
+		resp->addHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH");
+		resp->addHeader("Access-Control-Allow-Headers", "*");
 		resp->setStatusCode(drogon::HttpStatusCode::k401Unauthorized);
 		fcb(resp);
 		return;

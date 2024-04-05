@@ -2,27 +2,25 @@ import { GoDotFill } from "react-icons/go";
 import { BiSolidPhoneCall } from "react-icons/bi";
 import React, { useState } from "react";
 import { BsCameraVideoFill, BsThreeDots } from "react-icons/bs";
-import PaginatedType from "@/utils/type/common/PaginatedType.ts";
-import ChatParticipant from "@/utils/type/ChatParticipant.ts";
-import { FetchChats } from "@/utils/type/ChatRoom.ts";
+import Query from "@/utils/function/Query.ts";
+import ChatRoom from "@/utils/type/ChatRoom.ts";
 
 function ChatBoxHeader({setIsPanel, chat_id} : {setIsPanel: () => void, chat_id : string})
 {
-    const [chats, setchats] = useState<PaginatedType<ChatParticipant>>();
-
+    const [chats, setchats] = useState<ChatRoom>();
 
     React.useEffect( () => {
-        FetchChats().then((r) => {
-            setchats(r);
-        });
+       Query<ChatRoom>( `/chat-room/${chat_id}` ).then((r) => {
+           setchats(r);
+       });
     }, []);
     return (
         <div className="w-full h-[10vh]">
             <div className="flex items-center justify-between p-6 border-b-2">
                 <div className="flex items-center">
-                    <img src="https://via.placeholder.com/150" alt="John Doe" className="w-12 h-12 rounded-full"/>
+                    <img src={chats?.RoomImageUrl} alt={chats?.RoomName} className="w-12 h-12 rounded-full"/>
                     <div className="ml-3">
-                        <h1 className="font-bold"></h1>
+                        <h1 className="font-bold">{chats?.RoomName}</h1>
                         <div className="flex">
                             <GoDotFill className="text-green-600 text-2xl"/>
                             <p className="text-sm text-gray-500 pt-[2px]">Online</p>

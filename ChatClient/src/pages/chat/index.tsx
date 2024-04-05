@@ -1,43 +1,37 @@
 import ChatLayout from "@/layouts/chats";
 import { NavLink, Outlet } from "react-router-dom";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BsThreeDots } from "react-icons/bs";
 import InputField from "@/components/form/input.tsx";
-import useLocalStorage from "@/utils/hooks/useLocalStorage.ts";
-import { AuthResponse } from "@/utils/type/AuthResponse.ts";
 import ChatParticipant from "@/utils/type/ChatParticipant.ts";
 import PaginatedType from "@/utils/type/common/PaginatedType.ts";
-const baseUrl = new URL(`${import.meta.env.VITE_API_URL}`);
+import Query from "@/utils/function/Query.ts";
+import webSocket from "@/utils/function/WebSocket.ts";
+import MessageType from "@/utils/type/MessageType.ts";
 
 function ChatPage()
 {
-    const [userLocal] = useLocalStorage("auth_credential", {});
-    const credential: AuthResponse = userLocal;
-    const [chats, setchats] = React.useState<PaginatedType<ChatParticipant>>();
+    const [chats, setchats] = useState<PaginatedType<ChatParticipant>>();
 
-    async function FetchChats()
-    {
-        const res = await fetch(`${baseUrl}/chat-participant`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${credential.access_token}`
-            }
+    const [messageMap, setMessageMap] = useState<Map<string, MessageType[]>>(new Map<string, MessageType[]>());
+
+    useEffect( () => {
+        Query<PaginatedType<ChatParticipant>>( "/chat-participant" ).then((r) => {
+            setchats(r);
+            r.m_data.map((chat) => {
+                Query<PaginatedType<MessageType>>(`/message?chat_id=${chat.ChatRoomId}`).then((r) => {
+                    setMessageMap((prev) => {
+                        return new Map(prev.set(chat.ChatRoomId, r.m_data));
+                    });
+                });
+
+               webSocket.send(JSON.stringify({
+                   type: "subscribe",
+                   channel: chat.ChatRoomId
+               }))
+            });
         });
-
-        if(!res.ok)
-        {
-            throw new Error("Failed to fetch chats");
-        }
-        const data : PaginatedType<ChatParticipant> = await res.json();
-        console.log(data);
-        setchats(data);
-    }
-
-    React.useEffect( () => {
-        FetchChats().then(() => {});
     }, []);
-
 
     function ChatList()
     {
@@ -100,7 +94,7 @@ function ChatPage()
                         </div>
                     </div>
                     <div className="col-span-9">
-                        <Outlet/>
+                        <Outlet context={messageMap} />
                     </div>
                 </div>
             </div>
@@ -109,3 +103,4 @@ function ChatPage()
 }
 
 export default ChatPage;
+

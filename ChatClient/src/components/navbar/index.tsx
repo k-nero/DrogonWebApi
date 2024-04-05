@@ -42,6 +42,12 @@ function Navbar()
     const location = useLocation();
     const [userLocal] = useLocalStorage("auth_credential", {});
     const credential: AuthResponse = userLocal;
+
+    if(!credential)
+    {
+        window.location.href = "/auth/sign-in";
+    }
+
     function activeRoute(routeName: string)
     {
         return location.pathname.split("?")[0].startsWith(routeName);
@@ -74,7 +80,7 @@ function Navbar()
             <div className="flex flex-col justify-between h-full">
                 <div className="grid-cols-1 grid gap-y-8">
                     <button className="">
-                        <img src={`${credential.user.AvatarUrl}`} alt="profile" className="block m-auto rounded-full w-12 h-12"/>
+                        <img src={`${credential?.user?.AvatarUrl}`} alt="profile" className="block m-auto rounded-full w-12 h-12"/>
                     </button>
                     <CreateNavLink/>
                 </div>

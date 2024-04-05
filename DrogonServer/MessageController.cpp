@@ -243,7 +243,7 @@ void MessageController::GetPaginated(const HttpRequestPtr& req, std::function<vo
 	try
 	{
 		page == 0 ? page = 1 : page = page;
-		limit == 0 ? limit = 10 : limit = limit;
+		limit == 0 ? limit = 30 : limit = limit;
 		auto task = std::future(std::async(std::launch::async, [page, limit, chat_id]() { return MessageService().GetMessagesByChat(page, limit, chat_id); }));
 		auto result = task.get();
 		const auto resp = HttpResponse::newHttpJsonResponse(ObjToJson(result));

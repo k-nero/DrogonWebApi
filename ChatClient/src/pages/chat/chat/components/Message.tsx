@@ -16,7 +16,7 @@ function Message({message} : {message: MessageType})
             <div>
                 <div className="w-full flex">
                     <div className="mt-auto">
-                        <img src="https://via.placeholder.com/150" alt="John Doe" className="w-6 h-6 rounded-full"/>
+                        <img src={message?.ApplicationUser?.AvatarUrl} alt="John Doe" className="w-6 h-6 rounded-full"/>
                     </div>
                     <div>
                         <div className="bg-white p-3 mx-3 rounded-xl max-w-96">
@@ -44,7 +44,7 @@ function Message({message} : {message: MessageType})
                         </div>
                     </div>
                     <div className="mt-auto">
-                        <img src="https://via.placeholder.com/150" alt="John Doe" className="w-6 h-6 rounded-full"/>
+                        <img src={message?.ApplicationUser?.AvatarUrl} alt="John Doe" className="w-6 h-6 rounded-full"/>
                     </div>
                 </div>
                 <p className="text-xs text-gray-500 text-right mr-9 p-1">{

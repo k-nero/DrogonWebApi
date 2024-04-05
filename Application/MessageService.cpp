@@ -22,7 +22,7 @@ std::shared_ptr<PaginationObject<Message>> MessageService::GetMessagesByPage(int
 std::shared_ptr<PaginationObject<Message>> MessageService::GetMessagesByChat(int page, int page_size, std::string ChatRoomId)
 {
 	Query<Message> query;
-	return query.GetPaginatedEw(page, page_size, EQ(ChatRoomId));
+	return query.GetPaginatedEw(page, page_size, EQ(ChatRoomId), {"ApplicationUser"});
 }
 
 std::string MessageService::CreateMessage(MessageModel& model)
