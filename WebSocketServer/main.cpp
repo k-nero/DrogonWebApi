@@ -135,7 +135,8 @@ int main()
 		else if (json["type"] == "subscribe")
 		{
 			ws->subscribe(json["channel"].asString());
-			app->publish(json["channel"].asString(), "subscribed", uWS::OpCode::TEXT);
+			json["socket_id"] = perSocketData->user_id;
+			app->publish(json["channel"].asString(), json.toStyledString(), uWS::OpCode::TEXT);
 		}
 		else if (json["type"] == "unsubscribe")
 		{
