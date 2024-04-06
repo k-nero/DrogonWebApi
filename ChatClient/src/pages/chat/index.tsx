@@ -16,7 +16,7 @@ function ChatPage()
 
     useEffect( () => {
         addMessageSubscriber((event) => {
-            const message = JSON.parse(event.data);
+            const message = JSON.parse(event.data).message;
             setMessageMap((prev) => {
                 return new Map(prev.set(message.ChatRoomId, [...prev.get(message.ChatRoomId) || [], message]));
             });
