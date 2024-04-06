@@ -12,7 +12,14 @@ webSocket.onopen = () => {
 };
 
 webSocket.onmessage = (event) => {
-    console.log("WebSocket 收到消息", event.data);
+    const e_data = JSON.parse(event.data);
+    if(e_data.type === "message")
+    {
+        onMessageSubscriber.forEach((sub) => {
+            sub(event);
+        });
+    }
+    console.log("WebSocket 收到消息", e_data);
 };
 
 webSocket.onclose = () => {
@@ -23,4 +30,10 @@ webSocket.onerror = (error) => {
     console.log("WebSocket 连接出错", error);
 };
 
+const onMessageSubscriber: ((event: MessageEvent) => void)[] = [];
+
+
+export function addMessageSubscriber(sub: (event: MessageEvent) => void) {
+    onMessageSubscriber.push(sub);
+}
 export default webSocket;

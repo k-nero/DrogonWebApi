@@ -6,25 +6,22 @@ import InputField from "@/components/form/input.tsx";
 import ChatParticipant from "@/utils/type/ChatParticipant.ts";
 import PaginatedType from "@/utils/type/common/PaginatedType.ts";
 import Query from "@/utils/function/Query.ts";
-import webSocket from "@/utils/function/WebSocket.ts";
+import webSocket, { addMessageSubscriber } from "@/utils/function/WebSocket.ts";
 import MessageType from "@/utils/type/MessageType.ts";
 
 function ChatPage()
 {
     const [chats, setchats] = useState<PaginatedType<ChatParticipant>>();
-
     const [messageMap, setMessageMap] = useState<Map<string, MessageType[]>>(new Map<string, MessageType[]>());
 
-    webSocket.onmessage = (event) => {
-        const message: MessageType = JSON.parse(event.data);
-        console.log(message);
-        setMessageMap((prev) => {
-            return new Map(prev.set(message.ChatRoomId, [...prev.get(message.ChatRoomId) || [], message]));
-        });
-    };
-
-
     useEffect( () => {
+        addMessageSubscriber((event) => {
+            const message = JSON.parse(event.data);
+            setMessageMap((prev) => {
+                return new Map(prev.set(message.ChatRoomId, [...prev.get(message.ChatRoomId) || [], message]));
+            });
+        });
+
         Query<PaginatedType<ChatParticipant>>( "/chat-participant" ).then((r) => {
             setchats(r);
             r?.m_data?.map((chat) => {
@@ -50,18 +47,24 @@ function ChatPage()
         }
 
         return chats.m_data.map((chat, index) => {
+
+            const message = messageMap.get(chat.ChatRoomId);
+            const lastMessage = message?.[message.length - 1];
+
             return (
                 <NavLink key={index} onClick={()=> {}} className="flex items-center justify-between p-3 border-b-2" to={`/chats/${chat.ChatRoomId}`}>
                     <div className="flex items-center">
                         <img src={chat?.ChatRoom?.RoomImageUrl} alt={chat?.ChatRoom?.RoomName} className="w-12 h-12 rounded-full"/>
                         <div className="ml-3 truncate ">
                             <h1 className="font-bold">{chat?.ChatRoom?.RoomName}</h1>
-                            <p className="text-sm text-gray-500 max-w-52">{chat.ChatRoomId}</p>
+                            <p className="text-sm text-gray-500 max-w-52">{lastMessage?.TextMessage}</p>
                         </div>
                     </div>
                     <div className="min-w-fit">
                         <p className="text-sm text-gray-500">{
-                            new Date(chat.CreatedDate).toLocaleTimeString("en-US", {
+
+
+                            new Date(lastMessage?.CreatedDate || chat.CreatedDate ).toLocaleTimeString("en-US", {
                                 hour: "2-digit",
                                 minute: "2-digit"
                             })

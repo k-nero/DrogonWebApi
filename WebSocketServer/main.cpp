@@ -130,7 +130,7 @@ int main()
 				return;
 			}
 
-			app->publish(json["channel"].asString(), json["message"].toStyledString(), opCode);
+			app->publish(json["channel"].asString(), json.toStyledString(), opCode);
 		}
 		else if (json["type"] == "subscribe")
 		{
