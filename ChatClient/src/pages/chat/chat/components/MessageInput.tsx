@@ -8,9 +8,9 @@ import useLocalStorage from "@/utils/hooks/useLocalStorage.ts";
 import { AuthResponse } from "@/utils/type/AuthResponse.ts";
 import { createRef, useState } from "react";
 import { useLocation } from "react-router-dom";
-import webSocket from "@/utils/function/WebSocket.ts";
 import Query from "@/utils/function/Query.ts";
 import MessageType from "@/utils/type/MessageType.ts";
+import webSocket from "@/utils/WebSocket/WebSocket.ts";
 const baseUrl = new URL(`${import.meta.env.VITE_API_URL}`);
 
 
@@ -26,6 +26,11 @@ function MessageInput()
 
     async function sendMessage()
     {
+        if(!message)
+        {
+            return;
+        }
+
         const res = await fetch(`${baseUrl}/message`, {
             method: "POST",
             headers: {
@@ -60,7 +65,6 @@ function MessageInput()
                 e.preventDefault();
                 e.currentTarget.reset();
                 sendMessage().then(() => {});
-
             }}>
             <div>
                 <textarea placeholder="Type a message" ref={textMessage} onChange={

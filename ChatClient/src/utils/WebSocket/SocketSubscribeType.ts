@@ -1,8 +1,8 @@
-interface SocketSubcribeType
+interface SocketSubscribeType
 {
     type: "subscribe";
     channel: string;
     socket_id: string;
 }
 
-export default SocketSubcribeType;
+export default SocketSubscribeType;

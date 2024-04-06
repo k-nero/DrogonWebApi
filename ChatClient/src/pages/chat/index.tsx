@@ -6,8 +6,9 @@ import InputField from "@/components/form/input.tsx";
 import ChatParticipant from "@/utils/type/ChatParticipant.ts";
 import PaginatedType from "@/utils/type/common/PaginatedType.ts";
 import Query from "@/utils/function/Query.ts";
-import webSocket, { addMessageSubscriber } from "@/utils/function/WebSocket.ts";
 import MessageType from "@/utils/type/MessageType.ts";
+import webSocket, { addMessageSubscriber } from "@/utils/WebSocket/WebSocket.ts";
+import SocketMessageType from "@/utils/WebSocket/SocketMessageType.ts";
 
 function ChatPage()
 {
@@ -16,7 +17,8 @@ function ChatPage()
 
     useEffect( () => {
         addMessageSubscriber((event) => {
-            const message = JSON.parse(event.data).message;
+            const soc_mess: SocketMessageType  = JSON.parse(event.data);
+            const message: MessageType = soc_mess.message;
             setMessageMap((prev) => {
                 return new Map(prev.set(message.ChatRoomId, [...prev.get(message.ChatRoomId) || [], message]));
             });
@@ -25,7 +27,7 @@ function ChatPage()
         Query<PaginatedType<ChatParticipant>>( "/chat-participant" ).then((r) => {
             setchats(r);
             r?.m_data?.map((chat) => {
-                Query<PaginatedType<MessageType>>(`/message?chat_id=${chat.ChatRoomId}`).then((r) => {
+                Query<PaginatedType<MessageType>>(`/message?chat_id=${chat.ChatRoomId}&page=1&limit=200`).then((r) => {
                     setMessageMap((prev) => {
                         return new Map(prev.set(chat.ChatRoomId, r?.m_data.reverse()));
                     });
