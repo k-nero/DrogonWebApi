@@ -157,6 +157,10 @@ int main()
 				value->send("ping all socket", uWS::OpCode::TEXT);
 			}
 		}
+		else if (json["type"] == "typing")
+		{
+			app->publish(json["channel"].asString(), json.toStyledString(), opCode);
+		}
 
 		app->publish("global_soc", message, opCode);
 	};

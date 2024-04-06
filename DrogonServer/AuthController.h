@@ -32,6 +32,7 @@ public:
 	void Register ( const HttpRequestPtr& req, std::function<void( const HttpResponsePtr& )>&& callback );
 
 	void FirebaseAuth(const HttpRequestPtr& req, std::function<void( const HttpResponsePtr& )>&& callback);
+
 	void RefreshToken(const HttpRequestPtr& req, std::function<void( const HttpResponsePtr& )>&& callback);
 	void SignOut(const HttpRequestPtr& req, std::function<void( const HttpResponsePtr& )>&& callback);
 	void SignOutAll(const HttpRequestPtr& req, std::function<void( const HttpResponsePtr& )>&& callback);

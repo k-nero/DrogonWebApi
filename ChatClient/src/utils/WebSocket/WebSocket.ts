@@ -2,7 +2,8 @@ import { AuthResponse } from "@/utils/type/AuthResponse.ts";
 
 const auth_credential: AuthResponse = JSON.parse(localStorage.getItem("auth_credential") || "{}");
 
-if (!auth_credential) {
+if (!auth_credential)
+{
     window.location.href = "/auth/sign-in";
 }
 
@@ -13,11 +14,18 @@ webSocket.onopen = () => {
 
 webSocket.onmessage = (event) => {
     const e_data = JSON.parse(event.data);
-    if(e_data.type === "message")
+    switch (e_data.type)
     {
-        onMessageSubscriber.forEach((sub) => {
-            sub(event);
-        });
+        case "message":
+            onMessageSubscriber.forEach((sub) => {
+                sub(event);
+            });
+            break;
+        case "typing":
+            onTypingSubscriber.forEach((sub) => {
+                sub(event);
+            });
+            break;
     }
     console.log("WebSocket 收到消息", e_data);
 };
@@ -32,8 +40,17 @@ webSocket.onerror = (error) => {
 
 const onMessageSubscriber: ((event: MessageEvent) => void)[] = [];
 
+const onTypingSubscriber: ((event: MessageEvent) => void)[] = [];
 
-export function addMessageSubscriber(sub: (event: MessageEvent) => void) {
+
+export function addMessageSubscriber(sub: (event: MessageEvent) => void)
+{
     onMessageSubscriber.push(sub);
 }
+
+export function addTypingSubscriber(sub: (event: MessageEvent) => void)
+{
+    onTypingSubscriber.push(sub);
+}
+
 export default webSocket;

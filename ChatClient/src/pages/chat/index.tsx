@@ -27,12 +27,11 @@ function ChatPage()
         Query<PaginatedType<ChatParticipant>>( "/chat-participant" ).then((r) => {
             setchats(r);
             r?.m_data?.map((chat) => {
-                Query<PaginatedType<MessageType>>(`/message?chat_id=${chat.ChatRoomId}&page=1&limit=200`).then((r) => {
+                Query<PaginatedType<MessageType>>(`/message?chat_id=${chat.ChatRoomId}&page=1&limit=30`).then((r) => {
                     setMessageMap((prev) => {
                         return new Map(prev.set(chat.ChatRoomId, r?.m_data.reverse()));
                     });
                 });
-
                webSocket.send(JSON.stringify({
                    type: "subscribe",
                    channel: chat.ChatRoomId
