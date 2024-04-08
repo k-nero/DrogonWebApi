@@ -11,9 +11,10 @@ struct us_listen_socket_t* global_listen_socket;
 struct PerSocketData
 {
 	std::string user_id;
+	Json::Value contacts;
 };
 
-static std::unordered_map<std::string, uWS::WebSocket<true, true, PerSocketData>* > user_socket_map;
+static std::unordered_map<std::string, uWS::WebSocket<true, true, PerSocketData>*> user_socket_map;
 
 int main()
 {
@@ -69,7 +70,7 @@ int main()
 		catch (...)
 		{
 			upgradeData->aborted = true;
-			std::cout << "Unknow exception";
+			std::cout << "401 Unauthorized";
 			res->writeStatus("401 Unauthorized")->end("Unauthorized");
 			return;
 		}
@@ -113,6 +114,7 @@ int main()
 		/* Open event here, you may access ws->getUserData() which points to a PerSocketData struct */
 		auto perSocketData = ws->getUserData();
 		user_socket_map[perSocketData->user_id] = ws;
+		ws->subscribe(perSocketData->user_id);
 		//ws->subscribe("global_soc");
 	};
 
@@ -142,19 +144,18 @@ int main()
 		{
 			ws->unsubscribe(json["channel"].asString());
 		}
-		else if (json["type"] == "publish")
+		else if (json["type"] == "online")
 		{
-
-		}
-		else if (json["type"] == "broadcast")
-		{
-
-		}
-		else if (json["type"] == "ping")
-		{
-			for (auto& [key, value] : user_socket_map)
+			ws->getUserData()->contacts = json["contacts"];
+			for (auto& value : json["contacts"])
 			{
-				value->send("ping all socket", uWS::OpCode::TEXT);
+				{
+					Json::Value message;
+					message["type"] = "online";
+					message["socket_id"] = perSocketData->user_id;
+
+					ws->publish(value.asString(), message.toStyledString(), opCode);
+				}
 			}
 		}
 		else if (json["type"] == "typing")
@@ -165,11 +166,40 @@ int main()
 		app->publish("global_soc", message, opCode);
 	};
 
-	auto ws_close = [](auto* ws, int code, std::string_view message)
+	auto ws_close = [&app](auto* ws, int code, std::string_view message)
 	{
 		auto perSocketData = ws->getUserData();
+		for (auto& value : perSocketData->contacts)
+		{
+			//if (user_socket_map.find(value.asString()) != user_socket_map.end())
+			{
+				Json::Value message;
+				message["type"] = "offline";
+				message["socket_id"] = perSocketData->user_id;
+				app->publish(value.asString(), message.toStyledString(), uWS::OpCode::TEXT);
+			}
+		}
+		
 		user_socket_map.erase(perSocketData->user_id);
 	};
+
+	app->get("/online-user/:user_id", [&app](auto* res, auto* req)
+	{
+
+		auto user_id = std::string(req->getParameter(0));
+		if (user_socket_map.find(user_id) != user_socket_map.end())
+		{
+			res->writeHeader("Access-Control-Allow-Origin", "*");
+			res->writeHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+			res->writeStatus("200 OK")->end("true");
+		}
+		else
+		{
+			res->writeHeader("Access-Control-Allow-Origin", "*");
+			res->writeHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+			res->writeStatus("200 OK")->end("false");
+		}
+	});
 
 	app->ws<PerSocketData>("/*",
 		{
@@ -183,12 +213,12 @@ int main()
 		.message = ws_message,
 		.close = ws_close
 		}).listen(9001, [](auto* listen_s)
+	{
+		if (listen_s)
 		{
-			if (listen_s)
-			{
-				std::cout << "Listening on port " << 9001 << std::endl;
-			}
-		});
-		app->run();
-		uWS::Loop::get()->free();
+			std::cout << "Listening on port " << 9001 << std::endl;
+		}
+	});
+	app->run();
+	uWS::Loop::get()->free();
 }

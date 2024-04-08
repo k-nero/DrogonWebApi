@@ -1,4 +1,6 @@
 import BaseType from "@/utils/type/BaseType.ts";
+import ContactListType from "@/utils/type/ContactListType.ts";
+import ChatParticipant from "@/utils/type/ChatParticipant.ts";
 
 interface ApplicationUser extends BaseType
 {
@@ -7,8 +9,9 @@ interface ApplicationUser extends BaseType
     Email: string;
     PhoneNumber?: string;
     AvatarUrl?: string;
-    chatParticipants: never[],
-    ContactList: never,
+
+    ChatParticipants: ChatParticipant[],
+    ContactList: ContactListType[];
 }
 
 export default ApplicationUser;

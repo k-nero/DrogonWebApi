@@ -10,7 +10,7 @@ class ChatParticipant;
 
 class DOMAIN_API ApplicationUser : public BaseEntity
 {
-	BOOST_DESCRIBE_CLASS(ApplicationUser, (BaseEntity), (), (UserName, Email, PasswordHash, PhoneNumber, AvatarUrl, chatParticipants, contactList), ())
+	BOOST_DESCRIBE_CLASS(ApplicationUser, (BaseEntity), (), (UserName, Email, PasswordHash, PhoneNumber, AvatarUrl, ChatParticipants, ContactLists), ())
 public:
 	ApplicationUser();
 
@@ -65,7 +65,6 @@ public:
 	{
 		PhoneNumber = phonenumber;
 	}
-
 	virtual std::string GetAvatarUrl()
 	{
 		return AvatarUrl;
@@ -83,6 +82,6 @@ protected:
 	std::string PasswordHash = {};
 	std::string PhoneNumber = {};
 	std::string AvatarUrl = {};
-	std::vector<std::shared_ptr<ChatParticipant>> chatParticipants = {};
-	std::vector<std::shared_ptr<ContactList>> contactList = {};
+	std::vector<std::shared_ptr<ChatParticipant>> ChatParticipants = {};
+	std::vector<std::shared_ptr<ContactList>> ContactLists = {};
 };

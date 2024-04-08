@@ -4,7 +4,7 @@
 std::shared_ptr<ChatRoom> ChatRoomService::GetChatRoomById(const std::string& id)
 {
 	Query<ChatRoom> query;
-	return query.GetByIdEw(id);
+	return query.GetByIdEw(id, {"ChatParticipants", "ApplicationUser"});
 }
 
 std::vector<std::shared_ptr<ChatRoom>> ChatRoomService::GetAllChatRooms()

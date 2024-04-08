@@ -10,9 +10,9 @@ import { createRef, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import Query from "@/utils/function/Query.ts";
 import MessageType from "@/utils/type/MessageType.ts";
-import webSocket from "@/utils/WebSocket/WebSocket.ts";
+import webSocket, { addTypingSubscriber } from "@/utils/WebSocket/WebSocket.ts";
+
 const baseUrl = new URL(`${import.meta.env.VITE_API_URL}`);
-import { addTypingSubscriber } from "@/utils/WebSocket/WebSocket.ts";
 
 function MessageInput()
 {
@@ -22,25 +22,24 @@ function MessageInput()
     const location = useLocation();
     const chat_id = location.pathname.split("/")[2];
     const [typing, setTyping] = useState<boolean>(false);
-    const [timer, setTimer] = useState<NodeJS.Timeout>( );
+    const [timer, setTimer] = useState<NodeJS.Timeout>();
     const [message, setMessage] = useState<string>("");
 
 
     useEffect(() => {
-       addTypingSubscriber((event) => {
-                const e_data = JSON.parse(event.data);
-                if(e_data.channel === chat_id)
-                {
-                    setTyping(e_data.typing);
-                }
-            });
+        addTypingSubscriber((event) => {
+            const e_data = JSON.parse(event.data);
+            if (e_data.channel === chat_id)
+            {
+                setTyping(e_data.typing);
+            }
+        });
     }, []);
-
 
 
     async function sendMessage()
     {
-        if(!message)
+        if (!message)
         {
             return;
         }
@@ -58,7 +57,7 @@ function MessageInput()
             })
         });
 
-        if(res.ok)
+        if (res.ok)
         {
 
             setMessage("");
@@ -81,7 +80,7 @@ function MessageInput()
             webSocket.send(JSON.stringify({
                 type: "typing",
                 channel: chat_id,
-                typing: true,
+                typing: true
             }));
         }
 
@@ -91,19 +90,19 @@ function MessageInput()
             webSocket.send(JSON.stringify({
                 type: "typing",
                 channel: chat_id,
-                typing: false,
+                typing: false
             }));
         }, 1500));
     }
 
-return (
+    return (
         <div>
-            {
-                typing ? <div className="flex items-center justify-center text-teal-500">
-                    <div className="animate-bounce w-3 h-3 bg-teal-500 rounded-full"></div>
-                    <p className="ml-2">Someone is typing...</p>
-                </div> : null
-            }
+
+            <div className={`flex items-center justify-center text-teal-500 ${!typing ? "hidden" : "" }`}>
+                <div className="animate-bounce w-3 h-3 bg-teal-500 rounded-full"></div>
+                <p className="ml-2">Someone is typing...</p>
+            </div>
+
             <div className="p-8 rounded-xl mx-8 mt-4 bg-white">
                 <form onSubmit={(e) => {
                     e.preventDefault();

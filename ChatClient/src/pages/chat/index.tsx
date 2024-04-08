@@ -63,8 +63,6 @@ function ChatPage()
                     </div>
                     <div className="min-w-fit">
                         <p className="text-sm text-gray-500">{
-
-
                             new Date(lastMessage?.CreatedDate || chat.CreatedDate ).toLocaleTimeString("en-US", {
                                 hour: "2-digit",
                                 minute: "2-digit"

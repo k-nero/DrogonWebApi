@@ -1,29 +1,40 @@
 import { GoDotFill } from "react-icons/go";
 import { BiSolidPhoneCall } from "react-icons/bi";
-import React, { useState } from "react";
+import React from "react";
 import { BsCameraVideoFill, BsThreeDots } from "react-icons/bs";
-import Query from "@/utils/function/Query.ts";
 import ChatRoom from "@/utils/type/ChatRoom.ts";
 
-function ChatBoxHeader({setIsPanel, chat_id} : {setIsPanel: () => void, chat_id : string})
+function ChatBoxHeader({setIsPanel, chat_room, onlineMap} : {setIsPanel: () => void, chat_room : ChatRoom | undefined, onlineMap: Map<string, boolean>})
 {
-    const [chats, setchats] = useState<ChatRoom>();
 
-    React.useEffect( () => {
-       Query<ChatRoom>( `/chat-room/${chat_id}` ).then((r) => {
-           setchats(r);
-       });
-    }, []);
+    if(!chat_room)
+    {
+        return <div></div>;
+    }
+
     return (
         <div className="w-full h-[10vh]">
             <div className="flex items-center justify-between p-6 border-b-2">
                 <div className="flex items-center">
-                    <img src={chats?.RoomImageUrl} alt={chats?.RoomName} className="w-12 h-12 rounded-full"/>
+                    <img src={chat_room?.RoomImageUrl} alt={chat_room?.RoomName} className="w-12 h-12 rounded-full"/>
                     <div className="ml-3">
-                        <h1 className="font-bold">{chats?.RoomName}</h1>
-                        <div className="flex">
-                            <GoDotFill className="text-green-600 text-2xl"/>
-                            <p className="text-sm text-gray-500 pt-[2px]">Online</p>
+                        <h1 className="font-bold">{chat_room?.RoomName}</h1>
+                        <div >
+                            {
+                                Array.from(onlineMap.values()).filter(function(item){
+                                    return item;
+                                }).length === 0 ?
+                                    (<div className="flex"><GoDotFill className="text-gray-500 text-2xl"/>
+                                        <p className="text-sm text-gray-500 pt-[2px]">Offline</p></div>)
+                                    :
+                                    (<div className="flex"><GoDotFill className="text-green-600 text-2xl"/>
+                                        <p className="text-sm text-gray-500 pt-[2px]">{Array.from(onlineMap.values()).filter(function(item){
+                                            return item;
+                                        }).length > 1 ? Array.from(onlineMap.values()).filter(function(item){
+                                            return item;
+                                        }).length : "" } Online</p></div>)
+                            }
+
                         </div>
                     </div>
                 </div>

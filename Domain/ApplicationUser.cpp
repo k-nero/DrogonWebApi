@@ -11,8 +11,8 @@ ApplicationUser::ApplicationUser(const ApplicationUser& applicationuser) : BaseE
 	PhoneNumber = applicationuser.PhoneNumber;
 	AvatarUrl = applicationuser.AvatarUrl;
 	// Shalow copy
-	chatParticipants = applicationuser.chatParticipants;
-	contactList = applicationuser.contactList;
+	ChatParticipants = applicationuser.ChatParticipants;
+	ContactLists = applicationuser.ContactLists;
 }
 
 ApplicationUser::ApplicationUser(ApplicationUser&& applicationuser) noexcept : BaseEntity(applicationuser)
@@ -23,8 +23,8 @@ ApplicationUser::ApplicationUser(ApplicationUser&& applicationuser) noexcept : B
 	PhoneNumber = std::move(applicationuser.PhoneNumber);
 	AvatarUrl = std::move(applicationuser.AvatarUrl);
 
-	chatParticipants = std::move(applicationuser.chatParticipants);
-	contactList = std::move(applicationuser.contactList);
+	ChatParticipants = std::move(applicationuser.ChatParticipants);
+	ContactLists = std::move(applicationuser.ContactLists);
 }
 
 ApplicationUser& ApplicationUser::operator=(const ApplicationUser& applicationuser)
@@ -36,8 +36,8 @@ ApplicationUser& ApplicationUser::operator=(const ApplicationUser& applicationus
 	PhoneNumber = applicationuser.PhoneNumber;
 	AvatarUrl = applicationuser.AvatarUrl;
 	// Shalow copy
-	chatParticipants = applicationuser.chatParticipants;
-	contactList = applicationuser.contactList;
+	ChatParticipants = applicationuser.ChatParticipants;
+	ContactLists = applicationuser.ContactLists;
 	return *this;
 }
 
@@ -68,8 +68,8 @@ ApplicationUser& ApplicationUser::operator=(ApplicationUser&& applicationuser) n
 	PhoneNumber = std::move(applicationuser.PhoneNumber);
 	AvatarUrl = std::move(applicationuser.AvatarUrl);
 
-	chatParticipants = std::move(applicationuser.chatParticipants);
-	contactList = std::move(applicationuser.contactList);
+	ChatParticipants = std::move(applicationuser.ChatParticipants);
+	ContactLists = std::move(applicationuser.ContactLists);
 	return *this;
 }
 
