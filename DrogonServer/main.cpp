@@ -1,5 +1,4 @@
 #if defined _DEBUG
-#define _CRTDBG_MAP_ALLOC
 #include <stdlib.h>
 #include <crtdbg.h>
 #endif
@@ -14,31 +13,32 @@ constexpr auto ip = "0.0.0.0";
 
 int main()
 {
+    int cpus = 8;
 #if defined _DEBUG
     _CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
     _CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_DEBUG);
 #endif
     std::cout << drogon::banner;
     BOOST_LOG_TRIVIAL(info) << "Drogon server starting...";
+    ConfigProvider::GetInstance()->Initialize();
 
     //Set HTTP listener address and port
 
     drogon::app().addListener(ip, 443, true, "certificate.crt", "private.key");
     drogon::app().setLogPath("");
+#if defined _DEBUG
     drogon::app().setLogLevel( trantor::Logger::kTrace );
-    drogon::app().setThreadNum( 16 );
+    drogon::app().setThreadNum(cpus);
+#else
+    cpus = std::thread::hardware_concurrency();
+    drogon::app().setLogLevel( trantor::Logger::kInfo );
+    drogon::app().setThreadNum(0);
+#endif   
     drogon::app().enableGzip(true);
     drogon::app().enableBrotli(false);
     drogon::app().enableDateHeader(true);
     drogon::app().enableServerHeader(true);
     drogon::app().setCustom404Page(drogon::HttpResponse::newFileResponse("public/404.html", "", drogon::CT_TEXT_HTML));
-
-    //Load config file
-    //Run HTTP framework,the method will block in the internal event loop
-    ConfigProvider::GetInstance()->Initialize();
-
-
-   
 
     drogon::app().registerPreRoutingAdvice([](const drogon::HttpRequestPtr& req, drogon::FilterCallback&& stop, drogon::FilterChainCallback&& pass)
     {
@@ -70,7 +70,7 @@ int main()
 		BOOST_LOG_TRIVIAL(info) << "Listening on: https://" << i;
 	}
 
-    BOOST_LOG_TRIVIAL(info) << "Drogon server running with 16 thread";
+    BOOST_LOG_TRIVIAL(info) << "Drogon server is running with " << cpus << " threads";
     drogon::app().run();
 #if defined _DEBUG
     _CrtDumpMemoryLeaks();
