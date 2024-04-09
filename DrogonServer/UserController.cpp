@@ -6,7 +6,7 @@ void UserController::GetAll(const HttpRequestPtr& req, std::function<void(const 
 	try
 	{
 		std::vector<std::shared_ptr<ApplicationUser>> users(ApplicationUserService().GetAllApplicationUsers());
-		Json::Value rs = ObjToJson(users);
+		Json::Value rs = obj_to_json(users);
 		const auto resp = HttpResponse::newHttpJsonResponse(rs);
 		resp->setStatusCode(k200OK);
 		callback(resp);
@@ -44,7 +44,7 @@ void UserController::Get(const HttpRequestPtr& req, std::function<void(const Htt
 		Json::Value ret;
 		if (user != nullptr)
 		{
-			ret = ObjToJson(user);
+			ret = obj_to_json(user);
 		}
 		else
 		{

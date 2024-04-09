@@ -6,7 +6,7 @@ void MessageSeenByController::GetAll(const HttpRequestPtr& req, std::function<vo
 	{
 		auto task = std::future(std::async(std::launch::async, []() { return MessageSeenByService().GetAllMessageSeenBys(); }));
 		auto result(task.get());
-		Json::Value rs = ObjToJson(result);
+		Json::Value rs = obj_to_json(result);
 		const auto resp = HttpResponse::newHttpJsonResponse(rs);
 		resp->setStatusCode(k200OK);
 		callback(resp);
@@ -45,7 +45,7 @@ void MessageSeenByController::Get(const HttpRequestPtr& req, std::function<void(
 		Json::Value ret;
 		if (result != nullptr)
 		{
-			ret = ObjToJson(result);
+			ret = obj_to_json(result);
 		}
 		else
 		{
@@ -246,7 +246,7 @@ void MessageSeenByController::GetPaginated(const HttpRequestPtr& req, std::funct
 		limit == 0 ? limit = 10 : limit = limit;
 		auto task = std::future(std::async(std::launch::async, [page, limit]() { return MessageSeenByService().GetMessageSeenBysByPage(page, limit); }));
 		auto result = task.get();
-		Json::Value rs = ObjToJson(result);
+		Json::Value rs = obj_to_json(result);
 		const auto resp = HttpResponse::newHttpJsonResponse(rs);
 		resp->setStatusCode(k200OK);
 		callback(resp);

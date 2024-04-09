@@ -6,7 +6,7 @@ void ContactListController::GetAll(const HttpRequestPtr& req, std::function<void
 	{
 		auto task = std::future(std::async(std::launch::async, []() { return ContactListService().GetAllContactLists(); }));
 		auto result(task.get());
-		Json::Value rs = ObjToJson(result);
+		Json::Value rs = obj_to_json(result);
 		const auto resp = HttpResponse::newHttpJsonResponse(rs);
 		resp->setStatusCode(k200OK);
 		callback(resp);
@@ -45,7 +45,7 @@ void ContactListController::Get(const HttpRequestPtr& req, std::function<void(co
 		Json::Value ret;
 		if (result != nullptr)
 		{
-			ret = ObjToJson(result);
+			ret = obj_to_json(result);
 		}
 		else
 		{
@@ -254,7 +254,7 @@ void ContactListController::GetPaginated(const HttpRequestPtr& req, std::functio
 			task = std::async(std::launch::async, [page, limit, user_id]() { return ContactListService().GetContactListsByUserId(page, limit, user_id); });
 		}
 		auto result = task.get();
-		Json::Value rs = ObjToJson(result);
+		Json::Value rs = obj_to_json(result);
 		const auto resp = HttpResponse::newHttpJsonResponse(rs);
 		resp->setStatusCode(k200OK);
 		callback(resp);

@@ -6,7 +6,7 @@ void ChatRoomController::GetAll(const HttpRequestPtr& req, std::function<void(co
 	{
 		auto task = std::future(std::async(std::launch::async, []() { return ChatRoomService().GetAllChatRooms(); }));
 		auto result(task.get());
-		Json::Value rs = ObjToJson(result);
+		Json::Value rs = obj_to_json(result);
 		const auto resp = HttpResponse::newHttpJsonResponse(rs);
 		resp->setStatusCode(k200OK);
 		callback(resp);
@@ -45,7 +45,7 @@ void ChatRoomController::Get(const HttpRequestPtr& req, std::function<void(const
 		Json::Value ret;
 		if (result != nullptr)
 		{
-			ret = ObjToJson(result);
+			ret = obj_to_json(result);
 		}
 		else
 		{
@@ -246,7 +246,7 @@ void ChatRoomController::GetPaginated(const HttpRequestPtr& req, std::function<v
 		limit == 0 ? limit = 10 : limit = limit;
 		auto task = std::future(std::async(std::launch::async, [page, limit]() { return ChatRoomService().GetChatRoomsByPage(page, limit); }));
 		auto result = task.get();
-		Json::Value rs = ObjToJson(result);
+		Json::Value rs = obj_to_json(result);
 		const auto resp = HttpResponse::newHttpJsonResponse(rs);
 		resp->setStatusCode(k200OK);
 		callback(resp);

@@ -6,7 +6,7 @@ void MessageController::GetAll(const HttpRequestPtr& req, std::function<void(con
 	{
 		auto task = std::future(std::async(std::launch::async, []() { return MessageService().GetAllMessages(); }));
 		auto result(task.get());
-		Json::Value rs = ObjToJson(result);
+		Json::Value rs = obj_to_json(result);
 		const auto resp = HttpResponse::newHttpJsonResponse(rs);
 		resp->setStatusCode(k200OK);
 		callback(resp);
@@ -45,7 +45,7 @@ void MessageController::Get(const HttpRequestPtr& req, std::function<void(const 
 		Json::Value ret;
 		if (result != nullptr)
 		{
-			ret = ObjToJson(result);
+			ret = obj_to_json(result);
 		}
 		else
 		{
@@ -246,7 +246,7 @@ void MessageController::GetPaginated(const HttpRequestPtr& req, std::function<vo
 		limit == 0 ? limit = 30 : limit = limit;
 		auto task = std::future(std::async(std::launch::async, [page, limit, chat_id]() { return MessageService().GetMessagesByChat(page, limit, chat_id); }));
 		auto result = task.get();
-		const auto resp = HttpResponse::newHttpJsonResponse(ObjToJson(result));
+		const auto resp = HttpResponse::newHttpJsonResponse(obj_to_json(result));
 		resp->setStatusCode(k200OK);
 		callback(resp);
 		return;

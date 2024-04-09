@@ -6,7 +6,7 @@ void TodoListController::GetAll(const HttpRequestPtr& req, std::function<void(co
 	{
 		auto task = std::future(std::async(std::launch::async, []() { return TodoListService().GetAllTodoLists(); }));
 		auto todo_lists(task.get());
-		Json::Value rs = ObjToJson(todo_lists);
+		Json::Value rs = obj_to_json(todo_lists);
 		const auto resp = HttpResponse::newHttpJsonResponse(rs);
 		resp->setStatusCode(k200OK);
 		callback(resp);
@@ -45,7 +45,7 @@ void TodoListController::Get(const HttpRequestPtr& req, std::function<void(const
 		Json::Value ret;
 		if (todo_list != nullptr)
 		{
-			ret = ObjToJson(todo_list);
+			ret = obj_to_json(todo_list);
 		}
 		else
 		{
@@ -246,7 +246,7 @@ void TodoListController::GetPaginated(const HttpRequestPtr& req, std::function<v
 		limit == 0 ? limit = 10 : limit = limit;
 		auto task = std::async(std::launch::async, [page, limit]() { return TodoListService().GetTodoListsByPage(page, limit); });
 		auto todo_lists(task.get());
-		const auto resp = HttpResponse::newHttpJsonResponse(ObjToJson(todo_lists));
+		const auto resp = HttpResponse::newHttpJsonResponse(obj_to_json(todo_lists));
 		resp->setStatusCode(k200OK);
 		callback(resp);
 		return;

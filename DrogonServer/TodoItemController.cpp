@@ -6,7 +6,7 @@ void TodoItemController::GetAll(const HttpRequestPtr& req, std::function<void(co
 	{
 		auto task = std::future(std::async(std::launch::async, []() { return TodoItemService().GetAllTodoItems(); }));
 		auto result(task.get());
-		const auto resp = HttpResponse::newHttpJsonResponse(ObjToJson(result));
+		const auto resp = HttpResponse::newHttpJsonResponse(obj_to_json(result));
 		resp->setStatusCode(k200OK);
 		callback(resp);
 		return;
@@ -44,7 +44,7 @@ void TodoItemController::Get(const HttpRequestPtr& req, std::function<void(const
 		Json::Value ret;
 		if (todo_lists != nullptr)
 		{
-			ret = ObjToJson(todo_lists);
+			ret = obj_to_json(todo_lists);
 		}
 		else
 		{
