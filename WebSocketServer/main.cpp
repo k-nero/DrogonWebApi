@@ -58,8 +58,8 @@ int main()
 			if (access_token.empty())
 			{
 				upgradeData->aborted = true;
-				std::cout << "Unauthorized";
-				res->writeStatus("401 Unauthorized")->end("Unauthorized");
+				std::cout << "No token provied" << std::endl;
+				res->writeStatus("401 Unauthorized")->end("No token provied");
 				return;
 			}
 
@@ -70,7 +70,7 @@ int main()
 		catch (...)
 		{
 			upgradeData->aborted = true;
-			std::cout << "401 Unauthorized";
+			std::cout << "401 Unauthorized" << std::endl;
 			res->writeStatus("401 Unauthorized")->end("Unauthorized");
 			return;
 		}

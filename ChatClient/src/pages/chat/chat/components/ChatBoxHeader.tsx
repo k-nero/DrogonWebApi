@@ -28,11 +28,9 @@ function ChatBoxHeader({setIsPanel, chat_room, onlineMap} : {setIsPanel: () => v
                                         <p className="text-sm text-gray-500 pt-[2px]">Offline</p></div>)
                                     :
                                     (<div className="flex"><GoDotFill className="text-green-600 text-2xl"/>
-                                        <p className="text-sm text-gray-500 pt-[2px]">{Array.from(onlineMap.values()).filter(function(item){
-                                            return item;
-                                        }).length > 1 ? Array.from(onlineMap.values()).filter(function(item){
-                                            return item;
-                                        }).length : "" } Online</p></div>)
+                                        <p className="text-sm text-gray-500 pt-[2px]">{Array.from(onlineMap.values()).filter(function(item){ return item;}).length > 1
+                                            ? Array.from(onlineMap.values()).filter(function(item){return item;}).length
+                                            : "" } Online</p></div>)
                             }
 
                         </div>

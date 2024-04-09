@@ -34,7 +34,7 @@ function MessageInput()
                 setTyping(e_data.typing);
             }
         });
-    }, []);
+    }, [chat_id]);
 
 
     async function sendMessage()

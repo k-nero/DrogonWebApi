@@ -1,10 +1,9 @@
-import { useLocation, useOutletContext } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import React, {  useEffect, useState } from "react";
 import ChatBoxHeader from "@/pages/chat/chat/components/ChatBoxHeader.tsx";
 import MessageBox from "@/pages/chat/chat/components/MessageBox.tsx";
 import MessageInput from "@/pages/chat/chat/components/MessageInput.tsx";
 import ChatPanel from "@/pages/chat/chat/components/ChatPanel.tsx";
-import MessageType from "@/utils/type/MessageType.ts";
 import ChatRoom from "@/utils/type/ChatRoom.ts";
 import Query from "@/utils/function/Query.ts";
 import useLocalStorage from "@/utils/hooks/useLocalStorage.ts";
@@ -15,13 +14,14 @@ function Chat()
 {
     const location = useLocation();
     const chat_id = location.pathname.split("/")[2];
+    const [userLocal] = useLocalStorage("auth_credential", {});
+    const credential: AuthResponse = userLocal;
+
+    //states
     const [isPanelOpen, setIsPanelOpen] = useState(false);
-    const messageMap: Map<string, MessageType[]> = useOutletContext();
     const [chatRoom, setChatRoom] = useState<ChatRoom>();
     const [onlineUsersMap, setOnlineUsersMap] = useState<Map<string, boolean>>(new Map<string, boolean>());
 
-    const [userLocal] = useLocalStorage("auth_credential", {});
-    const credential: AuthResponse = userLocal;
 
     async function isOnline(user_id: string)
     {
@@ -29,7 +29,6 @@ function Chat()
         const online = await res.text();
         return online === "true";
     }
-
 
     useEffect(() => {
         Query<ChatRoom>(`/chat-room/${chat_id}`).then((r) => {
@@ -46,7 +45,7 @@ function Chat()
                 });
             });
         });
-    }, []);
+    }, [chat_id, credential.user.Id]);
 
 
     useEffect(() => {
@@ -79,7 +78,7 @@ function Chat()
                         <div className={`w-full h-fit ${isPanelOpen ? "col-span-6" : ""}`}>
                             <ChatBoxHeader setIsPanel={setIsPanel} chat_room={chatRoom} onlineMap={onlineUsersMap}/>
                             <div className="bg-gray-100 bg-opacity-90 p-4 flex flex-col justify-between h-[90vh]">
-                                <MessageBox messages={messageMap.get(chat_id)}/>
+                                <MessageBox/>
                                 <MessageInput/>
                             </div>
                         </div>

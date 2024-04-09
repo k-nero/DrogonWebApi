@@ -27,7 +27,7 @@ function ChatPage()
         Query<PaginatedType<ChatParticipant>>( "/chat-participant" ).then((r) => {
             setchats(r);
             r?.m_data?.map((chat) => {
-                Query<PaginatedType<MessageType>>(`/message?chat_id=${chat.ChatRoomId}&page=1&limit=30`).then((r) => {
+                Query<PaginatedType<MessageType>>(`/message?chat_id=${chat.ChatRoomId}&page=1&limit=20`).then((r) => {
                     setMessageMap((prev) => {
                         return new Map(prev.set(chat.ChatRoomId, r?.m_data.reverse()));
                     });
@@ -105,7 +105,7 @@ function ChatPage()
                         </div>
                     </div>
                     <div className="col-span-9">
-                        <Outlet context={messageMap} />
+                        <Outlet />
                     </div>
                 </div>
             </div>
