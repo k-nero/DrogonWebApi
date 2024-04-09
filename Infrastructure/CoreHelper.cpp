@@ -119,3 +119,47 @@ inline void CoreHelper::SkipBOM(std::ifstream& in)
 }
 
 
+inline std::vector<std::string> CoreHelper::GetAllListenAddresses(std::string init_ip = "")
+{
+
+	if (init_ip.empty() || init_ip != "0.0.0.0")
+	{
+		return { init_ip };
+	}
+
+	std::vector<std::string> ips;
+	ULONG adapter_size = 0;
+	ULONG err = 0;
+
+	err = ::GetAdaptersAddresses(AF_UNSPEC, GAA_FLAG_SKIP_ANYCAST | GAA_FLAG_SKIP_MULTICAST | GAA_FLAG_SKIP_DNS_SERVER | GAA_FLAG_SKIP_FRIENDLY_NAME, NULL, NULL, &adapter_size);
+	auto adapters = (IP_ADAPTER_ADDRESSES*)malloc(adapter_size);
+	err = ::GetAdaptersAddresses(AF_UNSPEC, GAA_FLAG_SKIP_ANYCAST | GAA_FLAG_SKIP_MULTICAST | GAA_FLAG_SKIP_DNS_SERVER | GAA_FLAG_SKIP_FRIENDLY_NAME, NULL, adapters, &adapter_size);
+
+	if (err == ERROR_SUCCESS)
+	{
+		for (auto adt = adapters; adt != NULL; adt = adt->Next)
+		{
+			if (adt->IfType == IF_TYPE_SOFTWARE_LOOPBACK) continue; // Skip Loopback
+			if (adt->OperStatus != IfOperStatusUp)        continue; // Live connection only  
+
+			for (auto adr = adt->FirstUnicastAddress; adr != NULL; adr = adr->Next)
+			{
+				auto sockaddr = (SOCKADDR_IN*)(adr->Address.lpSockaddr);
+				char* ipstr = new char[INET6_ADDRSTRLEN];
+				inet_ntop(AF_INET, &(sockaddr->sin_addr), ipstr, INET6_ADDRSTRLEN);
+				std::string ip(ipstr);
+				delete[] ipstr;
+				if (ip != std::string("0.0.0.0"))
+				{
+					ips.push_back(ip);
+				}
+			}
+		}
+	}
+
+	free(adapters);
+	adapters = nullptr;
+	ips.push_back("127.0.0.1");
+	return ips;
+}
+

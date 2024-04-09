@@ -10,6 +10,8 @@
 #include <drogon/drogon.h>
 #include "DbContext.h"
 
+constexpr auto ip = "0.0.0.0";
+
 int main()
 {
 #if defined _DEBUG
@@ -21,7 +23,7 @@ int main()
 
     //Set HTTP listener address and port
 
-    drogon::app().addListener( "0.0.0.0", 443, true, "certificate.crt", "private.key");
+    drogon::app().addListener(ip, 443, true, "certificate.crt", "private.key");
     drogon::app().setLogPath("");
     drogon::app().setLogLevel( trantor::Logger::kTrace );
     drogon::app().setThreadNum( 16 );
@@ -62,7 +64,12 @@ int main()
         resp->addHeader("Access-Control-Allow-Headers", "*");
     });
 
-    BOOST_LOG_TRIVIAL(info) << "Drogon server started at 127.0.0.1:443";
+    auto ips = CoreHelper::GetAllListenAddresses(ip);
+    for (const auto& i : ips)
+    {
+		BOOST_LOG_TRIVIAL(info) << "Listening on: https://" << i;
+	}
+
     BOOST_LOG_TRIVIAL(info) << "Drogon server running with 16 thread";
     drogon::app().run();
 #if defined _DEBUG
