@@ -7,7 +7,7 @@
 #include "ConfigProvider.h"
 #include <boost/log/trivial.hpp>
 #include <drogon/drogon.h>
-#include "DbContext.h"
+#include "CoreHelper.h"
 
 constexpr auto ip = "0.0.0.0";
 
