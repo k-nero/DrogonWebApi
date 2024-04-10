@@ -238,13 +238,27 @@ void MessageController::Delete(const HttpRequestPtr& req, std::function<void(con
 	}
 }
 
-void MessageController::GetPaginated(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback, std::string chat_id, int page, int limit)
+void MessageController::GetPaginated(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback, std::string chat_id, std::string created_date ,int page, int limit)
 {
 	try
 	{
 		page == 0 ? page = 1 : page = page;
 		limit == 0 ? limit = 30 : limit = limit;
-		auto task = std::future(std::async(std::launch::async, [page, limit, chat_id]() { return MessageService().GetMessagesByChat(page, limit, chat_id); }));
+		auto task = std::future(std::async(std::launch::async, [page, limit, chat_id, created_date]()
+		{ 
+			if (!chat_id.empty() && !created_date.empty())
+			{
+				return MessageService().GetMessagesByDate(page, limit, chat_id, created_date);
+			}
+			else if (!chat_id.empty())
+			{
+				return MessageService().GetMessagesByChat(page, limit, chat_id);
+			}
+			else
+			{
+				return MessageService().GetMessagesByPage(page, limit);
+			}
+		}));
 		auto result = task.get();
 		const auto resp = HttpResponse::newHttpJsonResponse(obj_to_json(result));
 		resp->setStatusCode(k200OK);

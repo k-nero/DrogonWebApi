@@ -25,6 +25,12 @@ std::shared_ptr<PaginationObject<Message>> MessageService::GetMessagesByChat(int
 	return query.GetPaginatedEw(page, page_size, EQ(ChatRoomId), {"ApplicationUser"});
 }
 
+std::shared_ptr<PaginationObject<Message>> MessageService::GetMessagesByDate(int page, int page_size, std::string ChatRoomId, std::string CreatedDate)
+{
+	Query<Message> query;
+	return query.GetPaginatedEw(page, page_size, AND(EQ(ChatRoomId), LT(CreatedDate) ), {"ApplicationUser"});
+}
+
 std::string MessageService::CreateMessage(MessageModel& model)
 {
 	BaseCommand<Message> cmd;

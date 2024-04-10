@@ -12,10 +12,14 @@ function MessageBox()
     const location = useLocation();
     const chat_id = location.pathname.split("/")[2];
     const [messageList, setMessageList] = useState<MessageType[]>([]);
+    const [isInitLoading, setIsInitLoading] = useState<boolean>(false);
+    const [isLoadMore, setIsLoadMore] = useState<boolean>(false);
 
     useEffect(() => {
-        Query<PaginatedType<MessageType>> (`/message?chat_id=${chat_id}&page=1&limit=50`).then((r) => {
+        setIsInitLoading(true);
+        Query<PaginatedType<MessageType>> (`/message?chat_id=${chat_id}&page=1&limit=30`).then((r) => {
             setMessageList(r.m_data.reverse());
+            setIsInitLoading(false);
         });
     }, [chat_id]);
 
@@ -24,8 +28,9 @@ function MessageBox()
         if(message_box)
         {
             message_box.scrollTop = message_box.scrollHeight;
+            console.log("scrollHeight", message_box.scrollHeight);
         }
-    }, [messageList]);
+    }, [isInitLoading]);
 
     useEffect(() => {
         addMessageSubscriber((event) => {
@@ -38,13 +43,29 @@ function MessageBox()
     }, []);
 
     useEffect(() => {
+        if(!messageList[0])
+        {
+            return;
+        }
+         Query<PaginatedType<MessageType>>(`/message?chat_id=${chat_id}&created_date=${messageList[0].CreatedDate}&page=1&limit=30`).then((res) => {
+             if(!res?.m_data)
+             {
+                 return;
+             }
+             setMessageList([...res.m_data.reverse(), ...messageList]);
+                setIsLoadMore(false);
+         });
+    }, [isLoadMore]);
+
+    useEffect(() => {
         const message_box = document.getElementById("message_box");
         if(message_box)
         {
             message_box.addEventListener("scroll", async () => {
                 if (message_box.scrollTop === 0)
                 {
-                    console.log("Scrolled to top");
+                    setIsLoadMore(true);
+                    message_box.scrollTop = 1;
                 }
             });
         }

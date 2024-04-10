@@ -36,6 +36,16 @@ const navLinks = [
     }
 ];
 
+function Logout()
+{
+   const credential = localStorage.getItem("auth_credential");
+    if(credential)
+    {
+        localStorage.removeItem("auth_credential");
+        window.location.href = "/auth/sign-in";
+    }
+    return <div></div>;
+}
 
 function Navbar()
 {
@@ -88,7 +98,7 @@ function Navbar()
                     <button>
                         <GoQuestion className="block m-auto"/>
                     </button>
-                    <button>
+                    <button onClick={Logout}>
                         <CiLogout className="block m-auto"/>
                     </button>
                 </div>
