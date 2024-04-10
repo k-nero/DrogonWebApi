@@ -64,14 +64,19 @@ function MessageBox()
         {
             return;
         }
-         Query<PaginatedType<MessageType>>(`/message?chat_id=${chat_id}&created_date=${messageList[0].CreatedDate}&page=1&limit=30`).then((res) => {
-             if(!res?.m_data)
-             {
-                 return;
-             }
-             setMessageList([...res.m_data.reverse(), ...messageList]);
-             setIsLoadMore(false);
-         });
+
+        setTimeout(() => {
+            Query<PaginatedType<MessageType>>(`/message?chat_id=${chat_id}&created_date=${messageList[0].CreatedDate}&page=1&limit=30`).then((res) => {
+                if(!res?.m_data)
+                {
+                    return;
+                }
+                setMessageList([...res.m_data.reverse(), ...messageList]);
+                setIsLoadMore(false);
+            });
+        }, 500);
+
+
     }, [isLoadMore]);
 
     useEffect(() => {
