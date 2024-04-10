@@ -7,16 +7,16 @@ import ChatParticipant from "@/utils/type/ChatParticipant.ts";
 import PaginatedType from "@/utils/type/common/PaginatedType.ts";
 import Query from "@/utils/function/Query.ts";
 import MessageType from "@/utils/type/MessageType.ts";
-import webSocket, { addMessageSubscriber } from "@/utils/WebSocket/WebSocket.ts";
+import { uWebSockets } from "@/utils/WebSocket/WebSocket.ts";
 import SocketMessageType from "@/utils/WebSocket/SocketMessageType.ts";
 
 function ChatPage()
 {
-    const [chats, setchats] = useState<PaginatedType<ChatParticipant>>();
+    const [chats, setChats] = useState<PaginatedType<ChatParticipant>>();
     const [messageMap, setMessageMap] = useState<Map<string, MessageType[]>>(new Map<string, MessageType[]>());
 
     useEffect( () => {
-        addMessageSubscriber((event) => {
+        uWebSockets.getInstance().addMessageSubscriber((event) => {
             const soc_mess: SocketMessageType  = JSON.parse(event.data);
             const message: MessageType = soc_mess.message;
             setMessageMap((prev) => {
@@ -25,14 +25,14 @@ function ChatPage()
         });
 
         Query<PaginatedType<ChatParticipant>>( "/chat-participant" ).then((r) => {
-            setchats(r);
+            setChats(r);
             r?.m_data?.map((chat) => {
                 Query<PaginatedType<MessageType>>(`/message?chat_id=${chat.ChatRoomId}&page=1&limit=20`).then((r) => {
                     setMessageMap((prev) => {
                         return new Map(prev.set(chat.ChatRoomId, r?.m_data.reverse()));
                     });
                 });
-               webSocket.send(JSON.stringify({
+                uWebSockets.getInstance().send(JSON.stringify({
                    type: "subscribe",
                    channel: chat.ChatRoomId
                }))

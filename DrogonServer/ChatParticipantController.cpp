@@ -96,7 +96,7 @@ void ChatParticipantController::Create(const HttpRequestPtr& req, std::function<
 		{
 			ret["id"] = id;
 			ret["status"] = 201;
-			ret["message"] = "Todo list created successfully!";
+			ret["message"] = "ChatParticipant created successfully!";
 		}
 		else
 		{
@@ -146,7 +146,7 @@ void ChatParticipantController::Update(const HttpRequestPtr& req, std::function<
 		{
 			Json::Value ret;
 			ret["status"] = 200;
-			ret["message"] = "Todo list updated successfully!";
+			ret["message"] = "ChatParticipant updated successfully!";
 			const auto resp = HttpResponse::newHttpJsonResponse(ret);
 			resp->setStatusCode(k200OK);
 			callback(resp);
@@ -197,7 +197,7 @@ void ChatParticipantController::Delete(const HttpRequestPtr& req, std::function<
 		{
 			Json::Value ret;
 			ret["status"] = 200;
-			ret["message"] = "Todo list deleted successfully!";
+			ret["message"] = "ChatParticipant deleted successfully!";
 			const auto resp = HttpResponse::newHttpJsonResponse(ret);
 			resp->setStatusCode(k200OK);
 			callback(resp);

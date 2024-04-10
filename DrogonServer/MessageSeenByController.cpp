@@ -96,7 +96,7 @@ void MessageSeenByController::Create(const HttpRequestPtr& req, std::function<vo
 		{
 			ret["id"] = id;
 			ret["status"] = 201;
-			ret["message"] = "Todo list created successfully!";
+			ret["message"] = "MessageSeenBy created successfully!";
 		}
 		else
 		{
@@ -146,7 +146,7 @@ void MessageSeenByController::Update(const HttpRequestPtr& req, std::function<vo
 		{
 			Json::Value ret;
 			ret["status"] = 200;
-			ret["message"] = "Todo list updated successfully!";
+			ret["message"] = "MessageSeenBy updated successfully!";
 			const auto resp = HttpResponse::newHttpJsonResponse(ret);
 			resp->setStatusCode(k200OK);
 			callback(resp);
@@ -197,7 +197,7 @@ void MessageSeenByController::Delete(const HttpRequestPtr& req, std::function<vo
 		{
 			Json::Value ret;
 			ret["status"] = 200;
-			ret["message"] = "Todo list deleted successfully!";
+			ret["message"] = "MessageSeenBy deleted successfully!";
 			const auto resp = HttpResponse::newHttpJsonResponse(ret);
 			resp->setStatusCode(k200OK);
 			callback(resp);

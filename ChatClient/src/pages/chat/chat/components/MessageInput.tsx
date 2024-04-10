@@ -9,7 +9,7 @@ import { createRef, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import Query from "@/utils/function/Query.ts";
 import MessageType from "@/utils/type/MessageType.ts";
-import webSocket, { addTypingSubscriber } from "@/utils/WebSocket/WebSocket.ts";
+import { uWebSockets } from "@/utils/WebSocket/WebSocket.ts";
 
 const baseUrl = new URL(`${import.meta.env.VITE_API_URL}`);
 
@@ -26,7 +26,7 @@ function MessageInput()
 
 
     useEffect(() => {
-        addTypingSubscriber((event) => {
+        uWebSockets.getInstance().addTypingSubscriber((event) => {
             const e_data = JSON.parse(event.data);
             if (e_data.channel === chat_id)
             {
@@ -38,6 +38,11 @@ function MessageInput()
 
     async function sendMessage()
     {
+        if(uWebSockets.getInstance().ConnectState() !== 1)
+        {
+            alert("Connection lost, reconnecting...");
+        }
+
         if (!message)
         {
             return;
@@ -62,7 +67,7 @@ function MessageInput()
             setMessage("");
             const rs = await res.json();
             const message = await Query<MessageType>(`/message/${rs.id}`);
-            webSocket.send(JSON.stringify({
+            uWebSockets.getInstance().send(JSON.stringify({
                 type: "message",
                 channel: chat_id,
                 message: message
@@ -76,7 +81,7 @@ function MessageInput()
         if (!typing && e.target.value != "")
         {
             setTyping(true);
-            webSocket.send(JSON.stringify({
+            uWebSockets.getInstance().send(JSON.stringify({
                 type: "typing",
                 channel: chat_id,
                 typing: true
@@ -86,7 +91,7 @@ function MessageInput()
         clearTimeout(timer);
         setTimer(setTimeout(() => {
             setTyping(false);
-            webSocket.send(JSON.stringify({
+            uWebSockets.getInstance().send(JSON.stringify({
                 type: "typing",
                 channel: chat_id,
                 typing: false

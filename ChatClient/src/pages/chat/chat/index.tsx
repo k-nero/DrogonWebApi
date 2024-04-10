@@ -8,7 +8,7 @@ import ChatRoom from "@/utils/type/ChatRoom.ts";
 import Query from "@/utils/function/Query.ts";
 import useLocalStorage from "@/utils/hooks/useLocalStorage.ts";
 import { AuthResponse } from "@/utils/type/AuthResponse.ts";
-import { addOfflineSubscriber, addOnlineSubscriber } from "@/utils/WebSocket/WebSocket.ts";
+import { uWebSockets } from "@/utils/WebSocket/WebSocket.ts";
 
 function Chat()
 {
@@ -49,14 +49,14 @@ function Chat()
 
 
     useEffect(() => {
-        addOnlineSubscriber((event) => {
+        uWebSockets.getInstance().addOnlineSubscriber((event) => {
             const e_data = JSON.parse(event.data);
             setOnlineUsersMap((prev) => {
                 return new Map(prev.set(e_data.socket_id, true));
             });
         });
 
-        addOfflineSubscriber((event) => {
+        uWebSockets.getInstance().addOfflineSubscriber((event) => {
             const e_data = JSON.parse(event.data);
             console.log(e_data);
             setOnlineUsersMap((prev) => {

@@ -4,7 +4,7 @@ import MessageType from "@/utils/type/MessageType.ts";
 import { useLocation } from "react-router-dom";
 import Query from "@/utils/function/Query.ts";
 import PaginatedType from "@/utils/type/common/PaginatedType.ts";
-import { addMessageSubscriber } from "@/utils/WebSocket/WebSocket.ts";
+import { uWebSockets } from "@/utils/WebSocket/WebSocket.ts";
 import SocketMessageType from "@/utils/WebSocket/SocketMessageType.ts";
 
 function ScrollToBottom()
@@ -39,7 +39,7 @@ function MessageBox()
     }, [shouldScroll]);
 
     useEffect(() => {
-        addMessageSubscriber((event) => {
+        uWebSockets.getInstance().addMessageSubscriber((event) => {
             const soc_mess: SocketMessageType  = JSON.parse(event.data);
             const message: MessageType = soc_mess.message;
 

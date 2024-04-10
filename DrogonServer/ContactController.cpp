@@ -96,7 +96,7 @@ void ContactController::Create(const HttpRequestPtr& req, std::function<void(con
 		{
 			ret["id"] = id;
 			ret["status"] = 201;
-			ret["message"] = "Todo list created successfully!";
+			ret["message"] = "Contact created successfully!";
 		}
 		else
 		{
@@ -146,7 +146,7 @@ void ContactController::Update(const HttpRequestPtr& req, std::function<void(con
 		{
 			Json::Value ret;
 			ret["status"] = 200;
-			ret["message"] = "Todo list updated successfully!";
+			ret["message"] = "Contact updated successfully!";
 			const auto resp = HttpResponse::newHttpJsonResponse(ret);
 			resp->setStatusCode(k200OK);
 			callback(resp);
@@ -197,7 +197,7 @@ void ContactController::Delete(const HttpRequestPtr& req, std::function<void(con
 		{
 			Json::Value ret;
 			ret["status"] = 200;
-			ret["message"] = "Todo list deleted successfully!";
+			ret["message"] = "Contact deleted successfully!";
 			const auto resp = HttpResponse::newHttpJsonResponse(ret);
 			resp->setStatusCode(k200OK);
 			callback(resp);

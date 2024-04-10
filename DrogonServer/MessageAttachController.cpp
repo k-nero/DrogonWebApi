@@ -96,7 +96,7 @@ void MessageAttachController::Create(const HttpRequestPtr& req, std::function<vo
 		{
 			ret["id"] = id;
 			ret["status"] = 201;
-			ret["message"] = "Todo list created successfully!";
+			ret["message"] = "MessageAttach created successfully!";
 		}
 		else
 		{
@@ -146,7 +146,7 @@ void MessageAttachController::Update(const HttpRequestPtr& req, std::function<vo
 		{
 			Json::Value ret;
 			ret["status"] = 200;
-			ret["message"] = "Todo list updated successfully!";
+			ret["message"] = "MessageAttach updated successfully!";
 			const auto resp = HttpResponse::newHttpJsonResponse(ret);
 			resp->setStatusCode(k200OK);
 			callback(resp);
@@ -197,7 +197,7 @@ void MessageAttachController::Delete(const HttpRequestPtr& req, std::function<vo
 		{
 			Json::Value ret;
 			ret["status"] = 200;
-			ret["message"] = "Todo list deleted successfully!";
+			ret["message"] = "MessageAttach deleted successfully!";
 			const auto resp = HttpResponse::newHttpJsonResponse(ret);
 			resp->setStatusCode(k200OK);
 			callback(resp);
