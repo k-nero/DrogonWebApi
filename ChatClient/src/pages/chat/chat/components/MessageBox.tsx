@@ -7,6 +7,15 @@ import PaginatedType from "@/utils/type/common/PaginatedType.ts";
 import { addMessageSubscriber } from "@/utils/WebSocket/WebSocket.ts";
 import SocketMessageType from "@/utils/WebSocket/SocketMessageType.ts";
 
+function ScrollToBottom()
+{
+    const message_box = document.getElementById("message_box");
+    if(message_box)
+    {
+        message_box.scrollTop = message_box.scrollHeight;
+    }
+}
+
 function MessageBox()
 {
     const location = useLocation();
@@ -14,31 +23,39 @@ function MessageBox()
     const [messageList, setMessageList] = useState<MessageType[]>([]);
     const [isInitLoading, setIsInitLoading] = useState<boolean>(false);
     const [isLoadMore, setIsLoadMore] = useState<boolean>(false);
+    const [shouldScroll, setShouldScroll] = useState<number>(1);
 
     useEffect(() => {
         setIsInitLoading(true);
         Query<PaginatedType<MessageType>> (`/message?chat_id=${chat_id}&page=1&limit=30`).then((r) => {
             setMessageList(r.m_data.reverse());
             setIsInitLoading(false);
+            setShouldScroll((prev) => prev + 1);
         });
     }, [chat_id]);
 
     useEffect(() => {
-        const message_box = document.getElementById("message_box");
-        if(message_box)
-        {
-            message_box.scrollTop = message_box.scrollHeight;
-            console.log("scrollHeight", message_box.scrollHeight);
-        }
-    }, [isInitLoading]);
+        ScrollToBottom();
+    }, [shouldScroll]);
 
     useEffect(() => {
         addMessageSubscriber((event) => {
             const soc_mess: SocketMessageType  = JSON.parse(event.data);
             const message: MessageType = soc_mess.message;
+
+            if(message.ChatRoomId !== chat_id)
+            {
+                return;
+            }
+
             setMessageList((prev) => {
+
                 return [...prev, message];
             });
+            if(message.ApplicationUserId === JSON.parse(localStorage.getItem("auth_credential") || "{}").user.Id)
+            {
+                setShouldScroll((prev) => prev + 1);
+            }
         });
     }, []);
 
@@ -53,7 +70,7 @@ function MessageBox()
                  return;
              }
              setMessageList([...res.m_data.reverse(), ...messageList]);
-                setIsLoadMore(false);
+             setIsLoadMore(false);
          });
     }, [isLoadMore]);
 
@@ -72,7 +89,7 @@ function MessageBox()
     }, []);
 
     return (
-        <div className="w-full overflow-auto p-6 " id="message_box">
+        <div className="w-full overflow-auto px-6 " id="message_box">
             {
                 messageList?.map((message, index) => {
                     return <Message key={index} message={message} />;

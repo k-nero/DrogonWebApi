@@ -1,7 +1,6 @@
 import { GoDeviceCameraVideo } from "react-icons/go";
 import { GrAttachment } from "react-icons/gr";
 import { IoMicOutline, IoSendSharp } from "react-icons/io5";
-import { FaRegClipboard } from "react-icons/fa6";
 import { LuSmile } from "react-icons/lu";
 import { HiDotsVertical } from "react-icons/hi";
 import useLocalStorage from "@/utils/hooks/useLocalStorage.ts";
@@ -148,9 +147,6 @@ function MessageInput()
                                 </button>
                                 <button>
                                     <GrAttachment/>
-                                </button>
-                                <button>
-                                    <FaRegClipboard/>
                                 </button>
                             </div>
                             <div>
