@@ -1,7 +1,8 @@
 import ApplicationUser from "./ApplicationUser";
 import ContactListType from "./ContactListType";
+import BaseType from "@/utils/type/BaseType.ts";
 
-interface ContactType
+interface ContactType extends BaseType
 {
     ApplicationUserId: string;
     ContactListId: string;

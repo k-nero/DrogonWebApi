@@ -50,6 +50,7 @@ SQLAPIClient::~SQLAPIClient()
 		connection->Disconnect();
 	}
 	delete connection;
+	connection = nullptr;
 }
 
 void SQLAPIClient::CreateCommand(const std::string& command_text) noexcept(false)

@@ -5,7 +5,7 @@ import { LuSmile } from "react-icons/lu";
 import { HiDotsVertical } from "react-icons/hi";
 import useLocalStorage from "@/utils/hooks/useLocalStorage.ts";
 import { AuthResponse } from "@/utils/type/AuthResponse.ts";
-import { createRef, useEffect, useState } from "react";
+import { ChangeEvent, createRef, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import Query from "@/utils/function/Query.ts";
 import MessageType from "@/utils/type/MessageType.ts";
@@ -24,7 +24,6 @@ function MessageInput()
     const [timer, setTimer] = useState<NodeJS.Timeout>();
     const [message, setMessage] = useState<string>("");
 
-
     useEffect(() => {
         uWebSockets.getInstance().addTypingSubscriber((event) => {
             const e_data = JSON.parse(event.data);
@@ -38,7 +37,7 @@ function MessageInput()
 
     async function sendMessage()
     {
-        if(uWebSockets.getInstance().ConnectState() !== 1)
+        if (uWebSockets.getInstance().ConnectState() !== 1)
         {
             alert("Connection lost, reconnecting...");
         }
@@ -76,7 +75,7 @@ function MessageInput()
 
     }
 
-    function handleTyping(e)
+    function handleTyping(e: ChangeEvent<HTMLTextAreaElement>)
     {
         if (!typing && e.target.value != "")
         {

@@ -1,63 +1,27 @@
 import { Collapse } from "antd";
 import { NavLink } from "react-router-dom";
-import React from "react";
-
-const contactList = [
-    {
-        Id: "cd83762e-e7b2-4efd-b01e-055890be02cd",
-        Name: "Friends",
-        ApplicationUserId: "2b5c9ea4-ace9-437f-ba7a-d86e4a7de96c",
-        CreatedDate: "2024-04-02T13:41:31.677",
-        ModifiedDate: "",
-        Contacts: [
-            {
-                Id: "cd83762e-e7b2-4efd-b01e-055890be02cd",
-                Tag: "Friends",
-                ApplicationUserId: "2b5c9ea4-ace9-437f-ba7a-d86e4a7de96c",
-                ContactListId: "cd83762e-e7b2-4efd-b01e-055890be02cd",
-                CreatedDate: "2024-04-02T13:41:31.677",
-                ModifiedDate: "",
-                ApplicationUser: {
-                    Id: "2b5c9ea4-ace9-437f-ba7a-d86e4a7de96c",
-                    UserName: "johndoe",
-                    PasswordHash: "AQAAAAEAACcQAAAAEJQb2Kz9jFzvV7QJ8ZzYvVZ3mZKk5q9ZzZQ5",
-                    Email: "",
-                    PhoneNumber: "",
-                    AvatarUrl: "https://via.placeholder.com/150",
-                    CreatedDate: "2024-04-02T13:41:31.677",
-                    ModifiedDate: "",
-                    ContactListId: "cd83762e-e7b2-4efd-b01e-055890be02cd",
-                    chatParticipants: [],
-                    ContactList: null,
-                }
-            },
-            {
-                Id: "2b5c9ea4-ace9-437f-ba7a-d86e4a7de96c",
-                Tag: "Friends",
-                ApplicationUserId: "2b5c9ea4-ace9-437f-ba7a-d86e4a7de96c",
-                ContactListId: "cd83762e-e7b2-4efd-b01e-055890be02cd",
-                CreatedDate: "2024-04-02T13:41:31.677",
-                ModifiedDate: "",
-                ApplicationUser: {
-                    Id: "2b5c9ea4-ace9-437f-ba7a-d86e4a7de96c",
-                    UserName: "johndoe",
-                    PasswordHash: "AQAAAAEAACcQAAAAEJQb2Kz9jFzvV7QJ8ZzYvVZ3mZKk5q9ZzZQ5",
-                    Email: "",
-                    PhoneNumber: "",
-                    AvatarUrl: "https://via.placeholder.com/150",
-                    CreatedDate: "2024-04-02T13:41:31.677",
-                    ModifiedDate: "",
-                    ContactListId: "cd83762e-e7b2-4efd-b01e-055890be02cd",
-                    chatParticipants: [],
-                    ContactList: null,
-                }
-            }
-        ]
-    }
-];
+import React, { useEffect, useState } from "react";
+import { AuthResponse } from "@/utils/type/AuthResponse.ts";
+import useLocalStorage from "@/utils/hooks/useLocalStorage.ts";
+import Query from "@/utils/function/Query.ts";
+import ContactListType from "@/utils/type/ContactListType.ts";
+import PaginatedType from "@/utils/type/common/PaginatedType.ts";
 
 function ContactList()
 {
+
+    const [localUser] = useLocalStorage("auth_credential", {});
+    const user: AuthResponse = localUser;
+
+    const [contactList, setContactList] = useState<ContactListType[]>([]);
+
+    useEffect(() => {
+        Query<PaginatedType<ContactListType>>(`/contact-list?page=1&limit=30&user_id=${user.user.Id}`).then((r) => {
+            setContactList(r.m_data);
+        });
+    }, []);
+
+
     return contactList.map((contact_list) => {
         return (
             <Collapse key={contact_list.Id} defaultActiveKey={["1"]} bordered={false} ghost={true } expandIconPosition={"end"}>

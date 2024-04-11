@@ -22,7 +22,7 @@ std::shared_ptr<PaginationObject<ContactList>> ContactListService::GetContactLis
 std::shared_ptr<PaginationObject<ContactList>> ContactListService::GetContactListsByUserId(int page, int page_size, std::string ApplicationUserId)
 {
 	Query<ContactList> query;
-	return query.GetPaginatedEw(page, page_size, EQ(ApplicationUserId));
+	return query.GetPaginatedEw(page, page_size, EQ(ApplicationUserId), {"Contacts"});
 }
 
 std::string ContactListService::CreateContactList(ContactListModel& model)
