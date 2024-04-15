@@ -18,12 +18,12 @@ function Message({message} : {message: MessageType})
 {
     const [userLocal] = useLocalStorage("auth_credential", {});
     const credential: AuthResponse = userLocal;
-    const [mess, setMessage] = useState<MessageType>(message);
-    const incoming = mess.ApplicationUserId !== credential.user.Id;
+    //const [mess, setMessage] = useState<MessageType>(message);
+    const incoming = message.ApplicationUserId !== credential.user.Id;
 
     function EmojiClickCallback(emoji: EmojiClickData, event: MouseEvent)
     {
-        const reaction = mess.MessageReactions?.find((r) => r.ApplicationUserId === credential.user.Id && r.ReactionType === emoji.emoji);
+        const reaction = message.MessageReactions?.find((r) => r.ApplicationUserId === credential.user.Id && r.ReactionType === emoji.emoji);
         if(!reaction)
         {
             fetch(`${baseUrl}/message-reaction`, {
@@ -32,7 +32,7 @@ function Message({message} : {message: MessageType})
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    MessageId: mess.Id,
+                    MessageId: message.Id,
                     ReactionType: emoji.emoji,
                     ApplicationUserId: credential.user.Id,
                     ReactionUrl: emoji.imageUrl,
@@ -45,7 +45,7 @@ function Message({message} : {message: MessageType})
                         Query<MessageReactionType>(`/message-reaction/${rs.id}`).then((mrs) => {
                             uWebSockets.getInstance().send(JSON.stringify({
                                 type: "reaction",
-                                channel: mess.ChatRoomId,
+                                channel: message.ChatRoomId,
                                 message: mrs
                             }));
                         })
@@ -73,23 +73,6 @@ function Message({message} : {message: MessageType})
         );
     }
 
-    useEffect(() => {
-        uWebSockets.getInstance().addReactionSubscriber((event) => {
-            const e_data: SocketMessage<MessageReactionType> = JSON.parse(event.data);
-            if(e_data.channel === mess.ChatRoomId)
-            {
-                if(e_data.message.MessageId === mess.Id)
-                {
-                    /// how ???????
-                    setMessage((prev) => {
-                        return {...prev, MessageReactions: [...prev.MessageReactions || [], e_data.message]};
-                    });
-
-
-                }
-            }
-        });
-    }, []);
 
     if(incoming)
     {
@@ -97,15 +80,15 @@ function Message({message} : {message: MessageType})
             <div>
                 <div className="w-full flex group " >
                     <div className="mt-auto">
-                        <img src={mess?.ApplicationUser?.AvatarUrl} alt="John Doe" className="w-6 h-6 rounded-full"/>
+                        <img src={message?.ApplicationUser?.AvatarUrl} alt="John Doe" className="w-6 h-6 rounded-full"/>
                     </div>
                     <div className="group">
                         <div className="bg-white p-3 mx-3 rounded-xl max-w-96 relative">
-                            <p className="text-sm break-words">{mess.TextMessage}</p>
+                            <p className="text-sm break-words">{message.TextMessage}</p>
                             <button className="absolute -bottom-2 -right-2 text-xl opacity-70">
                                 <div className="flex">
                                     {
-                                        mess.MessageReactions?.filter((value, index, self) =>
+                                        message.MessageReactions?.filter((value, index, self) =>
                                             self.findIndex((t) => t.ReactionType === value.ReactionType) === index)?.map((reaction) => {
                                             return (
                                                 <img key={Guid.create().toString()} src={reaction.ReactionUrl} alt="reaction" className="w-4 h-4"/>
@@ -131,13 +114,13 @@ function Message({message} : {message: MessageType})
                 </div>
                 <div className="flex gap-2.5">
                 <p className="text-xs text-gray-500 text-left ml-9 p-1">{
-                        new Date(mess.CreatedDate).toLocaleTimeString("en-US", {
+                        new Date(message.CreatedDate).toLocaleTimeString("en-US", {
                             hour: "2-digit",
                             minute: "2-digit"
                         })
                     }</p>
                     {
-                        mess.MessageSeenBys?.length && mess.MessageSeenBys?.length > 0 ?
+                        message.MessageSeenBys?.length && message.MessageSeenBys?.length > 0 ?
                             <p className="text-md text-gray-700 text-left p-1">
                                 <IoCheckmarkDoneOutline/>
                             </p>
@@ -169,11 +152,11 @@ function Message({message} : {message: MessageType})
                     </Tooltip>
                     <div>
                         <div className="bg-white p-3 mx-3 rounded-xl max-w-96 relative group">
-                            <p className="text-sm break-words">{mess.TextMessage}</p>
+                            <p className="text-sm break-words">{message.TextMessage}</p>
                             <button className="absolute -bottom-2 -left-2 text-xl opacity-70">
                                 <div className="flex">
                                     {
-                                        mess.MessageReactions?.filter((value, index, self) =>
+                                        message.MessageReactions?.filter((value, index, self) =>
                                             self.findIndex((t) => t.ReactionType === value.ReactionType) === index)?.map((reaction) => {
                                             return (
                                                 <img key={Guid.create().toString()} src={reaction.ReactionUrl} alt="reaction" className="w-4 h-4"/>
@@ -185,18 +168,18 @@ function Message({message} : {message: MessageType})
                         </div>
                     </div>
                     <div className="mt-auto">
-                        <img src={mess?.ApplicationUser?.AvatarUrl} alt="John Doe" className="w-6 h-6 rounded-full"/>
+                        <img src={message?.ApplicationUser?.AvatarUrl} alt="John Doe" className="w-6 h-6 rounded-full"/>
                     </div>
                 </div>
                 <div className="flex justify-end gap-2.5">
                     {
-                        mess.MessageSeenBys?.length && mess.MessageSeenBys?.length > 0 ?
+                        message.MessageSeenBys?.length && message.MessageSeenBys?.length > 0 ?
                         <p className="text-md text-gray-700 text-left p-1">
                             <IoCheckmarkDoneOutline/>
                         </p> : null
                     }
                     <p className="text-xs text-gray-500 text-right mr-9 p-1">{
-                        new Date(mess.CreatedDate).toLocaleTimeString("en-US", {
+                        new Date(message.CreatedDate).toLocaleTimeString("en-US", {
                             hour: "2-digit",
                             minute: "2-digit"
                         })

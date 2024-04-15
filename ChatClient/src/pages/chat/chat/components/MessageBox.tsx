@@ -9,6 +9,9 @@ import SocketMessageType from "@/utils/WebSocket/SocketMessageType.ts";
 import useLocalStorage from "@/utils/hooks/useLocalStorage.ts";
 import { AuthResponse } from "@/utils/type/AuthResponse.ts";
 import MessageSeenByType from "@/utils/type/MessageSeenByType.ts";
+import SocketMessage from "@/utils/WebSocket/SocketMessage.ts";
+import MessageReactionType from "@/utils/type/MessageReactionType.ts";
+
 const baseUrl = new URL(`${import.meta.env.VITE_API_URL}`);
 
 function ScrollToBottom()
@@ -147,12 +150,31 @@ function MessageBox({messageList, setMessageList}: {messageList: MessageType[], 
                 {
                     return;
                 }
+                console.log(res.m_data);
                 setMessageList([...res.m_data.reverse(), ...messageList]);
             });
         }, 500);
 
 
     }, [shouldLoadMore]);
+
+    useEffect(() => {
+        uWebSockets.getInstance().addReactionSubscriber((event) => {
+            const e_data: SocketMessage<MessageReactionType> = JSON.parse(event.data);
+            if(e_data.channel === chat_id)
+            {
+               setMessageList((prev) => {
+                   return prev.map((message) => {
+                      if (message.Id === e_data.message.MessageId)
+                      {
+                          message.MessageReactions?.push(e_data.message);
+                      }
+                      return message;
+                  });
+               });
+            }
+        });
+    }, []);
 
     useEffect(() => {
         const message_box = document.getElementById("message_box");
