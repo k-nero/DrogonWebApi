@@ -7,6 +7,8 @@ interface MessageReactionType extends BaseType
     MessageId: string;
     ApplicationUserId: string;
     ReactionType: string;
+    ReactionUrl: string;
+    ReactionCount: number;
 
     ApplicationUser: ApplicationUser;
     Message: MessageType;

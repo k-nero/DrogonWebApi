@@ -133,6 +133,15 @@ int main()
 
 			app->publish(json["channel"].asString(), json.toStyledString(), opCode);
 		}
+		if (json["type"] == "reaction")
+		{
+			if (json["message"].isNull())
+			{
+				return;
+			}
+
+			app->publish(json["channel"].asString(), json.toStyledString(), opCode);
+		}
 
 		if (json["type"] == "message")
 		{

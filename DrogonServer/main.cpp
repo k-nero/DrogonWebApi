@@ -52,7 +52,7 @@ int main()
 
         auto resp = drogon::HttpResponse::newHttpResponse();
         resp->addHeader("Access-Control-Allow-Origin", "*");
-        resp->addHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        resp->addHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, PATCH");
         resp->addHeader("Access-Control-Allow-Headers", "*");
         // Add other CORS headers you need
         stop(resp); // stops processing the request and sends the response
@@ -61,7 +61,7 @@ int main()
     drogon::app().registerPostHandlingAdvice([](const drogon::HttpRequestPtr& req, const drogon::HttpResponsePtr& resp)
     {
         resp->addHeader("Access-Control-Allow-Origin", "*");
-        resp->addHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH");
+        resp->addHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE, PATCH");
         resp->addHeader("Access-Control-Allow-Headers", "*");
     });
 

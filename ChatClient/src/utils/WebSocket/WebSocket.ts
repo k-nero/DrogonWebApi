@@ -13,6 +13,7 @@ export class uWebSockets
     private onOnlineSubscriber: ((event: MessageEvent) => void)[] = [];
     private onOfflineSubscriber: ((event: MessageEvent) => void)[] = [];
     private onMessageSeenBySubscriber: ((event: MessageEvent) => void)[] = [];
+    private onReactionSubscriber: ((event: MessageEvent) => void)[] = [];
 
     public ConnectState()
     {
@@ -60,6 +61,11 @@ export class uWebSockets
                     break;
                 case "message_seen_by":
                     this.onMessageSeenBySubscriber.forEach((sub) => {
+                        sub(event);
+                    });
+                    break;
+                case "reaction":
+                    this.onReactionSubscriber.forEach((sub) => {
                         sub(event);
                     });
                     break;
@@ -127,6 +133,11 @@ export class uWebSockets
     public addMessageSeenBySubscriber(sub: (event: MessageEvent) => void)
     {
         this.onMessageSeenBySubscriber.push(sub);
+    }
+
+    public addReactionSubscriber(sub: (event: MessageEvent) => void)
+    {
+        this.onReactionSubscriber.push(sub);
     }
 
     public send(message: string)
