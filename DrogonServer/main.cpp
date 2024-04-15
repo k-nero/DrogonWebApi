@@ -34,6 +34,7 @@ int main()
     drogon::app().setLogLevel( trantor::Logger::kInfo );
     drogon::app().setThreadNum(0);
 #endif   
+    drogon::app().enableSession(std::chrono::days(30), drogon::Cookie::SameSite::kNull, "SESSIONID");
     drogon::app().enableGzip(true);
     drogon::app().enableBrotli(false);
     drogon::app().enableDateHeader(true);

@@ -9,12 +9,10 @@ export class uWebSockets
     private ws: WebSocket;
 
     private onMessageSubscriber: ((event: MessageEvent) => void)[] = [];
-
     private onTypingSubscriber: ((event: MessageEvent) => void)[] = [];
-
     private onOnlineSubscriber: ((event: MessageEvent) => void)[] = [];
-
     private onOfflineSubscriber: ((event: MessageEvent) => void)[] = [];
+    private onMessageSeenBySubscriber: ((event: MessageEvent) => void)[] = [];
 
     public ConnectState()
     {
@@ -57,6 +55,11 @@ export class uWebSockets
                     break;
                 case "offline":
                     this.onOfflineSubscriber.forEach((sub) => {
+                        sub(event);
+                    });
+                    break;
+                case "message_seen_by":
+                    this.onMessageSeenBySubscriber.forEach((sub) => {
                         sub(event);
                     });
                     break;
@@ -119,6 +122,11 @@ export class uWebSockets
     public addOfflineSubscriber(sub: (event: MessageEvent) => void)
     {
         this.onOfflineSubscriber.push(sub);
+    }
+
+    public addMessageSeenBySubscriber(sub: (event: MessageEvent) => void)
+    {
+        this.onMessageSeenBySubscriber.push(sub);
     }
 
     public send(message: string)

@@ -5,15 +5,16 @@ import { LuSmile } from "react-icons/lu";
 import { HiDotsVertical } from "react-icons/hi";
 import useLocalStorage from "@/utils/hooks/useLocalStorage.ts";
 import { AuthResponse } from "@/utils/type/AuthResponse.ts";
-import { ChangeEvent, createRef, useEffect, useState } from "react";
+import { ChangeEvent, createRef, Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import Query from "@/utils/function/Query.ts";
 import MessageType from "@/utils/type/MessageType.ts";
 import { uWebSockets } from "@/utils/WebSocket/WebSocket.ts";
+import MessageSeenByType from "@/utils/type/MessageSeenByType.ts";
 
 const baseUrl = new URL(`${import.meta.env.VITE_API_URL}`);
 
-function MessageInput()
+function MessageInput({messageList, setMessageList}: {messageList: MessageType[], setMessageList: Dispatch<SetStateAction<MessageType[]>>})
 {
     const [localUser] = useLocalStorage("auth_credential", {});
     const user: AuthResponse = localUser;
@@ -75,6 +76,56 @@ function MessageInput()
 
     }
 
+    function handleFocus(e: ChangeEvent<HTMLTextAreaElement>)
+    {
+        messageList.reverse().map((message) => {
+            if(message.ApplicationUserId !== user.user.Id)
+            {
+                if(message.MessageSeenBys?.findIndex((seenBy) => seenBy.ApplicationUserId === user.user.Id) === -1)
+                {
+
+                    fetch(`${baseUrl}/message-seen-by`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(
+                            {
+                                ApplicationUserId: user.user.Id,
+                                MessageId: message.Id
+                            }
+                        )
+                    }).then(r => {
+                        if(r.ok)
+                        {
+                            r.json().then((rs) => {
+                                Query<MessageSeenByType>(`/message-seen-by/${rs.id}`).then((r) => {
+
+                                    setMessageList((prev) => {
+                                        return prev.map((m) => {
+                                            if(m.Id === message.Id)
+                                            {
+                                                m.MessageSeenBys?.push(r);
+                                            }
+                                            return m;
+                                        });
+                                    });
+
+                                    uWebSockets.getInstance().send(JSON.stringify({
+                                        type: "message_seen_by",
+                                        channel: chat_id,
+                                        message: r
+                                    }));
+                                });
+                            });
+                        }
+                    })
+                }
+            }
+        });
+        messageList.reverse();
+    }
+
     function handleTyping(e: ChangeEvent<HTMLTextAreaElement>)
     {
         if (!typing && e.target.value != "")
@@ -133,7 +184,12 @@ function MessageInput()
                         event.currentTarget.value += "\n";
                     }
 
-                }} className="w-full bg-transparent outline-none pb-4 border-b-2 resize-none"/>
+                }}
+                          onFocus={(e) => {
+                                handleFocus(e);
+                          }}
+
+                          className="w-full bg-transparent outline-none pb-4 border-b-2 resize-none"/>
                     </div>
                     <div className="flex justify-between text-2xl mt-4">
                         <div className="flex gap-3">

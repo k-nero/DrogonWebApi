@@ -1,5 +1,5 @@
 import Message from "@/pages/chat/chat/components/Message.tsx";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import MessageType from "@/utils/type/MessageType.ts";
 import { useLocation } from "react-router-dom";
 import Query from "@/utils/function/Query.ts";
@@ -8,6 +8,8 @@ import { uWebSockets } from "@/utils/WebSocket/WebSocket.ts";
 import SocketMessageType from "@/utils/WebSocket/SocketMessageType.ts";
 import useLocalStorage from "@/utils/hooks/useLocalStorage.ts";
 import { AuthResponse } from "@/utils/type/AuthResponse.ts";
+import MessageSeenByType from "@/utils/type/MessageSeenByType.ts";
+const baseUrl = new URL(`${import.meta.env.VITE_API_URL}`);
 
 function ScrollToBottom()
 {
@@ -18,17 +20,18 @@ function ScrollToBottom()
     }
 }
 
-function MessageBox()
+function MessageBox({messageList, setMessageList}: {messageList: MessageType[], setMessageList: Dispatch<SetStateAction<MessageType[]>>})
 {
     const location = useLocation();
     const chat_id = location.pathname.split("/")[2];
     const [localUser] = useLocalStorage("auth_credential", {});
     const user: AuthResponse = localUser;
 
-    const [messageList, setMessageList] = useState<MessageType[]>([]);
     const [isInitLoading, setIsInitLoading] = useState<boolean>(false);
     const [shouldLoadMore, setShouldLoadMore] = useState<boolean>(false);
     const [shouldScroll, setShouldScroll] = useState<boolean>(false);
+    const [isLoadFinished, setIsLoadFinished] = useState<boolean>(false);
+
 
     useEffect(() => {
         setIsInitLoading(true);
@@ -36,8 +39,73 @@ function MessageBox()
             setMessageList(r.m_data.reverse());
             setIsInitLoading(false);
             setShouldScroll(prev => !prev);
+            setIsLoadFinished(true);
         });
     }, [chat_id]);
+
+    useEffect(() => {
+        uWebSockets.getInstance().addMessageSeenBySubscriber((event) => {
+            const e_data = JSON.parse(event.data);
+            setMessageList((prev) => {
+                return prev.map((message) => {
+                    if(message.Id === e_data.message.MessageId)
+                    {
+                        message.MessageSeenBys?.push(e_data.message);
+                    }
+                    return message;
+                });
+            });
+        })
+    }, []);
+
+    useEffect(() => {
+        messageList.reverse().map((message) => {
+            if(message.ApplicationUserId !== user.user.Id)
+            {
+                if(message.MessageSeenBys?.findIndex((seenBy) => seenBy.ApplicationUserId === user.user.Id) === -1)
+                {
+
+                    fetch(`${baseUrl}/message-seen-by`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(
+                            {
+                                ApplicationUserId: user.user.Id,
+                                MessageId: message.Id
+                            }
+                        )
+                    }).then(r => {
+                        if(r.ok)
+                        {
+                            r.json().then((rs) => {
+                                Query<MessageSeenByType>(`/message-seen-by/${rs.id}`).then((r) => {
+
+                                    setMessageList((prev) => {
+                                        return prev.map((m) => {
+                                            if(m.Id === message.Id)
+                                            {
+                                                m.MessageSeenBys?.push(r);
+                                            }
+                                            return m;
+                                        });
+                                    });
+
+                                    uWebSockets.getInstance().send(JSON.stringify({
+                                        type: "message_seen_by",
+                                        channel: chat_id,
+                                        message: r
+                                    }));
+                                });
+                            });
+                        }
+                    })
+                }
+            }
+        });
+        messageList.reverse();
+    }, [isLoadFinished]);
 
     useEffect(() => {
         ScrollToBottom();
@@ -54,10 +122,16 @@ function MessageBox()
             setMessageList((prev) => {
                 return [...prev, message];
             });
+            const message_box = document.getElementById("message_box");
             if(message.ApplicationUserId === user.user.Id)
             {
                 setShouldScroll(prev => !prev);
             }
+            else if(message_box && message_box.scrollTop >= message_box.scrollHeight - message_box.clientHeight - 200)
+            {
+                setShouldScroll(prev => !prev);
+            }
+
         });
     }, []);
 

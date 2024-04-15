@@ -9,15 +9,22 @@ import Query from "@/utils/function/Query.ts";
 import MessageType from "@/utils/type/MessageType.ts";
 import { uWebSockets } from "@/utils/WebSocket/WebSocket.ts";
 import SocketMessageType from "@/utils/WebSocket/SocketMessageType.ts";
+import useLocalStorage from "@/utils/hooks/useLocalStorage.ts";
+import { AuthResponse } from "@/utils/type/AuthResponse.ts";
+import SocketMessage from "@/utils/WebSocket/SocketMessage.ts";
+import MessageSeenByType from "@/utils/type/MessageSeenByType.ts";
 
 function ChatPage()
 {
+    const [localUser] = useLocalStorage("auth_credential", {});
+    const user: AuthResponse = localUser;
+
     const [chats, setChats] = useState<PaginatedType<ChatParticipant>>();
     const [messageMap, setMessageMap] = useState<Map<string, MessageType[]>>(new Map<string, MessageType[]>());
 
     useEffect( () => {
         uWebSockets.getInstance().addMessageSubscriber((event) => {
-            const soc_mess: SocketMessageType  = JSON.parse(event.data);
+            const soc_mess: SocketMessage<MessageType>  = JSON.parse(event.data);
             const message: MessageType = soc_mess.message;
             setMessageMap((prev) => {
                 return new Map(prev.set(message.ChatRoomId, [...prev.get(message.ChatRoomId) || [], message]));
@@ -40,6 +47,26 @@ function ChatPage()
         });
     }, []);
 
+    useEffect(() => {
+        uWebSockets.getInstance().addMessageSeenBySubscriber((event) => {
+            const e_data: SocketMessage<MessageSeenByType> = JSON.parse(event.data);
+            setMessageMap((prev) => {
+                const prev_state = prev.get(e_data.channel);
+                if(!prev_state)
+                {
+                    return prev;
+                }
+                return new Map(prev.set(e_data.channel, prev_state.map((message) => {
+                    if(message.Id === e_data.message.MessageId)
+                    {
+                        message.MessageSeenBys?.push(e_data.message);
+                    }
+                    return message;
+                })));
+            })
+         })
+    }, []);
+
     function ChatList()
     {
         if(!chats)
@@ -51,6 +78,7 @@ function ChatPage()
 
             const message = messageMap.get(chat.ChatRoomId);
             const lastMessage = message?.[message.length - 1];
+            const unreadMessage = message?.filter((m) => m.ApplicationUserId !== user.user.Id && !m.MessageSeenBys?.find((seen) => seen.ApplicationUserId === user.user.Id)).length;
 
             return (
                 <NavLink key={index} onClick={()=> {}} className="flex items-center justify-between p-3 border-b-2" to={`/chats/${chat.ChatRoomId}`}>
@@ -68,6 +96,14 @@ function ChatPage()
                                 minute: "2-digit"
                             })
                         }</p>
+                        {
+                            unreadMessage ?
+                                <p className="bg-red-500 rounded-xl text-sm text-white w-6 m-auto text-center">
+                                    {unreadMessage > 9 ? "9+" : unreadMessage}
+                                </p>
+                                : null
+                        }
+
                     </div>
                 </NavLink>
             );

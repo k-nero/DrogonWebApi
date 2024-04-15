@@ -9,6 +9,7 @@ import Query from "@/utils/function/Query.ts";
 import useLocalStorage from "@/utils/hooks/useLocalStorage.ts";
 import { AuthResponse } from "@/utils/type/AuthResponse.ts";
 import { uWebSockets } from "@/utils/WebSocket/WebSocket.ts";
+import MessageType from "@/utils/type/MessageType.ts";
 
 function Chat()
 {
@@ -21,7 +22,7 @@ function Chat()
     const [isPanelOpen, setIsPanelOpen] = useState(false);
     const [chatRoom, setChatRoom] = useState<ChatRoom>();
     const [onlineUsersMap, setOnlineUsersMap] = useState<Map<string, boolean>>(new Map<string, boolean>());
-
+    const [messageList, setMessageList] = useState<MessageType[]>([]);
 
     async function isOnline(user_id: string)
     {
@@ -58,7 +59,6 @@ function Chat()
 
         uWebSockets.getInstance().addOfflineSubscriber((event) => {
             const e_data = JSON.parse(event.data);
-            console.log(e_data);
             setOnlineUsersMap((prev) => {
                 return new Map(prev.set(e_data.socket_id, false));
             });
@@ -78,8 +78,8 @@ function Chat()
                         <div className={`w-full h-fit ${isPanelOpen ? "col-span-6" : ""}`}>
                             <ChatBoxHeader setIsPanel={setIsPanel} chat_room={chatRoom} onlineMap={onlineUsersMap}/>
                             <div className="bg-gray-100 bg-opacity-90 p-4 flex flex-col justify-between h-[90vh]">
-                                <MessageBox/>
-                                <MessageInput/>
+                                <MessageBox messageList={messageList} setMessageList={setMessageList}/>
+                                <MessageInput messageList={messageList} setMessageList={setMessageList}/>
                             </div>
                         </div>
                         {

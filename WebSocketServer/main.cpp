@@ -124,6 +124,15 @@ int main()
 		auto mess = std::string(message);
 		auto json = CoreHelper::ParseJson(mess);
 
+		if (json["type"] == "message_seen_by")
+		{
+			if (json["message"].isNull())
+			{
+				return;
+			}
+
+			app->publish(json["channel"].asString(), json.toStyledString(), opCode);
+		}
 
 		if (json["type"] == "message")
 		{
