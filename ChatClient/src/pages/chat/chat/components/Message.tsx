@@ -13,6 +13,7 @@ import { uWebSockets } from "@/utils/WebSocket/WebSocket.ts";
 import MessageReactionType from "@/utils/type/MessageReactionType.ts";
 import ApplicationUser from "@/utils/type/ApplicationUser.ts";
 import MessageSeenByType from "@/utils/type/MessageSeenByType.ts";
+import query from "@/utils/function/Query.ts";
 const baseUrl = new URL(`${import.meta.env.VITE_API_URL}`);
 
 function Message({message, showTime = true } : {message: MessageType, showTime: boolean})
@@ -121,12 +122,11 @@ function Message({message, showTime = true } : {message: MessageType, showTime: 
         );
     }
 
-    function UserReaction({reaction} : {reaction: MessageReactionType})
+    function UserReaction({reaction} : {reaction: MessageReactionType[]})
     {
-
         const [user, setUser] = useState<ApplicationUser>();
         useEffect(() => {
-            Query<ApplicationUser>(`/users/${reaction.ApplicationUserId}`).then((r) => {
+            Query<ApplicationUser>(`/users/${reaction[0].ApplicationUserId}`).then((r) => {
                 setUser(r);
             });
         }, [reaction]);
@@ -138,42 +138,61 @@ function Message({message, showTime = true } : {message: MessageType, showTime: 
                         <img src={user?.AvatarUrl} alt={user?.UserName} className="w-6 h-6 rounded-full"/>
                         <p>{user?.UserName}</p>
                     </div>
-                    <p className={"text-gray-500"}>{new Date(reaction?.CreatedDate).toLocaleTimeString("en-US", {
-                        hour: "2-digit",
-                        minute: "2-digit"
-                    })}</p>
+                    <p className={"text-gray-500"}>{
+                        reaction.map((r) => {
+                            return r.ReactionType;
+                        })
+                    }</p>
                 </div>
             </div>
         );
+
     }
+
+    const modal = (
+        <div>
+            <Modal title="Message seen by" open={isSeenByModalOpen} onOk={handleSeenByOk} onCancel={handleSeenByCancel} footer={[]}>
+                <div>
+                    {
+                        message.MessageSeenBys?.map((seenBy) => {
+                            return (
+                                <UserSeenBy key={Guid.create().toString()} seenBy={seenBy}/>
+                            );
+                        })
+                    }
+                </div>
+            </Modal>
+
+            <Modal title="Message reacted by" open={isEmojiModalOpen} onOk={handleEmojiOk} onCancel={handleEmojiCancel}  footer={[]} >
+                <div>
+                    {
+                        message.MessageReactions?.filter((value, index, self) =>
+                            self.findIndex((t) => t.ApplicationUserId === value.ApplicationUserId) === index)?.map((reaction) => {
+                            return reaction.ApplicationUserId;
+                        })?.map((user_id) => {
+                            const re = message.MessageReactions?.filter((value) =>
+                            {
+                                return value.ApplicationUserId === user_id;
+                            })
+                            if(!re)
+                            {
+                                return null;
+                            }
+                            return (
+                                <UserReaction key={Guid.create().toString()} reaction={re}/>
+                            );
+                        })
+                    }
+                </div>
+            </Modal>
+        </div>
+    )
 
     if (incoming)
     {
         return (
             <div>
-                <Modal title="Message seen by" open={isSeenByModalOpen} onOk={handleSeenByOk} onCancel={handleSeenByCancel}  footer={[]} >
-                   <div>
-                          {
-                            message.MessageSeenBys?.map((seenBy) => {
-                                return (
-                                    <UserSeenBy key={Guid.create().toString()} seenBy={seenBy}/>
-                                );
-                            })
-                          }
-                   </div>
-                </Modal>
-
-                <Modal title="Message reacted by" open={isEmojiModalOpen} onOk={handleEmojiOk} onCancel={handleEmojiCancel}  footer={[]} >
-                    <div>
-                        {
-                            message.MessageReactions?.map((reaction) => {
-                                return (
-                                   <UserReaction key={Guid.create().toString()} reaction={reaction}/>
-                                );
-                            })
-                        }
-                    </div>
-                </Modal>
+                {modal}
                 <div className="w-full flex group " >
                     <div className="mt-auto">
                         <img src={message?.ApplicationUser?.AvatarUrl} alt="John Doe" className="w-6 h-6 rounded-full"/>
@@ -236,17 +255,7 @@ function Message({message, showTime = true } : {message: MessageType, showTime: 
     {
         return (
             <div>
-                <Modal title="Message seen by" open={isSeenByModalOpen} onOk={handleSeenByOk} onCancel={handleSeenByCancel}  footer={[]} >
-                    <div>
-                        {
-                            message.MessageSeenBys?.map((seenBy) => {
-                                return (
-                                    <UserSeenBy key={Guid.create().toString()} seenBy={seenBy}/>
-                                );
-                            })
-                        }
-                    </div>
-                </Modal>
+                {modal}
                 <div className="w-full flex justify-end group">
                     <button className="mr-4 hidden group-hover:block opacity-70">
                         <BsThreeDots />
@@ -258,15 +267,15 @@ function Message({message, showTime = true } : {message: MessageType, showTime: 
                     <Tooltip title={<EmojiTooltip/>} trigger={"click"} color={"white"} overlayInnerStyle={{
                         padding: "0px",
                         borderRadius: "32px"
-                    }} overlayStyle={{ maxWidth: "500px" }} className="hidden group-hover:block">
-                        <button className="text-xl opacity-70 mr-4">
+                    }} overlayStyle={{ maxWidth: "500px" }} className="hidden group-hover:block" >
+                        <button className="text-xl opacity-70 mr-4" >
                             <MdOutlineEmojiEmotions/>
                         </button>
                     </Tooltip>
                     <div>
                         <div className="bg-white p-3 mx-3 rounded-xl max-w-96 relative group">
                             <p className="text-sm break-words">{message.TextMessage}</p>
-                            <button className="absolute -bottom-2 -left-2 text-xl opacity-70">
+                            <button className="absolute -bottom-2 -left-2 text-xl opacity-70" onClick={showEmojiModal}>
                                 <div className="flex">
                                     {
                                         message.MessageReactions?.filter((value, index, self) =>
