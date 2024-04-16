@@ -11,19 +11,23 @@ import { AuthResponse } from "@/utils/type/AuthResponse.ts";
 import MessageSeenByType from "@/utils/type/MessageSeenByType.ts";
 import SocketMessage from "@/utils/WebSocket/SocketMessage.ts";
 import MessageReactionType from "@/utils/type/MessageReactionType.ts";
+import { Guid } from "guid-typescript";
 
 const baseUrl = new URL(`${import.meta.env.VITE_API_URL}`);
 
 function ScrollToBottom()
 {
     const message_box = document.getElementById("message_box");
-    if(message_box)
+    if (message_box)
     {
         message_box.scrollTop = message_box.scrollHeight;
     }
 }
 
-function MessageBox({messageList, setMessageList}: {messageList: MessageType[], setMessageList: Dispatch<SetStateAction<MessageType[]>>})
+function MessageBox({ messageList, setMessageList }: {
+    messageList: MessageType[],
+    setMessageList: Dispatch<SetStateAction<MessageType[]>>
+})
 {
     const location = useLocation();
     const chat_id = location.pathname.split("/")[2];
@@ -38,7 +42,7 @@ function MessageBox({messageList, setMessageList}: {messageList: MessageType[], 
 
     useEffect(() => {
         setIsInitLoading(true);
-        Query<PaginatedType<MessageType>> (`/message?chat_id=${chat_id}&page=1&limit=30`).then((r) => {
+        Query<PaginatedType<MessageType>>(`/message?chat_id=${chat_id}&page=1&limit=30`).then((r) => {
             setMessageList(r.m_data.reverse());
             setIsInitLoading(false);
             setShouldScroll(prev => !prev);
@@ -51,27 +55,27 @@ function MessageBox({messageList, setMessageList}: {messageList: MessageType[], 
             const e_data = JSON.parse(event.data);
             setMessageList((prev) => {
                 return prev.map((message) => {
-                    if(message.Id === e_data.message.MessageId)
+                    if (message.Id === e_data.message.MessageId)
                     {
                         message.MessageSeenBys?.push(e_data.message);
                     }
                     return message;
                 });
             });
-        })
+        });
     }, []);
 
     useEffect(() => {
         messageList.reverse().map((message) => {
-            if(message.ApplicationUserId !== user.user.Id)
+            if (message.ApplicationUserId !== user.user.Id)
             {
-                if(message.MessageSeenBys?.findIndex((seenBy) => seenBy.ApplicationUserId === user.user.Id) === -1)
+                if (message.MessageSeenBys?.findIndex((seenBy) => seenBy.ApplicationUserId === user.user.Id) === -1)
                 {
 
                     fetch(`${baseUrl}/message-seen-by`, {
                         method: "POST",
                         headers: {
-                            "Content-Type": "application/json",
+                            "Content-Type": "application/json"
                         },
                         body: JSON.stringify(
                             {
@@ -80,14 +84,14 @@ function MessageBox({messageList, setMessageList}: {messageList: MessageType[], 
                             }
                         )
                     }).then(r => {
-                        if(r.ok)
+                        if (r.ok)
                         {
                             r.json().then((rs) => {
                                 Query<MessageSeenByType>(`/message-seen-by/${rs.id}`).then((r) => {
 
                                     setMessageList((prev) => {
                                         return prev.map((m) => {
-                                            if(m.Id === message.Id)
+                                            if (m.Id === message.Id)
                                             {
                                                 m.MessageSeenBys?.push(r);
                                             }
@@ -103,7 +107,7 @@ function MessageBox({messageList, setMessageList}: {messageList: MessageType[], 
                                 });
                             });
                         }
-                    })
+                    });
                 }
             }
         });
@@ -116,9 +120,9 @@ function MessageBox({messageList, setMessageList}: {messageList: MessageType[], 
 
     useEffect(() => {
         uWebSockets.getInstance().addMessageSubscriber((event) => {
-            const soc_mess: SocketMessageType  = JSON.parse(event.data);
+            const soc_mess: SocketMessageType = JSON.parse(event.data);
             const message: MessageType = soc_mess.message;
-            if(message.ChatRoomId !== chat_id)
+            if (message.ChatRoomId !== chat_id)
             {
                 return;
             }
@@ -126,11 +130,11 @@ function MessageBox({messageList, setMessageList}: {messageList: MessageType[], 
                 return [...prev, message];
             });
             const message_box = document.getElementById("message_box");
-            if(message.ApplicationUserId === user.user.Id)
+            if (message.ApplicationUserId === user.user.Id)
             {
                 setShouldScroll(prev => !prev);
             }
-            else if(message_box && message_box.scrollTop >= message_box.scrollHeight - message_box.clientHeight - 200)
+            else if (message_box && message_box.scrollTop >= message_box.scrollHeight - message_box.clientHeight - 200)
             {
                 setShouldScroll(prev => !prev);
             }
@@ -139,18 +143,17 @@ function MessageBox({messageList, setMessageList}: {messageList: MessageType[], 
     }, []);
 
     useEffect(() => {
-        if(!messageList[0])
+        if (!messageList[0])
         {
             return;
         }
 
         setTimeout(() => {
             Query<PaginatedType<MessageType>>(`/message?chat_id=${chat_id}&created_date=${messageList[0].CreatedDate}&page=1&limit=30`).then((res) => {
-                if(!res?.m_data)
+                if (!res?.m_data)
                 {
                     return;
                 }
-                console.log(res.m_data);
                 setMessageList([...res.m_data.reverse(), ...messageList]);
             });
         }, 500);
@@ -161,26 +164,26 @@ function MessageBox({messageList, setMessageList}: {messageList: MessageType[], 
     useEffect(() => {
         uWebSockets.getInstance().addReactionSubscriber((event) => {
             const e_data: SocketMessage<MessageReactionType> = JSON.parse(event.data);
-            if(e_data.channel === chat_id)
+            if (e_data.channel === chat_id)
             {
-               setMessageList((prev) => {
-                   return prev.map((message) => {
-                      if (message.Id === e_data.message.MessageId)
-                      {
-                          message.MessageReactions?.push(e_data.message);
-                      }
-                      return message;
-                  });
-               });
+                setMessageList((prev) => {
+                    return prev.map((message) => {
+                        if (message.Id === e_data.message.MessageId)
+                        {
+                            message.MessageReactions?.push(e_data.message);
+                        }
+                        return message;
+                    });
+                });
             }
         });
     }, []);
 
     useEffect(() => {
         const message_box = document.getElementById("message_box");
-        if(message_box)
+        if (message_box)
         {
-            message_box.addEventListener("scroll",  () => {
+            message_box.addEventListener("scroll", () => {
                 if (message_box.scrollTop === 0)
                 {
                     message_box.scrollTop = 5;
@@ -194,7 +197,29 @@ function MessageBox({messageList, setMessageList}: {messageList: MessageType[], 
         <div className="w-full overflow-auto px-6 " id="message_box">
             {
                 messageList?.map((message, index) => {
-                    return <Message key={index} message={message} />;
+
+                    const currentMessageDate = new Date(message.CreatedDate);
+                    const nextMessageDate = new Date(messageList[index + 1]?.CreatedDate);
+
+                    const offset = nextMessageDate.getTime() - currentMessageDate.getTime();
+                    return (
+                        <div key={Guid.create().toString()}>
+                            <Message message={message} showTime={true}/>
+                            {
+                                offset > 1000 * 60 * 30 ?
+                                    <div className="text-center text-gray-500 text-xs"> {new Date(message.CreatedDate).toLocaleString("en-US", {
+                                        month: "short",
+                                        day: "numeric",
+                                        year: "numeric",
+                                        hour: "numeric",
+                                        minute: "numeric",
+                                        hour12: false
+                                    })} </div>
+                                    : null
+                            }
+
+                        </div>
+                    );
                 })
             }
         </div>
