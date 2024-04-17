@@ -63,7 +63,7 @@ function MessageInput({messageList, setMessageList, quoteMessage, setQuoteMessag
                 TextMessage: message,
                 ChatRoomId: chat_id,
                 ApplicationUserId: user.user.Id,
-                QuoteMessageId: quoteMessage?.Id
+                QuoteMessageId: quoteMessage?.Id ? quoteMessage.Id : undefined
             })
         });
 

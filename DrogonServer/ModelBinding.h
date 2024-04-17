@@ -37,7 +37,7 @@ namespace drogon
 				{
 					if ((*json)[member.name].isNull())
 					{
-						(std::string&)(obj.*(member).pointer) = "null";
+						(std::string&)(obj.*(member).pointer) = "";
 					}
 					else
 					{

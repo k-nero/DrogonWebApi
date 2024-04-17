@@ -117,12 +117,7 @@ function MessageBox({ messageList, setMessageList, setQuoteMessage }: {
     }, [isLoadFinished]);
 
     useEffect(() => {
-
-        if (shouldScroll)
-        {
-            ScrollToBottom();
-        }
-
+        ScrollToBottom();
     }, [shouldScroll]);
 
     useEffect(() => {
@@ -141,7 +136,7 @@ function MessageBox({ messageList, setMessageList, setQuoteMessage }: {
             {
                 setShouldScroll(prev => !prev);
             }
-            else if (message_box && message_box.scrollTop >= message_box.scrollHeight - message_box.clientHeight - 200)
+            else if (message_box && message_box.scrollTop >= message_box.scrollHeight / 2)
             {
                 setShouldScroll(prev => !prev);
             }
@@ -161,6 +156,7 @@ function MessageBox({ messageList, setMessageList, setQuoteMessage }: {
                 return;
             }
             setMessageList([...res.m_data.reverse(), ...messageList]);
+            console.log("loading more");
             setShouldLoadMore(false);
         });
     }, [shouldLoadMore]);

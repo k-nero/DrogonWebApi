@@ -4,7 +4,7 @@ import { AuthResponse } from "@/utils/type/AuthResponse.ts";
 import { IoArrowRedoSharp, IoArrowUndo, IoCheckmarkDoneOutline } from "react-icons/io5";
 import { MdOutlineEmojiEmotions } from "react-icons/md";
 import {  Modal, Tooltip } from "antd";
-import React, { Dispatch, useEffect, useState } from "react";
+import React, { Dispatch, useCallback, useEffect, useState } from "react";
 import EmojiPicker, { EmojiClickData, EmojiStyle } from "emoji-picker-react";
 import { BsThreeDots } from "react-icons/bs";
 import Query from "@/utils/function/Query.ts";
@@ -44,18 +44,26 @@ function Message({message, showTime = true, setQuoteMessage } : {message: Messag
         setEmojiModalOpen(false);
     };
 
-    const QuoteMessage = React.useCallback( function QuoteMessage({messageId}: {messageId: string})
+    //cache the quote message to avoid unnecessary fetch
+    const QuoteMessage = useCallback( function QuoteMessage()
     {
-        //TODO: this will rerender everytime the message list is updated, need to optimize
         const [quoteMessage, setQuoteMessage] = useState<MessageType>();
+        if(!message.QuoteMessageId)
+        {
+            return null;
+        }
         useEffect(() => {
-            Query<MessageType>(`/message/${messageId}`).then((r) => {
+            Query<MessageType>(`/message/${message.QuoteMessageId}`).then((r) => {
                 setQuoteMessage(r);
             });
         }, []);
 
         if(incoming)
         {
+            if(!quoteMessage)
+            {
+                return null;
+            }
             return (
                 <div className="">
                     <p className="text-xs mr-auto w-fit opacity-70 px-3">Replying to {
@@ -69,6 +77,10 @@ function Message({message, showTime = true, setQuoteMessage } : {message: Messag
         }
         else
         {
+            if(!quoteMessage)
+            {
+                return null;
+            }
             return (
 
                 <div className="">
@@ -81,6 +93,8 @@ function Message({message, showTime = true, setQuoteMessage } : {message: Messag
                 </div>
             );
         }
+
+
     }, [message]);
 
     function EmojiClickCallback(emoji: EmojiClickData, event: MouseEvent)
@@ -236,13 +250,11 @@ function Message({message, showTime = true, setQuoteMessage } : {message: Messag
                         <img src={message?.ApplicationUser?.AvatarUrl} alt="John Doe" className="w-6 h-6 rounded-full"/>
                     </div>
                     <div className="">
-                        {
-                            message.QuoteMessageId ? (
+
                                 <div className="max-w-96 w-fit">
-                                    <QuoteMessage messageId={message.QuoteMessageId}/>
+                                    <QuoteMessage/>
                                 </div>
-                            ) : null
-                        }
+
                         <div className="flex w-full">
                         <div className="bg-white p-3 mx-3 rounded-xl w-fit max-w-96 relative">
                             <p className="text-sm break-words">{message.TextMessage}</p>
@@ -312,7 +324,7 @@ function Message({message, showTime = true, setQuoteMessage } : {message: Messag
                         {
                             message.QuoteMessageId ? (
                                 <div className="ml-auto max-w-96 w-fit">
-                                    <QuoteMessage messageId={message.QuoteMessageId}/>
+                                    <QuoteMessage/>
                                 </div>
                             ) : null
                         }
