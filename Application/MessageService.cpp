@@ -4,7 +4,7 @@
 std::shared_ptr<Message> MessageService::GetMessageById(const std::string& id)
 {
 	Query<Message> query;
-	return query.GetByIdEw(id, { "ApplicationUser", "MessageSeenBys", "MessageReactions", "MessageAttachs"});
+	return query.GetByIdEw(id, {});
 }
 
 std::vector<std::shared_ptr<Message>> MessageService::GetAllMessages()

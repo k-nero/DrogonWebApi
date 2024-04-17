@@ -34,7 +34,7 @@ function MessageBox({ messageList, setMessageList, setQuoteMessage }: {
     const [localUser] = useLocalStorage("auth_credential", {});
     const user: AuthResponse = localUser;
 
-    const [isInitLoading, setIsInitLoading] = useState<boolean>(false);
+    //const [isInitLoading, setIsInitLoading] = useState<boolean>(false);
     const [shouldLoadMore, setShouldLoadMore] = useState<boolean>(false);
     const [shouldScroll, setShouldScroll] = useState<boolean>(false);
     const [isLoadFinished, setIsLoadFinished] = useState<boolean>(false);
@@ -43,10 +43,10 @@ function MessageBox({ messageList, setMessageList, setQuoteMessage }: {
     const messageBoxRef = useRef<HTMLDivElement>();
 
     useEffect(() => {
-        setIsInitLoading(true);
+        //setIsInitLoading(true);
         Query<PaginatedType<MessageType>>(`/message?chat_id=${chat_id}&page=1&limit=30`).then((r) => {
             setMessageList(r.m_data.reverse());
-            setIsInitLoading(false);
+            //setIsInitLoading(false);
             setShouldScroll(prev => !prev);
             setIsLoadFinished(true);
         });
@@ -154,16 +154,15 @@ function MessageBox({ messageList, setMessageList, setQuoteMessage }: {
         {
             return;
         }
-        setTimeout(() => {
-            Query<PaginatedType<MessageType>>(`/message?chat_id=${chat_id}&created_date=${messageList[0].CreatedDate}&page=1&limit=30`).then((res) => {
-                if (!res?.m_data)
-                {
-                    setIsAtTop(true);
-                    return;
-                }
-                setMessageList([...res.m_data.reverse(), ...messageList]);
-            });
-        }, 0);
+        Query<PaginatedType<MessageType>>(`/message?chat_id=${chat_id}&created_date=${messageList[0].CreatedDate}&page=1&limit=30`).then((res) => {
+            if (!res?.m_data)
+            {
+                setIsAtTop(true);
+                return;
+            }
+            setMessageList([...res.m_data.reverse(), ...messageList]);
+            setShouldLoadMore(false);
+        });
     }, [shouldLoadMore]);
 
     useEffect(() => {
@@ -192,24 +191,24 @@ function MessageBox({ messageList, setMessageList, setQuoteMessage }: {
             return;
         }
 
+        //callback should be a named function otherwise it won't be removed
         function callback()
         {
+
             if (!message_box)
             {
                 return;
             }
-            if (message_box.scrollTop <= message_box.scrollHeight / 4)
-            {
-                setShouldLoadMore(prevState => !prevState);
-            }
+                if (message_box.scrollTop <= message_box.scrollHeight / 5 || message_box.scrollTop === 0)
+                {
+                    setShouldLoadMore(true);
+                }
         }
 
         if (isAtTop)
         {
-            console.log("remove event listener");
             message_box.removeEventListener("scroll", callback);
         }
-
         //message_box.removeEventListener("scroll", callback);
         message_box.addEventListener("scroll", callback);
 
