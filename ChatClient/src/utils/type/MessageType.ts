@@ -10,6 +10,7 @@ interface MessageType extends BaseType
     TextMessage: string;
     ApplicationUserId: string;
     ChatRoomId: string;
+    QuoteMessageId?: string;
 
     ChatRoom?: ChatRoom;
     ApplicationUser?: ApplicationUser;

@@ -14,7 +14,7 @@ class MessageReaction;
 
 class DOMAIN_API Message : public BaseEntity
 {
-	BOOST_DESCRIBE_CLASS(Message, (BaseEntity), (), (TextMessage, ApplicationUserId, ChatRoomId, ApplicationUser, ChatRoom, MessageAttachs, MessageReactions, MessageSeenBys), ())
+	BOOST_DESCRIBE_CLASS(Message, (BaseEntity), (), (TextMessage, ApplicationUserId, ChatRoomId, QuoteMessageId,ApplicationUser, ChatRoom, MessageAttachs, MessageReactions, MessageSeenBys), ())
 public:
 	Message() = default;
 	~Message() = default;
@@ -23,6 +23,7 @@ protected:
 	std::string TextMessage = "";
 	std::string ApplicationUserId = "";
 	std::string ChatRoomId = "";
+	std::string QuoteMessageId = "";
 
 	std::shared_ptr<ApplicationUser> ApplicationUser = {};
 	std::shared_ptr<ChatRoom> ChatRoom = {};

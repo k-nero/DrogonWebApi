@@ -1,5 +1,5 @@
 import Message from "@/pages/chat/chat/components/Message.tsx";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import MessageType from "@/utils/type/MessageType.ts";
 import { useLocation } from "react-router-dom";
 import Query from "@/utils/function/Query.ts";
@@ -11,7 +11,6 @@ import { AuthResponse } from "@/utils/type/AuthResponse.ts";
 import MessageSeenByType from "@/utils/type/MessageSeenByType.ts";
 import SocketMessage from "@/utils/WebSocket/SocketMessage.ts";
 import MessageReactionType from "@/utils/type/MessageReactionType.ts";
-import { Guid } from "guid-typescript";
 
 const baseUrl = new URL(`${import.meta.env.VITE_API_URL}`);
 
@@ -24,9 +23,10 @@ function ScrollToBottom()
     }
 }
 
-function MessageBox({ messageList, setMessageList }: {
+function MessageBox({ messageList, setMessageList, setQuoteMessage }: {
     messageList: MessageType[],
-    setMessageList: Dispatch<SetStateAction<MessageType[]>>
+    setMessageList: Dispatch<SetStateAction<MessageType[]>>,
+    setQuoteMessage: Dispatch<SetStateAction<MessageType | undefined>>
 })
 {
     const location = useLocation();
@@ -38,7 +38,9 @@ function MessageBox({ messageList, setMessageList }: {
     const [shouldLoadMore, setShouldLoadMore] = useState<boolean>(false);
     const [shouldScroll, setShouldScroll] = useState<boolean>(false);
     const [isLoadFinished, setIsLoadFinished] = useState<boolean>(false);
+    const [isAtTop, setIsAtTop] = useState<boolean>(false);
 
+    const messageBoxRef = useRef<HTMLDivElement>();
 
     useEffect(() => {
         setIsInitLoading(true);
@@ -115,7 +117,12 @@ function MessageBox({ messageList, setMessageList }: {
     }, [isLoadFinished]);
 
     useEffect(() => {
-        ScrollToBottom();
+
+        if (shouldScroll)
+        {
+            ScrollToBottom();
+        }
+
     }, [shouldScroll]);
 
     useEffect(() => {
@@ -147,18 +154,16 @@ function MessageBox({ messageList, setMessageList }: {
         {
             return;
         }
-
         setTimeout(() => {
             Query<PaginatedType<MessageType>>(`/message?chat_id=${chat_id}&created_date=${messageList[0].CreatedDate}&page=1&limit=30`).then((res) => {
                 if (!res?.m_data)
                 {
+                    setIsAtTop(true);
                     return;
                 }
                 setMessageList([...res.m_data.reverse(), ...messageList]);
             });
-        }, 500);
-
-
+        }, 0);
     }, [shouldLoadMore]);
 
     useEffect(() => {
@@ -181,33 +186,48 @@ function MessageBox({ messageList, setMessageList }: {
 
     useEffect(() => {
         const message_box = document.getElementById("message_box");
-        if (message_box)
+
+        if (!message_box)
         {
-            message_box.addEventListener("scroll", () => {
-                if (message_box.scrollTop === 0)
-                {
-                    message_box.scrollTop = 5;
-                    setShouldLoadMore(prevState => !prevState);
-                }
-            });
+            return;
         }
-    }, []);
+
+        function callback()
+        {
+            if (!message_box)
+            {
+                return;
+            }
+            if (message_box.scrollTop <= message_box.scrollHeight / 4)
+            {
+                setShouldLoadMore(prevState => !prevState);
+            }
+        }
+
+        if (isAtTop)
+        {
+            console.log("remove event listener");
+            message_box.removeEventListener("scroll", callback);
+        }
+
+        //message_box.removeEventListener("scroll", callback);
+        message_box.addEventListener("scroll", callback);
+
+    }, [isAtTop]);
 
     return (
         <div className="w-full overflow-auto px-6 " id="message_box">
             {
                 messageList?.map((message, index) => {
-
                     const currentMessageDate = new Date(message.CreatedDate);
                     const nextMessageDate = new Date(messageList[index + 1]?.CreatedDate);
-
                     const offset = nextMessageDate.getTime() - currentMessageDate.getTime();
                     return (
-                        <div key={Guid.create().toString()}>
-                            <Message message={message} showTime={true}/>
+                        <div key={message.Id}>
+                            <Message message={message} showTime={true} setQuoteMessage={setQuoteMessage}/>
                             {
                                 offset > 1000 * 60 * 30 ?
-                                    <div className="text-center text-gray-500 text-xs"> {new Date(message.CreatedDate).toLocaleString("en-US", {
+                                    <div className="text-center text-gray-500 text-sm"> {new Date(message.CreatedDate).toLocaleString("en-US", {
                                         month: "short",
                                         day: "numeric",
                                         year: "numeric",
@@ -217,7 +237,6 @@ function MessageBox({ messageList, setMessageList }: {
                                     })} </div>
                                     : null
                             }
-
                         </div>
                     );
                 })

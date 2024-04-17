@@ -23,6 +23,7 @@ function Chat()
     const [chatRoom, setChatRoom] = useState<ChatRoom>();
     const [onlineUsersMap, setOnlineUsersMap] = useState<Map<string, boolean>>(new Map<string, boolean>());
     const [messageList, setMessageList] = useState<MessageType[]>([]);
+    const [quoteMessage, setQuoteMessage] = useState<MessageType>();
 
     async function isOnline(user_id: string)
     {
@@ -78,8 +79,8 @@ function Chat()
                         <div className={`w-full h-fit ${isPanelOpen ? "col-span-6" : ""}`}>
                             <ChatBoxHeader setIsPanel={setIsPanel} chat_room={chatRoom} onlineMap={onlineUsersMap}/>
                             <div className="bg-gray-100 bg-opacity-90 p-4 flex flex-col justify-between h-[90vh]">
-                                <MessageBox messageList={messageList} setMessageList={setMessageList}/>
-                                <MessageInput messageList={messageList} setMessageList={setMessageList}/>
+                                <MessageBox messageList={messageList} setMessageList={setMessageList} setQuoteMessage={setQuoteMessage}/>
+                                <MessageInput messageList={messageList} setMessageList={setMessageList} quoteMessage={quoteMessage} setQuoteMessages={setQuoteMessage}/>
                             </div>
                         </div>
                         {

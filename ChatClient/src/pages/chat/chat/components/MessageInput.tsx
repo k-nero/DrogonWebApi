@@ -1,6 +1,6 @@
 import { GoDeviceCameraVideo } from "react-icons/go";
 import { GrAttachment } from "react-icons/gr";
-import { IoMicOutline, IoSendSharp } from "react-icons/io5";
+import { IoClose, IoMicOutline, IoSendSharp } from "react-icons/io5";
 import { LuSmile } from "react-icons/lu";
 import { HiDotsVertical } from "react-icons/hi";
 import useLocalStorage from "@/utils/hooks/useLocalStorage.ts";
@@ -14,7 +14,11 @@ import MessageSeenByType from "@/utils/type/MessageSeenByType.ts";
 
 const baseUrl = new URL(`${import.meta.env.VITE_API_URL}`);
 
-function MessageInput({messageList, setMessageList}: {messageList: MessageType[], setMessageList: Dispatch<SetStateAction<MessageType[]>>})
+function MessageInput({messageList, setMessageList, quoteMessage, setQuoteMessages}:
+                          {messageList: MessageType[],
+                              setMessageList: Dispatch<SetStateAction<MessageType[]>>,
+                              quoteMessage: MessageType | undefined,
+                                setQuoteMessages: Dispatch<SetStateAction<MessageType | undefined>>})
 {
     const [localUser] = useLocalStorage("auth_credential", {});
     const user: AuthResponse = localUser;
@@ -42,6 +46,7 @@ function MessageInput({messageList, setMessageList}: {messageList: MessageType[]
         {
             alert("Connection lost, reconnecting...");
         }
+        setQuoteMessages(undefined);
 
         if (!message)
         {
@@ -57,13 +62,13 @@ function MessageInput({messageList, setMessageList}: {messageList: MessageType[]
             body: JSON.stringify({
                 TextMessage: message,
                 ChatRoomId: chat_id,
-                ApplicationUserId: user.user.Id
+                ApplicationUserId: user.user.Id,
+                QuoteMessageId: quoteMessage?.Id
             })
         });
 
         if (res.ok)
         {
-
             setMessage("");
             const rs = await res.json();
             const message = await Query<MessageType>(`/message/${rs.id}`);
@@ -152,17 +157,41 @@ function MessageInput({messageList, setMessageList}: {messageList: MessageType[]
     return (
         <div>
 
+
             <div className={`flex items-center justify-center text-teal-500 ${!typing ? "hidden" : "" }`}>
                 <div className="animate-bounce w-3 h-3 bg-teal-500 rounded-full"></div>
                 <p className="ml-2">Someone is typing...</p>
             </div>
-
             <div className="p-8 rounded-xl mx-8 mt-4 bg-white">
+                {
+                    quoteMessage ? (
+                        <div className="">
+                            <div className="flex justify-between">
+                                <div>
+                                    <p className="font-bold">Replying to {quoteMessage.ApplicationUser?.UserName}</p>
+                                    <p>{quoteMessage.TextMessage}</p>
+                                </div>
+                                <div>
+                                    <button onClick={() => {
+                                        setQuoteMessages(undefined);
+                                    }}>
+                                        <IoClose />
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    ) : (
+                        <></>
+                    )
+                }
                 <form onSubmit={(e) => {
                     e.preventDefault();
                     e.currentTarget.reset();
                     sendMessage().then(() => {});
-                }}>
+                }}
+
+                className="mt-4"
+                >
                     <div>
                 <textarea placeholder="Type a message" ref={textMessage} onChange={
                     (e) => {

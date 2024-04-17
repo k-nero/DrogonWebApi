@@ -3,8 +3,8 @@ import useLocalStorage from "@/utils/hooks/useLocalStorage.ts";
 import { AuthResponse } from "@/utils/type/AuthResponse.ts";
 import { IoArrowRedoSharp, IoArrowUndo, IoCheckmarkDoneOutline } from "react-icons/io5";
 import { MdOutlineEmojiEmotions } from "react-icons/md";
-import { Button, Modal, Tooltip } from "antd";
-import React, { ReactNode, useEffect, useState } from "react";
+import {  Modal, Tooltip } from "antd";
+import React, { Dispatch, useEffect, useState } from "react";
 import EmojiPicker, { EmojiClickData, EmojiStyle } from "emoji-picker-react";
 import { BsThreeDots } from "react-icons/bs";
 import Query from "@/utils/function/Query.ts";
@@ -13,10 +13,9 @@ import { uWebSockets } from "@/utils/WebSocket/WebSocket.ts";
 import MessageReactionType from "@/utils/type/MessageReactionType.ts";
 import ApplicationUser from "@/utils/type/ApplicationUser.ts";
 import MessageSeenByType from "@/utils/type/MessageSeenByType.ts";
-import query from "@/utils/function/Query.ts";
 const baseUrl = new URL(`${import.meta.env.VITE_API_URL}`);
 
-function Message({message, showTime = true } : {message: MessageType, showTime: boolean})
+function Message({message, showTime = true, setQuoteMessage } : {message: MessageType, showTime: boolean, setQuoteMessage: Dispatch<React.SetStateAction<MessageType | undefined> >})
 {
     const [userLocal] = useLocalStorage("auth_credential", {});
     const credential: AuthResponse = userLocal;
@@ -44,6 +43,46 @@ function Message({message, showTime = true } : {message: MessageType, showTime: 
     const handleEmojiCancel = () => {
         setEmojiModalOpen(false);
     };
+
+    function QuoteMessage({messageId}: {messageId: string})
+    {
+        //TODO: this will rerender everytime the message list is updated, need to optimize
+        const [quoteMessage, setQuoteMessage] = useState<MessageType>();
+        useEffect(() => {
+            Query<MessageType>(`/message/${messageId}`).then((r) => {
+                setQuoteMessage(r);
+            });
+        }, [messageId]);
+
+        if(incoming)
+        {
+            return (
+                <div className="">
+                    <p className="text-xs mr-auto w-fit opacity-70 px-3">Replying to {
+                        quoteMessage?.ApplicationUser?.UserName === credential.user.UserName ? "You" : "@" + quoteMessage?.ApplicationUser?.UserName
+                    }</p>
+                    <div className="opacity-70 bg-white p-3 mx-3 rounded-xl max-w-96 ">
+                        <p>{quoteMessage?.TextMessage}</p>
+                    </div>
+                </div>
+            );
+        }
+        else
+        {
+            return (
+
+                <div className="">
+                    <p className="text-xs ml-auto w-fit opacity-70 px-3">Replying to {
+                        quoteMessage?.ApplicationUser?.UserName === credential.user.UserName ? "You" : "@" + quoteMessage?.ApplicationUser?.UserName
+                    }</p>
+                    <div className="opacity-70 bg-white p-3 mx-3 rounded-xl max-w-96 ">
+                        <p>{quoteMessage?.TextMessage}</p>
+                    </div>
+                </div>
+            );
+        }
+    }
+
     function EmojiClickCallback(emoji: EmojiClickData, event: MouseEvent)
     {
         const reaction = message.MessageReactions?.find((r) => r.ApplicationUserId === credential.user.Id && r.ReactionType === emoji.emoji);
@@ -85,7 +124,7 @@ function Message({message, showTime = true } : {message: MessageType, showTime: 
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify(reaction)
-            }).then((r) => {})
+            }).then(() => {})
         }
     }
 
@@ -146,7 +185,6 @@ function Message({message, showTime = true } : {message: MessageType, showTime: 
                 </div>
             </div>
         );
-
     }
 
     const modal = (
@@ -197,8 +235,15 @@ function Message({message, showTime = true } : {message: MessageType, showTime: 
                     <div className="mt-auto">
                         <img src={message?.ApplicationUser?.AvatarUrl} alt="John Doe" className="w-6 h-6 rounded-full"/>
                     </div>
-                    <div className="group">
-                        <div className="bg-white p-3 mx-3 rounded-xl max-w-96 relative">
+                    <div className="group max-w-96">
+                        {
+                            message.QuoteMessageId ? (
+                                <div className="">
+                                    <QuoteMessage messageId={message.QuoteMessageId}/>
+                                </div>
+                            ) : null
+                        }
+                        <div className="bg-white p-3 mx-3 rounded-xl w-fit relative">
                             <p className="text-sm break-words">{message.TextMessage}</p>
                             <button className="absolute -bottom-2 -right-2 text-xl opacity-70" onClick={showEmojiModal}>
                                 <div className="flex">
@@ -220,7 +265,9 @@ function Message({message, showTime = true } : {message: MessageType, showTime: 
                         </button>
                     </Tooltip>
                     <button className="hidden group-hover:block ml-4 opacity-70">
-                        <IoArrowUndo />
+                        <IoArrowUndo onClick={() => {
+                            setQuoteMessage(message);
+                        }} />
                     </button>
                     <button className="hidden group-hover:block ml-4 opacity-70">
                         <BsThreeDots />
@@ -261,7 +308,9 @@ function Message({message, showTime = true } : {message: MessageType, showTime: 
                         <BsThreeDots />
                     </button>
                     <button className="mr-4 hidden group-hover:block opacity-70">
-                        <IoArrowRedoSharp/>
+                        <IoArrowRedoSharp onClick={() => {
+                            setQuoteMessage(message);
+                        }}/>
                     </button>
 
                     <Tooltip title={<EmojiTooltip/>} trigger={"click"} color={"white"} overlayInnerStyle={{
@@ -272,8 +321,15 @@ function Message({message, showTime = true } : {message: MessageType, showTime: 
                             <MdOutlineEmojiEmotions/>
                         </button>
                     </Tooltip>
-                    <div>
-                        <div className="bg-white p-3 mx-3 rounded-xl max-w-96 relative group">
+                    <div className="max-w-96 group">
+                        {
+                            message.QuoteMessageId ? (
+                                <div className="">
+                                    <QuoteMessage messageId={message.QuoteMessageId}/>
+                                </div>
+                            ) : null
+                        }
+                        <div className="bg-white p-3 mx-3 rounded-xl w-fit ml-auto relative ">
                             <p className="text-sm break-words">{message.TextMessage}</p>
                             <button className="absolute -bottom-2 -left-2 text-xl opacity-70" onClick={showEmojiModal}>
                                 <div className="flex">

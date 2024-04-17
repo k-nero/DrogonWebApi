@@ -8,7 +8,6 @@ import PaginatedType from "@/utils/type/common/PaginatedType.ts";
 import Query from "@/utils/function/Query.ts";
 import MessageType from "@/utils/type/MessageType.ts";
 import { uWebSockets } from "@/utils/WebSocket/WebSocket.ts";
-import SocketMessageType from "@/utils/WebSocket/SocketMessageType.ts";
 import useLocalStorage from "@/utils/hooks/useLocalStorage.ts";
 import { AuthResponse } from "@/utils/type/AuthResponse.ts";
 import SocketMessage from "@/utils/WebSocket/SocketMessage.ts";
