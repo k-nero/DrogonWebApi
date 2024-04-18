@@ -156,7 +156,6 @@ function MessageBox({ messageList, setMessageList, setQuoteMessage }: {
                 return;
             }
             setMessageList([...res.m_data.reverse(), ...messageList]);
-            console.log("loading more");
             setShouldLoadMore(false);
         });
     }, [shouldLoadMore]);
