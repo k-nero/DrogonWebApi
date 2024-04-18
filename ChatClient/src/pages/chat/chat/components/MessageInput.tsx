@@ -162,7 +162,7 @@ function MessageInput({messageList, setMessageList, quoteMessage, setQuoteMessag
                 <div className="animate-bounce w-3 h-3 bg-teal-500 rounded-full"></div>
                 <p className="ml-2">Someone is typing...</p>
             </div>
-            <div className="p-8 rounded-xl mx-8 mt-4 bg-white">
+            <div className="px-8 py-4 rounded-xl mx-8 mt-4 bg-white">
                 {
                     quoteMessage ? (
                         <div className="">

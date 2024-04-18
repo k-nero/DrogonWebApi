@@ -15,6 +15,7 @@ import MessageSeenByType from "@/utils/type/MessageSeenByType.ts";
 import Markdown from "react-markdown";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { nightOwl } from "react-syntax-highlighter/dist/esm/styles/hljs";
+import CodeView from "@/pages/chat/chat/components/CodeMessage.tsx";
 
 const baseUrl = new URL(`${import.meta.env.VITE_API_URL}`);
 
@@ -62,34 +63,7 @@ function Message({ message, showTime = true, setQuoteMessage }: {
         setCodeModalOpen(false);
     };
 
-    function CodeView()
-    {
-        return (
-            <pre >
-                <Markdown
-                    children={message.TextMessage}
-                    components={{
-                        code(props)
-                        {
-                            const { children, className, node, ...rest } = props;
-                            const match = /language-(\w+)/.exec(className || "");
-                            return (
-                                <SyntaxHighlighter
-                                    showLineNumbers={true}
-                                    wrapLongLines={false}
-                                    wrapLines={false}
-                                    children={String(children).replace(/\n$/, "")}
-                                    language={match ? match[1] : "cpp"}
-                                    style={nightOwl}
-                                />
-                            );
-                        }
-                    }
-                }
-                />
-            </pre>
-        );
-    }
+
 
     function MessageOption()
     {
@@ -126,7 +100,7 @@ function Message({ message, showTime = true, setQuoteMessage }: {
                     </button>
                 </div>
                 {
-                    message.TextMessage.startsWith("```") &&
+                    message.TextMessage?.startsWith("```") &&
                     <div className="rounded-sm hover:bg-gray-300 p-1">
                         <button onClick={showCodeModal}>
                             View Code
@@ -163,7 +137,11 @@ function Message({ message, showTime = true, setQuoteMessage }: {
                         quoteMessage?.ApplicationUser?.UserName === credential.user.UserName ? "You" : "@" + quoteMessage?.ApplicationUser?.UserName
                     }</p>
                     <div className="opacity-70 bg-white p-3 mx-3 rounded-xl max-w-96 ">
-                        <p>{quoteMessage?.TextMessage}</p>
+                        <p className="max-h-96 overflow-auto">{
+                            quoteMessage.TextMessage?.startsWith("```") ?
+                                <CodeView textMessage={quoteMessage.TextMessage}/>
+                                : <>{quoteMessage.TextMessage}</>
+                        }</p>
                     </div>
                 </div>
             );
@@ -181,7 +159,11 @@ function Message({ message, showTime = true, setQuoteMessage }: {
                         quoteMessage?.ApplicationUser?.UserName === credential.user.UserName ? "You" : "@" + quoteMessage?.ApplicationUser?.UserName
                     }</p>
                     <div className="opacity-70 bg-white p-3 mx-3 rounded-xl max-w-96 ">
-                        <p>{quoteMessage?.TextMessage}</p>
+                        <p className="max-h-96 overflow-auto">{
+                            quoteMessage.TextMessage?.startsWith("```") ?
+                                <CodeView textMessage={quoteMessage.TextMessage}/>
+                                : <>{quoteMessage.TextMessage}</>
+                        }</p>
                     </div>
                 </div>
             );
@@ -336,7 +318,7 @@ function Message({ message, showTime = true, setQuoteMessage }: {
                     maxHeight: "70vh",
                     overflow: "auto"
                 }}>
-                        <CodeView/>
+                        <CodeView textMessage={message.TextMessage}/>
                 </div>
             </Modal>
 
@@ -362,8 +344,8 @@ function Message({ message, showTime = true, setQuoteMessage }: {
                             <div className="bg-white p-3 mx-3 rounded-xl w-fit max-w-96 relative">
                                 <p className="overflow-auto text-sm break-words max-h-96">
                                     {
-                                        message.TextMessage.startsWith("```") ?
-                                            <CodeView/>
+                                        message.TextMessage?.startsWith("```") ?
+                                            <CodeView textMessage={message.TextMessage}/>
                                             : <>{message.TextMessage}</>
                                     }
                                 </p>
@@ -380,7 +362,7 @@ function Message({ message, showTime = true, setQuoteMessage }: {
                                     </div>
                                 </button>
                             </div>
-                            <Tooltip title={<EmojiTooltip/>} trigger={"click"} color={"white"} overlayInnerStyle={{
+                            <Tooltip title={<EmojiTooltip/>} trigger={"click"}  color={"white"} overlayInnerStyle={{
                                 padding: "0px",
                                 borderRadius: "32px"
                             }} overlayStyle={{ maxWidth: "500px" }} className="hidden group-hover:block">
@@ -473,8 +455,8 @@ function Message({ message, showTime = true, setQuoteMessage }: {
                             <div className="bg-white p-3 mx-3 rounded-xl w-fit ml-auto max-w-96  relative ">
                                 <p className="text-sm break-words overflow-auto max-h-96">
                                     {
-                                        message.TextMessage.startsWith("```") ?
-                                            <CodeView/>
+                                        message.TextMessage?.startsWith("```") ?
+                                            <CodeView textMessage={message.TextMessage}/>
                                             : <>{message.TextMessage}</>
                                     }
                                 </p>
