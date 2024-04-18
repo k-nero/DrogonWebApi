@@ -12,9 +12,17 @@ import { uWebSockets } from "@/utils/WebSocket/WebSocket.ts";
 import MessageReactionType from "@/utils/type/MessageReactionType.ts";
 import ApplicationUser from "@/utils/type/ApplicationUser.ts";
 import MessageSeenByType from "@/utils/type/MessageSeenByType.ts";
+import Markdown from "react-markdown";
+import SyntaxHighlighter from "react-syntax-highlighter";
+import { nightOwl } from "react-syntax-highlighter/dist/esm/styles/hljs";
+
 const baseUrl = new URL(`${import.meta.env.VITE_API_URL}`);
 
-function Message({ message, showTime = true, setQuoteMessage }: { message: MessageType, showTime: boolean, setQuoteMessage: Dispatch<React.SetStateAction<MessageType | undefined>> })
+function Message({ message, showTime = true, setQuoteMessage }: {
+    message: MessageType,
+    showTime: boolean,
+    setQuoteMessage: Dispatch<React.SetStateAction<MessageType | undefined>>
+})
 {
     const [userLocal] = useLocalStorage("auth_credential", {});
     const credential: AuthResponse = userLocal;
@@ -22,38 +30,72 @@ function Message({ message, showTime = true, setQuoteMessage }: { message: Messa
     const incoming = message.ApplicationUserId !== credential.user.Id;
 
     const [isSeenByModalOpen, setIsSeenByModalOpen] = useState(false);
-    const showSeenByModal = () =>
-    {
+    const showSeenByModal = () => {
         setIsSeenByModalOpen(true);
     };
-    const handleSeenByOk = () =>
-    {
+    const handleSeenByOk = () => {
         setIsSeenByModalOpen(false);
     };
-    const handleSeenByCancel = () =>
-    {
+    const handleSeenByCancel = () => {
         setIsSeenByModalOpen(false);
     };
 
     const [isEmojiModalOpen, setEmojiModalOpen] = useState(false);
-    const showEmojiModal = () =>
-    {
+    const showEmojiModal = () => {
         setEmojiModalOpen(true);
     };
-    const handleEmojiOk = () =>
-    {
+    const handleEmojiOk = () => {
         setEmojiModalOpen(false);
     };
-    const handleEmojiCancel = () =>
-    {
+    const handleEmojiCancel = () => {
         setEmojiModalOpen(false);
     };
+
+    const [isCodeModalOpen, setCodeModalOpen] = useState(false);
+    const showCodeModal = () => {
+        setCodeModalOpen(true);
+    };
+    const handleCodeOk = () => {
+        setCodeModalOpen(false);
+    };
+    const handleCodeCancel = () => {
+        setCodeModalOpen(false);
+    };
+
+    function CodeView()
+    {
+        return (
+            <pre >
+                <Markdown
+                    children={message.TextMessage}
+                    components={{
+                        code(props)
+                        {
+                            const { children, className, node, ...rest } = props;
+                            const match = /language-(\w+)/.exec(className || "");
+                            return (
+                                <SyntaxHighlighter
+                                    showLineNumbers={true}
+                                    wrapLongLines={false}
+                                    wrapLines={false}
+                                    children={String(children).replace(/\n$/, "")}
+                                    language={match ? match[1] : "cpp"}
+                                    style={nightOwl}
+                                />
+                            );
+                        }
+                    }
+                }
+                />
+            </pre>
+        );
+    }
 
     function MessageOption()
     {
 
-        return(
-            <div className="min-w-16" style={{color: "black"}}>
+        return (
+            <div className="min-w-16" style={{ color: "black" }}>
                 <div className="rounded-sm hover:bg-gray-300 p-1">
                     <button onClick={() => {
                         setQuoteMessage(message);
@@ -83,22 +125,28 @@ function Message({ message, showTime = true, setQuoteMessage }: { message: Messa
                         Edit
                     </button>
                 </div>
+                {
+                    message.TextMessage.startsWith("```") &&
+                    <div className="rounded-sm hover:bg-gray-300 p-1">
+                        <button onClick={showCodeModal}>
+                            View Code
+                        </button>
+                    </div>
+                }
+
             </div>
         );
     }
 
     //cache the quote message to avoid unnecessary fetch
-    const QuoteMessage = useCallback(function QuoteMessage()
-    {
+    const QuoteMessage = useCallback(function QuoteMessage() {
         const [quoteMessage, setQuoteMessage] = useState<MessageType>();
         if (!message.QuoteMessageId)
         {
             return null;
         }
-        useEffect(() =>
-        {
-            Query<MessageType>(`/message/${message.QuoteMessageId}`).then((r) =>
-            {
+        useEffect(() => {
+            Query<MessageType>(`/message/${message.QuoteMessageId}`).then((r) => {
                 setQuoteMessage(r);
             });
         }, []);
@@ -150,7 +198,7 @@ function Message({ message, showTime = true, setQuoteMessage }: { message: Messa
             fetch(`${baseUrl}/message-reaction`, {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json",
+                    "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
                     MessageId: message.Id,
@@ -159,23 +207,20 @@ function Message({ message, showTime = true, setQuoteMessage }: { message: Messa
                     ReactionUrl: emoji.imageUrl,
                     ReactionCount: 1
                 })
-            }).then((r) =>
-            {
+            }).then((r) => {
                 if (r.ok)
                 {
-                    r.json().then((rs) =>
-                    {
-                        Query<MessageReactionType>(`/message-reaction/${rs.id}`).then((mrs) =>
-                        {
+                    r.json().then((rs) => {
+                        Query<MessageReactionType>(`/message-reaction/${rs.id}`).then((mrs) => {
                             uWebSockets.getInstance().send(JSON.stringify({
                                 type: "reaction",
                                 channel: message.ChatRoomId,
                                 message: mrs
                             }));
-                        })
-                    })
+                        });
+                    });
                 }
-            })
+            });
         }
         else
         {
@@ -183,30 +228,27 @@ function Message({ message, showTime = true, setQuoteMessage }: { message: Messa
             fetch(`${baseUrl}/message-reaction/${reaction.Id}`, {
                 method: "PATCH",
                 headers: {
-                    "Content-Type": "application/json",
+                    "Content-Type": "application/json"
                 },
                 body: JSON.stringify(reaction)
-            }).then(() => { })
+            }).then(() => { });
         }
     }
 
     function EmojiTooltip()
     {
         return (
-            <EmojiPicker onReactionClick={(emoji, event) => EmojiClickCallback(emoji, event)} reactionsDefaultOpen={true} emojiStyle={EmojiStyle.GOOGLE} />
+            <EmojiPicker onReactionClick={(emoji, event) => EmojiClickCallback(emoji, event)} reactionsDefaultOpen={true} emojiStyle={EmojiStyle.GOOGLE}/>
         );
     }
-
 
 
     function UserSeenBy({ seenBy }: { seenBy: MessageSeenByType })
     {
 
         const [user, setUser] = useState<ApplicationUser>();
-        useEffect(() =>
-        {
-            Query<ApplicationUser>(`/users/${seenBy.ApplicationUserId}`).then((r) =>
-            {
+        useEffect(() => {
+            Query<ApplicationUser>(`/users/${seenBy.ApplicationUserId}`).then((r) => {
                 setUser(r);
             });
         }, [seenBy]);
@@ -215,7 +257,7 @@ function Message({ message, showTime = true, setQuoteMessage }: { message: Messa
             <div>
                 <div className="flex justify-between">
                     <div className="flex gap-2.5">
-                        <img src={user?.AvatarUrl} alt={user?.UserName} className="w-6 h-6 rounded-full" />
+                        <img src={user?.AvatarUrl} alt={user?.UserName} className="w-6 h-6 rounded-full"/>
                         <p>{user?.UserName}</p>
                     </div>
                     <p className={"text-gray-500"}>{new Date(seenBy?.CreatedDate).toLocaleTimeString("en-US", {
@@ -230,10 +272,8 @@ function Message({ message, showTime = true, setQuoteMessage }: { message: Messa
     function UserReaction({ reaction }: { reaction: MessageReactionType[] })
     {
         const [user, setUser] = useState<ApplicationUser>();
-        useEffect(() =>
-        {
-            Query<ApplicationUser>(`/users/${reaction[0].ApplicationUserId}`).then((r) =>
-            {
+        useEffect(() => {
+            Query<ApplicationUser>(`/users/${reaction[0].ApplicationUserId}`).then((r) => {
                 setUser(r);
             });
         }, [reaction]);
@@ -242,12 +282,11 @@ function Message({ message, showTime = true, setQuoteMessage }: { message: Messa
             <div>
                 <div className="flex justify-between">
                     <div className="flex gap-2.5">
-                        <img src={user?.AvatarUrl} alt={user?.UserName} className="w-6 h-6 rounded-full" />
+                        <img src={user?.AvatarUrl} alt={user?.UserName} className="w-6 h-6 rounded-full"/>
                         <p>{user?.UserName}</p>
                     </div>
                     <p className={"text-gray-500"}>{
-                        reaction.map((r) =>
-                        {
+                        reaction.map((r) => {
                             return r.ReactionType;
                         })
                     }</p>
@@ -261,94 +300,107 @@ function Message({ message, showTime = true, setQuoteMessage }: { message: Messa
             <Modal title="Message seen by" open={isSeenByModalOpen} onOk={handleSeenByOk} onCancel={handleSeenByCancel} footer={[]}>
                 <div>
                     {
-                        message.MessageSeenBys?.map((seenBy) =>
-                        {
+                        message.MessageSeenBys?.map((seenBy) => {
                             return (
-                                <UserSeenBy key={seenBy.Id} seenBy={seenBy} />
+                                <UserSeenBy key={seenBy.Id} seenBy={seenBy}/>
                             );
                         })
                     }
                 </div>
             </Modal>
 
-            <Modal title="Message reacted by" open={isEmojiModalOpen} onOk={handleEmojiOk} onCancel={handleEmojiCancel} footer={[]} >
+            <Modal title="Message reacted by" open={isEmojiModalOpen} onOk={handleEmojiOk} onCancel={handleEmojiCancel} footer={[]}>
                 <div>
                     {
                         message.MessageReactions?.filter((value, index, self) =>
-                            self.findIndex((t) => t.ApplicationUserId === value.ApplicationUserId) === index)?.map((reaction) =>
+                            self.findIndex((t) => t.ApplicationUserId === value.ApplicationUserId) === index)?.map((reaction) => {
+                            return reaction.ApplicationUserId;
+                        })?.map((user_id) => {
+                            const re = message.MessageReactions?.filter((value) => {
+                                return value.ApplicationUserId === user_id;
+                            });
+                            if (!re)
                             {
-                                return reaction.ApplicationUserId;
-                            })?.map((user_id) =>
-                            {
-                                const re = message.MessageReactions?.filter((value) =>
-                                {
-                                    return value.ApplicationUserId === user_id;
-                                })
-                                if (!re)
-                                {
-                                    return null;
-                                }
-                                return (
-                                    <UserReaction key={user_id} reaction={re} />
-                                );
-                            })
+                                return null;
+                            }
+                            return (
+                                <UserReaction key={user_id} reaction={re}/>
+                            );
+                        })
                     }
                 </div>
             </Modal>
+
+            <Modal title="Code view" open={isCodeModalOpen} onOk={handleCodeOk} onCancel={handleCodeCancel} width="70%" footer={[]}>
+                <div style={{
+                    maxHeight: "70vh",
+                    overflow: "auto"
+                }}>
+                        <CodeView/>
+                </div>
+            </Modal>
+
         </div>
-    )
+    );
 
     if (incoming)
     {
         return (
             <div>
                 {modal}
-                <div className="w-full flex group " >
+                <div className="w-full flex group ">
                     <div className="mt-auto">
-                        <img src={message?.ApplicationUser?.AvatarUrl} alt="John Doe" className="w-6 h-6 rounded-full" />
+                        <img src={message?.ApplicationUser?.AvatarUrl} alt="John Doe" className="w-6 h-6 rounded-full"/>
                     </div>
                     <div className="">
 
                         <div className="max-w-96 w-fit">
-                            <QuoteMessage />
+                            <QuoteMessage/>
                         </div>
 
                         <div className="flex w-full">
                             <div className="bg-white p-3 mx-3 rounded-xl w-fit max-w-96 relative">
-                                <p className="text-sm break-words">{message.TextMessage}</p>
+                                <p className="overflow-auto text-sm break-words max-h-96">
+                                    {
+                                        message.TextMessage.startsWith("```") ?
+                                            <CodeView/>
+                                            : <>{message.TextMessage}</>
+                                    }
+                                </p>
                                 <button className="absolute -bottom-2 -right-2 text-xl opacity-70" onClick={showEmojiModal}>
                                     <div className="flex">
                                         {
                                             message.MessageReactions?.filter((value, index, self) =>
-                                                self.findIndex((t) => t.ReactionType === value.ReactionType) === index)?.map((reaction) =>
-                                                {
-                                                    return (
-                                                        <img key={reaction.Id} src={reaction.ReactionUrl} alt="reaction" className="w-4 h-4" />
-                                                    );
-                                                })
+                                                self.findIndex((t) => t.ReactionType === value.ReactionType) === index)?.map((reaction) => {
+                                                return (
+                                                    <img key={reaction.Id} src={reaction.ReactionUrl} alt="reaction" className="w-4 h-4"/>
+                                                );
+                                            })
                                         }
                                     </div>
                                 </button>
                             </div>
-                            <Tooltip title={<EmojiTooltip />} trigger={"click"} color={"white"} overlayInnerStyle={{ padding: "0px", borderRadius: "32px" }} overlayStyle={{ maxWidth: '500px' }} className="hidden group-hover:block" >
+                            <Tooltip title={<EmojiTooltip/>} trigger={"click"} color={"white"} overlayInnerStyle={{
+                                padding: "0px",
+                                borderRadius: "32px"
+                            }} overlayStyle={{ maxWidth: "500px" }} className="hidden group-hover:block">
                                 <button className="text-xl opacity-70 ml-4 relative">
-                                    <MdOutlineEmojiEmotions />
+                                    <MdOutlineEmojiEmotions/>
                                 </button>
                             </Tooltip>
                             <button className="hidden group-hover:block ml-4 opacity-70">
-                                <IoArrowUndo onClick={() =>
-                                {
+                                <IoArrowUndo onClick={() => {
                                     setQuoteMessage(message);
-                                }} />
+                                }}/>
                             </button>
                             <Tooltip title={<MessageOption/>} trigger={"click"} color={"white"}
-                                     //overlayInnerStyle={{ padding: "0px", borderRadius: "32px" }}
-                                     //overlayStyle={{ maxWidth: '500px' }}
+                                //overlayInnerStyle={{ padding: "0px", borderRadius: "32px" }}
+                                //overlayStyle={{ maxWidth: '500px' }}
                                      placement={"right"}
-                                     className="hidden group-hover:block" >
-                            <button className="ml-4 opacity-70">
-                                <BsThreeDots />
-                            </button>
+                                     className="hidden group-hover:block">
+                                <button className="ml-4 opacity-70">
+                                    <BsThreeDots/>
+                                </button>
                             </Tooltip>
                         </div>
                     </div>
@@ -370,7 +422,7 @@ function Message({ message, showTime = true, setQuoteMessage }: { message: Messa
                         message.MessageSeenBys?.length && message.MessageSeenBys?.length > 0 ?
                             <button onClick={showSeenByModal}>
                                 <p className="text-md text-gray-700 text-left p-1">
-                                    <IoCheckmarkDoneOutline />
+                                    <IoCheckmarkDoneOutline/>
                                 </p>
                             </button>
                             : null
@@ -390,7 +442,7 @@ function Message({ message, showTime = true, setQuoteMessage }: { message: Messa
                         {
                             message.QuoteMessageId ? (
                                 <div className="ml-auto max-w-96 w-fit">
-                                    <QuoteMessage />
+                                    <QuoteMessage/>
                                 </div>
                             ) : null
                         }
@@ -399,38 +451,42 @@ function Message({ message, showTime = true, setQuoteMessage }: { message: Messa
                                 //overlayInnerStyle={{ padding: "0px", borderRadius: "32px" }}
                                 //overlayStyle={{ maxWidth: '500px' }}
                                      placement={"left"}
-                                     className="hidden group-hover:block" >
+                                     className="hidden group-hover:block">
                                 <button className="mr-4 opacity-70">
-                                    <BsThreeDots />
+                                    <BsThreeDots/>
                                 </button>
                             </Tooltip>
                             <button className="mr-4 hidden group-hover:block opacity-70">
-                                <IoArrowRedoSharp onClick={() =>
-                                {
+                                <IoArrowRedoSharp onClick={() => {
                                     setQuoteMessage(message);
-                                }} />
+                                }}/>
                             </button>
 
-                            <Tooltip title={<EmojiTooltip />} trigger={"click"} color={"white"} overlayInnerStyle={{
+                            <Tooltip title={<EmojiTooltip/>} trigger={"click"} color={"white"} overlayInnerStyle={{
                                 padding: "0px",
                                 borderRadius: "32px"
                             }} overlayStyle={{ maxWidth: "500px" }} className="hidden group-hover:block">
                                 <button className="text-xl opacity-70 mr-4">
-                                    <MdOutlineEmojiEmotions />
+                                    <MdOutlineEmojiEmotions/>
                                 </button>
                             </Tooltip>
-                            <div className="bg-white p-3 mx-3 rounded-xl w-fit ml-auto max-w-96 relative ">
-                                <p className="text-sm break-words">{message.TextMessage}</p>
+                            <div className="bg-white p-3 mx-3 rounded-xl w-fit ml-auto max-w-96  relative ">
+                                <p className="text-sm break-words overflow-auto max-h-96">
+                                    {
+                                        message.TextMessage.startsWith("```") ?
+                                            <CodeView/>
+                                            : <>{message.TextMessage}</>
+                                    }
+                                </p>
                                 <button className="absolute -bottom-2 -left-2 text-xl opacity-70" onClick={showEmojiModal}>
                                     <div className="flex">
                                         {
                                             message.MessageReactions?.filter((value, index, self) =>
-                                                self.findIndex((t) => t.ReactionType === value.ReactionType) === index)?.map((reaction) =>
-                                                {
-                                                    return (
-                                                        <img key={reaction.Id} src={reaction.ReactionUrl} alt="reaction" className="w-4 h-4" />
-                                                    );
-                                                })
+                                                self.findIndex((t) => t.ReactionType === value.ReactionType) === index)?.map((reaction) => {
+                                                return (
+                                                    <img key={reaction.Id} src={reaction.ReactionUrl} alt="reaction" className="w-4 h-4"/>
+                                                );
+                                            })
                                         }
                                     </div>
                                 </button>
@@ -438,7 +494,7 @@ function Message({ message, showTime = true, setQuoteMessage }: { message: Messa
                         </div>
                     </div>
                     <div className="mt-auto">
-                        <img src={message?.ApplicationUser?.AvatarUrl} alt="John Doe" className="w-6 h-6 rounded-full" />
+                        <img src={message?.ApplicationUser?.AvatarUrl} alt="John Doe" className="w-6 h-6 rounded-full"/>
                     </div>
                 </div>
                 <div className="flex justify-end gap-2.5 mt-2">
@@ -446,7 +502,7 @@ function Message({ message, showTime = true, setQuoteMessage }: { message: Messa
                         message.MessageSeenBys?.length && message.MessageSeenBys?.length > 0 ?
                             <button onClick={showSeenByModal}>
                                 <p className="text-md text-gray-700 text-left p-1">
-                                    <IoCheckmarkDoneOutline />
+                                    <IoCheckmarkDoneOutline/>
                                 </p>
                             </button>
                             : null

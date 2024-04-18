@@ -168,7 +168,9 @@ function MessageInput({messageList, setMessageList, quoteMessage, setQuoteMessag
                         <div className="">
                             <div className="flex justify-between">
                                 <div>
-                                    <p className="font-bold">Replying to {quoteMessage.ApplicationUser?.UserName}</p>
+                                    <p className="font-bold">Replying to {
+                                        quoteMessage?.ApplicationUser?.UserName === user.user.UserName ? "You" : "@" + quoteMessage?.ApplicationUser?.UserName
+                                    }</p>
                                     <p>{quoteMessage.TextMessage}</p>
                                 </div>
                                 <div>
@@ -200,7 +202,7 @@ function MessageInput({messageList, setMessageList, quoteMessage, setQuoteMessag
                     }
                 } onKeyDown={(event) => {
 
-                    if (event.key === "Enter")
+                    if (event.key === "Enter" && !event.shiftKey)
                     {
                         event.preventDefault();
                         sendMessage().then(() => {
@@ -208,11 +210,6 @@ function MessageInput({messageList, setMessageList, quoteMessage, setQuoteMessag
                         });
                         event.currentTarget.value = "";
                     }
-                    if (event.key === "Enter" && event.shiftKey)
-                    {
-                        event.currentTarget.value += "\n";
-                    }
-
                 }}
                           onFocus={(e) => {
                                 handleFocus(e);
