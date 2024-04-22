@@ -14,9 +14,7 @@ import ApplicationUser from "@/utils/type/ApplicationUser.ts";
 import MessageSeenByType from "@/utils/type/MessageSeenByType.ts";
 import CodeView from "@/pages/chat/chat/components/CodeMessage.tsx";
 import Text from "@/components/text/Text.tsx";
-import GetUrlsFromText from "@/utils/function/GetUrlsFromText.ts";
-import { LinkPreview } from "@dhaiwat10/react-link-preview";
-import { Guid } from "guid-typescript";
+
 
 
 const baseUrl = new URL(`${import.meta.env.VITE_API_URL}`);
@@ -73,8 +71,6 @@ function Message({ message, showTime = true, setQuoteMessage }: {
     {
         setCodeModalOpen(false);
     };
-
-
 
     function MessageOption()
     {
@@ -514,11 +510,11 @@ function Message({ message, showTime = true, setQuoteMessage }: {
                                 </button>
                             </div>
                         </div>
-                        {
-                            GetUrlsFromText(message.TextMessage).length > 0 ?
-                                <LinkPreview url={GetUrlsFromText(message.TextMessage)[0]}/>
-                                : null
-                        }
+                        {/*{*/}
+                        {/*    GetUrlsFromText(message.TextMessage).length > 0 ?*/}
+                        {/*        <LinkPreview fetcher={() => GetWebMetaData(GetUrlsFromText(message.TextMessage)[0])} url={GetUrlsFromText(message.TextMessage)[0]} className="max-w-96 ml-auto" />*/}
+                        {/*        : null*/}
+                        {/*}*/}
                     </div>
                     <div className="mt-auto">
                         <img src={message?.ApplicationUser?.AvatarUrl} alt="John Doe" className="w-6 h-6 rounded-full"/>

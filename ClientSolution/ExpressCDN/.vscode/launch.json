@@ -24,11 +24,12 @@
       "skipFiles": [
         "<node_internals/**"
       ],
-      "stopOnEntry": true,
+      "stopOnEntry": false,
       "console": "externalTerminal",
       "env": {
         "port": "1337"
       }
+      
     }
   ],
   "compounds": [
@@ -36,7 +37,7 @@
       "name": "Launch Node and Browser",
       "configurations": [
         "Debug node process",
-        "localhost (Chrome)"
+        //"localhost (Chrome)"
       ]
     }
   ]
