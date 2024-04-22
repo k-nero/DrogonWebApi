@@ -1,14 +1,14 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const path_1 = require("path");
-const express_1 = require("express");
+const express_1 = __importDefault(require("express"));
 const debug = require('debug')('my express app');
 const app = (0, express_1.default)();
 const fileRouter = require("./routes/file");
 const cors = require("cors");
 app.use(cors());
-app.use(express_1.default.static(path_1.default.join(__dirname, 'public')));
-//app.use(express.static(path.join(__dirname, 'uploads')));
 app.use('/files', fileRouter);
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

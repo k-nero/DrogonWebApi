@@ -1,7 +1,7 @@
 import { GoDeviceCameraVideo } from "react-icons/go";
 import { GrAttachment } from "react-icons/gr";
 import { IoClose, IoMicOutline, IoSendSharp } from "react-icons/io5";
-import { LuSmile } from "react-icons/lu";
+import { LuLoader2, LuSmile } from "react-icons/lu";
 import { HiDotsVertical } from "react-icons/hi";
 import useLocalStorage from "@/utils/hooks/useLocalStorage.ts";
 import { AuthResponse } from "@/utils/type/AuthResponse.ts";
@@ -318,7 +318,17 @@ function MessageInput({messageList, quoteMessage, setQuoteMessages}:
                         </div>
 
                         <div className="justify-items-end">
-                            <button className="text-teal-500 font-bold" type="submit"><IoSendSharp/></button>
+                            <button className="text-teal-500 font-bold" type="submit">
+                                {
+                                    isSending ? (
+                                        <div className="animate-spin">
+                                            <LuLoader2 />
+                                        </div>
+                                    ) : (
+                                        <IoSendSharp/>
+                                    )
+                                }
+                            </button>
                         </div>
                     </div>
                 </form>

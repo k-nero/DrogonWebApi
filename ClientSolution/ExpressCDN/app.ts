@@ -1,5 +1,4 @@
 import { AddressInfo } from "net";
-import path from 'path';
 import express, { Request, Response, NextFunction } from "express";
 const debug = require('debug')('my express app');
 
@@ -11,8 +10,6 @@ import cors = require("cors");
 
 app.use(cors());
 
-app.use(express.static(path.join(__dirname, 'public')));
-//app.use(express.static(path.join(__dirname, 'uploads')));
 
 app.use('/files', fileRouter);
 
@@ -50,5 +47,5 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => { // esli
 app.set('port', process.env.PORT || 3000);
 
 const server = app.listen(app.get('port'), function () {
-    debug(`Express server listening on port ${(server.address() as AddressInfo).port}`);
+    console.log(`Express server listening on port ${(server.address() as AddressInfo).port}`);
 });

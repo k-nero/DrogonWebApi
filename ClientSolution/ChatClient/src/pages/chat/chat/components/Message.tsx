@@ -391,6 +391,14 @@ function Message({ message, showTime = true, setQuoteMessage }: {
                                                     </div>
                                                 );
                                             }
+                                            else if(attach.AttachType === "video")
+                                            {
+                                                return (
+                                                    <div key={attach.Id} className="w-fit justify-end ">
+                                                        <video src={attach.AttachUrl} controls className="h-32 m-auto"/>
+                                                    </div>
+                                                );
+                                            }
                                             else
                                             {
                                                 return (
@@ -510,10 +518,18 @@ function Message({ message, showTime = true, setQuoteMessage }: {
                                                     </div>
                                                 );
                                             }
-                                            else
+                                            else if(attach.AttachType === "video")
                                             {
                                                 return (
                                                     <div key={attach.Id} className="w-fit justify-end ">
+                                                        <video src={attach.AttachUrl} controls className="h-32 m-auto"/>
+                                                    </div>
+                                                );
+                                            }
+                                            else
+                                            {
+                                                return (
+                                                    <div key={attach.Id} className="w-fit justify-start ">
                                                         <a href={attach.AttachUrl} target="_blank" rel="noreferrer" className="text-blue-500 underline">{attach.AttachName}</a>
                                                     </div>
                                                 );

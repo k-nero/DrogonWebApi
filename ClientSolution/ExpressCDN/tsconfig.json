@@ -4,8 +4,9 @@
     "target": "es6",
     "lib": ["es6"],
     "sourceMap": true,
-    "allowJs": true,
-    "allowSyntheticDefaultImports": true
+    "allowJs": false,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
   },
   "exclude": [
     "node_modules"

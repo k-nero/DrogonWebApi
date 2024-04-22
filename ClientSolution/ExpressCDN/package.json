@@ -5,7 +5,7 @@
   "scripts": {
     "build": "tsc --build",
     "clean": "tsc --build --clean",
-    "start": "bun app.ts"
+    "start": "node app.js"
   },
   "description": "ExpressCDN",
   "author": {
