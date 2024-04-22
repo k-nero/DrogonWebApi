@@ -84,7 +84,7 @@ function Chat()
                                             setMessageList={setMessageList}
                                             setQuoteMessage={setQuoteMessage}
                                 />
-                                <MessageInput messageList={messageList} setMessageList={setMessageList} quoteMessage={quoteMessage} setQuoteMessages={setQuoteMessage}/>
+                                <MessageInput messageList={messageList} quoteMessage={quoteMessage} setQuoteMessages={setQuoteMessage}/>
                             </div>
                         </div>
                         {

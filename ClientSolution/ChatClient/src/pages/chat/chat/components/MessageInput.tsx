@@ -14,10 +14,9 @@ import MessageSeenByType from "@/utils/type/MessageSeenByType.ts";
 
 const baseUrl = new URL(`${import.meta.env.VITE_API_URL}`);
 
-function MessageInput({messageList, setMessageList, quoteMessage, setQuoteMessages}:
+function MessageInput({messageList, quoteMessage, setQuoteMessages}:
                           {
                               messageList: MessageType[],
-                              setMessageList: Dispatch<SetStateAction<MessageType[]>>,
                               quoteMessage: MessageType | undefined,
                               setQuoteMessages: Dispatch<SetStateAction<MessageType | undefined>>,
                           })

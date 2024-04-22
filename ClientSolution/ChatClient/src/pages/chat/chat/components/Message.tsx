@@ -13,6 +13,11 @@ import MessageReactionType from "@/utils/type/MessageReactionType.ts";
 import ApplicationUser from "@/utils/type/ApplicationUser.ts";
 import MessageSeenByType from "@/utils/type/MessageSeenByType.ts";
 import CodeView from "@/pages/chat/chat/components/CodeMessage.tsx";
+import Text from "@/components/text/Text.tsx";
+import GetUrlsFromText from "@/utils/function/GetUrlsFromText.ts";
+import { LinkPreview } from "@dhaiwat10/react-link-preview";
+import { Guid } from "guid-typescript";
+
 
 const baseUrl = new URL(`${import.meta.env.VITE_API_URL}`);
 
@@ -356,6 +361,8 @@ function Message({ message, showTime = true, setQuoteMessage }: {
         </div>
     );
 
+
+
     if (incoming)
     {
         return (
@@ -377,7 +384,7 @@ function Message({ message, showTime = true, setQuoteMessage }: {
                                     {
                                         message.TextMessage?.startsWith("```") ?
                                             <CodeView textMessage={message.TextMessage} />
-                                            : <>{message.TextMessage}</>
+                                            : <Text  text={message.TextMessage}/>
                                     }
                                 </p>
                                 <button className="absolute -bottom-2 -right-2 text-xl opacity-70" onClick={showEmojiModal}>
@@ -457,61 +464,64 @@ function Message({ message, showTime = true, setQuoteMessage }: {
                         {
                             message.QuoteMessageId ? (
                                 <div className="ml-auto max-w-96 w-fit">
-                                    <QuoteMessage />
+                                    <QuoteMessage/>
                                 </div>
                             ) : null
                         }
                         <div className="w-fit ml-auto flex">
-                            <Tooltip title={<MessageOption />} trigger={"click"} color={"white"}
+                            <Tooltip title={<MessageOption/>} trigger={"click"} color={"white"}
                                 //overlayInnerStyle={{ padding: "0px", borderRadius: "32px" }}
                                 //overlayStyle={{ maxWidth: '500px' }}
-                                placement={"left"}
-                                className="hidden group-hover:block">
+                                     placement={"left"}
+                                     className="hidden group-hover:block">
                                 <button className="mr-4 opacity-70" title="Message options">
-                                    <BsThreeDots />
+                                    <BsThreeDots/>
                                 </button>
                             </Tooltip>
                             <button className="mr-4 hidden group-hover:block opacity-70" title="Reply message">
-                                <IoArrowRedoSharp onClick={() =>
-                                {
+                                <IoArrowRedoSharp onClick={() => {
                                     setQuoteMessage(message);
-                                }} />
+                                }}/>
                             </button>
 
-                            <Tooltip title={<EmojiTooltip />} trigger={"click"} color={"white"} overlayInnerStyle={{
+                            <Tooltip title={<EmojiTooltip/>} trigger={"click"} color={"white"} overlayInnerStyle={{
                                 padding: "0px",
                                 borderRadius: "32px"
                             }} overlayStyle={{ maxWidth: "500px" }} className="hidden group-hover:block">
                                 <button className="text-xl opacity-70 mr-4" title="React message">
-                                    <MdOutlineEmojiEmotions />
+                                    <MdOutlineEmojiEmotions/>
                                 </button>
                             </Tooltip>
                             <div className="bg-white p-3 mx-3 rounded-xl w-fit ml-auto max-w-96  relative ">
                                 <p className="text-sm break-words overflow-auto max-h-96">
                                     {
                                         message.TextMessage?.startsWith("```") ?
-                                            <CodeView textMessage={message.TextMessage} />
-                                            : <>{message.TextMessage}</>
+                                            <CodeView textMessage={message.TextMessage}/>
+                                            : <Text text={message.TextMessage}/>
                                     }
                                 </p>
                                 <button className="absolute -bottom-2 -left-2 text-xl opacity-70" onClick={showEmojiModal}>
                                     <div className="flex">
                                         {
                                             message.MessageReactions?.filter((value, index, self) =>
-                                                self.findIndex((t) => t.ReactionType === value.ReactionType) === index)?.map((reaction) =>
-                                                {
-                                                    return (
-                                                        <img key={reaction.Id} src={reaction.ReactionUrl} alt="reaction" className="w-4 h-4" />
-                                                    );
-                                                })
+                                                self.findIndex((t) => t.ReactionType === value.ReactionType) === index)?.map((reaction) => {
+                                                return (
+                                                    <img key={reaction.Id} src={reaction.ReactionUrl} alt="reaction" className="w-4 h-4"/>
+                                                );
+                                            })
                                         }
                                     </div>
                                 </button>
                             </div>
                         </div>
+                        {
+                            GetUrlsFromText(message.TextMessage).length > 0 ?
+                                <LinkPreview url={GetUrlsFromText(message.TextMessage)[0]}/>
+                                : null
+                        }
                     </div>
                     <div className="mt-auto">
-                        <img src={message?.ApplicationUser?.AvatarUrl} alt="John Doe" className="w-6 h-6 rounded-full" />
+                        <img src={message?.ApplicationUser?.AvatarUrl} alt="John Doe" className="w-6 h-6 rounded-full"/>
                     </div>
                 </div>
                 <div className="flex justify-end gap-2.5 mt-2">
@@ -519,7 +529,7 @@ function Message({ message, showTime = true, setQuoteMessage }: {
                         message.MessageSeenBys?.length && message.MessageSeenBys?.length > 0 ?
                             <button onClick={showSeenByModal}>
                                 <p className="text-md text-gray-700 text-left p-1">
-                                    <IoCheckmarkDoneOutline />
+                                    <IoCheckmarkDoneOutline/>
                                 </p>
                             </button>
                             : null
