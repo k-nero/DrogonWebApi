@@ -1,12 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const express = require("express");
-const path = require("path");
+const path_1 = require("path");
+const express_1 = require("express");
 const debug = require('debug')('my express app');
-const app = express();
+const app = (0, express_1.default)();
 const fileRouter = require("./routes/file");
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static(path.join(__dirname, 'uploads')));
+app.use(express_1.default.static(path_1.default.join(__dirname, 'public')));
+app.use(express_1.default.static(path_1.default.join(__dirname, 'uploads')));
 app.use('/file', fileRouter);
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

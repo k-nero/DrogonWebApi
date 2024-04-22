@@ -1,8 +1,7 @@
 import express = require("express");
 const router = express.Router();
 import path = require("path");
-import * as multer from "multer";
-
+import multer = require("multer");
 const storage = multer.diskStorage({
     destination: function(req, file, cb)
     {

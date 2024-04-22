@@ -1,0 +1,9 @@
+﻿<Project Sdk="Microsoft.VisualStudio.JavaScript.Sdk/0.5.271090-alpha">
+  <PropertyGroup>
+    <!--Command to run on project build-->
+    <BuildCommand>bun run build</BuildCommand>
+    <!--Command to run on project clean-->
+    <CleanCommand>bun run clean</CleanCommand>
+    <StartupCommand>set PORT=1337 &amp; bun run start</StartupCommand>
+  </PropertyGroup>
+</Project>

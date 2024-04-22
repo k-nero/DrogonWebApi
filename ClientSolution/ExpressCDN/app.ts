@@ -1,11 +1,12 @@
-import * as express from 'express';
 import { AddressInfo } from "net";
-import * as path from 'path';
-
+import path from 'path';
+import express from 'express';
 const debug = require('debug')('my express app');
-const app = express();
+
+const app: Express = express();
 
 import fileRouter = require("./routes/file");
+import { Express } from "express";
 
 
 app.use(express.static(path.join(__dirname, 'public')));
