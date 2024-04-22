@@ -1,8 +1,7 @@
-const express = require("express");
+import express = require("express");
 const router = express.Router();
-const multer = require("multer");
-const path = require("path");
-const fs = require("fs");
+import path = require("path");
+import * as multer from "multer";
 
 const storage = multer.diskStorage({
     destination: function(req, file, cb)
@@ -31,19 +30,17 @@ router.get("/files/:filename", function(req, res, next)
 router.put("/uploads", function(req, res, next)
 {
 
-        const upload = multer({storage: storage}).single("file");
-        upload(req, res, function(err)
+    const upload = multer({storage: storage}).single("file");
+    upload(req, res, function(err)
+    {
+        if(err)
         {
-            if(err)
-            {
-                console.log(err);
-                return res.status(500).json({error: err.json});
-            }
-            res.status(200).send("File uploaded successfully");
-        });
+            console.log(err);
+            return res.status(500).json({error: err.json});
+        }
+        res.status(200).send("File uploaded successfully");
+    });
 
 })
 
-
-
-module.exports = router;
+export = router;
