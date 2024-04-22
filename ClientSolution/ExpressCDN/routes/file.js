@@ -11,7 +11,7 @@ const storage = multer.diskStorage({
         cb(null, file.originalname);
     }
 });
-router.get("/files/:filename", function (req, res, next) {
+router.get("/:filename", function (req, res, next) {
     // const filename = req.params.filename;
     // const filepath = path.join(__dirname, "../uploads", filename);
     // const filestream = fs.createReadStream (filepath);

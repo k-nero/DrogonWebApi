@@ -13,6 +13,7 @@ import { uWebSockets } from "@/utils/WebSocket/WebSocket.ts";
 import MessageSeenByType from "@/utils/type/MessageSeenByType.ts";
 
 const baseUrl = new URL(`${import.meta.env.VITE_API_URL}`);
+const cdnURL = new URL(`${import.meta.env.VITE_CDN_URL}`);
 
 function MessageInput({messageList, quoteMessage, setQuoteMessages}:
                           {
@@ -30,7 +31,7 @@ function MessageInput({messageList, quoteMessage, setQuoteMessages}:
     const [timer, setTimer] = useState<NodeJS.Timeout>();
     const [message, setMessage] = useState<string>("");
     const [files, setFiles] = useState<File[]>([]);
-
+    const [isSending, setIsSending] = useState<boolean>(false);
 
     useEffect(() => {
         uWebSockets.getInstance().addTypingSubscriber((event) => {
@@ -58,10 +59,12 @@ function MessageInput({messageList, quoteMessage, setQuoteMessages}:
         }
         setQuoteMessages(undefined);
 
+        setIsSending(true);
         if (!message)
         {
             return;
         }
+
 
         const res = await fetch(`${baseUrl}/message`, {
             method: "POST",
@@ -81,13 +84,45 @@ function MessageInput({messageList, quoteMessage, setQuoteMessages}:
         {
             setMessage("");
             const rs = await res.json();
-            const message = await Query<MessageType>(`/message/${rs.id}`);
-            uWebSockets.getInstance().send(JSON.stringify({
-                type: "message",
-                channel: chat_id,
-                message: message
-            }));
+
+            if (files.length > 0)
+            {
+                Promise.all(files.map(async (file) => {
+                    const formData = new FormData();
+                    formData.append("file", file);
+                    const fileRs = await fetch(`${cdnURL}files/uploads`, {
+                        method: "PUT",
+                        body: formData
+                    });
+
+                    if (fileRs.ok)
+                    {
+                        const r = await fetch(`${baseUrl}/message-attach`, {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({
+                                MessageId: rs.id,
+                                AttachUrl: `${cdnURL}files/${file.name}`,
+                                AttachName: file.name,
+                                AttachType: file.type.split("/")[0]
+                            })
+                        })
+                    }
+                })
+                ).then(async () => {
+                    const message = await Query<MessageType>(`/message/${rs.id}`);
+                    uWebSockets.getInstance().send(JSON.stringify({
+                        type: "message",
+                        channel: chat_id,
+                        message: message
+                    }));
+                });
+            }
         }
+        setFiles([]);
+        setIsSending(false);
     }
 
     function handleFocus(e: ChangeEvent<HTMLTextAreaElement>)
@@ -109,6 +144,7 @@ function MessageInput({messageList, quoteMessage, setQuoteMessages}:
                                 MessageId: message.Id
                             }
                         )
+
                     }).then(r => {
                         if(r.ok)
                         {
@@ -182,6 +218,34 @@ function MessageInput({messageList, quoteMessage, setQuoteMessages}:
                         </div>
                     ) : null
                 }
+                {
+                    files.length > 0 ? (
+                        <div className="flex gap-2">
+                            {
+                                files.map((file, index) => {
+                                    return (
+                                        <div key={index} className="">
+                                            <div className="flex gap-2">
+                                                <p className="max-w-32 overflow-clip">{file.name}</p>
+                                                <button onClick={() => {
+                                                    setFiles(files.filter((f) => f.name !== file.name));
+                                                }}>
+
+                                                    <IoClose/>
+                                                </button>
+                                            </div>
+                                            {
+                                                file.type.split("/")[0] === "image" ? (
+                                                    <img src={URL.createObjectURL(file)} alt={file.name} className="w-32 h-32"/>
+                                                ) : null
+                                            }
+                                        </div>
+                                    );
+                                })
+                            }
+                        </div>
+                    ) : null
+                }
                 <form onSubmit={(e) => {
                     e.preventDefault();
                     e.currentTarget.reset();
@@ -208,17 +272,9 @@ function MessageInput({messageList, quoteMessage, setQuoteMessages}:
                     }}
                     onFocus={(e) => handleFocus(e)}
                     onPaste={(e) => {
-                        const files = e.clipboardData.files;
-                        if(files.length > 0)
-                        {
-                            const files: File[] = [];
-                            for(let i = 0; i < files.length; i++)
-                            {
-                                files.push(files[i]);
-                            }
-
-                            setFiles(files);
-                        }
+                        const fileList = e.clipboardData.files;
+                        const filesArray = Array.from(fileList);
+                        setFiles(filesArray);
                     }}
                     className="w-full bg-transparent outline-none pb-4 border-b-2 resize-none"/>
                     </div>
@@ -236,7 +292,21 @@ function MessageInput({messageList, quoteMessage, setQuoteMessages}:
                                 <button>
                                     <LuSmile/>
                                 </button>
-                                <button>
+                                <button onClick={(e) => {
+                                    // open file dialog
+                                    e.preventDefault();
+                                    const fileInput = document.createElement("input");
+                                    fileInput.type = "file";
+                                    fileInput.multiple = true;
+                                    fileInput.click();
+                                    fileInput.addEventListener("change", (e) => {
+                                        const fileList = fileInput.files;
+                                        if(!fileList) return;
+                                        const filesArray = Array.from(fileList);
+                                        setFiles(filesArray);
+                                    });
+
+                                }}>
                                     <GrAttachment/>
                                 </button>
                             </div>

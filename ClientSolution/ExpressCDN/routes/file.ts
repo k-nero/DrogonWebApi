@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
     }
 });
 
-router.get("/files/:filename", function(req, res, next)
+router.get("/:filename", function(req, res, next)
 {
     // const filename = req.params.filename;
     // const filepath = path.join(__dirname, "../uploads", filename);

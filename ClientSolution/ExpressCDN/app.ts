@@ -7,12 +7,14 @@ const app: Express = express();
 
 import fileRouter = require("./routes/file");
 import { Express } from "express";
+import cors = require("cors");
 
+app.use(cors());
 
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static(path.join(__dirname, 'uploads')));
+//app.use(express.static(path.join(__dirname, 'uploads')));
 
-app.use('/file', fileRouter);
+app.use('/files', fileRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

@@ -370,9 +370,41 @@ function Message({ message, showTime = true, setQuoteMessage }: {
                     </div>
                     <div className="">
 
-                        <div className="max-w-96 w-fit">
-                            <QuoteMessage />
-                        </div>
+                        {
+                            message.QuoteMessageId ? (
+                                <div className=" max-w-96 w-fit">
+                                    <QuoteMessage/>
+                                </div>
+                            ) : null
+                        }
+                        {
+                            message.MessageAttachs?.length && message.MessageAttachs?.length > 0 ?
+
+                                <div className="flex max-w-96 gap-2.5 justify-start mx-3">
+                                    {
+                                        message.MessageAttachs.map((attach) => {
+                                            if(attach.AttachType === "image")
+                                            {
+                                                return (
+                                                    <div key={attach.Id} className="w-fit ">
+                                                        <img src={attach.AttachUrl} alt={attach.AttachName} className="h-32 m-auto"/>
+                                                    </div>
+                                                );
+                                            }
+                                            else
+                                            {
+                                                return (
+                                                    <div key={attach.Id} className="w-fit justify-start ">
+                                                        <a href={attach.AttachUrl} target="_blank" rel="noreferrer" className="text-blue-500 underline">{attach.AttachName}</a>
+                                                    </div>
+                                                );
+                                            }
+
+                                        })
+                                    }
+                                </div>
+                                : null
+                        }
 
                         <div className="flex w-full">
                             <div className="bg-white p-3 mx-3 rounded-xl w-fit max-w-96 relative">
@@ -464,6 +496,34 @@ function Message({ message, showTime = true, setQuoteMessage }: {
                                 </div>
                             ) : null
                         }
+                        {
+                            message.MessageAttachs?.length && message.MessageAttachs?.length > 0 ?
+
+                                <div className="flex max-w-96 gap-2.5 justify-end mx-3">
+                                    {
+                                        message.MessageAttachs.map((attach) => {
+                                            if(attach.AttachType === "image")
+                                            {
+                                                return (
+                                                    <div key={attach.Id} className="w-fit ">
+                                                        <img src={attach.AttachUrl} alt={attach.AttachName} className="h-32 m-auto"/>
+                                                    </div>
+                                                );
+                                            }
+                                            else
+                                            {
+                                                return (
+                                                    <div key={attach.Id} className="w-fit justify-end ">
+                                                        <a href={attach.AttachUrl} target="_blank" rel="noreferrer" className="text-blue-500 underline">{attach.AttachName}</a>
+                                                    </div>
+                                                );
+                                            }
+
+                                        })
+                                    }
+                                </div>
+                                : null
+                        }
                         <div className="w-fit ml-auto flex">
                             <Tooltip title={<MessageOption/>} trigger={"click"} color={"white"}
                                 //overlayInnerStyle={{ padding: "0px", borderRadius: "32px" }}
@@ -510,11 +570,6 @@ function Message({ message, showTime = true, setQuoteMessage }: {
                                 </button>
                             </div>
                         </div>
-                        {/*{*/}
-                        {/*    GetUrlsFromText(message.TextMessage).length > 0 ?*/}
-                        {/*        <LinkPreview fetcher={() => GetWebMetaData(GetUrlsFromText(message.TextMessage)[0])} url={GetUrlsFromText(message.TextMessage)[0]} className="max-w-96 ml-auto" />*/}
-                        {/*        : null*/}
-                        {/*}*/}
                     </div>
                     <div className="mt-auto">
                         <img src={message?.ApplicationUser?.AvatarUrl} alt="John Doe" className="w-6 h-6 rounded-full"/>
