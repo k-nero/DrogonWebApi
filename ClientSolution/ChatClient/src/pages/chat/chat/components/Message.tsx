@@ -14,8 +14,7 @@ import ApplicationUser from "@/utils/type/ApplicationUser.ts";
 import MessageSeenByType from "@/utils/type/MessageSeenByType.ts";
 import CodeView from "@/pages/chat/chat/components/CodeMessage.tsx";
 import Text from "@/components/text/Text.tsx";
-
-
+import EmojiTooltip from "@/components/EmojiToolTip";
 
 const baseUrl = new URL(`${import.meta.env.VITE_API_URL}`);
 
@@ -232,12 +231,7 @@ function Message({ message, showTime = true, setQuoteMessage }: {
         }
     }
 
-    function EmojiTooltip()
-    {
-        return (
-            <EmojiPicker onReactionClick={(emoji, event) => EmojiClickCallback(emoji, event)} reactionsDefaultOpen={true} emojiStyle={EmojiStyle.GOOGLE} />
-        );
-    }
+
 
 
     function UserSeenBy({ seenBy }: { seenBy: MessageSeenByType })
@@ -377,86 +371,96 @@ function Message({ message, showTime = true, setQuoteMessage }: {
                                 </div>
                             ) : null
                         }
-                        {
-                            message.MessageAttachs?.length && message.MessageAttachs?.length > 0 ?
 
-                                <div className="flex max-w-96 gap-2.5 justify-start mx-3">
-                                    {
-                                        message.MessageAttachs.map((attach) => {
-                                            if(attach.AttachType === "image")
-                                            {
-                                                return (
-                                                    <div key={attach.Id} className="w-fit ">
-                                                        <img src={attach.AttachUrl} alt={attach.AttachName} className="h-32 m-auto"/>
-                                                    </div>
-                                                );
-                                            }
-                                            else if(attach.AttachType === "video")
-                                            {
-                                                return (
-                                                    <div key={attach.Id} className="w-fit justify-end ">
-                                                        <video src={attach.AttachUrl} controls className="h-32 m-auto"/>
-                                                    </div>
-                                                );
-                                            }
-                                            else
-                                            {
-                                                return (
-                                                    <div key={attach.Id} className="w-fit justify-start ">
-                                                        <a href={attach.AttachUrl} target="_blank" rel="noreferrer" className="text-blue-500 underline">{attach.AttachName}</a>
-                                                    </div>
-                                                );
-                                            }
-
-                                        })
-                                    }
-                                </div>
-                                : null
-                        }
 
                         <div className="flex w-full">
-                            <div className="bg-white p-3 mx-3 rounded-xl w-fit max-w-96 relative">
-                                <p className="overflow-auto text-sm break-words max-h-96">
-                                    {
-                                        message.TextMessage?.startsWith("```") ?
-                                            <CodeView textMessage={message.TextMessage} />
-                                            : <Text  text={message.TextMessage}/>
-                                    }
-                                </p>
-                                <button className="absolute -bottom-2 -right-2 text-xl opacity-70" onClick={showEmojiModal}>
-                                    <div className="flex">
+                            <div className="bg-white p-3 mx-3 rounded-xl  max-w-96 relative">
+                                {
+                                    message.MessageAttachs?.length && message.MessageAttachs?.length > 0 ?
+
+                                        <div className="flex max-w-96 gap-2.5 justify-start mb-3">
+                                            {
+                                                message.MessageAttachs.map((attach) => {
+                                                    if(attach.AttachType === "image")
+                                                    {
+                                                        return (
+                                                            <div key={attach.Id} className="w-fit ">
+                                                                <img loading="lazy" src={attach.AttachUrl} alt={attach.AttachName} className="h-32 m-auto rounded-md"/>
+                                                            </div>
+                                                        );
+                                                    }
+                                                    else if(attach.AttachType === "video")
+                                                    {
+                                                        return (
+                                                            <div key={attach.Id} className="w-fit justify-start ">
+                                                                <video src={attach.AttachUrl} controls className="h-32 m-auto"/>
+                                                            </div>
+                                                        );
+                                                    }
+                                                    else if(attach.AttachType === "audio")
+                                                    {
+                                                        return (
+                                                            <div key={attach.Id} className="w-fit h-fit justify-start ">
+                                                                <audio src={attach.AttachUrl} controls className=" m-auto"/>
+                                                            </div>
+                                                        );
+                                                    }
+                                                    else
+                                                    {
+                                                        return (
+                                                            <div key={attach.Id} className="w-fit justify-start ">
+                                                                <a href={attach.AttachUrl} target="_blank" rel="noreferrer" className="text-blue-500 underline">{attach.AttachName}</a>
+                                                            </div>
+                                                        );
+                                                    }
+
+                                                })
+                                            }
+                                        </div>
+                                        : null
+                                }
+                                <div className="">
+                                    <p className="overflow-auto text-sm break-words max-h-96">
                                         {
-                                            message.MessageReactions?.filter((value, index, self) =>
-                                                self.findIndex((t) => t.ReactionType === value.ReactionType) === index)?.map((reaction) =>
-                                                {
+                                            message.TextMessage?.startsWith("```") ?
+                                                <CodeView textMessage={message.TextMessage}/>
+                                                : <Text text={message.TextMessage}/>
+                                        }
+                                    </p>
+                                    <button className="absolute -bottom-2 -right-2 text-xl opacity-70" onClick={showEmojiModal}>
+                                        <div className="flex">
+                                            {
+                                                message.MessageReactions?.filter((value, index, self) =>
+                                                    self.findIndex((t) => t.ReactionType === value.ReactionType) === index)?.map((reaction) => {
                                                     return (
-                                                        <img key={reaction.Id} src={reaction.ReactionUrl} alt="reaction" className="w-4 h-4" />
+                                                        <img loading="lazy" key={reaction.Id} src={reaction.ReactionUrl} alt="reaction" className="w-4 h-4"/>
                                                     );
                                                 })
-                                        }
-                                    </div>
-                                </button>
+                                            }
+                                        </div>
+                                    </button>
+                                </div>
+
                             </div>
-                            <Tooltip title={<EmojiTooltip />} trigger={"click"} color={"white"} overlayInnerStyle={{
+                            <Tooltip title={<EmojiTooltip EmojiClickCallback={EmojiClickCallback}/>} trigger={"click"} color={"white"} overlayInnerStyle={{
                                 padding: "0px",
                                 borderRadius: "32px"
                             }} overlayStyle={{ maxWidth: "500px" }} className="hidden group-hover:block">
                                 <button className="text-xl opacity-70 ml-4 relative" title="React message">
-                                    <MdOutlineEmojiEmotions />
+                                    <MdOutlineEmojiEmotions/>
                                 </button>
                             </Tooltip>
                             <button className="hidden group-hover:block ml-4 opacity-70" title="Reply message">
-                                <IoArrowUndo onClick={() =>
-                                {
+                                <IoArrowUndo onClick={() => {
                                     setQuoteMessage(message);
-                                }} />
+                                }}/>
                             </button>
-                            <Tooltip title={<MessageOption />} trigger={"click"} color={"white"}
+                            <Tooltip title={<MessageOption/>} trigger={"click"} color={"white"}
                                 //overlayInnerStyle={{ padding: "0px", borderRadius: "32px" }}
                                 //overlayStyle={{ maxWidth: '500px' }}
-                                placement={"right"}
-                                className="hidden group-hover:block">
-                                <button className="ml-4 opacity-70" title="Message options">
+                                     placement={"right"}
+                                     className="hidden group-hover:block">
+                            <button className="ml-4 opacity-70" title="Message options">
                                     <BsThreeDots />
                                 </button>
                             </Tooltip>
@@ -504,42 +508,7 @@ function Message({ message, showTime = true, setQuoteMessage }: {
                                 </div>
                             ) : null
                         }
-                        {
-                            message.MessageAttachs?.length && message.MessageAttachs?.length > 0 ?
 
-                                <div className="flex max-w-96 gap-2.5 justify-end mx-3">
-                                    {
-                                        message.MessageAttachs.map((attach) => {
-                                            if(attach.AttachType === "image")
-                                            {
-                                                return (
-                                                    <div key={attach.Id} className="w-fit ">
-                                                        <img src={attach.AttachUrl} alt={attach.AttachName} className="h-32 m-auto"/>
-                                                    </div>
-                                                );
-                                            }
-                                            else if(attach.AttachType === "video")
-                                            {
-                                                return (
-                                                    <div key={attach.Id} className="w-fit justify-end ">
-                                                        <video src={attach.AttachUrl} controls className="h-32 m-auto"/>
-                                                    </div>
-                                                );
-                                            }
-                                            else
-                                            {
-                                                return (
-                                                    <div key={attach.Id} className="w-fit justify-start ">
-                                                        <a href={attach.AttachUrl} target="_blank" rel="noreferrer" className="text-blue-500 underline">{attach.AttachName}</a>
-                                                    </div>
-                                                );
-                                            }
-
-                                        })
-                                    }
-                                </div>
-                                : null
-                        }
                         <div className="w-fit ml-auto flex">
                             <Tooltip title={<MessageOption/>} trigger={"click"} color={"white"}
                                 //overlayInnerStyle={{ padding: "0px", borderRadius: "32px" }}
@@ -556,7 +525,7 @@ function Message({ message, showTime = true, setQuoteMessage }: {
                                 }}/>
                             </button>
 
-                            <Tooltip title={<EmojiTooltip/>} trigger={"click"} color={"white"} overlayInnerStyle={{
+                            <Tooltip title={<EmojiTooltip EmojiClickCallback={EmojiClickCallback}/>} trigger={"click"} color={"white"} overlayInnerStyle={{
                                 padding: "0px",
                                 borderRadius: "32px"
                             }} overlayStyle={{ maxWidth: "500px" }} className="hidden group-hover:block">
@@ -564,26 +533,72 @@ function Message({ message, showTime = true, setQuoteMessage }: {
                                     <MdOutlineEmojiEmotions/>
                                 </button>
                             </Tooltip>
-                            <div className="bg-white p-3 mx-3 rounded-xl w-fit ml-auto max-w-96  relative ">
-                                <p className="text-sm break-words overflow-auto max-h-96">
-                                    {
-                                        message.TextMessage?.startsWith("```") ?
-                                            <CodeView textMessage={message.TextMessage}/>
-                                            : <Text text={message.TextMessage}/>
-                                    }
-                                </p>
-                                <button className="absolute -bottom-2 -left-2 text-xl opacity-70" onClick={showEmojiModal}>
-                                    <div className="flex">
+                            <div className="bg-white p-3 mx-3 rounded-xl max-w-96 relative ">
+                                {
+                                    message.MessageAttachs?.length && message.MessageAttachs?.length > 0 ?
+
+                                        <div className="flex max-w-96 gap-2.5 justify-end mb-3">
+                                            {
+                                                message.MessageAttachs.map((attach) => {
+                                                    if(attach.AttachType === "image")
+                                                    {
+                                                        return (
+                                                            <div key={attach.Id} className="w-fit ">
+                                                                <img loading="lazy" src={attach.AttachUrl} alt={attach.AttachName} className="h-32 m-auto rounded-md"/>
+                                                            </div>
+                                                        );
+                                                    }
+                                                    else if(attach.AttachType === "video")
+                                                    {
+                                                        return (
+                                                            <div key={attach.Id} className="w-fit h-fit justify-end ">
+                                                                <video src={attach.AttachUrl} controls className=" m-auto"/>
+                                                            </div>
+                                                        );
+                                                    }
+                                                    else if(attach.AttachType === "audio")
+                                                    {
+                                                        return (
+                                                            <div key={attach.Id} className="w-fit h-fit justify-start ">
+                                                                <audio src={attach.AttachUrl} controls className=" m-auto"/>
+                                                            </div>
+                                                        );
+                                                    }
+                                                    else
+                                                    {
+                                                        return (
+                                                            <div key={attach.Id} className="w-fit justify-end  ">
+                                                                <a href={attach.AttachUrl} target="_blank" rel="noreferrer" className="text-blue-500 underline">{attach.AttachName}</a>
+                                                            </div>
+                                                        );
+                                                    }
+
+                                                })
+                                            }
+                                        </div>
+                                        : null
+                                }
+                                <div className="ml-auto">
+                                    <p className="text-sm break-words overflow-auto max-h-96 ">
                                         {
-                                            message.MessageReactions?.filter((value, index, self) =>
-                                                self.findIndex((t) => t.ReactionType === value.ReactionType) === index)?.map((reaction) => {
-                                                return (
-                                                    <img key={reaction.Id} src={reaction.ReactionUrl} alt="reaction" className="w-4 h-4"/>
-                                                );
-                                            })
+                                            message.TextMessage?.startsWith("```") ?
+                                                <CodeView textMessage={message.TextMessage}/>
+                                                : <Text text={message.TextMessage}/>
                                         }
-                                    </div>
-                                </button>
+                                    </p>
+                                    <button className="absolute -bottom-2 -left-2 text-xl opacity-70" onClick={showEmojiModal}>
+                                        <div className="flex">
+                                            {
+                                                message.MessageReactions?.filter((value, index, self) =>
+                                                    self.findIndex((t) => t.ReactionType === value.ReactionType) === index)?.map((reaction) => {
+                                                    return (
+                                                        <img loading="lazy" key={reaction.Id} src={reaction.ReactionUrl} alt="reaction" className="w-4 h-4"/>
+                                                    );
+                                                })
+                                            }
+                                        </div>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>

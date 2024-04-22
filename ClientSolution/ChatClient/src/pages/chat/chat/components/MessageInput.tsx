@@ -5,17 +5,25 @@ import { LuLoader2, LuSmile } from "react-icons/lu";
 import { HiDotsVertical } from "react-icons/hi";
 import useLocalStorage from "@/utils/hooks/useLocalStorage.ts";
 import { AuthResponse } from "@/utils/type/AuthResponse.ts";
-import { ChangeEvent, createRef, Dispatch, SetStateAction, useEffect, useState } from "react";
+import React, { ChangeEvent, createRef, Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import Query from "@/utils/function/Query.ts";
 import MessageType from "@/utils/type/MessageType.ts";
 import { uWebSockets } from "@/utils/WebSocket/WebSocket.ts";
 import MessageSeenByType from "@/utils/type/MessageSeenByType.ts";
+import videoPlaceholder from "@/assets/video-placeholder.png";
+import textPlaceholder from "@/assets/text-placeholder.png";
+import audioPlaceholder from "@/assets/audio-placeholder.png";
+import filePlaceholder from "@/assets/file-placeholder.png";
+import { Modal, Tooltip } from "antd";
+import { AudioRecorder } from "react-audio-voice-recorder";
+import EmojiTooltip from "@/components/EmojiToolTip.tsx";
+import { EmojiClickData } from "emoji-picker-react";
 
 const baseUrl = new URL(`${import.meta.env.VITE_API_URL}`);
 const cdnURL = new URL(`${import.meta.env.VITE_CDN_URL}`);
 
-function MessageInput({messageList, quoteMessage, setQuoteMessages}:
+function MessageInput({ messageList, quoteMessage, setQuoteMessages }:
                           {
                               messageList: MessageType[],
                               quoteMessage: MessageType | undefined,
@@ -44,12 +52,28 @@ function MessageInput({messageList, quoteMessage, setQuoteMessages}:
     }, [chat_id]);
 
     useEffect(() => {
-        if(files && files.length > 0)
+        if (files && files.length > 0)
         {
 
         }
     }, [files]);
 
+    const [isVoiceModalOpen, setVoiceModalOpen] = useState(false);
+    const showVoiceModal = () => {
+        setVoiceModalOpen(true);
+    };
+    const handleVoiceOk = () => {
+        setVoiceModalOpen(false);
+    };
+    const handleVoiceCancel = () => {
+        setVoiceModalOpen(false);
+    };
+
+    function handleVoiceRecordingComplete(blob: Blob)
+    {
+        const file = new File([blob], "audio.webm", { type: "audio/webm" });
+        setFiles([...files, file]);
+    }
 
     async function sendMessage()
     {
@@ -88,30 +112,31 @@ function MessageInput({messageList, quoteMessage, setQuoteMessages}:
             if (files.length > 0)
             {
                 Promise.all(files.map(async (file) => {
-                    const formData = new FormData();
-                    formData.append("file", file);
-                    const fileRs = await fetch(`${cdnURL}files/uploads`, {
-                        method: "PUT",
-                        body: formData
-                    });
+                        const formData = new FormData();
+                        formData.append("file", file);
+                        const fileRs = await fetch(`${cdnURL}files/uploads`, {
+                            method: "PUT",
+                            body: formData
+                        });
 
-                    if (fileRs.ok)
-                    {
-                        const r = await fetch(`${baseUrl}/message-attach`, {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json"
-                            },
-                            body: JSON.stringify({
-                                MessageId: rs.id,
-                                AttachUrl: `${cdnURL}files/${file.name}`,
-                                AttachName: file.name,
-                                AttachType: file.type.split("/")[0]
-                            })
-                        })
-                    }
-                })
+                        if (fileRs.ok)
+                        {
+                            const r = await fetch(`${baseUrl}/message-attach`, {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json"
+                                },
+                                body: JSON.stringify({
+                                    MessageId: rs.id,
+                                    AttachUrl: `${cdnURL}files/${file.name}`,
+                                    AttachName: file.name,
+                                    AttachType: file.type.split("/")[0]
+                                })
+                            });
+                        }
+                    })
                 ).then(async () => {
+                    setFiles([]);
                     const message = await Query<MessageType>(`/message/${rs.id}`);
                     uWebSockets.getInstance().send(JSON.stringify({
                         type: "message",
@@ -120,23 +145,31 @@ function MessageInput({messageList, quoteMessage, setQuoteMessages}:
                     }));
                 });
             }
+            else
+            {
+                const message = await Query<MessageType>(`/message/${rs.id}`);
+                uWebSockets.getInstance().send(JSON.stringify({
+                    type: "message",
+                    channel: chat_id,
+                    message: message
+                }));
+            }
         }
-        setFiles([]);
         setIsSending(false);
     }
 
     function handleFocus(e: ChangeEvent<HTMLTextAreaElement>)
     {
         messageList.reverse().map((message) => {
-            if(message.ApplicationUserId !== user.user.Id)
+            if (message.ApplicationUserId !== user.user.Id)
             {
-                if(message.MessageSeenBys?.findIndex((seenBy) => seenBy.ApplicationUserId === user.user.Id) === -1)
+                if (message.MessageSeenBys?.findIndex((seenBy) => seenBy.ApplicationUserId === user.user.Id) === -1)
                 {
 
                     fetch(`${baseUrl}/message-seen-by`, {
                         method: "POST",
                         headers: {
-                            "Content-Type": "application/json",
+                            "Content-Type": "application/json"
                         },
                         body: JSON.stringify(
                             {
@@ -146,7 +179,7 @@ function MessageInput({messageList, quoteMessage, setQuoteMessages}:
                         )
 
                     }).then(r => {
-                        if(r.ok)
+                        if (r.ok)
                         {
                             r.json().then((rs) => {
                                 Query<MessageSeenByType>(`/message-seen-by/${rs.id}`).then((r) => {
@@ -158,7 +191,7 @@ function MessageInput({messageList, quoteMessage, setQuoteMessages}:
                                 });
                             });
                         }
-                    })
+                    });
                 }
             }
         });
@@ -188,11 +221,36 @@ function MessageInput({messageList, quoteMessage, setQuoteMessages}:
         }, 1500));
     }
 
+    function handleEmojiClickCallback(emoji: EmojiClickData, event: MouseEvent)
+    {
+        const m = message + emoji.emoji;
+        setMessage(m);
+    }
+
     return (
         <div>
-
-
-            <div className={`flex items-center justify-center text-teal-500 ${!typing ? "hidden" : "" }`}>
+            <Modal title={"Voice message"} open={isVoiceModalOpen} onOk={handleVoiceOk} onCancel={handleVoiceCancel} footer={null} width="30%">
+                <div className="text-center">
+                    <p>Press the button to start recording</p>
+                    <div className="m-auto w-fit h-fit">
+                        <AudioRecorder onRecordingComplete={handleVoiceRecordingComplete}
+                                       audioTrackConstraints={{
+                                           noiseSuppression: true,
+                                           echoCancellation: true,
+                                           autoGainControl: true
+                                       }}
+                                       onNotAllowedOrFound={(err) => console.table(err)}
+                                       downloadOnSavePress={false}
+                                       downloadFileExtension="webm"
+                                       mediaRecorderOptions={{
+                                           audioBitsPerSecond: 128000
+                                       }}
+                                       showVisualizer={true}
+                        />
+                    </div>
+                </div>
+            </Modal>
+            <div className={`flex items-center justify-center text-teal-500 ${!typing ? "hidden" : ""}`}>
                 <div className="animate-bounce w-3 h-3 bg-teal-500 rounded-full"></div>
                 <p className="ml-2">Someone is typing...</p>
             </div>
@@ -211,7 +269,7 @@ function MessageInput({messageList, quoteMessage, setQuoteMessages}:
                                     <button onClick={() => {
                                         setQuoteMessages(undefined);
                                     }}>
-                                        <IoClose />
+                                        <IoClose/>
                                     </button>
                                 </div>
                             </div>
@@ -226,7 +284,7 @@ function MessageInput({messageList, quoteMessage, setQuoteMessages}:
                                     return (
                                         <div key={index} className="">
                                             <div className="flex gap-2">
-                                                <p className="max-w-32 overflow-clip">{file.name}</p>
+                                                <p className="w-32 overflow-hidden whitespace-nowrap">{file.name}</p>
                                                 <button onClick={() => {
                                                     setFiles(files.filter((f) => f.name !== file.name));
                                                 }}>
@@ -235,9 +293,27 @@ function MessageInput({messageList, quoteMessage, setQuoteMessages}:
                                                 </button>
                                             </div>
                                             {
+
                                                 file.type.split("/")[0] === "image" ? (
-                                                    <img src={URL.createObjectURL(file)} alt={file.name} className="w-32 h-32"/>
-                                                ) : null
+                                                        <img src={URL.createObjectURL(file)} alt={file.name} className="max-h-32 max-w-32 m-auto"/>
+                                                    ) :
+                                                    file.type.split("/")[0] === "video" ? (
+                                                            <div>
+                                                                <img src={videoPlaceholder} className="max-h-32 max-w-32 m-auto" alt="video placeholder"/>
+                                                            </div>)
+                                                        : file.type.split("/")[0] === "text" ? (
+                                                                <div>
+                                                                    <img src={textPlaceholder} className="max-h-32 max-w-32 m-auto" alt="text placeholder"/>
+                                                                </div>)
+                                                            :
+                                                            file.type.split("/")[0] === "audio" ? (
+                                                                    <div>
+                                                                        <img src={audioPlaceholder} className="max-h-32 max-w-32 m-auto" alt="text placeholder"/>
+                                                                    </div>)
+                                                                :
+                                                                (<div>
+                                                                    <img src={filePlaceholder} className="max-h-32 max-w-32 m-auto" alt="file placeholder"/>
+                                                                </div>)
                                             }
                                         </div>
                                     );
@@ -252,10 +328,10 @@ function MessageInput({messageList, quoteMessage, setQuoteMessages}:
                     sendMessage().then(() => {});
                 }}
 
-                className="mt-4"
+                      className="mt-4"
                 >
                     <div>
-                <textarea autoFocus={true} placeholder="Type a message" ref={textMessage} onChange={
+                <textarea autoFocus={true} placeholder="Type a message" ref={textMessage} value={message} onChange={
                     (e) => {
                         setMessage(e.target.value);
                         handleTyping(e);
@@ -269,29 +345,45 @@ function MessageInput({messageList, quoteMessage, setQuoteMessages}:
                         });
                         event.currentTarget.value = "";
                     }
-                    }}
-                    onFocus={(e) => handleFocus(e)}
-                    onPaste={(e) => {
-                        const fileList = e.clipboardData.files;
-                        const filesArray = Array.from(fileList);
-                        setFiles(filesArray);
-                    }}
-                    className="w-full bg-transparent outline-none pb-4 border-b-2 resize-none"/>
+                }}
+                          onFocus={(e) => handleFocus(e)}
+                          onPaste={(e) => {
+                              const fileList = e.clipboardData.files;
+                              const filesArray = Array.from(fileList);
+                              setFiles(filesArray);
+                          }}
+                          className="w-full bg-transparent outline-none pb-4 border-b-2 resize-none"/>
                     </div>
                     <div className="flex justify-between text-2xl mt-4">
                         <div className="flex gap-3">
                             <div className="flex gap-3 pr-3 border-r-2">
-                                <button>
+                                <button onClick={(e) => {
+                                    e.preventDefault();
+                                }}>
                                     <GoDeviceCameraVideo/>
                                 </button>
-                                <button>
+                                <button onClick={(e) => {
+                                    e.preventDefault();
+                                    showVoiceModal();
+                                }}>
                                     <IoMicOutline/>
                                 </button>
                             </div>
                             <div className="flex gap-3 pr-3 border-r-2">
-                                <button>
-                                    <LuSmile/>
-                                </button>
+                                <Tooltip title={
+                                    <EmojiTooltip reactionOpen={false} EmojiClickCallback={handleEmojiClickCallback}
+                                    />} trigger={"click"} color={"white"} overlayInnerStyle={{
+                                    padding: "0px",
+                                    borderRadius: "32px"
+                                }} overlayStyle={{ maxWidth: "500px" }}>
+                                    <button onClick={(e) => {
+                                        e.preventDefault();
+                                    }}
+                                            title={"Emoji"}
+                                    >
+                                        <LuSmile/>
+                                    </button>
+                                </Tooltip>
                                 <button onClick={(e) => {
                                     // open file dialog
                                     e.preventDefault();
@@ -301,9 +393,14 @@ function MessageInput({messageList, quoteMessage, setQuoteMessages}:
                                     fileInput.click();
                                     fileInput.addEventListener("change", (e) => {
                                         const fileList = fileInput.files;
-                                        if(!fileList) return;
+                                        if (!fileList)
+                                        {
+                                            return;
+                                        }
                                         const filesArray = Array.from(fileList);
-                                        setFiles(filesArray);
+                                        setFiles(prevState => {
+                                            return [...prevState, ...filesArray];
+                                        });
                                     });
 
                                 }}>
@@ -311,18 +408,22 @@ function MessageInput({messageList, quoteMessage, setQuoteMessages}:
                                 </button>
                             </div>
                             <div>
-                                <button className="mt-2">
+                                <button className="mt-2" onClick={(e) => {
+                                    e.preventDefault();
+                                }}>
                                     <HiDotsVertical/>
                                 </button>
                             </div>
                         </div>
 
                         <div className="justify-items-end">
-                            <button className="text-teal-500 font-bold" type="submit">
+                            <button className="text-teal-500 font-bold" type="submit" onClick={(e) => {
+                                e.preventDefault();
+                            }}>
                                 {
                                     isSending ? (
                                         <div className="animate-spin">
-                                            <LuLoader2 />
+                                            <LuLoader2/>
                                         </div>
                                     ) : (
                                         <IoSendSharp/>
