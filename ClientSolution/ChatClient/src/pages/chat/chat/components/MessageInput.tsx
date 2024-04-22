@@ -350,7 +350,9 @@ function MessageInput({ messageList, quoteMessage, setQuoteMessages }:
                           onPaste={(e) => {
                               const fileList = e.clipboardData.files;
                               const filesArray = Array.from(fileList);
-                              setFiles(filesArray);
+                              setFiles(prevState => {
+                                    return [...prevState, ...filesArray];
+                              });
                           }}
                           className="w-full bg-transparent outline-none pb-4 border-b-2 resize-none"/>
                     </div>
