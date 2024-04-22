@@ -35,7 +35,7 @@ function ContactLayout({ children }: { children: React.ReactNode })
     {
         return contact_links.map((links, index) => {
             return (
-                <NavLink key={index} onClick={()=> {}} className="flex items-center justify-between p-3 border-b-2" to={links.link}>
+                <NavLink key={index} onClick={()=> {}} className={`flex items-center justify-between p-3 ${index === (contact_links.length - 1) ? "" : "border-b-2" }`} to={links.link}>
                     <div className="flex items-center">
                         <div className="ml-3">
                             <h1 className="font-bold">{links.name}</h1>

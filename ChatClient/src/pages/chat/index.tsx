@@ -77,15 +77,25 @@ function ChatPage()
 
             const message = messageMap.get(chat.ChatRoomId);
             const lastMessage = message?.[message.length - 1];
-            const unreadMessage = message?.filter((m) => m.ApplicationUserId !== user.user.Id && !m.MessageSeenBys?.find((seen) => seen.ApplicationUserId === user.user.Id)).length;
+            const unreadMessage = message?.filter((m) => m.ApplicationUserId !== user.user.Id && !m.MessageSeenBys?.find((seen) => seen.ApplicationUserId === user.user.Id)).length || 0;
 
             return (
-                <NavLink key={index} onClick={()=> {}} className="flex items-center justify-between p-3 border-b-2" to={`/chats/${chat.ChatRoomId}`}>
+                <NavLink key={index} onClick={()=> {}} className={`flex items-center justify-between p-3 ${index === (chats.m_data.length - 1) ? "" : "border-b-2" }`} to={`/chats/${chat.ChatRoomId}`}>
                     <div className="flex items-center">
-                        <img src={chat?.ChatRoom?.RoomImageUrl} alt={chat?.ChatRoom?.RoomName} className="w-12 h-12 rounded-full"/>
+                        <img loading="lazy" src={chat?.ChatRoom?.RoomImageUrl} alt={chat?.ChatRoom?.RoomName} className="w-12 h-12 rounded-full"/>
                         <div className="ml-3 truncate ">
                             <h1 className="font-bold">{chat?.ChatRoom?.RoomName}</h1>
-                            <p className="text-sm text-gray-500 max-w-52">{lastMessage?.TextMessage}</p>
+                            {
+                                unreadMessage > 0 ?
+                                    <p className="font-bold text-sm text-gray-500 max-w-52">{
+                                        lastMessage?.TextMessage
+                                    }</p>
+                                    :
+                                    <p className="text-sm text-gray-500 max-w-52">{
+                                        lastMessage?.TextMessage
+                                    }</p>
+                            }
+
                         </div>
                     </div>
                     <div className="min-w-fit">

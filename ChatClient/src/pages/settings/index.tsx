@@ -1,10 +1,11 @@
 import SettingsLayout from "@/layouts/settings";
+import { Outlet } from "react-router-dom";
 
 function Settings()
 {
     return (
       <SettingsLayout>
-        <h1>Settings</h1>
+        <Outlet/>
       </SettingsLayout>
     );
 }

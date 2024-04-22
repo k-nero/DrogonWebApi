@@ -26,7 +26,7 @@ function ScrollToBottom()
 function MessageBox({ messageList, setMessageList, setQuoteMessage }: {
     messageList: MessageType[],
     setMessageList: Dispatch<SetStateAction<MessageType[]>>,
-    setQuoteMessage: Dispatch<SetStateAction<MessageType | undefined>>
+    setQuoteMessage: Dispatch<SetStateAction<MessageType | undefined>>,
 })
 {
     const location = useLocation();
@@ -37,14 +37,15 @@ function MessageBox({ messageList, setMessageList, setQuoteMessage }: {
     //const [isInitLoading, setIsInitLoading] = useState<boolean>(false);
     const [shouldLoadMore, setShouldLoadMore] = useState<boolean>(false);
     const [shouldScroll, setShouldScroll] = useState<boolean>(false);
-    const [isLoadFinished, setIsLoadFinished] = useState<boolean>(false);
     const [isAtTop, setIsAtTop] = useState<boolean>(false);
-
+    const [isLoadFinished, setIsLoadFinished] = useState<boolean>(false);
     const messageBoxRef = useRef<HTMLDivElement>();
 
-    useEffect(() => {
+    useEffect(() =>
+    {
         //setIsInitLoading(true);
-        Query<PaginatedType<MessageType>>(`/message?chat_id=${chat_id}&page=1&limit=30`).then((r) => {
+        Query<PaginatedType<MessageType>>(`/message?chat_id=${chat_id}&page=1&limit=30`).then((r) =>
+        {
             setMessageList(r.m_data.reverse());
             //setIsInitLoading(false);
             setShouldScroll(prev => !prev);
@@ -52,11 +53,15 @@ function MessageBox({ messageList, setMessageList, setQuoteMessage }: {
         });
     }, [chat_id]);
 
-    useEffect(() => {
-        uWebSockets.getInstance().addMessageSeenBySubscriber((event) => {
+    useEffect(() =>
+    {
+        uWebSockets.getInstance().addMessageSeenBySubscriber((event) =>
+        {
             const e_data = JSON.parse(event.data);
-            setMessageList((prev) => {
-                return prev.map((message) => {
+            setMessageList((prev) =>
+            {
+                return prev.map((message) =>
+                {
                     if (message.Id === e_data.message.MessageId)
                     {
                         message.MessageSeenBys?.push(e_data.message);
@@ -67,8 +72,10 @@ function MessageBox({ messageList, setMessageList, setQuoteMessage }: {
         });
     }, []);
 
-    useEffect(() => {
-        messageList.reverse().map((message) => {
+    useEffect(() =>
+    {
+        messageList.reverse().map((message) =>
+        {
             if (message.ApplicationUserId !== user.user.Id)
             {
                 if (message.MessageSeenBys?.findIndex((seenBy) => seenBy.ApplicationUserId === user.user.Id) === -1)
@@ -85,22 +92,14 @@ function MessageBox({ messageList, setMessageList, setQuoteMessage }: {
                                 MessageId: message.Id
                             }
                         )
-                    }).then(r => {
+                    }).then(r =>
+                    {
                         if (r.ok)
                         {
-                            r.json().then((rs) => {
-                                Query<MessageSeenByType>(`/message-seen-by/${rs.id}`).then((r) => {
-
-                                    setMessageList((prev) => {
-                                        return prev.map((m) => {
-                                            if (m.Id === message.Id)
-                                            {
-                                                m.MessageSeenBys?.push(r);
-                                            }
-                                            return m;
-                                        });
-                                    });
-
+                            r.json().then((rs) =>
+                            {
+                                Query<MessageSeenByType>(`/message-seen-by/${rs.id}`).then((r) =>
+                                {
                                     uWebSockets.getInstance().send(JSON.stringify({
                                         type: "message_seen_by",
                                         channel: chat_id,
@@ -116,19 +115,23 @@ function MessageBox({ messageList, setMessageList, setQuoteMessage }: {
         messageList.reverse();
     }, [isLoadFinished]);
 
-    useEffect(() => {
+    useEffect(() =>
+    {
         ScrollToBottom();
     }, [shouldScroll]);
 
-    useEffect(() => {
-        uWebSockets.getInstance().addMessageSubscriber((event) => {
+    useEffect(() =>
+    {
+        uWebSockets.getInstance().addMessageSubscriber((event) =>
+        {
             const soc_mess: SocketMessageType = JSON.parse(event.data);
             const message: MessageType = soc_mess.message;
             if (message.ChatRoomId !== chat_id)
             {
                 return;
             }
-            setMessageList((prev) => {
+            setMessageList((prev) =>
+            {
                 return [...prev, message];
             });
             const message_box = document.getElementById("message_box");
@@ -144,12 +147,20 @@ function MessageBox({ messageList, setMessageList, setQuoteMessage }: {
         });
     }, []);
 
-    useEffect(() => {
+    useEffect(() =>
+    {
         if (!messageList[0])
         {
             return;
         }
-        Query<PaginatedType<MessageType>>(`/message?chat_id=${chat_id}&created_date=${messageList[0].CreatedDate}&page=1&limit=30`).then((res) => {
+
+        if (!shouldLoadMore)
+        {
+            return;
+        }
+
+        Query<PaginatedType<MessageType>>(`/message?chat_id=${chat_id}&created_date=${messageList[0].CreatedDate}&page=1&limit=30`).then((res) =>
+        {
             if (!res?.m_data)
             {
                 setIsAtTop(true);
@@ -160,13 +171,17 @@ function MessageBox({ messageList, setMessageList, setQuoteMessage }: {
         });
     }, [shouldLoadMore]);
 
-    useEffect(() => {
-        uWebSockets.getInstance().addReactionSubscriber((event) => {
+    useEffect(() =>
+    {
+        uWebSockets.getInstance().addReactionSubscriber((event) =>
+        {
             const e_data: SocketMessage<MessageReactionType> = JSON.parse(event.data);
             if (e_data.channel === chat_id)
             {
-                setMessageList((prev) => {
-                    return prev.map((message) => {
+                setMessageList((prev) =>
+                {
+                    return prev.map((message) =>
+                    {
                         if (message.Id === e_data.message.MessageId)
                         {
                             message.MessageReactions?.push(e_data.message);
@@ -178,7 +193,8 @@ function MessageBox({ messageList, setMessageList, setQuoteMessage }: {
         });
     }, []);
 
-    useEffect(() => {
+    useEffect(() =>
+    {
         const message_box = document.getElementById("message_box");
 
         if (!message_box)
@@ -194,10 +210,10 @@ function MessageBox({ messageList, setMessageList, setQuoteMessage }: {
             {
                 return;
             }
-                if (message_box.scrollTop <= message_box.scrollHeight / 5 || message_box.scrollTop === 0)
-                {
-                    setShouldLoadMore(true);
-                }
+            if (message_box.scrollTop <= message_box.scrollHeight / 5 || message_box.scrollTop === 0)
+            {
+                setShouldLoadMore(true);
+            }
         }
 
         if (isAtTop)
@@ -212,13 +228,14 @@ function MessageBox({ messageList, setMessageList, setQuoteMessage }: {
     return (
         <div className="w-full overflow-auto px-6 " id="message_box">
             {
-                messageList?.map((message, index) => {
+                messageList?.map((message, index) =>
+                {
                     const currentMessageDate = new Date(message.CreatedDate);
                     const nextMessageDate = new Date(messageList[index + 1]?.CreatedDate);
                     const offset = nextMessageDate.getTime() - currentMessageDate.getTime();
                     return (
                         <div key={message.Id}>
-                            <Message message={message} showTime={true} setQuoteMessage={setQuoteMessage}/>
+                            <Message message={message} showTime={true} setQuoteMessage={setQuoteMessage} />
                             {
                                 offset > 1000 * 60 * 30 ?
                                     <div className="text-center text-gray-500 text-sm"> {new Date(message.CreatedDate).toLocaleString("en-US", {

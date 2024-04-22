@@ -124,35 +124,7 @@ int main()
 		auto mess = std::string(message);
 		auto json = CoreHelper::ParseJson(mess);
 
-		if (json["type"] == "message_seen_by")
-		{
-			if (json["message"].isNull())
-			{
-				return;
-			}
-
-			app->publish(json["channel"].asString(), json.toStyledString(), opCode);
-		}
-		if (json["type"] == "reaction")
-		{
-			if (json["message"].isNull())
-			{
-				return;
-			}
-
-			app->publish(json["channel"].asString(), json.toStyledString(), opCode);
-		}
-
-		if (json["type"] == "message")
-		{
-			if (json["message"].isNull())
-			{
-				return;
-			}
-
-			app->publish(json["channel"].asString(), json.toStyledString(), opCode);
-		}
-		else if (json["type"] == "subscribe")
+		if (json["type"] == "subscribe")
 		{
 			ws->subscribe(json["channel"].asString());
 			json["socket_id"] = perSocketData->user_id;
@@ -176,7 +148,7 @@ int main()
 				}
 			}
 		}
-		else if (json["type"] == "typing")
+		else
 		{
 			app->publish(json["channel"].asString(), json.toStyledString(), opCode);
 		}

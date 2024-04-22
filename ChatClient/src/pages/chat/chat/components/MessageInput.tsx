@@ -15,10 +15,12 @@ import MessageSeenByType from "@/utils/type/MessageSeenByType.ts";
 const baseUrl = new URL(`${import.meta.env.VITE_API_URL}`);
 
 function MessageInput({messageList, setMessageList, quoteMessage, setQuoteMessages}:
-                          {messageList: MessageType[],
+                          {
+                              messageList: MessageType[],
                               setMessageList: Dispatch<SetStateAction<MessageType[]>>,
                               quoteMessage: MessageType | undefined,
-                                setQuoteMessages: Dispatch<SetStateAction<MessageType | undefined>>})
+                              setQuoteMessages: Dispatch<SetStateAction<MessageType | undefined>>,
+                          })
 {
     const [localUser] = useLocalStorage("auth_credential", {});
     const user: AuthResponse = localUser;
@@ -28,6 +30,8 @@ function MessageInput({messageList, setMessageList, quoteMessage, setQuoteMessag
     const [typing, setTyping] = useState<boolean>(false);
     const [timer, setTimer] = useState<NodeJS.Timeout>();
     const [message, setMessage] = useState<string>("");
+    const [files, setFiles] = useState<File[]>([]);
+
 
     useEffect(() => {
         uWebSockets.getInstance().addTypingSubscriber((event) => {
@@ -38,6 +42,13 @@ function MessageInput({messageList, setMessageList, quoteMessage, setQuoteMessag
             }
         });
     }, [chat_id]);
+
+    useEffect(() => {
+        if(files && files.length > 0)
+        {
+
+        }
+    }, [files]);
 
 
     async function sendMessage()
@@ -78,7 +89,6 @@ function MessageInput({messageList, setMessageList, quoteMessage, setQuoteMessag
                 message: message
             }));
         }
-
     }
 
     function handleFocus(e: ChangeEvent<HTMLTextAreaElement>)
@@ -105,17 +115,6 @@ function MessageInput({messageList, setMessageList, quoteMessage, setQuoteMessag
                         {
                             r.json().then((rs) => {
                                 Query<MessageSeenByType>(`/message-seen-by/${rs.id}`).then((r) => {
-
-                                    setMessageList((prev) => {
-                                        return prev.map((m) => {
-                                            if(m.Id === message.Id)
-                                            {
-                                                m.MessageSeenBys?.push(r);
-                                            }
-                                            return m;
-                                        });
-                                    });
-
                                     uWebSockets.getInstance().send(JSON.stringify({
                                         type: "message_seen_by",
                                         channel: chat_id,
@@ -182,9 +181,7 @@ function MessageInput({messageList, setMessageList, quoteMessage, setQuoteMessag
                                 </div>
                             </div>
                         </div>
-                    ) : (
-                        <></>
-                    )
+                    ) : null
                 }
                 <form onSubmit={(e) => {
                     e.preventDefault();
@@ -195,13 +192,12 @@ function MessageInput({messageList, setMessageList, quoteMessage, setQuoteMessag
                 className="mt-4"
                 >
                     <div>
-                <textarea placeholder="Type a message" ref={textMessage} onChange={
+                <textarea autoFocus={true} placeholder="Type a message" ref={textMessage} onChange={
                     (e) => {
                         setMessage(e.target.value);
                         handleTyping(e);
                     }
                 } onKeyDown={(event) => {
-
                     if (event.key === "Enter" && !event.shiftKey)
                     {
                         event.preventDefault();
@@ -210,12 +206,22 @@ function MessageInput({messageList, setMessageList, quoteMessage, setQuoteMessag
                         });
                         event.currentTarget.value = "";
                     }
-                }}
-                          onFocus={(e) => {
-                                handleFocus(e);
-                          }}
+                    }}
+                    onFocus={(e) => handleFocus(e)}
+                    onPaste={(e) => {
+                        const files = e.clipboardData.files;
+                        if(files.length > 0)
+                        {
+                            const files: File[] = [];
+                            for(let i = 0; i < files.length; i++)
+                            {
+                                files.push(files[i]);
+                            }
 
-                          className="w-full bg-transparent outline-none pb-4 border-b-2 resize-none"/>
+                            setFiles(files);
+                        }
+                    }}
+                    className="w-full bg-transparent outline-none pb-4 border-b-2 resize-none"/>
                     </div>
                     <div className="flex justify-between text-2xl mt-4">
                         <div className="flex gap-3">

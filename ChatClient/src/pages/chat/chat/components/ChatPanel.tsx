@@ -36,12 +36,12 @@ const fileList = (
 
 const image = (
     <div className="grid-cols-3 grid gap-y-4">
-        <img src="https://via.placeholder.com/150" alt="John Doe" className="w-32 h-32 m-auto"/>
-        <img src="https://via.placeholder.com/150" alt="John Doe" className="w-32 h-32 m-auto"/>
-        <img src="https://via.placeholder.com/150" alt="John Doe" className="w-32 h-32 m-auto"/>
-        <img src="https://via.placeholder.com/150" alt="John Doe" className="w-32 h-32 m-auto"/>
-        <img src="https://via.placeholder.com/150" alt="John Doe" className="w-32 h-32 m-auto"/>
-        <img src="https://via.placeholder.com/150" alt="John Doe" className="w-32 h-32 m-auto"/>
+        <img loading="lazy" src="https://via.placeholder.com/150" alt="John Doe" className="w-32 h-32 m-auto"/>
+        <img loading="lazy" src="https://via.placeholder.com/150" alt="John Doe" className="w-32 h-32 m-auto"/>
+        <img loading="lazy" src="https://via.placeholder.com/150" alt="John Doe" className="w-32 h-32 m-auto"/>
+        <img loading="lazy" src="https://via.placeholder.com/150" alt="John Doe" className="w-32 h-32 m-auto"/>
+        <img loading="lazy" src="https://via.placeholder.com/150" alt="John Doe" className="w-32 h-32 m-auto"/>
+        <img loading="lazy" src="https://via.placeholder.com/150" alt="John Doe" className="w-32 h-32 m-auto"/>
     </div>
 );
 
@@ -70,7 +70,7 @@ function ChatPanel({ setIsPanel }: { setIsPanel: () => void })
                 </button>
             </div>
             <div className="mt-8 text-center border-b-2 pb-8">
-                <img src="https://via.placeholder.com/150" alt="John Doe" className="w-32 h-32 rounded-full m-auto border-4 border-teal-500"/>
+                <img loading="lazy" src="https://via.placeholder.com/150" alt="John Doe" className="w-32 h-32 rounded-full m-auto border-4 border-teal-500"/>
                 <h1 className="mt-4 font-bold text-2xl">John Doe</h1>
                 <p className="text-sm text-gray-500">@john_doe</p>
             </div>

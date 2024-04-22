@@ -11,6 +11,9 @@ import BlockedContact from "@/pages/contact/blocked";
 import SuggestedContact from "@/pages/contact/suggested";
 import ContactList from "@/pages/contact/contact-list";
 import Chat from "@/pages/chat/chat";
+import GeneralSettings from "@/layouts/settings/general";
+import Notifications from "@/layouts/settings/notifications";
+import CodeView from "@/layouts/settings/code-view";
 
 export type RoutesType = {
     name: string;
@@ -73,6 +76,23 @@ const routes: RoutesType[] = [
         name: "Settings",
         path: "/settings",
         element: <Settings/>,
+        children: [
+            {
+                name: "General",
+                path: "/settings/general",
+                element: <GeneralSettings/>
+            },
+            {
+                name: "Notifications",
+                path: "/settings/notifications",
+                element: <Notifications/>
+            },
+            {
+                name: "Code view",
+                path: "/settings/code-view",
+                element: <CodeView/>
+            }
+        ]
     },
     {
         name: "Chat",
