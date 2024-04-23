@@ -85,12 +85,11 @@ function MessageInput({ messageList, quoteMessage, setQuoteMessages }:
         }
         setQuoteMessages(undefined);
 
-        setIsSending(true);
         if (!message)
         {
             return;
         }
-
+        setIsSending(true);
         const res = await fetch(`${baseUrl}/message`, {
             method: "POST",
             headers: {
@@ -107,9 +106,7 @@ function MessageInput({ messageList, quoteMessage, setQuoteMessages }:
 
         if (res.ok)
         {
-            setMessage("");
             const rs = await res.json();
-
             if (files.length > 0)
             {
                 Promise.all(files.map(async (file) => {
@@ -138,6 +135,7 @@ function MessageInput({ messageList, quoteMessage, setQuoteMessages }:
                         }
                     })
                 ).then(async () => {
+                    setMessage("");
                     setFiles([]);
                     const message = await Query<MessageType>(`/message/${rs.id}`);
                     uWebSockets.getInstance().send(JSON.stringify({

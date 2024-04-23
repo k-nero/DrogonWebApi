@@ -397,7 +397,8 @@ function Message({ message, showTime = true, setQuoteMessage }: {
                                                     {
                                                         return (
                                                             <div key={attach.Id} className="w-fit justify-start ">
-                                                                <video src={attach.AttachUrl} controls className="h-32 m-auto"/>
+                                                                <p className="text-sm text-gray-500">{attach.AttachName}</p>
+                                                                <video src={attach.AttachUrl} controls className="h-32 mt-1 m-auto"/>
                                                             </div>
                                                         );
                                                     }
@@ -405,7 +406,8 @@ function Message({ message, showTime = true, setQuoteMessage }: {
                                                     {
                                                         return (
                                                             <div key={attach.Id} className="w-fit h-fit justify-start ">
-                                                                <audio src={attach.AttachUrl} controls className=" m-auto"/>
+                                                                <p className="text-sm text-gray-500">{attach.AttachName}</p>
+                                                                <audio src={attach.AttachUrl} controls className="mt-1 m-auto"/>
                                                             </div>
                                                         );
                                                     }
@@ -544,6 +546,7 @@ function Message({ message, showTime = true, setQuoteMessage }: {
                                         <div className="flex max-w-96 gap-2.5 justify-end mb-3">
                                             {
                                                 message.MessageAttachs.map((attach) => {
+                                                    const ext = attach.AttachName.split(".")[attach.AttachName.split(".").length - 1];
                                                     if(attach.AttachType === "image")
                                                     {
                                                         return (
@@ -560,7 +563,8 @@ function Message({ message, showTime = true, setQuoteMessage }: {
                                                     {
                                                         return (
                                                             <div key={attach.Id} className="w-fit h-fit justify-end ">
-                                                                <video src={attach.AttachUrl} controls className=" m-auto"/>
+                                                                <a href={attach.AttachUrl} className="text-sm text-gray-500 underline" target="_blank">{attach.AttachName}</a>
+                                                                <video src={attach.AttachUrl} controls className="mt-1 h-32 m-auto"/>
                                                             </div>
                                                         );
                                                     }
@@ -568,7 +572,17 @@ function Message({ message, showTime = true, setQuoteMessage }: {
                                                     {
                                                         return (
                                                             <div key={attach.Id} className="w-fit h-fit justify-start ">
-                                                                <audio src={attach.AttachUrl} controls className=" m-auto"/>
+                                                                <a href={attach.AttachUrl} className="text-sm text-gray-500 underline" target="_blank">{attach.AttachName}</a>
+                                                                <audio src={attach.AttachUrl} controls className="mt-1 m-auto"/>
+                                                            </div>
+                                                        );
+                                                    }
+                                                    else if(attach.AttachType === "text")
+                                                    {
+                                                        return (
+                                                            <div key={attach.Id} className="w-fit h-fit justify-start ">
+                                                                <a href={attach.AttachUrl} className="text-sm text-gray-500 underline" target="_blank">{attach.AttachName}</a>
+                                                                <img src={`/src/assets/text/${ext}.png`} className="mt-1 h-24 m-auto" alt={attach.AttachName}/>
                                                             </div>
                                                         );
                                                     }
