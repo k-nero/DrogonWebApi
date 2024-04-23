@@ -220,7 +220,6 @@ function MessageBox({ messageList, setMessageList, setQuoteMessage }: {
         {
             message_box.removeEventListener("scroll", callback);
         }
-        //message_box.removeEventListener("scroll", callback);
         message_box.addEventListener("scroll", callback);
 
     }, [isAtTop]);

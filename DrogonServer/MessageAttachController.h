@@ -26,7 +26,7 @@ public:
 	static void initPathRouting()
 	{
 		registerMethod(&MessageAttachController::Get, "/api/message-attach/{1}", { drogon::HttpMethod::Get }, false, "MessageAttachController::Get"); // path is /IndexController
-		registerMethod(&MessageAttachController::GetPaginated, "/api/message-attach?page={1}&limit={2}", { drogon::HttpMethod::Get }, false, "MessageAttachController::GetAll");
+		registerMethod(&MessageAttachController::GetPaginated, "/api/message-attach?page={1}&limit={2}&chat_id={3}&type={4}", { drogon::HttpMethod::Get }, false, "MessageAttachController::GetAll");
 		registerMethod(&MessageAttachController::Create, "/api/message-attach", { drogon::HttpMethod::Post }, false, "MessageAttachController::Create");
 		registerMethod(&MessageAttachController::Update, "/api/message-attach/{1}", { drogon::HttpMethod::Patch }, false, "MessageAttachController::Update");
 		registerMethod(&MessageAttachController::Delete, "/api/message-attach/{1}", { drogon::HttpMethod::Delete }, false, "MessageAttachController::Delete");
@@ -37,5 +37,6 @@ public:
 	void Create(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback, MessageAttachModel model);
 	void Update(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback, const std::string id, MessageAttachModel model);
 	void Delete(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback, const std::string id);
-	void GetPaginated(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback, int page, int limit);
+	//void GetPaginated(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback, int page, int limit);
+	void GetPaginated(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback, int page, int limit, std::string chat_id, std::string type);
 };

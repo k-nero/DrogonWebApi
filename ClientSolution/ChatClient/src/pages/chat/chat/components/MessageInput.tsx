@@ -229,10 +229,10 @@ function MessageInput({ messageList, quoteMessage, setQuoteMessages }:
 
     return (
         <div>
-            <Modal title={"Voice message"} open={isVoiceModalOpen} onOk={handleVoiceOk} onCancel={handleVoiceCancel} footer={null} width="30%">
+            <Modal title={"Voice message"} open={isVoiceModalOpen} centered={true} onOk={handleVoiceOk} onCancel={handleVoiceCancel} footer={null} width="30%">
                 <div className="text-center">
-                    <p>Press the button to start recording</p>
-                    <div className="m-auto w-fit h-fit">
+                    <p className="">Press the button to start recording</p>
+                    <div className="m-auto w-fit h-fit mt-4">
                         <AudioRecorder onRecordingComplete={handleVoiceRecordingComplete}
                                        audioTrackConstraints={{
                                            noiseSuppression: true,

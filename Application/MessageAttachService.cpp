@@ -19,6 +19,27 @@ std::shared_ptr<PaginationObject<MessageAttach>> MessageAttachService::GetMessag
 	return query.GetPaginatedEw(page, page_size);
 }
 
+std::shared_ptr<PaginationObject<MessageAttach>> MessageAttachService::GetMessageAttachsByPage(int page, int page_size, std::string ChatRoomId, std::string AttachType)
+{
+	Query<MessageAttach> query;
+	if (ChatRoomId.empty() && AttachType.empty())
+	{
+		return query.GetPaginatedEw(page, page_size);
+	}
+	else if (!ChatRoomId.empty() && AttachType.empty())
+	{
+		return query.GetPaginatedEw(page, page_size, EQ(ChatRoomId));
+	}
+	else if (ChatRoomId.empty() && !AttachType.empty())
+	{
+		return query.GetPaginatedEw(page, page_size, EQ(AttachType));
+	}
+	else
+	{
+		return query.GetPaginatedEw(page, page_size, AND( EQ(ChatRoomId),EQ(AttachType)));
+	}
+}
+
 std::string MessageAttachService::CreateMessageAttach(MessageAttachModel& model)
 {
 	BaseCommand<MessageAttach> cmd;

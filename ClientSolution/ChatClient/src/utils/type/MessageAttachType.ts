@@ -7,6 +7,7 @@ interface MessageAttachType extends BaseType
     AttachUrl: string;
     MessageId: string;
     AttachType: string;
+    ChatRoomId: string;
 
     Message: MessageType;
 }

@@ -15,6 +15,7 @@ import MessageSeenByType from "@/utils/type/MessageSeenByType.ts";
 import CodeView from "@/pages/chat/chat/components/CodeMessage.tsx";
 import Text from "@/components/text/Text.tsx";
 import EmojiTooltip from "@/components/EmojiToolTip";
+import ImageViewModal from "@/components/modal/ImageViewModal.tsx";
 
 const baseUrl = new URL(`${import.meta.env.VITE_API_URL}`);
 
@@ -372,7 +373,6 @@ function Message({ message, showTime = true, setQuoteMessage }: {
                             ) : null
                         }
 
-
                         <div className="flex w-full">
                             <div className="bg-white p-3 mx-3 rounded-xl  max-w-96 relative">
                                 {
@@ -385,7 +385,11 @@ function Message({ message, showTime = true, setQuoteMessage }: {
                                                     {
                                                         return (
                                                             <div key={attach.Id} className="w-fit ">
-                                                                <img loading="lazy" src={attach.AttachUrl} alt={attach.AttachName} className="h-32 m-auto rounded-md"/>
+                                                                <button onClick={() => {
+                                                                    ImageViewModal({ image: attach });
+                                                                }}>
+                                                                    <img loading="lazy" src={attach.AttachUrl} alt={attach.AttachName} className="h-32 m-auto rounded-md"/>
+                                                                </button>
                                                             </div>
                                                         );
                                                     }
@@ -544,11 +548,15 @@ function Message({ message, showTime = true, setQuoteMessage }: {
                                                     {
                                                         return (
                                                             <div key={attach.Id} className="w-fit ">
-                                                                <img loading="lazy" src={attach.AttachUrl} alt={attach.AttachName} className="h-32 m-auto rounded-md"/>
+                                                                <button onClick={() => {
+                                                                    ImageViewModal({ image: attach });
+                                                                }}>
+                                                                    <img loading="lazy" src={attach.AttachUrl} alt={attach.AttachName} className="h-32 m-auto rounded-md"/>
+                                                                </button>
                                                             </div>
                                                         );
                                                     }
-                                                    else if(attach.AttachType === "video")
+                                                    else if (attach.AttachType === "video")
                                                     {
                                                         return (
                                                             <div key={attach.Id} className="w-fit h-fit justify-end ">

@@ -14,6 +14,7 @@ public:
 	std::shared_ptr<MessageAttach> GetMessageAttachById(const std::string& id);
 	std::vector<std::shared_ptr<MessageAttach>>GetAllMessageAttachs();
 	std::shared_ptr<PaginationObject<MessageAttach>> GetMessageAttachsByPage(int page, int page_size);
+	std::shared_ptr<PaginationObject<MessageAttach>> GetMessageAttachsByPage(int page, int page_size, std::string chat_id, std::string type);
 	std::string CreateMessageAttach(MessageAttachModel& todo_list_model);
 	int UpdateMessageAttach(MessageAttachModel& todo_list_model, const std::string& id);
 	int DeleteMessageAttach(const std::string& id);
