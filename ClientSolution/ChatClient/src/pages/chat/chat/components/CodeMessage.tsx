@@ -9,7 +9,7 @@ import { oneDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
 function CodeView({ textMessage }: { textMessage?: string })
 {
     return (
-        <pre>
+        <>
             <Markdown
                 children={textMessage}
                 components={{
@@ -25,7 +25,6 @@ function CodeView({ textMessage }: { textMessage?: string })
                                 children={String(children).replace(/\n$/, "")}
                                 language={match ? match[1] : "cpp"}
                                 style={oneDark}
-                                PreTag={"pre"}
                                 customStyle={{
                                     fontFamily: "ui-monospace !important",
                                     fontSize: "13px",
@@ -43,7 +42,7 @@ function CodeView({ textMessage }: { textMessage?: string })
                 }
                 }
             />
-        </pre>
+        </>
 
     );
 }

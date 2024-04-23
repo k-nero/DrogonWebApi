@@ -149,11 +149,11 @@ function Message({ message, showTime = true, setQuoteMessage }: {
                         quoteMessage?.ApplicationUser?.UserName === credential.user.UserName ? "You" : "@" + quoteMessage?.ApplicationUser?.UserName
                     }</p>
                     <div className="opacity-70 bg-white p-3 mx-3 rounded-xl max-w-96 ">
-                        <p className="max-h-96 overflow-auto">{
+                        <div className="max-h-96 overflow-auto">{
                             quoteMessage.TextMessage?.startsWith("```") ?
                                 <CodeView textMessage={quoteMessage.TextMessage} />
                                 : <>{quoteMessage.TextMessage}</>
-                        }</p>
+                        }</div>
                     </div>
                 </div>
             );
@@ -171,11 +171,11 @@ function Message({ message, showTime = true, setQuoteMessage }: {
                         quoteMessage?.ApplicationUser?.UserName === credential.user.UserName ? "You" : "@" + quoteMessage?.ApplicationUser?.UserName
                     }</p>
                     <div className="opacity-70 bg-white p-3 mx-3 rounded-xl max-w-96 ">
-                        <p className="max-h-96 overflow-auto">{
+                        <div className="max-h-96 overflow-auto">{
                             quoteMessage.TextMessage?.startsWith("```") ?
                                 <CodeView textMessage={quoteMessage.TextMessage} />
                                 : <>{quoteMessage.TextMessage}</>
-                        }</p>
+                        }</div>
                     </div>
                 </div>
             );
