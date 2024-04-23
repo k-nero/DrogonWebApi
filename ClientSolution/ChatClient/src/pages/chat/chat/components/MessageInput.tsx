@@ -11,14 +11,16 @@ import Query from "@/utils/function/Query.ts";
 import MessageType from "@/utils/type/MessageType.ts";
 import { uWebSockets } from "@/utils/WebSocket/WebSocket.ts";
 import MessageSeenByType from "@/utils/type/MessageSeenByType.ts";
-import videoPlaceholder from "@/assets/video-placeholder.png";
-import textPlaceholder from "@/assets/text-placeholder.png";
-import audioPlaceholder from "@/assets/audio-placeholder.png";
-import filePlaceholder from "@/assets/file-placeholder.png";
+import audioPng from "@/assets/audio/audio.png";
+import videoFile from "@/assets/video/video-file.png";
+import textFile from "@/assets/text/text.png";
+import filePng from "@/assets/file/file.png";
 import { Modal, Tooltip } from "antd";
 import { AudioRecorder } from "react-audio-voice-recorder";
 import EmojiTooltip from "@/components/EmojiToolTip.tsx";
 import { EmojiClickData } from "emoji-picker-react";
+import { audioFileExt, otherFileExt, textFileExt, videoFileExt } from "@/utils/file/fileExt";
+
 
 const baseUrl = new URL(`${import.meta.env.VITE_API_URL}`);
 const cdnURL = new URL(`${import.meta.env.VITE_CDN_URL}`);
@@ -130,7 +132,8 @@ function MessageInput({ messageList, quoteMessage, setQuoteMessages }:
                                     MessageId: rs.id,
                                     AttachUrl: `${cdnURL}files/${file.name}`,
                                     AttachName: file.name,
-                                    AttachType: file.type.split("/")[0]
+                                    AttachType: file.type === "application/pdf" ? "text" : file.type.split("/")[0],
+                                    ChatRoomId: chat_id
                                 })
                             });
                         }
@@ -227,6 +230,7 @@ function MessageInput({ messageList, quoteMessage, setQuoteMessages }:
         setMessage(m);
     }
 
+
     return (
         <div>
             <Modal title={"Voice message"} open={isVoiceModalOpen} centered={true} onOk={handleVoiceOk} onCancel={handleVoiceCancel} footer={null} width="30%">
@@ -281,6 +285,8 @@ function MessageInput({ messageList, quoteMessage, setQuoteMessages }:
                         <div className="flex gap-2">
                             {
                                 files.map((file, index) => {
+                                    const ext = file.name.split(".")[file.name.split(".").length - 1];
+
                                     return (
                                         <div key={index} className="">
                                             <div className="flex gap-2">
@@ -299,20 +305,51 @@ function MessageInput({ messageList, quoteMessage, setQuoteMessages }:
                                                     ) :
                                                     file.type.split("/")[0] === "video" ? (
                                                             <div>
-                                                                <img src={videoPlaceholder} className="max-h-32 max-w-32 m-auto" alt="video placeholder"/>
-                                                            </div>)
-                                                        : file.type.split("/")[0] === "text" ? (
+                                                                {
+                                                                    videoFileExt.includes(ext) ? (
+                                                                            <img src={`/src/assets/video/${ext}.png`} className="max-h-32 max-w-32 m-auto" alt="video placeholder"/>
+                                                                        ):
+                                                                        (
+                                                                            <img src={videoFile} className="max-h-32 max-w-32 m-auto" alt="video placeholder"/>
+                                                                        )
+                                                                }
+
+                                                            </div>
+                                                           )
+                                                        : file.type.split("/")[0] === "text" || file.type === "application/pdf" ? (
                                                                 <div>
-                                                                    <img src={textPlaceholder} className="max-h-32 max-w-32 m-auto" alt="text placeholder"/>
-                                                                </div>)
+                                                                    {
+                                                                        textFileExt.includes(ext) ? (
+                                                                                <img src={`/src/assets/text/${ext}.png`} className="max-h-32 max-w-32 m-auto" alt="text placeholder"/>
+                                                                            ) :
+                                                                            (
+                                                                                <img src={textFile} className="max-h-32 max-w-32 m-auto" alt="text placeholder"/>
+                                                                            )
+                                                                    }
+                                                                </div>
+                                                            )
                                                             :
                                                             file.type.split("/")[0] === "audio" ? (
                                                                     <div>
-                                                                        <img src={audioPlaceholder} className="max-h-32 max-w-32 m-auto" alt="text placeholder"/>
+                                                                        {
+                                                                            audioFileExt.includes(ext) ? (
+                                                                                    <img src={`/src/assets/audio/${ext}.png`} className="max-h-32 max-w-32 m-auto" alt="video placeholder"/>
+                                                                                ):
+                                                                                (
+                                                                                    <img src={audioPng} className="max-h-32 max-w-32 m-auto" alt="video placeholder"/>
+                                                                                )
+                                                                        }
                                                                     </div>)
                                                                 :
                                                                 (<div>
-                                                                    <img src={filePlaceholder} className="max-h-32 max-w-32 m-auto" alt="file placeholder"/>
+                                                                    {
+                                                                        otherFileExt.includes(ext) ? (
+                                                                                <img src={`/src/assets/file/${ext}.png`} className="max-h-32 max-w-32 m-auto" alt="video placeholder"/>
+                                                                            ) :
+                                                                            (
+                                                                                <img src={filePng} className="max-h-32 max-w-32 m-auto" alt="video placeholder"/>
+                                                                            )
+                                                                    }
                                                                 </div>)
                                             }
                                         </div>

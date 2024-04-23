@@ -1,5 +1,5 @@
 import { TfiClose } from "react-icons/tfi";
-import { Collapse, CollapseProps, Switch } from "antd";
+import { Collapse, CollapseProps, Switch, Tooltip } from "antd";
 import { BsThreeDots } from "react-icons/bs";
 import React, { useEffect } from "react";
 import Query from "@/utils/function/Query.ts";
@@ -7,13 +7,12 @@ import MessageAttachType from "@/utils/type/MessageAttachType.ts";
 import PaginatedType from "@/utils/type/common/PaginatedType.ts";
 import { useLocation } from "react-router-dom";
 import ImageViewModal from "@/components/modal/ImageViewModal.tsx";
-import oogAudio from "@/assets/audio/oog-audio.png";
-import webmAudio from "@/assets/audio/webm-audio.png";
-import mp3Audio from "@/assets/audio/mp3-audio.png";
-import wavAudio from "@/assets/audio/wav-audio.png";
 import audioPng from "@/assets/audio/audio.png";
+import videoFile from "@/assets/video/video-file.png";
+import textFile from "@/assets/text/text.png";
+import filePng from "@/assets/file/file.png";
 import AudioModal from "@/components/modal/AudioModal.tsx";
-
+import{ codeFileExt, textFileExt, videoFileExt, audioFileExt, otherFileExt } from "@/utils/file/fileExt";
 
 function ChatPanel({ setIsPanel }: { setIsPanel: () => void })
 {
@@ -48,6 +47,34 @@ function ChatPanel({ setIsPanel }: { setIsPanel: () => void })
             });
     }, []);
 
+    function FileOptions()
+    {
+        return (
+            <>
+                <div className="min-w-16" style={{ color: "black" }}>
+                    <div className="rounded-sm hover:bg-gray-300 p-1">
+                        <button onClick={() => {
+                        }}>
+                            <p>Download</p>
+                        </button>
+                    </div>
+                    <div className="rounded-sm hover:bg-gray-300 p-1">
+                        <button onClick={() => {
+                        }}>
+                            <p>Copy</p>
+                        </button>
+                    </div>
+
+                    <div className="rounded-sm hover:bg-gray-300 p-1">
+                        <button>
+                            <p>Share</p>
+                        </button>
+                    </div>
+                </div>
+            </>
+        );
+    }
+
     const images = (
         <div className="grid-cols-3 grid gap-y-4 overflow-auto max-h-96">
             {
@@ -68,61 +95,32 @@ function ChatPanel({ setIsPanel }: { setIsPanel: () => void })
         <div className="max-h-96 overflow-auto">
         {
                 audio.map((a, index) => {
+                    const ext = a.AttachName.split(".")[a.AttachName.split(".").length - 1];
+
                     return (
-                        <div key={index} className={`flex items-center justify-between p-3 ${index === audio.length - 1 ? "" : "border-b-2" }`}>
+                    <div key={index} className={`flex items-center justify-between p-3 ${index === audio.length - 1 ? "" : "border-b-2" }`}>
                             <button onClick={ () => {
                                 AudioModal({audio: a});
                             }}>
                                 <div className="flex items-center">
                                     {
-                                        a.AttachName.split(".")[1] === "ogg" ?
-                                            <img src={oogAudio} alt="audio" className="w-12 h-12 rounded-full"/>
-                                            : a.AttachName.split(".")[1] === "webm" ?
-                                                <img src={webmAudio} alt="audio" className="w-12 h-12 rounded-full"/>
-                                                : a.AttachName.split(".")[1] === "mp3" ?
-                                                    <img src={mp3Audio} alt="audio" className="w-12 h-12 rounded-full"/>
-                                                    : a.AttachName.split(".")[1] === "wav" ?
-                                                        <img src={wavAudio} alt="audio" className="w-12 h-12 rounded-full"/>
-                                                        :
-                                                        <img src={audioPng} alt="audio" className="w-12 h-12 rounded-full"/>
+                                        audioFileExt.includes(ext) ?
+                                            <img src={`/src/assets/audio/${ext}.png`} alt="file" className="w-12 h-12 "/>
+                                            : <img src={audioPng} alt="file" className="w-12 h-12 "/>
 
                                     }
                                     <div className="ml-3">
-
                                         <h1 className="">{a.AttachName}</h1>
-                                        {
-                                            // a.AttachName.split(".")[1] === "mp3" ?
-                                            //     <audio controls>
-                                            //         <source src={a.AttachUrl} type="audio/mpeg"/>
-                                            //     </audio>
-                                            //     : a.AttachName.split(".")[1] === "wav" ?
-                                            //     <audio controls>
-                                            //         <source src={a.AttachUrl} type="audio/wav"/>
-                                            //     </audio>
-                                            //     : a.AttachName.split(".")[1] === "ogg" ?
-                                            //         <audio controls>
-                                            //             <source src={a.AttachUrl} type="audio/ogg"/>
-                                            //         </audio>
-                                            //     : a.AttachName.split(".")[1] === "flac" ?
-                                            //         <audio controls>
-                                            //             <source src={a.AttachUrl} type="audio/flac"/>
-                                            //         </audio>
-                                            //     : a.AttachName.split(".")[1] === "aac" ?
-                                            //         <audio controls>
-                                            //             <source src={a.AttachUrl} type="audio/aac"/>
-                                            //         </audio>
-                                            //     : a.AttachName.split(".")[1] === "webm" ?
-                                            //         <audio controls>
-                                            //             <source src={a.AttachUrl} type="audio/webm"/>
-                                            //         </audio> : null
-
-                                        }
                                     </div>
                                 </div>
                             </button>
 
-                            <BsThreeDots className="text-2xl opacity-50"/>
-                        </div>
+                        <Tooltip title={<FileOptions/>} trigger={"click"} color={"white"}>
+                            <button>
+                                <BsThreeDots className="text-2xl opacity-50"/>
+                            </button>
+                        </Tooltip>
+                    </div>
                     );
                 })
         }
@@ -133,14 +131,28 @@ function ChatPanel({ setIsPanel }: { setIsPanel: () => void })
         <div>
             {
                 video.map((v, index) => {
+                    const ext = v.AttachName.split(".")[v.AttachName.split(".").length - 1];
+
                     return (
                         <div key={index} className={`flex items-center justify-between p-3 ${index === video.length - 1 ? "" : "border-b-2"}`}>
                             <div className="flex items-center">
+                                <div>
+                                    {
+                                        videoFileExt.includes(ext) ?
+                                            <img src={`/src/assets/video/${ext}.png`} alt="file" className="w-12 h-12 "/>
+                                            : <img src={videoFile} alt="file" className="w-12 h-12 "/>
+
+                                    }
+                                </div>
                                 <div className="ml-3">
-                                    <h1 className="font-bold">{v.AttachName}</h1>
+                                    <h1 className="">{v.AttachName}</h1>
                                 </div>
                             </div>
-                            <BsThreeDots className="text-2xl opacity-50"/>
+                            <Tooltip title={<FileOptions/>} trigger={"click"} color={"white"}>
+                                <button>
+                                    <BsThreeDots className="text-2xl opacity-50"/>
+                                </button>
+                            </Tooltip>
                         </div>
                     );
                 })
@@ -152,14 +164,24 @@ function ChatPanel({ setIsPanel }: { setIsPanel: () => void })
         <div>
             {
                 document.map((d, index) => {
+                    const ext = d.AttachName.split(".")[d.AttachName.split(".").length - 1];
                     return (
                         <div key={index} className={`flex items-center justify-between p-3 ${index === document.length - 1 ? "" : "border-b-2"}`}>
                             <div className="flex items-center">
+                                {
+                                    codeFileExt.includes(ext) || textFileExt.includes(ext) ?
+                                        <img src={`/src/assets/text/${ext}.png`} alt="file" className="w-12 h-12 "/>
+                                            : <img src={textFile} alt="file" className="w-12 h-12 "/>
+                                }
                                 <div className="ml-3">
-                                    <h1 className="font-bold">{d.AttachName}</h1>
+                                <h1 className="">{d.AttachName}</h1>
                                 </div>
                             </div>
-                            <BsThreeDots className="text-2xl opacity-50"/>
+                            <Tooltip title={<FileOptions/>} trigger={"click"} color={"white"}>
+                                <button>
+                                    <BsThreeDots className="text-2xl opacity-50"/>
+                                </button>
+                            </Tooltip>
                         </div>
                     );
                 })
@@ -171,14 +193,24 @@ function ChatPanel({ setIsPanel }: { setIsPanel: () => void })
         <div>
             {
                 file.map((f, index) => {
+                    const ext = f.AttachName.split(".")[f.AttachName.split(".").length - 1];
                     return (
                         <div key={index} className={`flex items-center justify-between p-3 ${index === file.length - 1 ? "" : "border-b-2"}`}>
                             <div className="flex items-center">
+                                {
+                                    otherFileExt.includes(ext) || textFileExt.includes(ext) ?
+                                        <img src={`/src/assets/file/${ext}.png`} alt="file" className="w-12 h-12 "/>
+                                        : <img src={filePng} alt="file" className="w-12 h-12 "/>
+                                }
                                 <div className="ml-3">
-                                    <h1 className="font-bold">{f.AttachName}</h1>
+                                    <h1 className="">{f.AttachName}</h1>
                                 </div>
                             </div>
-                            <BsThreeDots className="text-2xl opacity-50"/>
+                            <Tooltip title={<FileOptions/>} trigger={"click"} color={"white"}>
+                                <button>
+                                    <BsThreeDots className="text-2xl opacity-50"/>
+                                </button>
+                            </Tooltip>
                         </div>
                     );
                 })

@@ -5,7 +5,7 @@ import { IoArrowRedoSharp, IoArrowUndo, IoCheckmarkDoneOutline } from "react-ico
 import { MdOutlineEmojiEmotions } from "react-icons/md";
 import { Button, Modal, Tooltip } from "antd";
 import React, { Dispatch, useCallback, useEffect, useState } from "react";
-import EmojiPicker, { EmojiClickData, EmojiStyle } from "emoji-picker-react";
+import { EmojiClickData } from "emoji-picker-react";
 import { BsThreeDots } from "react-icons/bs";
 import Query from "@/utils/function/Query.ts";
 import { uWebSockets } from "@/utils/WebSocket/WebSocket.ts";

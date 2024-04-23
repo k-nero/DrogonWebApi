@@ -88,8 +88,7 @@ function Chat()
                             </div>
                         </div>
                         {
-                            isPanelOpen &&
-                            <div className="col-span-4 ">
+                            <div className={`${isPanelOpen ? "col-span-4" : "hidden"}`}>
                                 <ChatPanel setIsPanel={setIsPanel}/>
                             </div>
                         }
