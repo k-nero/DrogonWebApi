@@ -424,13 +424,13 @@ function Message({ message, showTime = true, setQuoteMessage }: {
                                         : null
                                 }
                                 <div className="">
-                                    <p className="overflow-auto text-sm break-words max-h-96">
+                                    <div className="overflow-auto text-sm break-words max-h-96">
                                         {
                                             message.TextMessage?.startsWith("```") ?
                                                 <CodeView textMessage={message.TextMessage}/>
                                                 : <Text text={message.TextMessage}/>
                                         }
-                                    </p>
+                                    </div>
                                     <button className="absolute -bottom-2 -right-2 text-xl opacity-70" onClick={showEmojiModal}>
                                         <div className="flex">
                                             {
@@ -587,13 +587,13 @@ function Message({ message, showTime = true, setQuoteMessage }: {
                                         : null
                                 }
                                 <div className="ml-auto">
-                                    <p className="text-sm break-words overflow-auto max-h-96 ">
+                                    <div className="text-sm break-words overflow-auto max-h-96 ">
                                         {
                                             message.TextMessage?.startsWith("```") ?
                                                 <CodeView textMessage={message.TextMessage}/>
                                                 : <Text text={message.TextMessage}/>
                                         }
-                                    </p>
+                                    </div>
                                     <button className="absolute -bottom-2 -left-2 text-xl opacity-70" onClick={showEmojiModal}>
                                         <div className="flex">
                                             {

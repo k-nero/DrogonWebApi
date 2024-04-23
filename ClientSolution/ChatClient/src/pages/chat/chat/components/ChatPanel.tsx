@@ -12,38 +12,69 @@ import videoFile from "@/assets/video/video-file.png";
 import textFile from "@/assets/text/text.png";
 import filePng from "@/assets/file/file.png";
 import AudioModal from "@/components/modal/AudioModal.tsx";
-import{ codeFileExt, textFileExt, videoFileExt, audioFileExt, otherFileExt } from "@/utils/file/fileExt";
+import { audioFileExt, codeFileExt, otherFileExt, textFileExt, videoFileExt } from "@/utils/file/fileExt";
 
 function ChatPanel({ setIsPanel }: { setIsPanel: () => void })
 {
     const location = useLocation();
     const chat_id = location.pathname.split("/")[2];
+
     const [image, setImage] = React.useState<MessageAttachType[]>([]);
+    const [imagePage, setImagePage] = React.useState<number>(1);
     const [file, setFile] = React.useState<MessageAttachType[]>([]);
+    const [filePage, setFilePage] = React.useState<number>(1);
     const [audio, setAudio] = React.useState<MessageAttachType[]>([]);
+    const [audioPage, setAudioPage] = React.useState<number>(1);
     const [video, setVideo] = React.useState<MessageAttachType[]>([]);
+    const [videoPage, setVideoPage] = React.useState<number>(1);
     const [document, setDocument] = React.useState<MessageAttachType[]>([]);
+    const [documentPage, setDocumentPage] = React.useState<number>(1);
 
     useEffect(() => {
-        Query<PaginatedType<MessageAttachType>> (`/message-attach?page=1&limit=20&chat_id=${chat_id}&type=image`)
+        Query<PaginatedType<MessageAttachType>>(`/message-attach?page=${imagePage}&limit=6&chat_id=${chat_id}&type=image`)
             .then((data) => {
-                setImage(data.m_data.map((image) => image));
+                if (data.m_data.length === 0)
+                {
+                    return;
+                }
+                setImage(data.m_data);
+                setImagePage((prev) => prev + 1);
             });
-        Query<PaginatedType<MessageAttachType>> (`/message-attach?page=1&limit=20&chat_id=${chat_id}&type=application`)
+        Query<PaginatedType<MessageAttachType>>(`/message-attach?page=${filePage}&limit=5&chat_id=${chat_id}&type=application`)
             .then((data) => {
-                setFile(data.m_data.map((file) => file));
+                if (data.m_data.length === 0)
+                {
+                    return;
+                }
+                setFile(data.m_data);
+                setFilePage((prev) => prev + 1);
             });
-        Query<PaginatedType<MessageAttachType>> (`/message-attach?page=1&limit=20&chat_id=${chat_id}&type=audio`)
+        Query<PaginatedType<MessageAttachType>>(`/message-attach?page=${audioPage}&limit=5&chat_id=${chat_id}&type=audio`)
             .then((data) => {
-                setAudio(data.m_data.map((audio) => audio));
+                if (data.m_data.length === 0)
+                {
+                    return;
+                }
+                setAudio(data.m_data);
+                setAudioPage((prev) => prev + 1);
             });
-        Query<PaginatedType<MessageAttachType>> (`/message-attach?page=1&limit=20&chat_id=${chat_id}&type=video`)
+        Query<PaginatedType<MessageAttachType>>(`/message-attach?page=${videoPage}&limit=5&chat_id=${chat_id}&type=video`)
             .then((data) => {
-                setVideo(data.m_data.map((video) => video));
+                if (data.m_data.length === 0)
+                {
+                    return;
+                }
+                setVideo(data.m_data);
+                setVideoPage((prev) => prev + 1);
             });
-        Query<PaginatedType<MessageAttachType>> (`/message-attach?page=1&limit=20&chat_id=${chat_id}&type=text`)
+        Query<PaginatedType<MessageAttachType>>(`/message-attach?page=${documentPage}&limit=5&chat_id=${chat_id}&type=text`)
             .then((data) => {
-                setDocument(data.m_data.map((document) => document));
+                if (data.m_data.length === 0)
+                {
+                    return;
+                }
+                setDocument(data.m_data);
+                setDocumentPage((prev) => prev + 1);
             });
     }, []);
 
@@ -75,147 +106,237 @@ function ChatPanel({ setIsPanel }: { setIsPanel: () => void })
         );
     }
 
+    function ViewMore({ func }: { func?: () => void })
+    {
+        return (
+            <div className="w-full mt-4 mx-4 text-center">
+                <button className="bg-teal-500 w-96 h-7 rounded-xl" onClick={func}>
+                    <p className="text-center text-white font-bold">View More</p>
+                </button>
+            </div>
+        );
+
+    }
+
     const images = (
-        <div className="grid-cols-3 grid gap-y-4 overflow-auto max-h-96">
-            {
-                image.map((img, index) => {
-                    return (
-                        <button onClick={() => {
-                            ImageViewModal({ image: img});
-                        }}>
-                            <img key={index} loading="lazy" src={img.AttachUrl} alt={img.AttachName} className="h-32 m-auto"/>
-                        </button>
-                    );
-                })
-            }
-        </div>
+        <>
+            <div className="grid-cols-3 grid gap-y-4 overflow-auto max-h-96">
+                {
+                    image.map((img, index) => {
+                        return (
+                            <button key={img.Id} onClick={() => {
+                                ImageViewModal({ image: img });
+                            }}>
+                                <img key={index} loading="lazy" src={img.AttachUrl} alt={img.AttachName} className="h-32 m-auto"/>
+                            </button>
+                        );
+                    })
+                }
+            </div>
+            <ViewMore func={() => {
+                if(imagePage === -1)
+                {
+                    return;
+                }
+                Query<PaginatedType<MessageAttachType>>(`/message-attach?page=${imagePage}&limit=6&chat_id=${chat_id}&type=image`)
+                    .then((data) => {
+                        if (!data)
+                        {
+                            setImagePage(-1);
+                            return;
+                        }
+                        setImage(prevState => [...prevState, ...data.m_data]);
+                        setImagePage((prev) => prev + 1);
+                    });
+            }}/>
+        </>
+
     );
 
     const audioList = (
-        <div className="max-h-96 overflow-auto">
-        {
-                audio.map((a, index) => {
-                    const ext = a.AttachName.split(".")[a.AttachName.split(".").length - 1];
+        <>
+            <div className="max-h-96 overflow-auto">
+                {
+                    audio.map((a, index) => {
+                        const ext = a.AttachName.split(".")[a.AttachName.split(".").length - 1];
 
-                    return (
-                    <div key={index} className={`flex items-center justify-between p-3 ${index === audio.length - 1 ? "" : "border-b-2" }`}>
-                            <button onClick={ () => {
-                                AudioModal({audio: a});
-                            }}>
-                                <div className="flex items-center">
-                                    {
-                                        audioFileExt.includes(ext) ?
-                                            <img src={`/src/assets/audio/${ext}.png`} alt="file" className="w-12 h-12 "/>
-                                            : <img src={audioPng} alt="file" className="w-12 h-12 "/>
+                        return (
+                            <div key={index} className={`flex items-center justify-between p-3 ${index === audio.length - 1 ? "" : "border-b-2"}`}>
+                                <button onClick={() => {
+                                    AudioModal({ audio: a });
+                                }}>
+                                    <div className="flex items-center">
+                                        {
+                                            audioFileExt.includes(ext) ?
+                                                <img src={`/src/assets/audio/${ext}.png`} alt="file" className="w-12 h-12 "/>
+                                                : <img src={audioPng} alt="file" className="w-12 h-12 "/>
 
-                                    }
-                                    <div className="ml-3">
-                                        <h1 className="">{a.AttachName}</h1>
+                                        }
+                                        <div className="ml-3">
+                                            <h1 className="">{a.AttachName}</h1>
+                                        </div>
                                     </div>
-                                </div>
-                            </button>
+                                </button>
 
-                        <Tooltip title={<FileOptions/>} trigger={"click"} color={"white"}>
-                            <button>
-                                <BsThreeDots className="text-2xl opacity-50"/>
-                            </button>
-                        </Tooltip>
-                    </div>
-                    );
-                })
-        }
-        </div>
+                                <Tooltip title={<FileOptions/>} trigger={"click"} color={"white"}>
+                                    <button>
+                                        <BsThreeDots className="text-2xl opacity-50"/>
+                                    </button>
+                                </Tooltip>
+                            </div>
+                        );
+                    })
+                }
+            </div>
+            <ViewMore func={() => {
+                if(audioPage === -1)
+                {
+                    return;
+                }
+                Query<PaginatedType<MessageAttachType>>(`/message-attach?page=${audioPage}&limit=5&chat_id=${chat_id}&type=audio`)
+                    .then((data) => {
+                        if (!data)
+                        {
+                            setAudioPage(-1);
+                            return;
+                        }
+                        setAudio(prevState => [...prevState, ...data.m_data]);
+                        setAudioPage((prev) => prev + 1);
+                    });
+            }}/>
+        </>
+
     );
 
     const videoList = (
-        <div>
-            {
-                video.map((v, index) => {
-                    const ext = v.AttachName.split(".")[v.AttachName.split(".").length - 1];
+        <>
+            <div>
+                {
+                    video.map((v, index) => {
+                        const ext = v.AttachName.split(".")[v.AttachName.split(".").length - 1];
 
-                    return (
-                        <div key={index} className={`flex items-center justify-between p-3 ${index === video.length - 1 ? "" : "border-b-2"}`}>
-                            <div className="flex items-center">
-                                <div>
-                                    {
-                                        videoFileExt.includes(ext) ?
-                                            <img src={`/src/assets/video/${ext}.png`} alt="file" className="w-12 h-12 "/>
-                                            : <img src={videoFile} alt="file" className="w-12 h-12 "/>
+                        return (
+                            <div key={index} className={`flex items-center justify-between p-3 ${index === video.length - 1 ? "" : "border-b-2"}`}>
+                                <div className="flex items-center">
+                                    <div>
+                                        {
+                                            videoFileExt.includes(ext) ?
+                                                <img src={`/src/assets/video/${ext}.png`} alt="file" className="w-12 h-12 "/>
+                                                : <img src={videoFile} alt="file" className="w-12 h-12 "/>
 
-                                    }
+                                        }
+                                    </div>
+                                    <div className="ml-3">
+                                        <h1 className="">{v.AttachName}</h1>
+                                    </div>
                                 </div>
-                                <div className="ml-3">
-                                    <h1 className="">{v.AttachName}</h1>
-                                </div>
+                                <Tooltip title={<FileOptions/>} trigger={"click"} color={"white"}>
+                                    <button>
+                                        <BsThreeDots className="text-2xl opacity-50"/>
+                                    </button>
+                                </Tooltip>
                             </div>
-                            <Tooltip title={<FileOptions/>} trigger={"click"} color={"white"}>
-                                <button>
-                                    <BsThreeDots className="text-2xl opacity-50"/>
-                                </button>
-                            </Tooltip>
-                        </div>
-                    );
-                })
-            }
-        </div>
+                        );
+                    })
+                }
+            </div>
+            <ViewMore func={() => {
+                if(videoPage === -1)
+                {
+                    return;
+                }
+                Query<PaginatedType<MessageAttachType>>(`/message-attach?page=${videoPage}&limit=5&chat_id=${chat_id}&type=video`)
+                    .then((data) => {
+                        if (!data)
+                        {
+                            setVideoPage(-1);
+                            return;
+                        }
+                        setVideo(prevState => [...prevState, ...data.m_data]);
+                        setVideoPage((prev) => prev + 1);
+                    });
+            }}/>
+        </>
+
     );
 
     const documentList = (
-        <div>
-            {
-                document.map((d, index) => {
-                    const ext = d.AttachName.split(".")[d.AttachName.split(".").length - 1];
-                    return (
-                        <div key={index} className={`flex items-center justify-between p-3 ${index === document.length - 1 ? "" : "border-b-2"}`}>
-                            <div className="flex items-center">
-                                {
-                                    codeFileExt.includes(ext) || textFileExt.includes(ext) ?
-                                        <img src={`/src/assets/text/${ext}.png`} alt="file" className="w-12 h-12 "/>
+        <>
+            <div>
+                {
+                    document.map((d, index) => {
+                        const ext = d.AttachName.split(".")[d.AttachName.split(".").length - 1];
+                        return (
+                            <div key={index} className={`flex items-center justify-between p-3 ${index === document.length - 1 ? "" : "border-b-2"}`}>
+                                <div className="flex items-center">
+                                    {
+                                        codeFileExt.includes(ext) || textFileExt.includes(ext) ?
+                                            <img src={`/src/assets/text/${ext}.png`} alt="file" className="w-12 h-12 "/>
                                             : <img src={textFile} alt="file" className="w-12 h-12 "/>
-                                }
-                                <div className="ml-3">
-                                <h1 className="">{d.AttachName}</h1>
+                                    }
+                                    <div className="ml-3">
+                                        <h1 className="">{d.AttachName}</h1>
+                                    </div>
                                 </div>
+                                <Tooltip title={<FileOptions/>} trigger={"click"} color={"white"}>
+                                    <button>
+                                        <BsThreeDots className="text-2xl opacity-50"/>
+                                    </button>
+                                </Tooltip>
                             </div>
-                            <Tooltip title={<FileOptions/>} trigger={"click"} color={"white"}>
-                                <button>
-                                    <BsThreeDots className="text-2xl opacity-50"/>
-                                </button>
-                            </Tooltip>
-                        </div>
-                    );
-                })
-            }
-        </div>
+                        );
+                    })
+                }
+            </div>
+            <ViewMore func={ () => {
+                if(documentPage === -1)
+                {
+                    return;
+                }
+                Query<PaginatedType<MessageAttachType>>(`/message-attach?page=${documentPage}&limit=5&chat_id=${chat_id}&type=text`)
+                    .then((data) => {
+                        if (!data)
+                        {
+                            setDocumentPage(-1);
+                            return;
+                        }
+                        setDocument(prevState => [...prevState, ...data.m_data]);
+                        setDocumentPage((prev) => prev + 1);
+                    });
+            } }/>
+        </>
     );
 
     const fileList = (
-        <div>
-            {
-                file.map((f, index) => {
-                    const ext = f.AttachName.split(".")[f.AttachName.split(".").length - 1];
-                    return (
-                        <div key={index} className={`flex items-center justify-between p-3 ${index === file.length - 1 ? "" : "border-b-2"}`}>
-                            <div className="flex items-center">
-                                {
-                                    otherFileExt.includes(ext) || textFileExt.includes(ext) ?
-                                        <img src={`/src/assets/file/${ext}.png`} alt="file" className="w-12 h-12 "/>
-                                        : <img src={filePng} alt="file" className="w-12 h-12 "/>
-                                }
-                                <div className="ml-3">
-                                    <h1 className="">{f.AttachName}</h1>
+        <>
+            <div>
+                {
+                    file.map((f, index) => {
+                        const ext = f.AttachName.split(".")[f.AttachName.split(".").length - 1];
+                        return (
+                            <div key={index} className={`flex items-center justify-between p-3 ${index === file.length - 1 ? "" : "border-b-2"}`}>
+                                <div className="flex items-center">
+                                    {
+                                        otherFileExt.includes(ext) || textFileExt.includes(ext) ?
+                                            <img src={`/src/assets/file/${ext}.png`} alt="file" className="w-12 h-12 "/>
+                                            : <img src={filePng} alt="file" className="w-12 h-12 "/>
+                                    }
+                                    <div className="ml-3">
+                                        <h1 className="">{f.AttachName}</h1>
+                                    </div>
                                 </div>
+                                <Tooltip title={<FileOptions/>} trigger={"click"} color={"white"}>
+                                    <button>
+                                        <BsThreeDots className="text-2xl opacity-50"/>
+                                    </button>
+                                </Tooltip>
                             </div>
-                            <Tooltip title={<FileOptions/>} trigger={"click"} color={"white"}>
-                                <button>
-                                    <BsThreeDots className="text-2xl opacity-50"/>
-                                </button>
-                            </Tooltip>
-                        </div>
-                    );
-                })
-            }
-        </div>
+                        );
+                    })
+                }
+            </div>
+            <ViewMore/>
+        </>
     );
 
     const items: CollapseProps["items"] = [
@@ -242,17 +363,16 @@ function ChatPanel({ setIsPanel }: { setIsPanel: () => void })
         {
             key: "file",
             label: <p className="font-bold text-[15px]">Recent Files</p>,
-            children: fileList,
-        },
+            children: fileList
+        }
     ];
-
 
 
     return (
         <div className="p-6 border-l-2 max-h-screen overflow-auto">
             <div className="text-end">
                 <button className="p-3 rounded-full border-2 w-fit" onClick={setIsPanel}>
-                    <TfiClose  className=" text-1xl "/>
+                    <TfiClose className=" text-1xl "/>
                 </button>
             </div>
             <div className="mt-8 text-center border-b-2 pb-8">
@@ -262,15 +382,15 @@ function ChatPanel({ setIsPanel }: { setIsPanel: () => void })
             </div>
             <div className="flex justify-between py-6 px-4 border-b-2">
                 <h1 className="font-bold">Notifications</h1>
-                <Switch className="text-teal-500" />
+                <Switch className="text-teal-500"/>
             </div>
             <Collapse defaultActiveKey={[
                 "image",
                 "audio",
                 "video",
                 "document",
-                "file",
-            ]} expandIconPosition={"end"} items={items} className="text-teal-500 bg-white text-1xl border-b-2" bordered={false} />
+                "file"
+            ]} expandIconPosition={"end"} items={items} className="text-teal-500 bg-white text-1xl border-b-2" bordered={false}/>
         </div>
     );
 }

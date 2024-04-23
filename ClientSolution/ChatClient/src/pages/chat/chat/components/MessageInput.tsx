@@ -91,7 +91,6 @@ function MessageInput({ messageList, quoteMessage, setQuoteMessages }:
             return;
         }
 
-
         const res = await fetch(`${baseUrl}/message`, {
             method: "POST",
             headers: {

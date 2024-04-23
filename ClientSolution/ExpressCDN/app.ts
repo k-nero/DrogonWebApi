@@ -8,7 +8,9 @@ import fileRouter = require("./routes/file");
 import { Express } from "express";
 import cors = require("cors");
 
-app.use(cors());
+app.use(cors(
+
+));
 
 
 app.use('/files', fileRouter);
