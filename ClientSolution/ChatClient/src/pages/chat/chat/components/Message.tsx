@@ -17,13 +17,12 @@ import Text from "@/components/text/Text.tsx";
 import EmojiTooltip from "@/components/EmojiToolTip";
 import ImageViewModal from "@/components/modal/ImageViewModal.tsx";
 import translate from "translate";
-
+import { isEqual } from 'lodash';
 
 const baseUrl = new URL(`${import.meta.env.VITE_API_URL}`);
 
-function Message({ message, showTime = true, setQuoteMessage }: {
+function Message({ message, setQuoteMessage }: {
     message: MessageType,
-    showTime: boolean,
     setQuoteMessage: Dispatch<React.SetStateAction<MessageType | undefined>>
 })
 {
@@ -32,6 +31,31 @@ function Message({ message, showTime = true, setQuoteMessage }: {
     //const [mess, setMessage] = useState<MessageType>(message);
     const [translateText, setTranslateText] = useState<string>("");
     const incoming = message.ApplicationUserId !== credential.user.Id;
+
+    const [shouldRerender, setShouldRerender] = useState<boolean>(false);
+
+    useEffect(() => {
+        uWebSockets.getInstance().addMessageSeenBySubscriber((event) => {
+            const e_data = JSON.parse(event.data);
+                    if (message.Id === e_data.message.MessageId)
+                    {
+                       setShouldRerender(prevState => !prevState);
+                    }
+                });
+    }, []);
+
+    useEffect(() => {
+        uWebSockets.getInstance().addReactionSubscriber((event) => {
+            const e_data = JSON.parse(event.data);
+
+            if (message.Id === e_data.message.MessageId)
+            {
+                setShouldRerender(prevState => !prevState);
+            }
+        });
+    }, []);
+
+    console.log("Message rerendered");
 
     const [isSeenByModalOpen, setIsSeenByModalOpen] = useState(false);
     const showSeenByModal = () =>
@@ -506,14 +530,12 @@ function Message({ message, showTime = true, setQuoteMessage }: {
                 </div>
                 <div className="flex gap-2.5 mt-2">
                     {
-                        showTime ?
                             <p className="text-xs text-gray-500 text-left ml-9 p-1">{
                                 new Date(message.CreatedDate).toLocaleTimeString("en-US", {
                                     hour: "2-digit",
                                     minute: "2-digit"
                                 })
                             }</p>
-                            : null
                     }
                     {
                         message.MessageSeenBys?.length && message.MessageSeenBys?.length > 0 ?
@@ -672,14 +694,12 @@ function Message({ message, showTime = true, setQuoteMessage }: {
                             : null
                     }
                     {
-                        showTime ?
                             <p className="text-xs text-gray-500 text-right mr-9 p-1">{
                                 new Date(message.CreatedDate).toLocaleTimeString("en-US", {
                                     hour: "2-digit",
                                     minute: "2-digit"
                                 })
                             }</p>
-                            : null
                     }
                 </div>
             </div>
@@ -687,5 +707,8 @@ function Message({ message, showTime = true, setQuoteMessage }: {
     }
 }
 
+const MemoizedMessage = React.memo(Message);
+
+export { MemoizedMessage };
 
 export default Message;
