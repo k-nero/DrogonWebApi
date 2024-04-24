@@ -135,7 +135,6 @@ function MessageInput({ messageList, quoteMessage, setQuoteMessages }:
                         }
                     })
                 ).then(async () => {
-                    setMessage("");
                     setFiles([]);
                     const message = await Query<MessageType>(`/message/${rs.id}`);
                     uWebSockets.getInstance().send(JSON.stringify({
@@ -155,6 +154,7 @@ function MessageInput({ messageList, quoteMessage, setQuoteMessages }:
                 }));
             }
         }
+        setMessage("");
         setIsSending(false);
     }
 

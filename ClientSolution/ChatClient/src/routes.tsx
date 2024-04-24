@@ -11,9 +11,9 @@ import BlockedContact from "@/pages/contact/blocked";
 import SuggestedContact from "@/pages/contact/suggested";
 import ContactList from "@/pages/contact/contact-list";
 import Chat from "@/pages/chat/chat";
-import GeneralSettings from "@/layouts/settings/general";
-import Notifications from "@/layouts/settings/notifications";
-import CodeView from "@/layouts/settings/code-view";
+import GeneralSettings from "@/pages/settings/general";
+import Notifications from "@/pages/settings/notifications";
+import CodeView from "@/pages/settings/code-view";
 
 export type RoutesType = {
     name: string;

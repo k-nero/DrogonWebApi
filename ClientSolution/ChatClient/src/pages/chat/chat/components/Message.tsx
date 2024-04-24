@@ -16,6 +16,8 @@ import CodeView from "@/pages/chat/chat/components/CodeMessage.tsx";
 import Text from "@/components/text/Text.tsx";
 import EmojiTooltip from "@/components/EmojiToolTip";
 import ImageViewModal from "@/components/modal/ImageViewModal.tsx";
+import translate from "translate";
+
 
 const baseUrl = new URL(`${import.meta.env.VITE_API_URL}`);
 
@@ -28,6 +30,7 @@ function Message({ message, showTime = true, setQuoteMessage }: {
     const [userLocal] = useLocalStorage("auth_credential", {});
     const credential: AuthResponse = userLocal;
     //const [mess, setMessage] = useState<MessageType>(message);
+    const [translateText, setTranslateText] = useState<string>("");
     const incoming = message.ApplicationUserId !== credential.user.Id;
 
     const [isSeenByModalOpen, setIsSeenByModalOpen] = useState(false);
@@ -78,16 +81,14 @@ function Message({ message, showTime = true, setQuoteMessage }: {
         return (
             <div className="min-w-16" style={{ color: "black" }}>
                 <div className="rounded-sm hover:bg-gray-300 p-1">
-                    <button onClick={() =>
-                    {
+                    <button onClick={() => {
                         setQuoteMessage(message);
                     }}>
                         <p>Reply</p>
                     </button>
                 </div>
                 <div className="rounded-sm hover:bg-gray-300 p-1">
-                    <button onClick={() =>
-                    {
+                    <button onClick={() => {
                         navigator.clipboard.writeText(message.TextMessage).then(() => { });
                     }}>
                         <p>Copy</p>
@@ -109,6 +110,31 @@ function Message({ message, showTime = true, setQuoteMessage }: {
                     </button>
                 </div>
                 {
+                    !message.TextMessage?.startsWith("```") &&
+                    <>
+                        {
+                            translateText === "" ?
+                                <div className="rounded-sm hover:bg-gray-300 p-1">
+                                    <button onClick={() => {
+                                        translate(message.TextMessage, { to: "vi" }).then((r) => {
+                                            setTranslateText(r);
+                                        });
+                                    }}>
+                                        Translate
+                                    </button>
+                                </div>
+                                :
+                                <div className="rounded-sm hover:bg-gray-300 p-1">
+                                    <button onClick={() => {
+                                        setTranslateText("");
+                                    }}>
+                                        Original
+                                    </button>
+                                </div>
+                        }</>
+                }
+
+                {
                     message.TextMessage?.startsWith("```") &&
                     <div className="rounded-sm hover:bg-gray-300 p-1">
                         <button onClick={showCodeModal}>
@@ -122,8 +148,7 @@ function Message({ message, showTime = true, setQuoteMessage }: {
     }
 
     //cache the quote message to avoid unnecessary fetch
-    const QuoteMessage = useCallback(function QuoteMessage()
-    {
+    const QuoteMessage = useCallback(function QuoteMessage() {
         const [quoteMessage, setQuoteMessage] = useState<MessageType>();
         if (!message.QuoteMessageId)
         {
@@ -430,7 +455,11 @@ function Message({ message, showTime = true, setQuoteMessage }: {
                                         {
                                             message.TextMessage?.startsWith("```") ?
                                                 <CodeView textMessage={message.TextMessage}/>
-                                                : <Text text={message.TextMessage}/>
+                                                : <>
+                                                {
+                                                    translateText === "" ? <Text text={message.TextMessage}/> : <Text text={translateText}/>
+                                                }
+                                                </>
                                         }
                                     </div>
                                     <button className="absolute -bottom-2 -right-2 text-xl opacity-70" onClick={showEmojiModal}>
@@ -605,7 +634,11 @@ function Message({ message, showTime = true, setQuoteMessage }: {
                                         {
                                             message.TextMessage?.startsWith("```") ?
                                                 <CodeView textMessage={message.TextMessage}/>
-                                                : <Text text={message.TextMessage}/>
+                                                : <>
+                                                    {
+                                                        translateText === "" ? <Text text={message.TextMessage}/> : <Text text={translateText}/>
+                                                    }
+                                                </>
                                         }
                                     </div>
                                     <button className="absolute -bottom-2 -left-2 text-xl opacity-70" onClick={showEmojiModal}>

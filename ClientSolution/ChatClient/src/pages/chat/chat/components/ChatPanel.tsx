@@ -37,8 +37,15 @@ function ChatPanel({ setIsPanel }: { setIsPanel: () => void })
                 {
                     return;
                 }
+                if(data.m_data.length < 6)
+                {
+                    setImagePage(-1);
+                }
+                else
+                {
+                    setImagePage((prev) => prev + 1);
+                }
                 setImage(data.m_data);
-                setImagePage((prev) => prev + 1);
             });
         Query<PaginatedType<MessageAttachType>>(`/message-attach?page=${filePage}&limit=5&chat_id=${chat_id}&type=application`)
             .then((data) => {
@@ -46,8 +53,15 @@ function ChatPanel({ setIsPanel }: { setIsPanel: () => void })
                 {
                     return;
                 }
+                if(data.m_data.length < 5)
+                {
+                    setFilePage(-1);
+                }
+                else
+                {
+                    setFilePage((prev) => prev + 1);
+                }
                 setFile(data.m_data);
-                setFilePage((prev) => prev + 1);
             });
         Query<PaginatedType<MessageAttachType>>(`/message-attach?page=${audioPage}&limit=5&chat_id=${chat_id}&type=audio`)
             .then((data) => {
@@ -55,8 +69,15 @@ function ChatPanel({ setIsPanel }: { setIsPanel: () => void })
                 {
                     return;
                 }
+                if(data.m_data.length < 5)
+                {
+                    setAudioPage(-1);
+                }
+                else
+                {
+                    setAudioPage((prev) => prev + 1);
+                }
                 setAudio(data.m_data);
-                setAudioPage((prev) => prev + 1);
             });
         Query<PaginatedType<MessageAttachType>>(`/message-attach?page=${videoPage}&limit=5&chat_id=${chat_id}&type=video`)
             .then((data) => {
@@ -65,7 +86,15 @@ function ChatPanel({ setIsPanel }: { setIsPanel: () => void })
                     return;
                 }
                 setVideo(data.m_data);
-                setVideoPage((prev) => prev + 1);
+
+                if(data.m_data.length < 5)
+                {
+                    setVideoPage(-1);
+                }
+                else
+                {
+                    setVideoPage((prev) => prev + 1);
+                }
             });
         Query<PaginatedType<MessageAttachType>>(`/message-attach?page=${documentPage}&limit=5&chat_id=${chat_id}&type=text`)
             .then((data) => {
@@ -74,7 +103,14 @@ function ChatPanel({ setIsPanel }: { setIsPanel: () => void })
                     return;
                 }
                 setDocument(data.m_data);
-                setDocumentPage((prev) => prev + 1);
+
+                if(data.m_data.length < 5)
+                {
+                    setDocumentPage(-1);
+                }
+                else{
+                    setDocumentPage((prev) => prev + 1);
+                }
             });
     }, []);
 
@@ -133,22 +169,32 @@ function ChatPanel({ setIsPanel }: { setIsPanel: () => void })
                     })
                 }
             </div>
-            <ViewMore func={() => {
-                if(imagePage === -1)
-                {
-                    return;
-                }
-                Query<PaginatedType<MessageAttachType>>(`/message-attach?page=${imagePage}&limit=6&chat_id=${chat_id}&type=image`)
-                    .then((data) => {
-                        if (!data)
-                        {
-                            setImagePage(-1);
-                            return;
-                        }
-                        setImage(prevState => [...prevState, ...data.m_data]);
-                        setImagePage((prev) => prev + 1);
-                    });
-            }}/>
+            <div className={`${imagePage === -1 ? "hidden" : ""}`}>
+                <ViewMore func={() => {
+                    if(imagePage === -1)
+                    {
+                        return;
+                    }
+                    Query<PaginatedType<MessageAttachType>>(`/message-attach?page=${imagePage}&limit=6&chat_id=${chat_id}&type=image`)
+                        .then((data) => {
+                            if (!data)
+                            {
+                                setImagePage(-1);
+                                return;
+                            }
+                            if(data.m_data.length < 6)
+                            {
+                                setImagePage(-1);
+                            }
+                            else
+                            {
+                                setImagePage((prev) => prev + 1);
+                            }
+                            setImage(prevState => [...prevState, ...data.m_data]);
+                        });
+                }}/>
+            </div>
+
         </>
 
     );
@@ -188,22 +234,31 @@ function ChatPanel({ setIsPanel }: { setIsPanel: () => void })
                     })
                 }
             </div>
-            <ViewMore func={() => {
-                if(audioPage === -1)
-                {
-                    return;
-                }
-                Query<PaginatedType<MessageAttachType>>(`/message-attach?page=${audioPage}&limit=5&chat_id=${chat_id}&type=audio`)
-                    .then((data) => {
-                        if (!data)
-                        {
-                            setAudioPage(-1);
-                            return;
-                        }
-                        setAudio(prevState => [...prevState, ...data.m_data]);
-                        setAudioPage((prev) => prev + 1);
-                    });
-            }}/>
+           <div className={`${audioPage === -1 ? "hidden" : ""}`}>
+               <ViewMore func={() => {
+                   if(audioPage === -1)
+                   {
+                       return;
+                   }
+                   Query<PaginatedType<MessageAttachType>>(`/message-attach?page=${audioPage}&limit=5&chat_id=${chat_id}&type=audio`)
+                       .then((data) => {
+                           if (!data)
+                           {
+                               setAudioPage(-1);
+                               return;
+                           }
+                           if(data.m_data.length < 5)
+                           {
+                                 setAudioPage(-1);
+                           }
+                           else
+                           {
+                               setAudioPage((prev) => prev + 1);
+                           }
+                           setAudio(prevState => [...prevState, ...data.m_data]);
+                       });
+               }}/>
+           </div>
         </>
 
     );
@@ -240,22 +295,31 @@ function ChatPanel({ setIsPanel }: { setIsPanel: () => void })
                     })
                 }
             </div>
-            <ViewMore func={() => {
-                if(videoPage === -1)
-                {
-                    return;
-                }
-                Query<PaginatedType<MessageAttachType>>(`/message-attach?page=${videoPage}&limit=5&chat_id=${chat_id}&type=video`)
-                    .then((data) => {
-                        if (!data)
-                        {
-                            setVideoPage(-1);
-                            return;
-                        }
-                        setVideo(prevState => [...prevState, ...data.m_data]);
-                        setVideoPage((prev) => prev + 1);
-                    });
-            }}/>
+          <div className={`${videoPage === -1 ? "hidden" : ""}`}>
+              <ViewMore func={() => {
+                  if(videoPage === -1)
+                  {
+                      return;
+                  }
+                  Query<PaginatedType<MessageAttachType>>(`/message-attach?page=${videoPage}&limit=5&chat_id=${chat_id}&type=video`)
+                      .then((data) => {
+                          if (!data)
+                          {
+                              setVideoPage(-1);
+                              return;
+                          }
+                          if(data.m_data.length < 5)
+                          {
+                                setVideoPage(-1);
+                          }
+                          else
+                          {
+                              setVideoPage((prev) => prev + 1);
+                          }
+                          setVideo(prevState => [...prevState, ...data.m_data]);
+                      });
+              }}/>
+          </div>
         </>
 
     );
@@ -288,22 +352,31 @@ function ChatPanel({ setIsPanel }: { setIsPanel: () => void })
                     })
                 }
             </div>
-            <ViewMore func={ () => {
-                if(documentPage === -1)
-                {
-                    return;
-                }
-                Query<PaginatedType<MessageAttachType>>(`/message-attach?page=${documentPage}&limit=5&chat_id=${chat_id}&type=text`)
-                    .then((data) => {
-                        if (!data)
-                        {
-                            setDocumentPage(-1);
-                            return;
-                        }
-                        setDocument(prevState => [...prevState, ...data.m_data]);
-                        setDocumentPage((prev) => prev + 1);
-                    });
-            } }/>
+            <div className={`${documentPage === -1 ? "hidden" : ""}`}>
+                <ViewMore func={ () => {
+                    if(documentPage === -1)
+                    {
+                        return;
+                    }
+                    Query<PaginatedType<MessageAttachType>>(`/message-attach?page=${documentPage}&limit=5&chat_id=${chat_id}&type=text`)
+                        .then((data) => {
+                            if (!data)
+                            {
+                                setDocumentPage(-1);
+                                return;
+                            }
+                            if(data.m_data.length < 5)
+                            {
+                                setDocumentPage(-1);
+                            }
+                            else
+                            {
+                                setDocumentPage((prev) => prev + 1);
+                            }
+                            setDocument(prevState => [...prevState, ...data.m_data]);
+                        });
+                } }/>
+            </div>
         </>
     );
 
@@ -335,7 +408,31 @@ function ChatPanel({ setIsPanel }: { setIsPanel: () => void })
                     })
                 }
             </div>
-            <ViewMore/>
+            <div className={`${filePage === -1 ? "hidden" : ""}`}>
+                <ViewMore func={() => {
+                    if (filePage === -1)
+                    {
+                        return;
+                    }
+                    Query<PaginatedType<MessageAttachType>>(`/message-attach?page=${filePage}&limit=5&chat_id=${chat_id}&type=application`)
+                        .then((data) => {
+                            if (!data)
+                            {
+                                setFilePage(-1);
+                                return;
+                            }
+                            if(data.m_data.length < 5)
+                            {
+                                setFilePage(-1);
+                            }
+                            else
+                            {
+                                setFilePage((prev) => prev + 1);
+                            }
+                            setFile(prevState => [...prevState, ...data.m_data]);
+                        });
+                }}/>
+            </div>
         </>
     );
 
