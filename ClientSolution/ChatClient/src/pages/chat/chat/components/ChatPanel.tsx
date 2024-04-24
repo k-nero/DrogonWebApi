@@ -13,6 +13,9 @@ import textFile from "@/assets/text/text.png";
 import filePng from "@/assets/file/file.png";
 import AudioModal from "@/components/modal/AudioModal.tsx";
 import { audioFileExt, codeFileExt, otherFileExt, textFileExt, videoFileExt } from "@/utils/file/fileExt";
+import { uWebSockets } from "@/utils/WebSocket/WebSocket.ts";
+import SocketMessageType from "@/utils/WebSocket/SocketMessageType.ts";
+import MessageType from "@/utils/type/MessageType.ts";
 
 function ChatPanel({ setIsPanel }: { setIsPanel: () => void })
 {
@@ -30,8 +33,9 @@ function ChatPanel({ setIsPanel }: { setIsPanel: () => void })
     const [document, setDocument] = React.useState<MessageAttachType[]>([]);
     const [documentPage, setDocumentPage] = React.useState<number>(1);
 
-    useEffect(() => {
-        Query<PaginatedType<MessageAttachType>>(`/message-attach?page=${imagePage}&limit=6&chat_id=${chat_id}&type=image`)
+    function Init()
+    {
+        Query<PaginatedType<MessageAttachType>>(`/message-attach?page=1&limit=6&chat_id=${chat_id}&type=image`)
             .then((data) => {
                 if (data.m_data.length === 0)
                 {
@@ -47,7 +51,7 @@ function ChatPanel({ setIsPanel }: { setIsPanel: () => void })
                 }
                 setImage(data.m_data);
             });
-        Query<PaginatedType<MessageAttachType>>(`/message-attach?page=${filePage}&limit=5&chat_id=${chat_id}&type=application`)
+        Query<PaginatedType<MessageAttachType>>(`/message-attach?page=1&limit=5&chat_id=${chat_id}&type=application`)
             .then((data) => {
                 if (data.m_data.length === 0)
                 {
@@ -63,7 +67,7 @@ function ChatPanel({ setIsPanel }: { setIsPanel: () => void })
                 }
                 setFile(data.m_data);
             });
-        Query<PaginatedType<MessageAttachType>>(`/message-attach?page=${audioPage}&limit=5&chat_id=${chat_id}&type=audio`)
+        Query<PaginatedType<MessageAttachType>>(`/message-attach?page=1&limit=5&chat_id=${chat_id}&type=audio`)
             .then((data) => {
                 if (data.m_data.length === 0)
                 {
@@ -79,7 +83,7 @@ function ChatPanel({ setIsPanel }: { setIsPanel: () => void })
                 }
                 setAudio(data.m_data);
             });
-        Query<PaginatedType<MessageAttachType>>(`/message-attach?page=${videoPage}&limit=5&chat_id=${chat_id}&type=video`)
+        Query<PaginatedType<MessageAttachType>>(`/message-attach?page=1&limit=5&chat_id=${chat_id}&type=video`)
             .then((data) => {
                 if (data.m_data.length === 0)
                 {
@@ -96,7 +100,7 @@ function ChatPanel({ setIsPanel }: { setIsPanel: () => void })
                     setVideoPage((prev) => prev + 1);
                 }
             });
-        Query<PaginatedType<MessageAttachType>>(`/message-attach?page=${documentPage}&limit=5&chat_id=${chat_id}&type=text`)
+        Query<PaginatedType<MessageAttachType>>(`/message-attach?page=1&limit=5&chat_id=${chat_id}&type=text`)
             .then((data) => {
                 if (data.m_data.length === 0)
                 {
@@ -112,6 +116,27 @@ function ChatPanel({ setIsPanel }: { setIsPanel: () => void })
                     setDocumentPage((prev) => prev + 1);
                 }
             });
+    }
+
+    useEffect(() => {
+       Init();
+    }, []);
+
+
+    useEffect(() => {
+        uWebSockets.getInstance().addMessageSubscriber((event) => {
+            const soc_mess: SocketMessageType = JSON.parse(event.data);
+            const message: MessageType = soc_mess.message;
+            if (message.ChatRoomId !== chat_id)
+            {
+                return;
+            }
+            if (message.MessageAttachs?.length !== 0 )
+            {
+                Init();
+            }
+
+        })
     }, []);
 
     function FileOptions()
@@ -156,14 +181,16 @@ function ChatPanel({ setIsPanel }: { setIsPanel: () => void })
 
     const images = (
         <>
-            <div className="grid-cols-3 grid gap-y-4 overflow-auto max-h-96">
+            <div className="grid-cols-3 grid gap-4 overflow-auto max-h-96">
                 {
                     image.map((img, index) => {
                         return (
                             <button key={img.Id} onClick={() => {
                                 ImageViewModal({ image: img });
                             }}>
-                                <img key={index} loading="lazy" src={img.AttachUrl} alt={img.AttachName} className="h-32 m-auto"/>
+                                <img key={index} loading="lazy" src={img.AttachUrl} alt={img.AttachName} className="h-32 m-auto" style={{
+                                    objectFit: "contain"
+                                }}/>
                             </button>
                         );
                     })
@@ -467,10 +494,11 @@ function ChatPanel({ setIsPanel }: { setIsPanel: () => void })
 
     return (
         <div className="p-6 border-l-2 max-h-screen overflow-auto">
-            <div className="text-end">
-                <button className="p-3 rounded-full border-2 w-fit" onClick={setIsPanel}>
-                    <TfiClose className=" text-1xl "/>
-                </button>
+            <div className=" text-end ">
+                {/*<button className="p-3 fixed bg-white right-8 border-teal-500 rounded-full border-2 w-fit" onClick={setIsPanel}>*/}
+                    <button className="p-3 bg-white  border-teal-500 rounded-full border-2 w-fit" onClick={setIsPanel}>
+                        <TfiClose className=" text-1xl "/>
+                    </button>
             </div>
             <div className="mt-8 text-center border-b-2 pb-8">
                 <img loading="lazy" src="https://via.placeholder.com/150" alt="John Doe" className="w-32 h-32 rounded-full m-auto border-4 border-teal-500"/>

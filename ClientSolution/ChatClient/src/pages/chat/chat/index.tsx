@@ -28,7 +28,7 @@ function Chat()
 
     async function isOnline(user_id: string)
     {
-        const res = await fetch("https://localhost:9001/online-user/" + user_id, {});
+        const res = await fetch("https://192.168.50.21:9001/online-user/" + user_id, {});
         const online = await res.text();
         return online === "true";
     }

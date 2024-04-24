@@ -2,6 +2,8 @@ import { AuthResponse } from "@/utils/type/AuthResponse.ts";
 import Query from "@/utils/function/Query.ts";
 import PaginatedType from "@/utils/type/common/PaginatedType.ts";
 import ChatParticipant from "@/utils/type/ChatParticipant.ts";
+const socket = new URL(`${import.meta.env.VITE_WEBSOCKET_URL}`);
+
 
 export class uWebSockets
 {
@@ -77,7 +79,7 @@ export class uWebSockets
             console.log("WebSocket 连接关闭");
             console.log("Attempting to reconnect...");
             setTimeout(() => {
-                this.ws = new WebSocket("wss://localhost:9001?authorization=" + JSON.parse(localStorage.getItem("auth_credential") || "{}").access_token);
+                this.ws = new WebSocket( socket + "?authorization=" + JSON.parse(localStorage.getItem("auth_credential") || "{}").access_token);
                 this.initWebSocket();
                 window.location.reload();
             }, 5000);
@@ -87,7 +89,7 @@ export class uWebSockets
             console.log("WebSocket 连接出错", error);
             console.log("Attempting to reconnect...");
             setTimeout(() => {
-                this.ws = new WebSocket("wss://localhost:9001?authorization=" + JSON.parse(localStorage.getItem("auth_credential") || "{}").access_token);
+                this.ws = new WebSocket(socket + "?authorization=" + JSON.parse(localStorage.getItem("auth_credential") || "{}").access_token);
                 this.initWebSocket();
                 window.location.reload();
             }, 5000);
@@ -97,7 +99,7 @@ export class uWebSockets
     private constructor()
     {
         const auth_credential: AuthResponse = JSON.parse(localStorage.getItem("auth_credential") || "{}");
-        this.ws = new WebSocket("wss://localhost:9001?authorization=" + auth_credential.access_token);
+        this.ws = new WebSocket(socket + "?authorization=" + auth_credential.access_token);
         this.initWebSocket();
     }
 

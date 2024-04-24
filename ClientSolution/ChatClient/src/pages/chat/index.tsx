@@ -1,5 +1,5 @@
 import ChatLayout from "@/layouts/chats";
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, useOutlet } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { BsThreeDots } from "react-icons/bs";
 import InputField from "@/components/form/input.tsx";
@@ -17,6 +17,7 @@ function ChatPage()
 {
     const [localUser] = useLocalStorage("auth_credential", {});
     const user: AuthResponse = localUser;
+    const outlet = useOutlet()
 
     const [chats, setChats] = useState<PaginatedType<ChatParticipant>>();
     const [messageMap, setMessageMap] = useState<Map<string, MessageType[]>>(new Map<string, MessageType[]>());
@@ -150,7 +151,9 @@ function ChatPage()
                         </div>
                     </div>
                     <div className="col-span-9">
-                        <Outlet />
+                        {
+                            outlet ||  <p>Select a chat to start conversion</p>
+                        }
                     </div>
                 </div>
             </div>

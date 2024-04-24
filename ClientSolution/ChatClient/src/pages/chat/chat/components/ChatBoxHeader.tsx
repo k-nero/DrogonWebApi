@@ -13,7 +13,9 @@ function ChatBoxHeader({setIsPanel, chat_room, onlineMap} : {setIsPanel: () => v
     }
 
     return (
-        <div className="w-full h-[10vh]">
+        <div className="w-full" style={{
+            maxHeight: "10vh"
+        }}>
             <div className="flex items-center justify-between p-6 border-b-2">
                 <div className="flex items-center">
                     <img src={chat_room?.RoomImageUrl} alt={chat_room?.RoomName} className="w-12 h-12 rounded-full"/>
@@ -44,7 +46,7 @@ function ChatBoxHeader({setIsPanel, chat_room, onlineMap} : {setIsPanel: () => v
                         <BsCameraVideoFill className="text-teal-600 text-2xl"/>
                     </button>
                     <button className="p-3 rounded-full border-2" onClick={setIsPanel}>
-                        <BsThreeDots className="text-2xl opacity-50"/>
+                        <BsThreeDots className="text-2xl text-teal-500 opacity-50"/>
                     </button>
                 </div>
             </div>

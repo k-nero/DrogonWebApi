@@ -85,8 +85,9 @@ function MessageInput({ messageList, quoteMessage, setQuoteMessages }:
         }
         setQuoteMessages(undefined);
 
-        if (!message)
+        if (!message || message.trim() === "")
         {
+            setMessage("");
             return;
         }
         setIsSending(true);
@@ -229,7 +230,7 @@ function MessageInput({ messageList, quoteMessage, setQuoteMessages }:
 
 
     return (
-        <div>
+        <div className="relative mb-2">
             <Modal title={"Voice message"} open={isVoiceModalOpen} centered={true} onOk={handleVoiceOk} onCancel={handleVoiceCancel} footer={null} width="30%">
                 <div className="text-center">
                     <p className="">Press the button to start recording</p>
@@ -251,11 +252,11 @@ function MessageInput({ messageList, quoteMessage, setQuoteMessages }:
                     </div>
                 </div>
             </Modal>
-            <div className={`flex items-center justify-center text-teal-500 ${!typing ? "hidden" : ""}`}>
+            <div className={`flex items-center absolute z-10 -top-10 w-full justify-center text-teal-500 ${!typing ? "hidden" : ""}`}>
                 <div className="animate-bounce w-3 h-3 bg-teal-500 rounded-full"></div>
-                <p className="ml-2">Someone is typing...</p>
+                <p className="ml-2 py-2">Someone is typing...</p>
             </div>
-            <div className="px-8 py-4 rounded-xl mx-8 mt-4 bg-white">
+            <div className="px-8 py-4 rounded-xl mx-8 bg-white">
                 {
                     quoteMessage ? (
                         <div className="">
@@ -305,14 +306,14 @@ function MessageInput({ messageList, quoteMessage, setQuoteMessages }:
                                                                 {
                                                                     videoFileExt.includes(ext) ? (
                                                                             <img src={`/src/assets/video/${ext}.png`} className="max-h-32 max-w-32 m-auto" alt="video placeholder"/>
-                                                                        ):
+                                                                        ) :
                                                                         (
                                                                             <img src={videoFile} className="max-h-32 max-w-32 m-auto" alt="video placeholder"/>
                                                                         )
                                                                 }
 
                                                             </div>
-                                                           )
+                                                        )
                                                         : file.type.split("/")[0] === "text" || file.type === "application/pdf" ? (
                                                                 <div>
                                                                     {
@@ -331,7 +332,7 @@ function MessageInput({ messageList, quoteMessage, setQuoteMessages }:
                                                                         {
                                                                             audioFileExt.includes(ext) ? (
                                                                                     <img src={`/src/assets/audio/${ext}.png`} className="max-h-32 max-w-32 m-auto" alt="video placeholder"/>
-                                                                                ):
+                                                                                ) :
                                                                                 (
                                                                                     <img src={audioPng} className="max-h-32 max-w-32 m-auto" alt="video placeholder"/>
                                                                                 )
@@ -361,11 +362,13 @@ function MessageInput({ messageList, quoteMessage, setQuoteMessages }:
                     e.currentTarget.reset();
                     sendMessage().then(() => {});
                 }}
-
                       className="mt-4"
                 >
                     <div>
-                <textarea autoFocus={true} placeholder="Type a message" ref={textMessage} value={message} onChange={
+                <textarea autoComplete="false" inputMode="text"
+                          name="text-message-area" autoFocus={true}
+                          placeholder="Type a message" ref={textMessage}
+                          value={message} onChange={
                     (e) => {
                         setMessage(e.target.value);
                         handleTyping(e);
@@ -385,7 +388,7 @@ function MessageInput({ messageList, quoteMessage, setQuoteMessages }:
                               const fileList = e.clipboardData.files;
                               const filesArray = Array.from(fileList);
                               setFiles(prevState => {
-                                    return [...prevState, ...filesArray];
+                                  return [...prevState, ...filesArray];
                               });
                           }}
                           className="w-full bg-transparent outline-none pb-4 border-b-2 resize-none"/>
