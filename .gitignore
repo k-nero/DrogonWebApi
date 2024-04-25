@@ -386,3 +386,8 @@ FodyWeavers.xsd
 /WebSocketServer/public_key.pem
 /tools/sqlite
 /ChatClient/.env
+ClientSolution/ExpressCDN/cert.pem
+ClientSolution/ExpressCDN/dev.pem
+*.pem
+*.crt
+*.key

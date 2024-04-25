@@ -10,4 +10,7 @@ function EmojiTooltip({ EmojiClickCallback, reactionOpen = true}: { EmojiClickCa
     );
 }
 
+const EmojiTooltipMemo = React.memo(EmojiTooltip);
+export { EmojiTooltipMemo };
+
 export default EmojiTooltip;

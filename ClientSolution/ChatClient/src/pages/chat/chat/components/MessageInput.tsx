@@ -73,7 +73,7 @@ function MessageInput({ messageList, quoteMessage, setQuoteMessages }:
 
     function handleVoiceRecordingComplete(blob: Blob)
     {
-        const file = new File([blob], "audio.webm", { type: "audio/webm" });
+        const file = new File([blob], `test.mp3`, { type: "audio/mpeg" });
         setFiles([...files, file]);
     }
 
@@ -243,7 +243,7 @@ function MessageInput({ messageList, quoteMessage, setQuoteMessages }:
                                        }}
                                        onNotAllowedOrFound={(err) => console.table(err)}
                                        downloadOnSavePress={false}
-                                       downloadFileExtension="webm"
+                                       downloadFileExtension="mp3"
                                        mediaRecorderOptions={{
                                            audioBitsPerSecond: 128000
                                        }}

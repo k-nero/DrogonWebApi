@@ -54,8 +54,6 @@ int main()
         resp->addHeader("Access-Control-Allow-Origin", "*");
         resp->addHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, PATCH");
         resp->addHeader("Access-Control-Allow-Headers", "*");
-        resp->addHeader("Cross-Origin-Opener-Policy", "same-origin");
-        resp->addHeader("Cross-Origin-Embedder-Policy", "require-corp");
         // Add other CORS headers you need
         stop(resp); // stops processing the request and sends the response
     });
@@ -65,8 +63,6 @@ int main()
         resp->addHeader("Access-Control-Allow-Origin", "*");
         resp->addHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, PATCH");
         resp->addHeader("Access-Control-Allow-Headers", "*");
-        resp->addHeader("Cross-Origin-Opener-Policy", "same-origin");
-        resp->addHeader("Cross-Origin-Embedder-Policy", "require-corp");
     });
 
     auto ips = CoreHelper::GetAllListenAddresses(ip);

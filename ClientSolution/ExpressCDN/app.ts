@@ -7,11 +7,10 @@ const app: Express = express();
 import fileRouter = require("./routes/file");
 import { Express } from "express";
 import cors = require("cors");
+import * as https from "node:https";
+import * as fs from "node:fs";
 
-app.use(cors(
-
-));
-
+app.use(cors());
 
 app.use('/files', fileRouter);
 
@@ -47,7 +46,14 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => { // esli
 });
 
 app.set('port', process.env.PORT || 3000);
+const cert = fs.readFileSync("./certificate.crt");
+const key = fs.readFileSync("./private.key");
 
-const server = app.listen(app.get('port'), function () {
-    console.log(`Express server listening on port ${(server.address() as AddressInfo).port}`);
+const server = https.createServer({
+    key: key,
+    cert: cert
+}, app);
+
+server.listen(app.get('port'), () => {
+    debug('Express server listening on port ' + (server.address() as AddressInfo).port);
 });

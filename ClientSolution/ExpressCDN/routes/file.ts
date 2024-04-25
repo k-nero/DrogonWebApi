@@ -22,6 +22,7 @@ router.get("/:filename", function(req, res, next)
 
     const filename = req.params.filename;
     const filepath = path.join(__dirname, "../uploads", filename);
+    res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
     res.sendFile(filepath);
 
 });
