@@ -12,11 +12,11 @@ import { uWebSockets } from "@/utils/WebSocket/WebSocket.ts";
 import MessageReactionType from "@/utils/type/MessageReactionType.ts";
 import ApplicationUser from "@/utils/type/ApplicationUser.ts";
 import MessageSeenByType from "@/utils/type/MessageSeenByType.ts";
-import CodeView from "@/pages/chat/chat/components/CodeMessage.tsx";
 import Text from "@/components/text/Text.tsx";
 import EmojiTooltip from "@/components/EmojiToolTip";
 import translate from "translate";
 import AttachView from "@/pages/chat/chat/components/message/AttachView.tsx";
+import CodeView from "@/components/text/CodeMessage";
 
 const baseUrl = new URL(`${import.meta.env.VITE_API_URL}`);
 
@@ -202,7 +202,7 @@ function Message({ message, setQuoteMessage }: {
                                 {
                                     quoteMessage.TextMessage?.startsWith("```") ?
                                         <CodeView textMessage={quoteMessage.TextMessage}/>
-                                        : <>{quoteMessage.TextMessage}</>
+                                        : <><Text text={quoteMessage.TextMessage}/></>
                                 }
                             </>
                         }</div>
@@ -231,7 +231,9 @@ function Message({ message, setQuoteMessage }: {
                                 {
                                     quoteMessage.TextMessage?.startsWith("```") ?
                                         <CodeView textMessage={quoteMessage.TextMessage}/>
-                                        : <>{quoteMessage.TextMessage}</>
+                                        : <>
+                                            <Text text={quoteMessage.TextMessage}/>
+                                        </>
                                 }
                             </>
                         }</div>

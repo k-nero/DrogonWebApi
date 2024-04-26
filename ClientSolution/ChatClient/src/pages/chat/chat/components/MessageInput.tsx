@@ -21,6 +21,7 @@ import EmojiTooltip from "@/components/EmojiToolTip.tsx";
 import { EmojiClickData } from "emoji-picker-react";
 import { audioFileExt, otherFileExt, textFileExt, videoFileExt } from "@/utils/file/fileExt";
 import AttachView from "@/pages/chat/chat/components/message/AttachView.tsx";
+import Text from "@/components/text/Text.tsx";
 
 
 const baseUrl = new URL(`${import.meta.env.VITE_API_URL}`);
@@ -339,7 +340,7 @@ function MessageInput({ messageList, quoteMessage, setQuoteMessages }:
                                     <>
                                         <AttachView message={quoteMessage}/>
                                     </>
-                                    <p>{quoteMessage.TextMessage}</p>
+                                    <p><Text text={quoteMessage.TextMessage}/></p>
                                 </div>
                                 <div>
                                     <button onClick={() => {
