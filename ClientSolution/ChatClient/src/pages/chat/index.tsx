@@ -34,7 +34,7 @@ function ChatPage()
         Query<PaginatedType<ChatParticipant>>( "/chat-participant" ).then((r) => {
             setChats(r);
             r?.m_data?.map((chat) => {
-                Query<PaginatedType<MessageType>>(`/message?chat_id=${chat.ChatRoomId}&page=1&limit=20`).then((r) => {
+                Query<PaginatedType<MessageType>>(`/message?chat_id=${chat.ChatRoomId}&page=1&limit=10`).then((r) => {
                     setMessageMap((prev) => {
                         return new Map(prev.set(chat.ChatRoomId, r?.m_data.reverse()));
                     });

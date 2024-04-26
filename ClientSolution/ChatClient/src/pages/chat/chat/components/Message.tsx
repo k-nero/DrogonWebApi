@@ -401,8 +401,6 @@ function Message({ message, setQuoteMessage }: {
         </div>
     );
 
-
-
     if (incoming)
     {
         return (

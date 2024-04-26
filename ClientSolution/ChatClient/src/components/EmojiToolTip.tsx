@@ -6,7 +6,7 @@ function EmojiTooltip({ EmojiClickCallback, reactionOpen = true}: { EmojiClickCa
     return (
         <EmojiPicker onReactionClick={(emoji, event) => EmojiClickCallback(emoji, event)}
                      onEmojiClick={(emoji, event) => EmojiClickCallback(emoji, event)}
-                     reactionsDefaultOpen={reactionOpen} emojiStyle={EmojiStyle.GOOGLE} />
+                     reactionsDefaultOpen={reactionOpen} emojiStyle={EmojiStyle.GOOGLE} lazyLoadEmojis={true}  />
     );
 }
 
