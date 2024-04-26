@@ -89,7 +89,7 @@ function Chat()
                         </div>
                         {
                             <div className={`${isPanelOpen ? "col-span-4" : "hidden"}`}>
-                                <ChatPanel setIsPanel={setIsPanel}/>
+                                <ChatPanel chatRoom={chatRoom} onlineMap={onlineUsersMap}/>
                             </div>
                         }
                     </div>

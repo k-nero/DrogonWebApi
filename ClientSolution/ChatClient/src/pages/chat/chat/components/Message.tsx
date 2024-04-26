@@ -17,7 +17,6 @@ import Text from "@/components/text/Text.tsx";
 import EmojiTooltip from "@/components/EmojiToolTip";
 import ImageViewModal from "@/components/modal/ImageViewModal.tsx";
 import translate from "translate";
-import { isEqual } from 'lodash';
 
 const baseUrl = new URL(`${import.meta.env.VITE_API_URL}`);
 
@@ -54,8 +53,6 @@ function Message({ message, setQuoteMessage }: {
             }
         });
     }, []);
-
-    console.log("Message rerendered");
 
     const [isSeenByModalOpen, setIsSeenByModalOpen] = useState(false);
     const showSeenByModal = () =>

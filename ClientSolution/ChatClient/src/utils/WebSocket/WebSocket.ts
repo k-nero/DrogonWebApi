@@ -29,6 +29,8 @@ export class uWebSockets
             const chats = await Query<PaginatedType<ChatParticipant>>("/chat-participant");
             const chatIds: string[] = chats?.m_data?.map((chat: { ChatRoomId: string; }) => chat.ChatRoomId);
 
+            //TODO: add check if user hide online status
+
             const message = JSON.stringify({
                 type: "online",
                 contacts: chatIds
