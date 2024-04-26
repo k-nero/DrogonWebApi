@@ -1,5 +1,5 @@
-import Message, { MemoizedMessage } from "@/pages/chat/chat/components/Message.tsx";
-import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { MemoizedMessage } from "@/pages/chat/chat/components/Message.tsx";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import MessageType from "@/utils/type/MessageType.ts";
 import { useLocation } from "react-router-dom";
 import Query from "@/utils/function/Query.ts";

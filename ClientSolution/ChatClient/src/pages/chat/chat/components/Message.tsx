@@ -15,7 +15,6 @@ import MessageSeenByType from "@/utils/type/MessageSeenByType.ts";
 import CodeView from "@/pages/chat/chat/components/CodeMessage.tsx";
 import Text from "@/components/text/Text.tsx";
 import EmojiTooltip from "@/components/EmojiToolTip";
-import ImageViewModal from "@/components/modal/ImageViewModal.tsx";
 import translate from "translate";
 import AttachView from "@/pages/chat/chat/components/message/AttachView.tsx";
 
