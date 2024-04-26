@@ -54,6 +54,18 @@ namespace drogon
 		return obj;
 	}
 
+	template <typename T, class D = boost::describe::describe_members<T, boost::describe::mod_any_access | boost::describe::mod_inherited> >
+	static inline T bind_models(const HttpRequest& req)
+	{
+		T obj{};
+		std::shared_ptr<Json::Value> json = req.getJsonObject();
+		if (json)
+		{
+			return JsonParser<T>::obj_from_json(*json);
+		}
+		return obj;
+	}
+
 	/*template<>
 	inline TodoList fromRequest(const HttpRequest& req)
 	{

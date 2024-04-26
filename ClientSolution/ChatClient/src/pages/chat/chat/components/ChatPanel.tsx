@@ -12,6 +12,7 @@ import FilePanel from "@/pages/chat/chat/components/chat-panel/FilePanel.tsx";
 import useLocalStorage from "@/utils/hooks/useLocalStorage.ts";
 import { AuthResponse } from "@/utils/type/AuthResponse.ts";
 import OnlineSignalDot from "@/components/OnlineSignalDot.tsx";
+import { IoExitOutline } from "react-icons/io5";
 
 function ChatPanel({chatRoom, onlineMap} : {chatRoom : ChatRoom | undefined, onlineMap: Map<string, boolean>})
 {
@@ -77,7 +78,7 @@ function ChatPanel({chatRoom, onlineMap} : {chatRoom : ChatRoom | undefined, onl
                                 <p className="">
                                         @<a href="#" className="underline">{member.ApplicationUser?.UserName}</a>
                                     </p>
-                                    <p className="text-sm text-gray-600">
+                                    <p className="text-sm text-gray-500">
                                         Joined on
                                         {
                                             " " + new Date(member.CreatedDate).toLocaleDateString()
@@ -157,6 +158,13 @@ function ChatPanel({chatRoom, onlineMap} : {chatRoom : ChatRoom | undefined, onl
                 "chatMember",
                 "image"
             ]} expandIconPosition={"end"} items={items} className="text-teal-500 bg-white text-1xl border-b-2" bordered={false}/>
+            <div className="w-96 m-auto flex justify-center items-center">
+                <IoExitOutline className="text-red-500 text-xl"/>
+                <button className=" p-4 text-red-500 font-bold">Leave Chat </button>
+            </div>
+            <div className="w-96 m-auto flex justify-center items-center">
+                <button className=" p-4 text-red-500 font-bold">Delete Chat</button>
+            </div>
         </div>
     );
 }

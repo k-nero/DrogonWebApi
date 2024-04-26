@@ -141,6 +141,9 @@
     <ClInclude Include="MessageSeenByService.h">
       <Filter>Header Files\Services</Filter>
     </ClInclude>
+    <ClInclude Include="MediaMessageModel.h">
+      <Filter>Header Files\Model</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ApplicationUserServices.cpp">

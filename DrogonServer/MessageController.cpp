@@ -1,4 +1,5 @@
 #include "MessageController.h"
+#include <MessageAttachService.h>
 
 void MessageController::GetAll(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback)
 {
@@ -111,6 +112,80 @@ void MessageController::Create(const HttpRequestPtr& req, std::function<void(con
 		resp->setStatusCode(k201Created);
 		callback(resp);
 		return;
+	}
+	catch (std::exception& ex)
+	{
+		BOOST_LOG_TRIVIAL(error) << ex.what();
+		Json::Value ret;
+		ret["error"] = ex.what();
+		ret["status"] = 500;
+		const auto resp = HttpResponse::newHttpJsonResponse(ret);
+		resp->setStatusCode(k500InternalServerError);
+		callback(resp);
+		return;
+	}
+	catch (...)
+	{
+		BOOST_LOG_TRIVIAL(error) << "Unknow exception";
+		Json::Value ret;
+		ret["error"] = "Internal Server Error";
+		ret["status"] = 500;
+		const auto resp = HttpResponse::newHttpJsonResponse(ret);
+		resp->setStatusCode(k500InternalServerError);
+		callback(resp);
+		return;
+	}
+}
+
+void MessageController::CreateMedia(const HttpRequestPtr& req, std::function<void(const HttpResponsePtr&)>&& callback, MediaMessageModel model)
+{
+	try
+	{
+		if (model.GetTextMessage().empty() && model.GetMedia().empty())
+		{
+			Json::Value ret;
+			ret["error"] = "Text message or media message is required";
+			ret["status"] = 422;
+			const auto resp = HttpResponse::newHttpJsonResponse(ret);
+			resp->setStatusCode(k422UnprocessableEntity);
+			callback(resp);
+			return;
+		}
+
+		auto message_model = MessageModel(model.GetTextMessage(), model.GetApplicationUserId(), model.GetChatRoomId(), model.GetQuoteMessageId());
+		auto create_message = std::async(std::launch::async, [&message_model]() { return MessageService().CreateMessage(message_model); });
+		const auto message_id = create_message.get();
+
+		if (model.GetMedia().size() > 0)
+		{
+			for (auto& media : model.GetMedia())
+			{
+				media.SetMessageId(message_id);
+				 MessageAttachService().CreateMessageAttach(media);
+			}
+		}
+
+		Json::Value ret;
+		if (!message_id.empty())
+		{
+			ret["id"] = message_id;
+			ret["status"] = 201;
+			ret["message"] = "Message created successfully!";
+			const auto resp = HttpResponse::newHttpJsonResponse(ret);
+			resp->setStatusCode(k201Created);
+			callback(resp);
+			return;
+		}
+		else
+		{
+			ret["error"] = "Internal Server Error";
+			ret["status"] = 500;
+			const auto resp = HttpResponse::newHttpJsonResponse(ret);
+			resp->setStatusCode(k422UnprocessableEntity);
+			callback(resp);
+			return;
+		}
+
 	}
 	catch (std::exception& ex)
 	{

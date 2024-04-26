@@ -249,6 +249,7 @@
     <ClInclude Include="framework.h" />
     <ClInclude Include="ApplicationApi.h" />
     <ClInclude Include="Mapper.h" />
+    <ClInclude Include="MediaMessageModel.h" />
     <ClInclude Include="MessageAttachModel.h" />
     <ClInclude Include="MessageAttachService.h" />
     <ClInclude Include="MessageModel.h" />

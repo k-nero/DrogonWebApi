@@ -20,6 +20,7 @@ import { AudioRecorder } from "react-audio-voice-recorder";
 import EmojiTooltip from "@/components/EmojiToolTip.tsx";
 import { EmojiClickData } from "emoji-picker-react";
 import { audioFileExt, otherFileExt, textFileExt, videoFileExt } from "@/utils/file/fileExt";
+import AttachView from "@/pages/chat/chat/components/message/AttachView.tsx";
 
 
 const baseUrl = new URL(`${import.meta.env.VITE_API_URL}`);
@@ -77,85 +78,155 @@ function MessageInput({ messageList, quoteMessage, setQuoteMessages }:
         setFiles([...files, file]);
     }
 
-    async function sendMessage()
+    // async function sendMessage()
+    // {
+    //     if (uWebSockets.getInstance().ConnectState() !== 1)
+    //     {
+    //         alert("Connection lost, reconnecting...");
+    //     }
+    //
+    //     if (!message || message.trim() === "" && files.length === 0)
+    //     {
+    //         setMessage("");
+    //         return;
+    //     }
+    //     setIsSending(true);
+    //     const res = await fetch(`${baseUrl}/message`, {
+    //         method: "POST",
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //             "Authorization": `Bearer ${user.access_token}`
+    //         },
+    //         body: JSON.stringify({
+    //             TextMessage: message,
+    //             ChatRoomId: chat_id,
+    //             ApplicationUserId: user.user.Id,
+    //             QuoteMessageId: quoteMessage?.Id ? quoteMessage.Id : undefined
+    //         })
+    //     });
+    //
+    //     if (res.ok)
+    //     {
+    //         const rs = await res.json();
+    //         if (files.length > 0)
+    //         {
+    //             Promise.all(files.map(async (file) => {
+    //                     const formData = new FormData();
+    //                     formData.append("file", file);
+    //                     const fileRs = await fetch(`${cdnURL}files/uploads`, {
+    //                         method: "PUT",
+    //                         body: formData
+    //                     });
+    //
+    //                     if (fileRs.ok)
+    //                     {
+    //                         const r = await fetch(`${baseUrl}/message-attach`, {
+    //                             method: "POST",
+    //                             headers: {
+    //                                 "Content-Type": "application/json"
+    //                             },
+    //                             body: JSON.stringify({
+    //                                 MessageId: rs.id,
+    //                                 AttachUrl: `${cdnURL}files/${file.name}`,
+    //                                 AttachName: file.name,
+    //                                 AttachType: file.type === "application/pdf" ? "text" : file.type.split("/")[0],
+    //                                 ChatRoomId: chat_id
+    //                             })
+    //                         });
+    //                     }
+    //                 })
+    //             ).then(async () => {
+    //                 setFiles([]);
+    //                 const message = await Query<MessageType>(`/message/${rs.id}`);
+    //                 uWebSockets.getInstance().send(JSON.stringify({
+    //                     type: "message",
+    //                     channel: chat_id,
+    //                     message: message
+    //                 }));
+    //             });
+    //         }
+    //         else
+    //         {
+    //             const message = await Query<MessageType>(`/message/${rs.id}`);
+    //             uWebSockets.getInstance().send(JSON.stringify({
+    //                 type: "message",
+    //                 channel: chat_id,
+    //                 message: message
+    //             }));
+    //         }
+    //     }
+    //     setQuoteMessages(undefined);
+    //
+    //     setMessage("");
+    //     setIsSending(false);
+    // }
+
+    async function sendMessageWithFiles()
     {
+        console.log("sending message with files");
         if (uWebSockets.getInstance().ConnectState() !== 1)
         {
             alert("Connection lost, reconnecting...");
         }
-        setQuoteMessages(undefined);
 
-        if (!message || message.trim() === "")
+        if (!message  && files.length === 0)
         {
+            console.log("message is empty");
             setMessage("");
             return;
         }
         setIsSending(true);
-        const res = await fetch(`${baseUrl}/message`, {
+
+        const attach_models = await Promise.all(files.map(async (file) => {
+                const formData = new FormData();
+                formData.append("file", file);
+                const fileRs = await fetch(`${cdnURL}files/uploads`, {
+                    method: "PUT",
+                    body: formData
+                });
+
+                if (fileRs.ok)
+                {
+                    return {
+                        AttachUrl: `${cdnURL}files/${file.name}`,
+                        AttachName: file.name,
+                        AttachType: file.type === "application/pdf" ? "text" : file.type.split("/")[0],
+                        ChatRoomId: chat_id
+                    };
+                }
+            })
+        );
+
+        const message_id = await fetch(`${baseUrl}/media-message`, {
             method: "POST",
             headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${user.access_token}`
+                "Content-Type": "application/json"
             },
             body: JSON.stringify({
                 TextMessage: message,
                 ChatRoomId: chat_id,
                 ApplicationUserId: user.user.Id,
+                Media: attach_models,
                 QuoteMessageId: quoteMessage?.Id ? quoteMessage.Id : undefined
             })
         });
 
-        if (res.ok)
-        {
-            const rs = await res.json();
-            if (files.length > 0)
-            {
-                Promise.all(files.map(async (file) => {
-                        const formData = new FormData();
-                        formData.append("file", file);
-                        const fileRs = await fetch(`${cdnURL}files/uploads`, {
-                            method: "PUT",
-                            body: formData
-                        });
 
-                        if (fileRs.ok)
-                        {
-                            const r = await fetch(`${baseUrl}/message-attach`, {
-                                method: "POST",
-                                headers: {
-                                    "Content-Type": "application/json"
-                                },
-                                body: JSON.stringify({
-                                    MessageId: rs.id,
-                                    AttachUrl: `${cdnURL}files/${file.name}`,
-                                    AttachName: file.name,
-                                    AttachType: file.type === "application/pdf" ? "text" : file.type.split("/")[0],
-                                    ChatRoomId: chat_id
-                                })
-                            });
-                        }
-                    })
-                ).then(async () => {
-                    setFiles([]);
-                    const message = await Query<MessageType>(`/message/${rs.id}`);
-                    uWebSockets.getInstance().send(JSON.stringify({
-                        type: "message",
-                        channel: chat_id,
-                        message: message
-                    }));
-                });
-            }
-            else
-            {
-                const message = await Query<MessageType>(`/message/${rs.id}`);
-                uWebSockets.getInstance().send(JSON.stringify({
-                    type: "message",
-                    channel: chat_id,
-                    message: message
-                }));
-            }
+        if (message_id.ok)
+        {
+            const r = await message_id.json();
+            console.log(r);
+            const message = await Query<MessageType>(`/message/${r.id}`);
+            uWebSockets.getInstance().send(JSON.stringify({
+                type: "message",
+                channel: chat_id,
+                message: message
+            }));
+            console.log(message);
         }
+        setQuoteMessages(undefined);
         setMessage("");
+        setFiles([]);
         setIsSending(false);
     }
 
@@ -265,6 +336,9 @@ function MessageInput({ messageList, quoteMessage, setQuoteMessages }:
                                     <p className="font-bold">Replying to {
                                         quoteMessage?.ApplicationUser?.UserName === user.user.UserName ? "You" : "@" + quoteMessage?.ApplicationUser?.UserName
                                     }</p>
+                                    <>
+                                        <AttachView message={quoteMessage}/>
+                                    </>
                                     <p>{quoteMessage.TextMessage}</p>
                                 </div>
                                 <div>
@@ -357,11 +431,13 @@ function MessageInput({ messageList, quoteMessage, setQuoteMessages }:
                         </div>
                     ) : null
                 }
-                <form onSubmit={(e) => {
+                <form
+                    onSubmit={(e) => {
                     e.preventDefault();
-                    e.currentTarget.reset();
-                    sendMessage().then(() => {});
+                        sendMessageWithFiles().then(() => {});
+                        e.currentTarget.reset();
                 }}
+                    name={"message-form"}
                       className="mt-4"
                 >
                     <div>
@@ -376,8 +452,9 @@ function MessageInput({ messageList, quoteMessage, setQuoteMessages }:
                 } onKeyDown={(event) => {
                     if (event.key === "Enter" && !event.shiftKey)
                     {
+
                         event.preventDefault();
-                        sendMessage().then(() => {
+                        sendMessageWithFiles().then(() => {
 
                         });
                         event.currentTarget.value = "";
@@ -457,7 +534,7 @@ function MessageInput({ messageList, quoteMessage, setQuoteMessages }:
 
                         <div className="justify-items-end">
                             <button className="text-teal-500 font-bold" type="submit" onClick={(e) => {
-                                e.preventDefault();
+                                //e.preventDefault();
                             }}>
                                 {
                                     isSending ? (

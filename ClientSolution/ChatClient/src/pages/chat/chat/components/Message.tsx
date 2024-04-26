@@ -17,6 +17,7 @@ import Text from "@/components/text/Text.tsx";
 import EmojiTooltip from "@/components/EmojiToolTip";
 import ImageViewModal from "@/components/modal/ImageViewModal.tsx";
 import translate from "translate";
+import AttachView from "@/pages/chat/chat/components/message/AttachView.tsx";
 
 const baseUrl = new URL(`${import.meta.env.VITE_API_URL}`);
 
@@ -95,6 +96,7 @@ function Message({ message, setQuoteMessage }: {
     {
         setCodeModalOpen(false);
     };
+
 
     function MessageOption()
     {
@@ -175,10 +177,8 @@ function Message({ message, setQuoteMessage }: {
         {
             return null;
         }
-        useEffect(() =>
-        {
-            Query<MessageType>(`/message/${message.QuoteMessageId}`).then((r) =>
-            {
+        useEffect(() => {
+            Query<MessageType>(`/message/${message.QuoteMessageId}`).then((r) => {
                 setQuoteMessage(r);
             });
         }, []);
@@ -196,9 +196,16 @@ function Message({ message, setQuoteMessage }: {
                     }</p>
                     <div className="opacity-70 bg-white p-3 mx-3 rounded-xl max-w-96 ">
                         <div className="max-h-96 overflow-auto">{
-                            quoteMessage.TextMessage?.startsWith("```") ?
-                                <CodeView textMessage={quoteMessage.TextMessage} />
-                                : <>{quoteMessage.TextMessage}</>
+                            <>
+                                <div>
+                                    <AttachView message={quoteMessage} />
+                                </div>
+                                {
+                                    quoteMessage.TextMessage?.startsWith("```") ?
+                                        <CodeView textMessage={quoteMessage.TextMessage}/>
+                                        : <>{quoteMessage.TextMessage}</>
+                                }
+                            </>
                         }</div>
                     </div>
                 </div>
@@ -218,9 +225,16 @@ function Message({ message, setQuoteMessage }: {
                     }</p>
                     <div className="opacity-70 bg-white p-3 mx-3 rounded-xl max-w-96 ">
                         <div className="max-h-96 overflow-auto">{
-                            quoteMessage.TextMessage?.startsWith("```") ?
-                                <CodeView textMessage={quoteMessage.TextMessage} />
-                                : <>{quoteMessage.TextMessage}</>
+                            <>
+                                <div>
+                                    <AttachView message={quoteMessage} />
+                                </div>
+                                {
+                                    quoteMessage.TextMessage?.startsWith("```") ?
+                                        <CodeView textMessage={quoteMessage.TextMessage}/>
+                                        : <>{quoteMessage.TextMessage}</>
+                                }
+                            </>
                         }</div>
                     </div>
                 </div>
@@ -297,7 +311,7 @@ function Message({ message, setQuoteMessage }: {
             <div>
                 <div className="flex justify-between">
                     <div className="flex gap-2.5">
-                        <img src={user?.AvatarUrl} alt={user?.UserName} className="w-6 h-6 rounded-full" />
+                        <img src={user?.AvatarUrl} alt={user?.UserName} className="w-6 h-6 rounded-full"/>
                         <p>{user?.UserName}</p>
                     </div>
                     <p className={"text-gray-500"}>{new Date(seenBy?.CreatedDate).toLocaleTimeString("en-US", {
@@ -343,10 +357,9 @@ function Message({ message, setQuoteMessage }: {
             <Modal title="Message seen by" open={isSeenByModalOpen} onOk={handleSeenByOk} onCancel={handleSeenByCancel} footer={[]}>
                 <div>
                     {
-                        message.MessageSeenBys?.map((seenBy) =>
-                        {
+                        message.MessageSeenBys?.map((seenBy) => {
                             return (
-                                <UserSeenBy key={seenBy.Id} seenBy={seenBy} />
+                                <UserSeenBy key={seenBy.Id} seenBy={seenBy}/>
                             );
                         })
                     }
@@ -357,23 +370,20 @@ function Message({ message, setQuoteMessage }: {
                 <div>
                     {
                         message.MessageReactions?.filter((value, index, self) =>
-                            self.findIndex((t) => t.ApplicationUserId === value.ApplicationUserId) === index)?.map((reaction) =>
+                            self.findIndex((t) => t.ApplicationUserId === value.ApplicationUserId) === index)?.map((reaction) => {
+                            return reaction.ApplicationUserId;
+                        })?.map((user_id) => {
+                            const re = message.MessageReactions?.filter((value) => {
+                                return value.ApplicationUserId === user_id;
+                            });
+                            if (!re)
                             {
-                                return reaction.ApplicationUserId;
-                            })?.map((user_id) =>
-                            {
-                                const re = message.MessageReactions?.filter((value) =>
-                                {
-                                    return value.ApplicationUserId === user_id;
-                                });
-                                if (!re)
-                                {
-                                    return null;
-                                }
-                                return (
-                                    <UserReaction key={user_id} reaction={re} />
-                                );
-                            })
+                                return null;
+                            }
+                            return (
+                                <UserReaction key={user_id} reaction={re}/>
+                            );
+                        })
                     }
                 </div>
             </Modal>
@@ -391,10 +401,9 @@ function Message({ message, setQuoteMessage }: {
                     overflow: "auto"
                 }}>
 
-                    <CodeView textMessage={message.TextMessage} />
+                    <CodeView textMessage={message.TextMessage}/>
                 </div>
             </Modal>
-
         </div>
     );
 
@@ -405,7 +414,7 @@ function Message({ message, setQuoteMessage }: {
                 {modal}
                 <div className="w-full flex group ">
                     <div className="mt-auto">
-                        <img loading="lazy" src={message?.ApplicationUser?.AvatarUrl} alt="John Doe" className="w-6 h-6 rounded-full" />
+                        <img loading="lazy" src={message?.ApplicationUser?.AvatarUrl} alt="John Doe" className="w-6 h-6 rounded-full"/>
                     </div>
                     <div className="">
 
@@ -421,52 +430,7 @@ function Message({ message, setQuoteMessage }: {
                             <div className="bg-white p-3 mx-3 rounded-xl  max-w-96 relative">
                                 {
                                     message.MessageAttachs?.length && message.MessageAttachs?.length > 0 ?
-
-                                        <div className="flex max-w-96 gap-2.5 justify-start mb-3">
-                                            {
-                                                message.MessageAttachs.map((attach) => {
-                                                    if(attach.AttachType === "image")
-                                                    {
-                                                        return (
-                                                            <div key={attach.Id} className="w-fit ">
-                                                                <button onClick={() => {
-                                                                    ImageViewModal({ image: attach });
-                                                                }}>
-                                                                    <img loading="lazy" src={attach.AttachUrl} alt={attach.AttachName} className="h-32 m-auto rounded-md"/>
-                                                                </button>
-                                                            </div>
-                                                        );
-                                                    }
-                                                    else if(attach.AttachType === "video")
-                                                    {
-                                                        return (
-                                                            <div key={attach.Id} className="w-fit justify-start ">
-                                                                <p className="text-sm text-gray-500">{attach.AttachName}</p>
-                                                                <video src={attach.AttachUrl} controls className="h-32 mt-1 m-auto"/>
-                                                            </div>
-                                                        );
-                                                    }
-                                                    else if(attach.AttachType === "audio")
-                                                    {
-                                                        return (
-                                                            <div key={attach.Id} className="w-fit h-fit justify-start ">
-                                                                <p className="text-sm text-gray-500">{attach.AttachName}</p>
-                                                                <audio src={attach.AttachUrl} controls className="mt-1 m-auto"/>
-                                                            </div>
-                                                        );
-                                                    }
-                                                    else
-                                                    {
-                                                        return (
-                                                            <div key={attach.Id} className="w-fit justify-start ">
-                                                                <a href={attach.AttachUrl} target="_blank" rel="noreferrer" className="text-blue-500 underline">{attach.AttachName}</a>
-                                                            </div>
-                                                        );
-                                                    }
-
-                                                })
-                                            }
-                                        </div>
+                                        <AttachView message={message}/>
                                         : null
                                 }
                                 <div className="">
@@ -475,9 +439,10 @@ function Message({ message, setQuoteMessage }: {
                                             message.TextMessage?.startsWith("```") ?
                                                 <CodeView textMessage={message.TextMessage}/>
                                                 : <>
-                                                {
-                                                    translateText === "" ? <Text text={message.TextMessage}/> : <Text text={translateText}/>
-                                                }
+                                                    {
+                                                        translateText === "" ? <Text text={message.TextMessage}/> :
+                                                            <Text text={translateText}/>
+                                                    }
                                                 </>
                                         }
                                     </div>
@@ -589,61 +554,7 @@ function Message({ message, setQuoteMessage }: {
                                 {
                                     message.MessageAttachs?.length && message.MessageAttachs?.length > 0 ?
 
-                                        <div className="flex max-w-96 gap-2.5 justify-end mb-3">
-                                            {
-                                                message.MessageAttachs.map((attach) => {
-                                                    const ext = attach.AttachName.split(".")[attach.AttachName.split(".").length - 1];
-                                                    if(attach.AttachType === "image")
-                                                    {
-                                                        return (
-                                                            <div key={attach.Id} className="w-fit ">
-                                                                <button onClick={() => {
-                                                                    ImageViewModal({ image: attach });
-                                                                }}>
-                                                                    <img loading="lazy" src={attach.AttachUrl} alt={attach.AttachName} className="h-32 m-auto rounded-md"/>
-                                                                </button>
-                                                            </div>
-                                                        );
-                                                    }
-                                                    else if (attach.AttachType === "video")
-                                                    {
-                                                        return (
-                                                            <div key={attach.Id} className="w-fit h-fit justify-end ">
-                                                                <a href={attach.AttachUrl} className="text-sm text-gray-500 underline" target="_blank">{attach.AttachName}</a>
-                                                                <video src={attach.AttachUrl} controls className="mt-1 h-32 m-auto"/>
-                                                            </div>
-                                                        );
-                                                    }
-                                                    else if(attach.AttachType === "audio")
-                                                    {
-                                                        return (
-                                                            <div key={attach.Id} className="w-fit h-fit justify-start ">
-                                                                <a href={attach.AttachUrl} className="text-sm text-gray-500 underline" target="_blank">{attach.AttachName}</a>
-                                                                <audio src={attach.AttachUrl} controls className="mt-1 m-auto"/>
-                                                            </div>
-                                                        );
-                                                    }
-                                                    else if(attach.AttachType === "text")
-                                                    {
-                                                        return (
-                                                            <div key={attach.Id} className="w-fit h-fit justify-start ">
-                                                                <a href={attach.AttachUrl} className="text-sm text-gray-500 underline" target="_blank">{attach.AttachName}</a>
-                                                                <img src={`/src/assets/text/${ext}.png`} className="mt-1 h-24 m-auto" alt={attach.AttachName}/>
-                                                            </div>
-                                                        );
-                                                    }
-                                                    else
-                                                    {
-                                                        return (
-                                                            <div key={attach.Id} className="w-fit justify-end  ">
-                                                                <a href={attach.AttachUrl} target="_blank" rel="noreferrer" className="text-blue-500 underline">{attach.AttachName}</a>
-                                                            </div>
-                                                        );
-                                                    }
-
-                                                })
-                                            }
-                                        </div>
+                                        <AttachView message={message} />
                                         : null
                                 }
                                 <div className="ml-auto">
