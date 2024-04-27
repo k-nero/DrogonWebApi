@@ -188,9 +188,10 @@ function MessageInput({ messageList, quoteMessage, setQuoteMessages }:
 
                 if (fileRs.ok)
                 {
+                    const r = await fileRs.json();
                     return {
-                        AttachUrl: `${cdnURL}files/${file.name}`,
-                        AttachName: file.name,
+                        AttachUrl: `${cdnURL}files/${r.filename}`,
+                        AttachName: r.filename,
                         AttachType: file.type === "application/pdf" ? "text" : file.type.split("/")[0],
                         ChatRoomId: chat_id
                     };
@@ -362,11 +363,11 @@ function MessageInput({ messageList, quoteMessage, setQuoteMessages }:
                                     return (
                                         <div key={index} className="">
                                             <div className="flex gap-2">
-                                                <p className="px-2 w-32 overflow-hidden whitespace-nowrap">{file.name}</p>
-                                                <button onClick={() => {
+                                                {/*<p className="px-2 w-32 overflow-hidden whitespace-nowrap">{file.name}</p>*/}
+                                                <button className="ml-auto" onClick={() => {
                                                     setFiles(files.filter((f) => f.name !== file.name));
                                                 }}>
-                                                    <IoClose/>
+                                                    <IoClose />
                                                 </button>
                                             </div>
                                             {

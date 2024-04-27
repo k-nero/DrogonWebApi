@@ -8,7 +8,8 @@ const storage = multer.diskStorage({
         cb(null, "uploads/");
     },
     filename: function (req, file, cb) {
-        cb(null, file.originalname);
+        const newFileName = Date.now() + path.extname(file.originalname);
+        cb(null, newFileName);
     }
 });
 router.get("/:filename", function (req, res, next) {
@@ -28,7 +29,10 @@ router.put("/uploads", function (req, res, next) {
             console.log(err);
             return res.status(500).json({ error: err.json });
         }
-        res.status(200).send("File uploaded successfully");
+        res.status(200).send({
+            message: "File is uploaded",
+            filename: req.file.filename
+        });
     });
 });
 module.exports = router;

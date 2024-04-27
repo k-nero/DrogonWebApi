@@ -132,7 +132,7 @@ function Message({ message, setQuoteMessage }: {
                     </button>
                 </div>
                 {
-                    !message.TextMessage?.startsWith("```") &&
+                    !message.TextMessage?.startsWith("```") && message.TextMessage &&
                     <>
                         {
                             translateText === "" ?
