@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import SignIn from "./pages/auth/SignIn.tsx";
 import ChatPage from "@/pages/chat";
 import Contact from "@/pages/contact";
@@ -16,15 +16,15 @@ import Notifications from "@/pages/settings/notifications";
 import CodeView from "@/pages/settings/code-view";
 
 export type RoutesType = {
-    name: string;
-    path: string;
-    element: JSX.Element;
+    name?: string;
+    path?: string;
+    element?: JSX.Element;
     errorElement?: JSX.Element;
     children?: RoutesType[];
+    index?: boolean;
 };
 
-
-const routes: RoutesType[] = [
+const routes = [
     {
         name: "Authentication",
         path: "/auth/sign-in",
@@ -35,6 +35,10 @@ const routes: RoutesType[] = [
         path: "/peoples",
         element: <Contact/>,
         children: [
+            {
+              index: true,
+              element: <Navigate to={"/peoples/contact"}/>
+            },
             {
                 name: "Contact",
                 path: "/peoples/contact",

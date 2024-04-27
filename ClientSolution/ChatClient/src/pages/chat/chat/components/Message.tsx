@@ -294,8 +294,6 @@ function Message({ message, setQuoteMessage }: {
     }
 
 
-
-
     function UserSeenBy({ seenBy }: { seenBy: MessageSeenByType })
     {
 

@@ -1,5 +1,5 @@
 import ChatLayout from "@/layouts/chats";
-import { NavLink, useOutlet } from "react-router-dom";
+import { NavLink, useNavigate, useOutlet } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { BsThreeDots } from "react-icons/bs";
 import InputField from "@/components/form/input.tsx";
@@ -12,26 +12,38 @@ import useLocalStorage from "@/utils/hooks/useLocalStorage.ts";
 import { AuthResponse } from "@/utils/type/AuthResponse.ts";
 import SocketMessage from "@/utils/WebSocket/SocketMessage.ts";
 import MessageSeenByType from "@/utils/type/MessageSeenByType.ts";
+import { GrAttachment } from "react-icons/gr";
 
 function ChatPage()
 {
     const [localUser] = useLocalStorage("auth_credential", {});
     const user: AuthResponse = localUser;
-    const outlet = useOutlet()
+    const outlet = useOutlet();
 
     const [chats, setChats] = useState<PaginatedType<ChatParticipant>>();
     const [messageMap, setMessageMap] = useState<Map<string, MessageType[]>>(new Map<string, MessageType[]>());
 
-    useEffect( () => {
+    const navigate = useNavigate();
+
+
+    useEffect(() => {
+        const last_chat_id = localStorage.getItem("last_chat_id");
+        if(last_chat_id)
+        {
+            navigate(`/chats/${last_chat_id}`);
+        }
+    }, []);
+
+    useEffect(() => {
         uWebSockets.getInstance().addMessageSubscriber((event) => {
-            const soc_mess: SocketMessage<MessageType>  = JSON.parse(event.data);
+            const soc_mess: SocketMessage<MessageType> = JSON.parse(event.data);
             const message: MessageType = soc_mess.message;
             setMessageMap((prev) => {
                 return new Map(prev.set(message.ChatRoomId, [...prev.get(message.ChatRoomId) || [], message]));
             });
         });
 
-        Query<PaginatedType<ChatParticipant>>( "/chat-participant" ).then((r) => {
+        Query<PaginatedType<ChatParticipant>>("/chat-participant").then((r) => {
             setChats(r);
             r?.m_data?.map((chat) => {
                 Query<PaginatedType<MessageType>>(`/message?chat_id=${chat.ChatRoomId}&page=1&limit=10`).then((r) => {
@@ -40,9 +52,9 @@ function ChatPage()
                     });
                 });
                 uWebSockets.getInstance().send(JSON.stringify({
-                   type: "subscribe",
-                   channel: chat.ChatRoomId
-               }))
+                    type: "subscribe",
+                    channel: chat.ChatRoomId
+                }));
             });
         });
     }, []);
@@ -52,24 +64,24 @@ function ChatPage()
             const e_data: SocketMessage<MessageSeenByType> = JSON.parse(event.data);
             setMessageMap((prev) => {
                 const prev_state = prev.get(e_data.channel);
-                if(!prev_state)
+                if (!prev_state)
                 {
                     return prev;
                 }
                 return new Map(prev.set(e_data.channel, prev_state.map((message) => {
-                    if(message.Id === e_data.message.MessageId)
+                    if (message.Id === e_data.message.MessageId)
                     {
                         message.MessageSeenBys?.push(e_data.message);
                     }
                     return message;
                 })));
-            })
-         })
+            });
+        });
     }, []);
 
     function ChatList()
     {
-        if(!chats)
+        if (!chats)
         {
             return <p>Loading...</p>;
         }
@@ -81,27 +93,19 @@ function ChatPage()
             const unreadMessage = message?.filter((m) => m.ApplicationUserId !== user.user.Id && !m.MessageSeenBys?.find((seen) => seen.ApplicationUserId === user.user.Id)).length || 0;
 
             return (
-                <NavLink key={index} onClick={()=> {}} className={`flex items-center justify-between p-3 ${index === (chats.m_data.length - 1) ? "" : "border-b-2" }`} to={`/chats/${chat.ChatRoomId}`}>
+                <NavLink key={index} onClick={() => {}} className={`flex items-center justify-between p-3 ${index === (chats.m_data.length - 1) ? "" : "border-b-2"}`} to={`/chats/${chat.ChatRoomId}`}>
                     <div className="flex items-center">
                         <img loading="lazy" src={chat?.ChatRoom?.RoomImageUrl} alt={chat?.ChatRoom?.RoomName} className="w-12 h-12 rounded-full"/>
                         <div className="ml-3 truncate ">
                             <h1 className="font-bold">{chat?.ChatRoom?.RoomName}</h1>
-                            {
-                                unreadMessage > 0 ?
-                                    <p className="font-bold text-sm text-gray-500 max-w-52">{
-                                        lastMessage?.TextMessage
-                                    }</p>
-                                    :
-                                    <p className="text-sm text-gray-500 max-w-52">{
-                                        lastMessage?.TextMessage
-                                    }</p>
-                            }
-
+                            <p className={`${unreadMessage > 0 ? "font-bold" : ""} text-sm text-gray-500 max-w-52`}> <GrAttachment className="inline-block"/>{
+                                lastMessage?.TextMessage ? lastMessage.TextMessage : lastMessage?.MessageAttachs?.length || 0 > 0 ? "[Attachment]" : null
+                            }</p>
                         </div>
                     </div>
                     <div className="min-w-fit">
                         <p className="text-sm text-gray-500">{
-                            new Date(lastMessage?.CreatedDate || chat.CreatedDate ).toLocaleTimeString("en-US", {
+                            new Date(lastMessage?.CreatedDate || chat.CreatedDate).toLocaleTimeString("en-US", {
                                 hour: "2-digit",
                                 minute: "2-digit"
                             })
@@ -152,13 +156,13 @@ function ChatPage()
                     </div>
                     <div className="col-span-9">
                         {
-                            outlet ||  <p>Select a chat to start conversion</p>
+                            outlet || <p>Select a chat to start conversion</p>
                         }
                     </div>
                 </div>
             </div>
         </ChatLayout>
-    )
+    );
 }
 
 export default ChatPage;

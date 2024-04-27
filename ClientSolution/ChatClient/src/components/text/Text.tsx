@@ -3,11 +3,6 @@ import remarkMath from "remark-math";
 import rehypeRaw from "rehype-raw";
 import rehypeMathjax, {Options} from "rehype-mathjax/svg";
 
-
-
-import "katex/dist/katex.min.css";
-
-
 function Text({ text }: { text: string })
 {
     const words = text.split(" ");
@@ -39,7 +34,7 @@ function Text({ text }: { text: string })
 
     const options: Options = {
         svg:{
-
+            scale: 1.3
         }
     }
 
@@ -48,9 +43,7 @@ function Text({ text }: { text: string })
             maxHeight: "100% !important"
         }}>
             <Markdown remarkPlugins={[remarkMath]} rehypePlugins={[[
-                rehypeMathjax, {
-
-                }
+                rehypeMathjax, options
             ], rehypeRaw]} remarkRehypeOptions={{}}>
                 {message}
             </Markdown>

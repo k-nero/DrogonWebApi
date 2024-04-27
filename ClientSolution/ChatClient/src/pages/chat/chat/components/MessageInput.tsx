@@ -204,7 +204,7 @@ function MessageInput({ messageList, quoteMessage, setQuoteMessages }:
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                TextMessage: message,
+                TextMessage: message.trim(),
                 ChatRoomId: chat_id,
                 ApplicationUserId: user.user.Id,
                 Media: attach_models,
@@ -300,9 +300,8 @@ function MessageInput({ messageList, quoteMessage, setQuoteMessages }:
         setMessage(m);
     }
 
-
     return (
-        <div className="relative mb-2">
+        <div className="relative mb-6">
             <Modal title={"Voice message"} open={isVoiceModalOpen} centered={true} onOk={handleVoiceOk} onCancel={handleVoiceCancel} footer={null} width="30%">
                 <div className="text-center">
                     <p className="">Press the button to start recording</p>
@@ -363,11 +362,10 @@ function MessageInput({ messageList, quoteMessage, setQuoteMessages }:
                                     return (
                                         <div key={index} className="">
                                             <div className="flex gap-2">
-                                                <p className="w-32 overflow-hidden whitespace-nowrap">{file.name}</p>
+                                                <p className="px-2 w-32 overflow-hidden whitespace-nowrap">{file.name}</p>
                                                 <button onClick={() => {
                                                     setFiles(files.filter((f) => f.name !== file.name));
                                                 }}>
-
                                                     <IoClose/>
                                                 </button>
                                             </div>

@@ -3,6 +3,8 @@ import Navbar from "@/components/navbar";
 import { BsThreeDots } from "react-icons/bs";
 import InputField from "@/components/form/input.tsx";
 import { NavLink } from "react-router-dom";
+import { IoPersonAddSharp } from "react-icons/io5";
+import { Modal } from "antd";
 
 const contact_links = [
 
@@ -46,8 +48,37 @@ function ContactLayout({ children }: { children: React.ReactNode })
         });
     }
 
+    const [addContactModal, setAddContactModal] = React.useState(false);
+    const [search, setSearch] = React.useState("");
+
+    function handleSearchChange(e: React.ChangeEvent<HTMLInputElement>)
+    {
+        setSearch(e.target.value);
+    }
+
     return (
         <>
+            <Modal title="Add new contact" open={addContactModal} onOk={() => {
+                setAddContactModal(false);
+            }} onCancel={() => {
+                setAddContactModal(false);
+            }} footer={[]}
+            centered={true} maskClosable={true} closable={true}
+            >
+                <div>
+                    <InputField
+                        variant=""
+                        extra="mb-2"
+                        placeholder="Search for people"
+                        type="text"
+                        label={""}
+                        id={""}
+                        onChange={handleSearchChange}
+                    />
+                    <p className={"text-gray-500 text-sm"}>Search for people using their username or email address</p>
+                </div>
+
+            </Modal>
             <div className="grid grid-cols-12">
                 <Navbar/>
                 <div className="min-h-screen col-span-11">
@@ -59,15 +90,25 @@ function ContactLayout({ children }: { children: React.ReactNode })
                                     <BsThreeDots className="text-2xl opacity-50"/>
                                 </button>
                             </div>
-                            <div className="">
-                                <InputField
-                                    variant="auth"
-                                    extra="mb-3"
-                                    placeholder="Search for people"
-                                    type="text"
-                                    label={""}
-                                    id={""}
-                                />
+                            {/*<div className="">*/}
+                            {/*    <InputField*/}
+                            {/*        variant="auth"*/}
+                            {/*        extra="mb-3"*/}
+                            {/*        placeholder="Search for people"*/}
+                            {/*        type="text"*/}
+                            {/*        label={""}*/}
+                            {/*        id={""}*/}
+                            {/*    />*/}
+                            {/*</div>*/}
+                            <div>
+                                <button className="text-center flex gap-2.5 justify-center bg-teal-500 w-full p-3 mt-4 rounded-full text-white font-bold"
+                                onClick={() => {
+                                    setAddContactModal(true);
+                                }}
+                                >
+                                    <IoPersonAddSharp className="text-xl" />
+                                    Add new contact
+                                </button>
                             </div>
                             <div className="mt-4 h-[80%] overflow-y-auto">
                                 <ContactLinks/>

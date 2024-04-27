@@ -1,5 +1,5 @@
 import ContactLayout from "@/layouts/contacts";
-import { Outlet } from "react-router-dom";
+import { Outlet, redirect } from "react-router-dom";
 import React from "react";
 
 function Contact()

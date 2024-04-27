@@ -9,7 +9,6 @@ import PaginatedType from "@/utils/type/common/PaginatedType.ts";
 
 function ContactList()
 {
-
     const [localUser] = useLocalStorage("auth_credential", {});
     const user: AuthResponse = localUser;
 
@@ -20,7 +19,6 @@ function ContactList()
             setContactList(r.m_data);
         });
     }, []);
-
 
     return contactList.map((contact_list) => {
         return (
