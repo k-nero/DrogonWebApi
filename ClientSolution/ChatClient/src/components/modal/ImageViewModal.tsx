@@ -1,15 +1,14 @@
-import { Modal } from "antd";
+import { message, Modal } from "antd";
 import MessageAttachType from "@/utils/type/MessageAttachType.ts";
-import { FaMagnifyingGlassMinus, FaMagnifyingGlassPlus, FaPlus } from "react-icons/fa6";
+import { FaMagnifyingGlassMinus, FaMagnifyingGlassPlus } from "react-icons/fa6";
 import React from "react";
-import { MdOutlineSaveAlt, MdOutlineTranslate } from "react-icons/md";
+import { MdOutlineSaveAlt } from "react-icons/md";
 import { FaRegClipboard, FaRegShareSquare } from "react-icons/fa";
 import TextFromImageModal from "@/components/modal/TextFromImageModal.tsx";
-import { TiDocumentText } from "react-icons/ti";
-import Tesseract from "tesseract.js";
 
 function ImageViewModal({ image, onClose }: { image: MessageAttachType, onClose?: () => void })
 {
+
     let attachName = image.AttachName.split(".")[0];
     const attachExt = image.AttachName.split(".")[1];
 
@@ -33,8 +32,8 @@ function ImageViewModal({ image, onClose }: { image: MessageAttachType, onClose?
                 }}>
                     <img loading="lazy" src={image.AttachUrl} alt={image.AttachName} className="" id={image.Id} style={{
                         maxHeight: "80vh",
-                        maxWidth: "80vw",
-                        transformOrigin: "50% 50%"
+                        transformOrigin: "50% 50%",
+                        objectFit: "contain",
                     }}/>
                 </div>
             </>
@@ -67,9 +66,9 @@ function ImageViewModal({ image, onClose }: { image: MessageAttachType, onClose?
                                 console.error("Blob is null");
                                 return;
                             }
-                            console.log(blob.size);
                             const item = new ClipboardItem({ "image/png" : blob });
-                            navigator.clipboard.write([item]).then(() => {});
+                            navigator.clipboard.write([item]).then(() => {
+                            });
                         })
                     }
                 } }>
