@@ -4,19 +4,20 @@ import { AuthResponse } from "@/utils/type/AuthResponse.ts";
 import { IoArrowRedoSharp, IoArrowUndo, IoCheckmarkDoneOutline } from "react-icons/io5";
 import { MdOutlineEmojiEmotions } from "react-icons/md";
 import { Button, Modal, Tooltip } from "antd";
-import React, { Dispatch, useCallback, useEffect, useState } from "react";
+import React, { Dispatch, useEffect, useState } from "react";
 import { EmojiClickData } from "emoji-picker-react";
 import { BsThreeDots } from "react-icons/bs";
 import Query from "@/utils/function/Query.ts";
 import { uWebSockets } from "@/utils/WebSocket/WebSocket.ts";
 import MessageReactionType from "@/utils/type/MessageReactionType.ts";
-import ApplicationUser from "@/utils/type/ApplicationUser.ts";
-import MessageSeenByType from "@/utils/type/MessageSeenByType.ts";
 import Text from "@/components/text/Text.tsx";
 import EmojiTooltip from "@/components/EmojiToolTip";
 import translate from "translate";
 import AttachView from "@/pages/chat/chat/components/message/AttachView.tsx";
 import CodeView from "@/components/text/CodeMessage";
+import UserSeenBy from "@/pages/chat/chat/components/message/UserSeenBy.tsx";
+import UserReaction from "@/pages/chat/chat/components/message/UserReaction.tsx";
+import QuoteMessage from "@/pages/chat/chat/components/message/QuoteMessage.tsx";
 
 const baseUrl = new URL(`${import.meta.env.VITE_API_URL}`);
 
@@ -27,7 +28,6 @@ function Message({ message, setQuoteMessage }: {
 {
     const [userLocal] = useLocalStorage("auth_credential", {});
     const credential: AuthResponse = userLocal;
-    //const [mess, setMessage] = useState<MessageType>(message);
     const [translateText, setTranslateText] = useState<string>("");
     const incoming = message.ApplicationUserId !== credential.user.Id;
 
@@ -169,82 +169,6 @@ function Message({ message, setQuoteMessage }: {
         );
     }
 
-    //cache the quote message to avoid unnecessary fetch
-    const QuoteMessage = useCallback(function QuoteMessage() {
-        const [quoteMessage, setQuoteMessage] = useState<MessageType>();
-        if (!message.QuoteMessageId)
-        {
-            return null;
-        }
-        useEffect(() => {
-            Query<MessageType>(`/message/${message.QuoteMessageId}`).then((r) => {
-                setQuoteMessage(r);
-            });
-        }, []);
-
-        if (incoming)
-        {
-            if (!quoteMessage)
-            {
-                return null;
-            }
-            return (
-                <div className="">
-                    <p className="text-xs mr-auto w-fit opacity-70 px-3">Replying to {
-                        quoteMessage?.ApplicationUser?.UserName === credential.user.UserName ? "You" : "@" + quoteMessage?.ApplicationUser?.UserName
-                    }</p>
-                    <div className="opacity-70 bg-white p-3 mx-3 rounded-xl max-w-96 ">
-                        <div className="max-h-96 overflow-auto">{
-                            <>
-                                <div>
-                                    <AttachView message={quoteMessage} />
-                                </div>
-                                {
-                                    quoteMessage.TextMessage?.startsWith("```") ?
-                                        <CodeView textMessage={quoteMessage.TextMessage}/>
-                                        : <><Text text={quoteMessage.TextMessage}/></>
-                                }
-                            </>
-                        }</div>
-                    </div>
-                </div>
-            );
-        }
-        else
-        {
-            if (!quoteMessage)
-            {
-                return null;
-            }
-            return (
-
-                <div className="">
-                    <p className="text-xs ml-auto w-fit opacity-70 px-3">Replying to {
-                        quoteMessage?.ApplicationUser?.UserName === credential.user.UserName ? "You" : "@" + quoteMessage?.ApplicationUser?.UserName
-                    }</p>
-                    <div className="opacity-70 bg-white p-3 mx-3 rounded-xl max-w-96 ">
-                        <div className="max-h-96 overflow-auto">{
-                            <>
-                                <div>
-                                    <AttachView message={quoteMessage} />
-                                </div>
-                                {
-                                    quoteMessage.TextMessage?.startsWith("```") ?
-                                        <CodeView textMessage={quoteMessage.TextMessage}/>
-                                        : <>
-                                            <Text text={quoteMessage.TextMessage}/>
-                                        </>
-                                }
-                            </>
-                        }</div>
-                    </div>
-                </div>
-            );
-        }
-
-
-    }, [message]);
-
     function EmojiClickCallback(emoji: EmojiClickData, event: MouseEvent)
     {
         const reaction = message.MessageReactions?.find((r) => r.ApplicationUserId === credential.user.Id && r.ReactionType === emoji.emoji);
@@ -291,64 +215,6 @@ function Message({ message, setQuoteMessage }: {
                 body: JSON.stringify(reaction)
             }).then(() => { });
         }
-    }
-
-
-    function UserSeenBy({ seenBy }: { seenBy: MessageSeenByType })
-    {
-
-        const [user, setUser] = useState<ApplicationUser>();
-        useEffect(() =>
-        {
-            Query<ApplicationUser>(`/users/${seenBy.ApplicationUserId}`).then((r) =>
-            {
-                setUser(r);
-            });
-        }, [seenBy]);
-
-        return (
-            <div>
-                <div className="flex justify-between">
-                    <div className="flex gap-2.5">
-                        <img src={user?.AvatarUrl} alt={user?.UserName} className="w-6 h-6 rounded-full"/>
-                        <p>{user?.UserName}</p>
-                    </div>
-                    <p className={"text-gray-500"}>{new Date(seenBy?.CreatedDate).toLocaleTimeString("en-US", {
-                        hour: "2-digit",
-                        minute: "2-digit"
-                    })}</p>
-                </div>
-            </div>
-        );
-    }
-
-    function UserReaction({ reaction }: { reaction: MessageReactionType[] })
-    {
-        const [user, setUser] = useState<ApplicationUser>();
-        useEffect(() =>
-        {
-            Query<ApplicationUser>(`/users/${reaction[0].ApplicationUserId}`).then((r) =>
-            {
-                setUser(r);
-            });
-        }, [reaction]);
-
-        return (
-            <div>
-                <div className="flex justify-between">
-                    <div className="flex gap-2.5">
-                        <img src={user?.AvatarUrl} alt={user?.UserName} className="w-6 h-6 rounded-full" />
-                        <p>{user?.UserName}</p>
-                    </div>
-                    <p className={"text-gray-500"}>{
-                        reaction.map((r) =>
-                        {
-                            return r.ReactionType;
-                        })
-                    }</p>
-                </div>
-            </div>
-        );
     }
 
     const modal = (
@@ -420,7 +286,7 @@ function Message({ message, setQuoteMessage }: {
                         {
                             message.QuoteMessageId ? (
                                 <div className=" max-w-96 w-fit">
-                                    <QuoteMessage/>
+                                    <QuoteMessage message={message} incoming={incoming}/>
                                 </div>
                             ) : null
                         }
@@ -520,7 +386,7 @@ function Message({ message, setQuoteMessage }: {
                         {
                             message.QuoteMessageId ? (
                                 <div className="ml-auto max-w-96 w-fit">
-                                    <QuoteMessage/>
+                                    <QuoteMessage message={message} incoming={incoming}/>
                                 </div>
                             ) : null
                         }

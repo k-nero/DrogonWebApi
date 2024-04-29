@@ -5,7 +5,6 @@ import { LuLoader2 } from "react-icons/lu";
 import { CiTextAlignJustify } from "react-icons/ci";
 import { Guid } from "guid-typescript";
 
-
 function TextFromImageModal({ url }: { url: string })
 {
     const [isRecognizing, setIsRecognizing] = React.useState(false);
@@ -25,12 +24,11 @@ function TextFromImageModal({ url }: { url: string })
             return "text-red-500";
         }
     }
-
+    //TODO: add retry recognize text from image and language selection
     return (
         <button className="text-xl align-middle" onClick={async () => {
             setIsRecognizing(true);
-            // @ts-ignore
-            const worker = await createWorker(["chi_sim", "eng"], OEM.DEFAULT, {
+            const worker = await createWorker(["chi_sim", "eng", "vie"], OEM.LSTM_ONLY, {
                 langPath: "https://tessdata.projectnaptha.com/4.0.0_best"
             });
             const { data } = await worker.recognize(url);
@@ -62,8 +60,6 @@ function TextFromImageModal({ url }: { url: string })
             });
             await worker.terminate();
             setIsRecognizing(false);
-
-
         }}>
             {
                 isRecognizing ?

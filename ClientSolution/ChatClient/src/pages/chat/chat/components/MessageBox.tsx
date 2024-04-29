@@ -14,14 +14,6 @@ import MessageReactionType from "@/utils/type/MessageReactionType.ts";
 
 const baseUrl = new URL(`${import.meta.env.VITE_API_URL}`);
 
-function ScrollToBottom()
-{
-    const message_box = document.getElementById("message_box");
-    if (message_box)
-    {
-        message_box.scrollTop = message_box.scrollHeight;
-    }
-}
 
 function MessageBox({ messageList, setMessageList, setQuoteMessage }: {
     messageList: MessageType[],
@@ -39,15 +31,13 @@ function MessageBox({ messageList, setMessageList, setQuoteMessage }: {
     const [shouldScroll, setShouldScroll] = useState<boolean>(false);
     const [isAtTop, setIsAtTop] = useState<boolean>(false);
     const [isLoadFinished, setIsLoadFinished] = useState<boolean>(false);
-    const messageBoxRef = useRef<HTMLDivElement>();
-
-
+    const message_box = useRef(null as HTMLDivElement | null)
     useEffect(() => {
         //setIsInitLoading(true);
         Query<PaginatedType<MessageType>>(`/message?chat_id=${chat_id}&page=1&limit=30`).then((r) => {
             setMessageList(r.m_data.reverse());
             //setIsInitLoading(false);
-            setShouldScroll(prev => !prev);
+            setShouldScroll(true);
             setIsLoadFinished(true);
         });
     }, [chat_id]);
@@ -107,7 +97,15 @@ function MessageBox({ messageList, setMessageList, setQuoteMessage }: {
     }, [isLoadFinished]);
 
     useEffect(() => {
-        ScrollToBottom();
+        if (message_box.current)
+        {
+            // message_box.current?.scrollTo({
+            //     top: message_box.current?.scrollHeight,
+            //     behavior: "smooth"
+            // })
+
+            message_box.current.scrollTop = message_box.current.scrollHeight;
+        }
     }, [shouldScroll]);
 
     useEffect(() => {
@@ -121,16 +119,23 @@ function MessageBox({ messageList, setMessageList, setQuoteMessage }: {
             setMessageList((prev) => {
                 return [...prev, message];
             });
-            const message_box = document.getElementById("message_box");
             if (message.ApplicationUserId === user.user.Id)
             {
-                setShouldScroll(prev => !prev);
+               if(message_box.current )
+               {
+                   message_box.current?.scrollTo({
+                       top: message_box.current.scrollHeight,
+                       behavior: "smooth"
+                   });
+               }
             }
-            else if (message_box && message_box.scrollTop >= message_box.scrollHeight / 2)
+            else if (message_box.current && (message_box.current.scrollTop || 0 >= message_box.current.scrollHeight || 0 / 2))
             {
-                setShouldScroll(prev => !prev);
+                message_box.current?.scrollTo({
+                    top: message_box.current.scrollHeight,
+                    behavior: "smooth"
+                });
             }
-
         });
     }, []);
 
@@ -144,7 +149,6 @@ function MessageBox({ messageList, setMessageList, setQuoteMessage }: {
         {
             return;
         }
-
         Query<PaginatedType<MessageType>>(`/message?chat_id=${chat_id}&created_date=${messageList[0].CreatedDate}&page=1&limit=30`).then((res) => {
             if (!res?.m_data)
             {
@@ -175,9 +179,8 @@ function MessageBox({ messageList, setMessageList, setQuoteMessage }: {
     }, []);
 
     useEffect(() => {
-        const message_box = document.getElementById("message_box");
 
-        if (!message_box)
+        if (!message_box.current)
         {
             return;
         }
@@ -186,11 +189,11 @@ function MessageBox({ messageList, setMessageList, setQuoteMessage }: {
         function callback()
         {
 
-            if (!message_box)
+            if (!message_box.current)
             {
                 return;
             }
-            if (message_box.scrollTop <= message_box.scrollHeight / 5 || message_box.scrollTop === 0)
+            if (message_box.current.scrollTop <= message_box.current.scrollHeight / 5 || message_box.current.scrollTop === 0)
             {
                 setShouldLoadMore(true);
             }
@@ -198,20 +201,21 @@ function MessageBox({ messageList, setMessageList, setQuoteMessage }: {
 
         if (isAtTop)
         {
-            message_box.removeEventListener("scroll", callback);
+            message_box.current.removeEventListener("scroll", callback);
         }
-        message_box.addEventListener("scroll", callback);
+        message_box.current.addEventListener("scroll", callback);
 
     }, [isAtTop]);
     //const set = useCallback(setQuoteMessage , [setQuoteMessage]);
 
     return (
-        <div className="w-full overflow-auto px-6 " id="message_box">
+        <div className="w-full overflow-auto px-6 " id="message_box" ref={message_box}>
             {
                 messageList?.map((message, index) => {
                     const currentMessageDate = new Date(message.CreatedDate);
                     const nextMessageDate = new Date(messageList[index + 1]?.CreatedDate);
                     const offset = nextMessageDate.getTime() - currentMessageDate.getTime();
+
                     return (
                         <div key={message.Id}>
                             <MemoizedMessage message={message} setQuoteMessage={setQuoteMessage}/>

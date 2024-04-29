@@ -1,4 +1,4 @@
-import { message, Modal } from "antd";
+import { Modal } from "antd";
 import MessageAttachType from "@/utils/type/MessageAttachType.ts";
 import { FaMagnifyingGlassMinus, FaMagnifyingGlassPlus } from "react-icons/fa6";
 import React from "react";
@@ -51,11 +51,11 @@ function ImageViewModal({ image, onClose }: { image: MessageAttachType, onClose?
                 <button className="text-xl align-middle" onClick={  (e) => {
                     const img = document.getElementById(image.Id) as HTMLImageElement;
                     img.crossOrigin = "anonymous";
-                    const canvas = document.createElement("canvas").transferControlToOffscreen();
-                    canvas.width = img.width;
-                    canvas.height = img.height;
-                    const ctx = canvas.getContext("2d");
                     img.onload = () => {
+                        const canvas = document.createElement("canvas").transferControlToOffscreen();
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                        const ctx = canvas.getContext("2d");
                         ctx?.drawImage(img, 0, 0, img.width, img.height);
                         canvas.convertToBlob({
                             type: "image/png",
@@ -63,12 +63,11 @@ function ImageViewModal({ image, onClose }: { image: MessageAttachType, onClose?
                         }).then((blob) => {
                             if (!blob)
                             {
-                                console.error("Blob is null");
+                                navigator.clipboard.writeText(image.AttachUrl).then(() => {});
                                 return;
                             }
                             const item = new ClipboardItem({ "image/png" : blob });
-                            navigator.clipboard.write([item]).then(() => {
-                            });
+                            navigator.clipboard.write([item]).then(() => {});
                         })
                     }
                 } }>

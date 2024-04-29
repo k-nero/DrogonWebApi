@@ -98,9 +98,14 @@ function ChatPage()
                         <img loading="lazy" src={chat?.ChatRoom?.RoomImageUrl} alt={chat?.ChatRoom?.RoomName} className="w-12 h-12 rounded-full"/>
                         <div className="ml-3 truncate ">
                             <h1 className="font-bold">{chat?.ChatRoom?.RoomName}</h1>
-                            <p className={`${unreadMessage > 0 ? "font-bold" : ""} text-sm text-gray-500 max-w-52`}> <GrAttachment className="inline-block"/>{
-                                lastMessage?.TextMessage ? lastMessage.TextMessage : lastMessage?.MessageAttachs?.length || 0 > 0 ? "[Attachment]" : null
-                            }</p>
+                            <p className={`${unreadMessage > 0 ? "font-bold" : ""} text-sm text-gray-500 max-w-52`}>
+                                {
+                                    lastMessage?.TextMessage ? lastMessage.TextMessage : lastMessage?.MessageAttachs?.length || 0 > 0 ? ( <>
+                                        <GrAttachment className="inline-block"/>
+                                        [Attachment]
+                                    </> ) : null
+                                }
+                            </p>
                         </div>
                     </div>
                     <div className="min-w-fit">
@@ -137,7 +142,7 @@ function ChatPage()
                         </div>
                         <div className="">
                             <InputField
-                                variant="auth"
+                                variant=""
                                 extra="mb-3"
                                 placeholder="Search for chat"
                                 type="text"
