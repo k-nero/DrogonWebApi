@@ -6,6 +6,7 @@ import CodeView from "@/components/text/CodeMessage.tsx";
 import Text from "@/components/text/Text.tsx";
 import useLocalStorage from "@/utils/hooks/useLocalStorage.ts";
 import { AuthResponse } from "@/utils/type/AuthResponse.ts";
+import { Skeleton } from "antd";
 
 function QuoteMessage({ message, incoming }: { message: MessageType, incoming: boolean }) {
 
@@ -25,10 +26,6 @@ function QuoteMessage({ message, incoming }: { message: MessageType, incoming: b
 
     if (incoming)
     {
-        if (!quoteMessage)
-        {
-            return null;
-        }
         return (
             <div className="">
                 <p className="text-xs mr-auto w-fit opacity-70 px-3">Replying to {
@@ -36,6 +33,7 @@ function QuoteMessage({ message, incoming }: { message: MessageType, incoming: b
                 }</p>
                 <div className="opacity-70 bg-white p-3 mx-3 rounded-xl max-w-96 ">
                     <div className="max-h-96 overflow-auto">{
+                        quoteMessage ?
                         <>
                             <div>
                                 <AttachView message={quoteMessage} />
@@ -45,7 +43,7 @@ function QuoteMessage({ message, incoming }: { message: MessageType, incoming: b
                                     <CodeView textMessage={quoteMessage.TextMessage}/>
                                     : <><Text text={quoteMessage.TextMessage}/></>
                             }
-                        </>
+                        </> : <Skeleton/>
                     }</div>
                 </div>
             </div>
@@ -53,10 +51,6 @@ function QuoteMessage({ message, incoming }: { message: MessageType, incoming: b
     }
     else
     {
-        if (!quoteMessage)
-        {
-            return null;
-        }
         return (
 
             <div className="">
@@ -65,6 +59,7 @@ function QuoteMessage({ message, incoming }: { message: MessageType, incoming: b
                 }</p>
                 <div className="opacity-70 bg-white p-3 mx-3 rounded-xl max-w-96 ">
                     <div className="max-h-96 overflow-auto">{
+                        quoteMessage ?
                         <>
                             <div>
                                 <AttachView message={quoteMessage} />
@@ -76,7 +71,7 @@ function QuoteMessage({ message, incoming }: { message: MessageType, incoming: b
                                         <Text text={quoteMessage.TextMessage}/>
                                     </>
                             }
-                        </>
+                        </> : <Skeleton/>
                     }</div>
                 </div>
             </div>

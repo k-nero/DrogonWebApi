@@ -4,7 +4,7 @@ import React from "react";
 
 function AttachView({message}: {message: MessageType})
 {
-    return (<div className="flex max-w-96 gap-2.5  mb-3">
+    return (<div className="flex max-w-96 gap-2.5 ">
         {
             message.MessageAttachs &&
             message.MessageAttachs.map((attach) => {

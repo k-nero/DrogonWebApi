@@ -13,6 +13,7 @@ import { AuthResponse } from "@/utils/type/AuthResponse.ts";
 import SocketMessage from "@/utils/WebSocket/SocketMessage.ts";
 import MessageSeenByType from "@/utils/type/MessageSeenByType.ts";
 import { GrAttachment } from "react-icons/gr";
+import { Skeleton } from "antd";
 
 function ChatPage()
 {
@@ -83,7 +84,7 @@ function ChatPage()
     {
         if (!chats)
         {
-            return <p>Loading...</p>;
+            return <Skeleton active avatar/>;
         }
 
         return chats.m_data.map((chat, index) => {
@@ -99,11 +100,13 @@ function ChatPage()
                         <div className="ml-3 truncate ">
                             <h1 className="font-bold">{chat?.ChatRoom?.RoomName}</h1>
                             <p className={`${unreadMessage > 0 ? "font-bold" : ""} text-sm text-gray-500 max-w-52`}>
+
                                 {
+                                    messageMap ?
                                     lastMessage?.TextMessage ? lastMessage.TextMessage : lastMessage?.MessageAttachs?.length || 0 > 0 ? ( <>
                                         <GrAttachment className="inline-block"/>
                                         [Attachment]
-                                    </> ) : null
+                                    </> ) : null : <Skeleton active/>
                                 }
                             </p>
                         </div>

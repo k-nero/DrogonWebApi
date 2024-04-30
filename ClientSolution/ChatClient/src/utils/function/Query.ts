@@ -12,6 +12,9 @@ async function Query<T>(endpoint: string, useToken: boolean = true): Promise<T>
         window.location.href = "/auth/sign-in";
     }
 
+    //delay for 1 second
+    //await new Promise((r) => setTimeout(r, 3000));
+
     const res = await fetch(`${baseUrl}${endpoint}`, {
         method: "GET",
         headers: {

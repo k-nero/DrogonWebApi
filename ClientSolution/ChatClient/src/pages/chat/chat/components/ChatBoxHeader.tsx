@@ -3,26 +3,30 @@ import { BiSolidPhoneCall } from "react-icons/bi";
 import React from "react";
 import { BsCameraVideoFill, BsThreeDots } from "react-icons/bs";
 import ChatRoom from "@/utils/type/ChatRoom.ts";
+import { Skeleton } from "antd";
 
 function ChatBoxHeader({setIsPanel, chat_room, onlineMap} : {setIsPanel: () => void, chat_room : ChatRoom | undefined, onlineMap: Map<string, boolean>})
 {
-
-    if(!chat_room)
-    {
-        return <div></div>;
-    }
-
     return (
         <div className="w-full" style={{
             maxHeight: "10vh"
         }}>
             <div className="flex items-center justify-between p-6 border-b-2">
                 <div className="flex items-center">
-                    <img src={chat_room?.RoomImageUrl} alt={chat_room?.RoomName} className="w-12 h-12 rounded-full"/>
+                    {
+                        chat_room ?
+                            <img src={chat_room?.RoomImageUrl} alt={chat_room?.RoomName} className="w-12 h-12 rounded-full"/>
+                            : <Skeleton.Avatar active size="large"/>
+                    }
                     <div className="ml-3">
-                        <h1 className="font-bold">{chat_room?.RoomName}</h1>
+                        {
+                            chat_room ?
+                                <h1 className="font-bold">{chat_room?.RoomName}</h1>
+                                : <Skeleton.Input style={{ width: 200 }} active size="small"/>
+                        }
                         <div >
                             {
+                                chat_room ?
                                 Array.from(onlineMap.values()).filter(function(item){
                                     return item;
                                 }).length === 0 ?
@@ -33,6 +37,7 @@ function ChatBoxHeader({setIsPanel, chat_room, onlineMap} : {setIsPanel: () => v
                                         <p className="text-sm text-gray-500 pt-[2px]">{Array.from(onlineMap.values()).filter(function(item){ return item;}).length > 1
                                             ? Array.from(onlineMap.values()).filter(function(item){return item;}).length
                                             : "" } Online</p></div>)
+                                    : <Skeleton.Input style={{ width: 100, height: 20 }} active />
                             }
 
                         </div>

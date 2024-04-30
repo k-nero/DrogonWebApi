@@ -192,7 +192,7 @@ function MessageInput({ messageList, quoteMessage, setQuoteMessages }:
                     const r = await fileRs.json();
                     return {
                         AttachUrl: `${cdnURL}files/${r.filename}`,
-                        AttachName: r.filename,
+                        AttachName: file.name,
                         AttachType: file.type === "application/pdf" ? "text" : file.type.split("/")[0],
                         ChatRoomId: chat_id
                     };

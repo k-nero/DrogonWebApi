@@ -26,7 +26,7 @@ function TextFromImageModal({ url }: { url: string })
     }
     //TODO: add retry recognize text from image and language selection
     return (
-        <button className="text-xl align-middle" onClick={async () => {
+        <button className="text-xl align-middle hover:text-teal-500" onClick={async () => {
             setIsRecognizing(true);
             const worker = await createWorker(["chi_sim", "eng", "vie"], OEM.LSTM_ONLY, {
                 langPath: "https://tessdata.projectnaptha.com/4.0.0_best"
