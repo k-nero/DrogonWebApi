@@ -45,7 +45,7 @@ function ImageViewModal({ image, onClose }: { image: MessageAttachType, onClose?
         maskClosable: true,
         width: "fit-content",
         styles: {},
-        footer: <div className="flex justify-evenly gap-2.5 mt-4">
+        footer: <div className="flex justify-evenly gap-2.5 mt-4 ">
             <div className=" flex gap-4 py-2">
                 <TextFromImageModal url={image.AttachUrl}/>
                 <button className="text-xl align-middle" onClick={  (e) => {
@@ -71,7 +71,7 @@ function ImageViewModal({ image, onClose }: { image: MessageAttachType, onClose?
                         })
                     }
                 } }>
-                    <FaRegClipboard />
+                    <FaRegClipboard className="hover:text-teal-500" />
                 </button>
             </div>
             <div className="flex gap-4 py-2">
@@ -82,7 +82,7 @@ function ImageViewModal({ image, onClose }: { image: MessageAttachType, onClose?
                     img.style.transform = `scale(${scale + 0.3})`;
 
                 }}>
-                    <FaMagnifyingGlassPlus/>
+                    <FaMagnifyingGlassPlus className="hover:text-teal-500"/>
                 </button>
                 <button className="text-xl align-middle" onClick={() => {
                     const img = document.getElementById(image.Id) as HTMLImageElement;
@@ -90,17 +90,15 @@ function ImageViewModal({ image, onClose }: { image: MessageAttachType, onClose?
                     const scale = Number(transform.split("(")[1].split(")")[0]);
                     img.style.transform = `scale(${scale - 0.3})`;
                 }}>
-                    <FaMagnifyingGlassMinus/>
+                    <FaMagnifyingGlassMinus className="hover:text-teal-500"/>
                 </button>
             </div>
             <div className="flex gap-4 py-2">
-                <button className=" text-xl align-middle" onClick={(e) => {
-                    e.preventDefault();
-                    window.open(image.AttachUrl, "_blank");
-                }}><MdOutlineSaveAlt/>
-                </button>
+                <a href={image.AttachUrl} download className=" text-xl align-middle" >
+                    <MdOutlineSaveAlt className="hover:text-teal-500"/>
+                </a>
                 <button className="text-xl align-middle">
-                    <FaRegShareSquare/>
+                    <FaRegShareSquare className="hover:text-teal-500"/>
                 </button>
             </div>
 
