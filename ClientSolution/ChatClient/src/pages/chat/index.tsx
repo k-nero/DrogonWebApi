@@ -82,12 +82,12 @@ function ChatPage()
 
     function ChatList()
     {
-        if (!chats)
+        if(!chats)
         {
-            return <Skeleton active avatar/>;
+         return <Skeleton active avatar/>
         }
 
-        return chats.m_data.map((chat, index) => {
+        return chats?.m_data.map((chat, index) => {
 
             const message = messageMap.get(chat.ChatRoomId);
             const lastMessage = message?.[message.length - 1];
@@ -99,16 +99,16 @@ function ChatPage()
                         <img loading="lazy" src={chat?.ChatRoom?.RoomImageUrl} alt={chat?.ChatRoom?.RoomName} className="w-12 h-12 rounded-full"/>
                         <div className="ml-3 truncate ">
                             <h1 className="font-bold">{chat?.ChatRoom?.RoomName}</h1>
-                            <p className={`${unreadMessage > 0 ? "font-bold" : ""} text-sm text-gray-500 max-w-52`}>
+                            <div className={`${unreadMessage > 0 ? "font-bold" : ""} text-sm text-gray-500 max-w-52`}>
 
                                 {
-                                    messageMap ?
+                                    message ?
                                     lastMessage?.TextMessage ? lastMessage.TextMessage : lastMessage?.MessageAttachs?.length || 0 > 0 ? ( <>
                                         <GrAttachment className="inline-block"/>
                                         [Attachment]
-                                    </> ) : null : <Skeleton active/>
+                                    </> ) : null : <Skeleton.Input style={{height: "16px"}}  active/>
                                 }
-                            </p>
+                            </div>
                         </div>
                     </div>
                     <div className="min-w-fit">
@@ -159,10 +159,13 @@ function ChatPage()
                             </button>
                         </div>
                         <div className="mt-4">
-                            <ChatList/>
+                            {
+                                <ChatList/>
+                            }
+
                         </div>
                     </div>
-                    <div className="col-span-9">
+                    <div className="col-span-9 bg-gray-100 bg-opacity-90">
                         {
                             outlet || <p>Select a chat to start conversion</p>
                         }

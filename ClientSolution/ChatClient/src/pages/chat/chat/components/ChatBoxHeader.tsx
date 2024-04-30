@@ -8,9 +8,7 @@ import { Skeleton } from "antd";
 function ChatBoxHeader({setIsPanel, chat_room, onlineMap} : {setIsPanel: () => void, chat_room : ChatRoom | undefined, onlineMap: Map<string, boolean>})
 {
     return (
-        <div className="w-full" style={{
-            maxHeight: "10vh"
-        }}>
+        <div className="w-full bg-white">
             <div className="flex items-center justify-between p-6 border-b-2">
                 <div className="flex items-center">
                     {
@@ -22,7 +20,7 @@ function ChatBoxHeader({setIsPanel, chat_room, onlineMap} : {setIsPanel: () => v
                         {
                             chat_room ?
                                 <h1 className="font-bold">{chat_room?.RoomName}</h1>
-                                : <Skeleton.Input style={{ width: 200 }} active size="small"/>
+                                : <Skeleton.Input style={{ width: 200, height: "16px" }} active />
                         }
                         <div >
                             {
@@ -37,7 +35,7 @@ function ChatBoxHeader({setIsPanel, chat_room, onlineMap} : {setIsPanel: () => v
                                         <p className="text-sm text-gray-500 pt-[2px]">{Array.from(onlineMap.values()).filter(function(item){ return item;}).length > 1
                                             ? Array.from(onlineMap.values()).filter(function(item){return item;}).length
                                             : "" } Online</p></div>)
-                                    : <Skeleton.Input style={{ width: 100, height: 20 }} active />
+                                    : <Skeleton.Input style={{ width: 100, height: "16px"}} active />
                             }
 
                         </div>

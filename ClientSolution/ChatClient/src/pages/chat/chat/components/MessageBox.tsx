@@ -14,7 +14,6 @@ import MessageReactionType from "@/utils/type/MessageReactionType.ts";
 
 const baseUrl = new URL(`${import.meta.env.VITE_API_URL}`);
 
-
 function MessageBox({ messageList, setMessageList, setQuoteMessage }: {
     messageList: MessageType[],
     setMessageList: Dispatch<SetStateAction<MessageType[]>>,
@@ -109,7 +108,7 @@ function MessageBox({ messageList, setMessageList, setQuoteMessage }: {
     }, [shouldScroll]);
 
     useEffect(() => {
-        uWebSockets.getInstance().addMessageSubscriber((event) => {
+        uWebSockets.getInstance().addMessageSubscriber(async (event) => {
             const soc_mess: SocketMessageType = JSON.parse(event.data);
             const message: MessageType = soc_mess.message;
             if (message.ChatRoomId !== chat_id)
@@ -121,16 +120,18 @@ function MessageBox({ messageList, setMessageList, setQuoteMessage }: {
             });
             if (message.ApplicationUserId === user.user.Id)
             {
-               if(message_box.current )
-               {
-                   message_box.current?.scrollTo({
-                       top: message_box.current.scrollHeight,
-                       behavior: "smooth"
-                   });
-               }
+                await new Promise((r) => setTimeout(r, 300));
+                if (message_box.current)
+                {
+                    message_box.current?.scrollTo({
+                        top: message_box.current.scrollHeight,
+                        behavior: "smooth"
+                    });
+                }
             }
             else if (message_box.current && (message_box.current.scrollTop || 0 >= message_box.current.scrollHeight || 0 / 2))
             {
+                await new Promise((r) => setTimeout(r, 300));
                 message_box.current?.scrollTo({
                     top: message_box.current.scrollHeight,
                     behavior: "smooth"
@@ -209,15 +210,16 @@ function MessageBox({ messageList, setMessageList, setQuoteMessage }: {
     //const set = useCallback(setQuoteMessage , [setQuoteMessage]);
 
     return (
-        <div className="w-full overflow-auto px-6 " id="message_box" ref={message_box}>
+        <div className="w-full overflow-auto px-6 " ref={message_box} id="message_box">
             {
+
                 messageList?.map((message, index) => {
                     const currentMessageDate = new Date(message.CreatedDate);
                     const nextMessageDate = new Date(messageList[index + 1]?.CreatedDate);
                     const offset = nextMessageDate.getTime() - currentMessageDate.getTime();
 
                     return (
-                        <div key={message.Id}>
+                        <div key={message.Id} id={message.Id}>
                             <MemoizedMessage message={message} setQuoteMessage={setQuoteMessage}/>
                             {
                                 offset > 1000 * 60 * 30 ?

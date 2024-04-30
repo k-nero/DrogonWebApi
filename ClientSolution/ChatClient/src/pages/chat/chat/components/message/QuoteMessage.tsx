@@ -7,6 +7,8 @@ import Text from "@/components/text/Text.tsx";
 import useLocalStorage from "@/utils/hooks/useLocalStorage.ts";
 import { AuthResponse } from "@/utils/type/AuthResponse.ts";
 import { Skeleton } from "antd";
+import { IoArrowRedoSharp } from "react-icons/io5";
+import messageBox from "@/pages/chat/chat/components/MessageBox.tsx";
 
 function QuoteMessage({ message, incoming }: { message: MessageType, incoming: boolean }) {
 
@@ -28,16 +30,28 @@ function QuoteMessage({ message, incoming }: { message: MessageType, incoming: b
     {
         return (
             <div className="">
-                <p className="text-xs mr-auto w-fit opacity-70 px-3">Replying to {
-                    quoteMessage?.ApplicationUser?.UserName === credential.user.UserName ? "You" : "@" + quoteMessage?.ApplicationUser?.UserName
-                }</p>
+                <button onClick={(e) => {
+                    if(message.QuoteMessageId)
+                    {
+                        const elem = document.getElementById(message.QuoteMessageId);
+                        if(elem)
+                        {
+                            elem.scrollIntoView({ behavior: "smooth" , block: "center"});
+                        }
+                    }
+                }}>
+                    <p className="text-xs mr-auto w-fit opacity-70 px-3 hover:underline">
+                        <IoArrowRedoSharp className="inline-block opacity-70"/> Replying to {
+                        quoteMessage?.ApplicationUser?.UserName === credential.user.UserName ? "You" : "@" + quoteMessage?.ApplicationUser?.UserName
+                    }</p>
+                </button>
                 <div className="opacity-70 bg-white p-3 mx-3 rounded-xl max-w-96 ">
                     {quoteMessage ?
                         <div>
                             <AttachView message={quoteMessage}/>
                         </div>
-                        : <Skeleton/>}
-                    <div className="max-h-96 overflow-auto">{
+                        : <Skeleton active className="p-3"/>}
+                    <div className={`max-h-96 overflow-auto ${quoteMessage?.MessageAttachs?.length && quoteMessage.TextMessage ? "mt-3" : ""}`}>{
                         quoteMessage ?
                             <>
                                 {
@@ -45,7 +59,7 @@ function QuoteMessage({ message, incoming }: { message: MessageType, incoming: b
                                         <CodeView textMessage={quoteMessage.TextMessage}/>
                                         : <><Text text={quoteMessage.TextMessage}/></>
                                 }
-                            </> : <Skeleton/>
+                            </> : <Skeleton active/>
                     }</div>
                 </div>
             </div>
@@ -54,18 +68,30 @@ function QuoteMessage({ message, incoming }: { message: MessageType, incoming: b
     else
     {
         return (
-
             <div className="">
-            <p className="text-xs ml-auto w-fit opacity-70 px-3">Replying to {
-                    quoteMessage?.ApplicationUser?.UserName === credential.user.UserName ? "You" : "@" + quoteMessage?.ApplicationUser?.UserName
-                }</p>
+                <button onClick={(e) => {
+                    if(message.QuoteMessageId)
+                    {
+                        const elem = document.getElementById(message.QuoteMessageId);
+                        if(elem)
+                        {
+                            elem.scrollIntoView({ behavior: "smooth", block: "center" });
+                        }
+                    }
+
+                }}>
+                    <p className="text-xs ml-auto w-fit opacity-70 px-3 hover:underline">
+                        <IoArrowRedoSharp className="inline-block opacity-70"/> Replying to {
+                        quoteMessage?.ApplicationUser?.UserName === credential.user.UserName ? "You" : "@" + quoteMessage?.ApplicationUser?.UserName
+                    }</p>
+                </button>
                 <div className="opacity-70 bg-white p-3 mx-3 rounded-xl max-w-96 ">
                     {quoteMessage ?
                         <div>
                             <AttachView message={quoteMessage}/>
                         </div>
-                        : <Skeleton/>}
-                    <div className="max-h-96 overflow-auto">{
+                        : <Skeleton active/>}
+                    <div className={`max-h-96 overflow-auto text-sm break-words ${quoteMessage?.MessageAttachs?.length && quoteMessage.TextMessage ? "mt-3" : ""}`}>{
                         quoteMessage ?
                         <>
                             {
@@ -75,7 +101,7 @@ function QuoteMessage({ message, incoming }: { message: MessageType, incoming: b
                                         <Text text={quoteMessage.TextMessage}/>
                                     </>
                             }
-                        </> : <Skeleton/>
+                        </> : <Skeleton active/>
                     }</div>
                 </div>
             </div>

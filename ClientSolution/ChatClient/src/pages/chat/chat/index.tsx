@@ -80,14 +80,16 @@ function Chat()
         <>
             {
                 chat_id ?
-                    <div className={`w-full h-fit ${isPanelOpen ? "grid grid-cols-10" : ""}`}>
-                        <div className={`w-full h-fit ${isPanelOpen ? "col-span-6" : ""}`}>
+                    <div className={`w-full  ${isPanelOpen ? "grid grid-cols-10" : ""}`}>
+                        <div className={`max-h-full ${isPanelOpen ? "col-span-6" : ""}`}>
                             <ChatBoxHeader setIsPanel={setIsPanel} chat_room={chatRoom} onlineMap={onlineUsersMap}/>
-                            <div className="bg-gray-100 bg-opacity-90 px-4 flex flex-col justify-between h-[90vh]">
-                                <MessageBox messageList={messageList}
-                                            setMessageList={setMessageList}
-                                            setQuoteMessage={setQuoteMessage}
-                                />
+                            <div className="px-4 flex flex-col justify-between h-[89vh]">
+                                {
+                                    <MessageBox messageList={messageList}
+                                                setMessageList={setMessageList}
+                                                setQuoteMessage={setQuoteMessage}
+                                    />
+                                }
                                 <MessageInput messageList={messageList} quoteMessage={quoteMessage} setQuoteMessages={setQuoteMessage}/>
                             </div>
                         </div>

@@ -56,7 +56,7 @@ function ChatPanel({chatRoom, onlineMap} : {chatRoom : ChatRoom | undefined, onl
 
     const chatMemberList = (
         <>
-            <div className="overflow-auto max-h-96">
+            <div className="overflow-auto max-h-96 ">
                 {
                     chatRoom?.ChatParticipants?.map((member, index) => {
                         const len = chatRoom?.ChatParticipants?.length || 0;
@@ -138,7 +138,7 @@ function ChatPanel({chatRoom, onlineMap} : {chatRoom : ChatRoom | undefined, onl
     ];
 
     return (
-        <div className="p-6 border-l-2 max-h-screen overflow-auto">
+        <div className="p-6 border-l-2 max-h-screen overflow-auto bg-white">
             {/*<div className=" text-end ">*/}
             {/*    /!*<button className="p-3 fixed bg-white right-8 border-teal-500 rounded-full border-2 w-fit" onClick={setIsPanel}>*!/*/}
             {/*        <button className="p-3 bg-white  border-teal-500 rounded-full border-2 w-fit" onClick={setIsPanel}>*/}

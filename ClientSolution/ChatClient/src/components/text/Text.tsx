@@ -24,7 +24,7 @@ function Text({ text }: { text: string })
     words.forEach((word) => {
         if (regex.test(word))
         {
-            message += `<a href="${word}" target="_blank" rel="noreferrer" class="underline text-blue-500">${word}</a>`;
+            message += `<a href="${word}" target="_blank" rel="noreferrer" class="underline text-blue-500">${word}</a> `;
         }
         else
         {
