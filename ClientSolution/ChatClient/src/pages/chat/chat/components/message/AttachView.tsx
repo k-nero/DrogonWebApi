@@ -12,11 +12,12 @@ function AttachView({message}: {message: MessageType})
                 if (attach.AttachType === "image")
                 {
                     return (
-                        <div key={attach.Id} className="w-fit ">
-                            <button onClick={() => {
+                        <div key={attach.Id} className="w-fit max-h-64">
+                            <button className="my-auto" onClick={() => {
                                 ImageViewModal({ image: attach });
                             }}>
-                                <img loading="lazy" src={attach.AttachUrl} alt={attach.AttachName} className="h-32 object-cover m-auto rounded-md"/>
+                                <img loading="lazy" src={attach.AttachUrl} alt={attach.AttachName} className="max-h-64 object-cover m-auto rounded-md"/>
+
                             </button>
                         </div>
                     );

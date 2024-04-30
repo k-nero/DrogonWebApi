@@ -16,7 +16,6 @@ import videoFile from "@/assets/video/video-file.png";
 import textFile from "@/assets/text/text.png";
 import filePng from "@/assets/file/file.png";
 import { Modal, Tooltip } from "antd";
-import { AudioRecorder } from "react-audio-voice-recorder";
 import EmojiTooltip from "@/components/EmojiToolTip.tsx";
 import { EmojiClickData } from "emoji-picker-react";
 import { audioFileExt, otherFileExt, textFileExt, videoFileExt } from "@/utils/file/fileExt";

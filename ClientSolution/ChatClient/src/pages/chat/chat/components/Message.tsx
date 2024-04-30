@@ -298,7 +298,7 @@ function Message({ message, setQuoteMessage }: {
                                         <AttachView message={message}/>
                                         : null
                                 }
-                                <div className={`${ message.TextMessage ? "mt-3" : "" }`}>
+                                <div className={`${ message.TextMessage && message.MessageAttachs?.length ? "mt-3" : "" }`}>
                                     <div className="overflow-auto text-sm break-words max-h-96">
                                         {
                                             message.TextMessage?.startsWith("```") ?
@@ -422,7 +422,7 @@ function Message({ message, setQuoteMessage }: {
                                         <AttachView message={message} />
                                         : null
                                 }
-                                <div className={`${ message.TextMessage ? "mt-3" : "" } ml-auto` }>
+                                <div className={`${ message.TextMessage && message.MessageAttachs?.length ? "mt-3" : "" } ml-auto` }>
                                     <div className="text-sm break-words overflow-auto max-h-96 ">
                                         {
                                             message.TextMessage?.startsWith("```") ?

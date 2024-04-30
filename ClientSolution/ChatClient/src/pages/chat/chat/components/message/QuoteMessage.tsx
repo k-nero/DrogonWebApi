@@ -32,18 +32,20 @@ function QuoteMessage({ message, incoming }: { message: MessageType, incoming: b
                     quoteMessage?.ApplicationUser?.UserName === credential.user.UserName ? "You" : "@" + quoteMessage?.ApplicationUser?.UserName
                 }</p>
                 <div className="opacity-70 bg-white p-3 mx-3 rounded-xl max-w-96 ">
+                    {quoteMessage ?
+                        <div>
+                            <AttachView message={quoteMessage}/>
+                        </div>
+                        : <Skeleton/>}
                     <div className="max-h-96 overflow-auto">{
                         quoteMessage ?
-                        <>
-                            <div>
-                                <AttachView message={quoteMessage} />
-                            </div>
-                            {
-                                quoteMessage.TextMessage?.startsWith("```") ?
-                                    <CodeView textMessage={quoteMessage.TextMessage}/>
-                                    : <><Text text={quoteMessage.TextMessage}/></>
-                            }
-                        </> : <Skeleton/>
+                            <>
+                                {
+                                    quoteMessage.TextMessage?.startsWith("```") ?
+                                        <CodeView textMessage={quoteMessage.TextMessage}/>
+                                        : <><Text text={quoteMessage.TextMessage}/></>
+                                }
+                            </> : <Skeleton/>
                     }</div>
                 </div>
             </div>
@@ -54,16 +56,18 @@ function QuoteMessage({ message, incoming }: { message: MessageType, incoming: b
         return (
 
             <div className="">
-                <p className="text-xs ml-auto w-fit opacity-70 px-3">Replying to {
+            <p className="text-xs ml-auto w-fit opacity-70 px-3">Replying to {
                     quoteMessage?.ApplicationUser?.UserName === credential.user.UserName ? "You" : "@" + quoteMessage?.ApplicationUser?.UserName
                 }</p>
                 <div className="opacity-70 bg-white p-3 mx-3 rounded-xl max-w-96 ">
+                    {quoteMessage ?
+                        <div>
+                            <AttachView message={quoteMessage}/>
+                        </div>
+                        : <Skeleton/>}
                     <div className="max-h-96 overflow-auto">{
                         quoteMessage ?
                         <>
-                            <div>
-                                <AttachView message={quoteMessage} />
-                            </div>
                             {
                                 quoteMessage.TextMessage?.startsWith("```") ?
                                     <CodeView textMessage={quoteMessage.TextMessage}/>
