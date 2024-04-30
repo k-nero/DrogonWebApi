@@ -22,6 +22,7 @@ import { EmojiClickData } from "emoji-picker-react";
 import { audioFileExt, otherFileExt, textFileExt, videoFileExt } from "@/utils/file/fileExt";
 import AttachView from "@/pages/chat/chat/components/message/AttachView.tsx";
 import Text from "@/components/text/Text.tsx";
+import AudioMessageModal from "@/pages/chat/chat/components/message-input/AudioMessageModal.tsx";
 
 
 const baseUrl = new URL(`${import.meta.env.VITE_API_URL}`);
@@ -304,25 +305,7 @@ function MessageInput({ messageList, quoteMessage, setQuoteMessages }:
     return (
         <div className="relative mb-6">
             <Modal title={"Voice message"} open={isVoiceModalOpen} centered={true} onOk={handleVoiceOk} onCancel={handleVoiceCancel} footer={null} width="30%">
-                <div className="text-center">
-                    <p className="">Press the button to start recording</p>
-                    <div className="m-auto w-fit h-fit mt-4">
-                        <AudioRecorder onRecordingComplete={handleVoiceRecordingComplete}
-                                       audioTrackConstraints={{
-                                           noiseSuppression: true,
-                                           echoCancellation: true,
-                                           autoGainControl: true
-                                       }}
-                                       onNotAllowedOrFound={(err) => console.table(err)}
-                                       downloadOnSavePress={false}
-                                       downloadFileExtension="mp3"
-                                       mediaRecorderOptions={{
-                                           audioBitsPerSecond: 128000
-                                       }}
-                                       showVisualizer={true}
-                        />
-                    </div>
-                </div>
+               <AudioMessageModal handleVoiceRecordingComplete={handleVoiceRecordingComplete}/>
             </Modal>
             <div className={`flex items-center absolute z-10 -top-10 w-full justify-center text-teal-500 ${!typing ? "hidden" : ""}`}>
                 <div className="animate-bounce w-3 h-3 bg-teal-500 rounded-full"></div>
