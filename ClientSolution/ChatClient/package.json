@@ -19,6 +19,7 @@
     "clsx": "^2.1.1",
     "emoji-picker-react": "^4.9.2",
     "firebase": "^10.11.1",
+    "framer-motion": "^11.1.7",
     "guid-typescript": "^1.0.9",
     "path": "^0.12.7",
     "prop-types": "^15.8.1",

@@ -10,6 +10,7 @@ import useLocalStorage from "@/utils/hooks/useLocalStorage.ts";
 import { AuthResponse } from "@/utils/type/AuthResponse.ts";
 import { uWebSockets } from "@/utils/WebSocket/WebSocket.ts";
 import MessageType from "@/utils/type/MessageType.ts";
+import {motion} from "framer-motion";
 
 function Chat()
 {
@@ -80,8 +81,14 @@ function Chat()
         <>
             {
                 chat_id ?
-                    <div className={`w-full  ${isPanelOpen ? "grid grid-cols-10" : ""}`}>
-                        <div className={`max-h-full ${isPanelOpen ? "col-span-6" : ""}`}>
+                    <div className={`w-full flex`}>
+                        <motion.div
+                            initial={false}
+                            // className={`max-h-full ${isPanelOpen ? "w-[60%]" : "w-full"}`}
+                            animate={{ width: isPanelOpen ? "60%" : "100%" }}
+                            transition={{ duration: 0.5 }}
+
+                        >
                             <ChatBoxHeader setIsPanel={setIsPanel} chat_room={chatRoom} onlineMap={onlineUsersMap}/>
                             <div className="px-4 flex flex-col justify-between h-[89vh]">
                                 {
@@ -92,11 +99,23 @@ function Chat()
                                 }
                                 <MessageInput messageList={messageList} quoteMessage={quoteMessage} setQuoteMessages={setQuoteMessage}/>
                             </div>
-                        </div>
+                        </motion.div>
                         {
-                            <div className={`${isPanelOpen ? "col-span-4" : "hidden"}`}>
+                            <motion.div
+                                initial={false}
+                                animate={{
+
+                                    width: isPanelOpen ? "40%" : "0%",
+                                    display: "block",
+                                    transitionEnd: {
+                                        display: isPanelOpen ? "block" : "none"
+                                    }
+                                }}
+                                transition={{ duration: 0.5 }}
+
+                            >
                                 <ChatPanel chatRoom={chatRoom} onlineMap={onlineUsersMap}/>
-                            </div>
+                            </motion.div>
                         }
                     </div>
                     :
