@@ -1,6 +1,5 @@
 import { useLocation } from "react-router-dom";
 import React, { useEffect } from "react";
-import ChatRoom from "@/utils/type/ChatRoom.ts";
 import MessageAttachType from "@/utils/type/MessageAttachType.ts";
 import Query from "@/utils/function/Query.ts";
 import PaginatedType from "@/utils/type/common/PaginatedType.ts";
@@ -22,6 +21,14 @@ function FilePanel()
 
     const [file, setFile] = React.useState<MessageAttachType[]>([]);
     const [filePage, setFilePage] = React.useState<number>(1);
+    const fileContainer = React.useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        fileContainer.current?.scrollTo({
+            top: fileContainer.current.scrollHeight,
+            behavior: "smooth"
+        });
+    }, [file]);
 
     useEffect(() => {
         Query<PaginatedType<MessageAttachType>>(`/message-attach?page=1&limit=5&chat_id=${chat_id}&type=application`)
@@ -64,7 +71,7 @@ function FilePanel()
     }, []);
 
     return (  <>
-        <div>
+        <div className="max-h-96 overflow-auto"  ref={fileContainer}>
             {
                 file.map((f, index) => {
                     const ext = f.AttachName.split(".")[f.AttachName.split(".").length - 1];
@@ -80,7 +87,7 @@ function FilePanel()
                                     <h1 className="">{f.AttachName}</h1>
                                 </div>
                             </div>
-                            <Tooltip title={<FileOptions/>} trigger={"click"} color={"white"}>
+                            <Tooltip title={<FileOptions file={f.AttachUrl}/>} trigger={"click"} color={"white"}>
                                 <button>
                                     <BsThreeDots className="text-2xl opacity-50"/>
                                 </button>

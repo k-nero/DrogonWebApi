@@ -16,6 +16,14 @@ function ImagePanel()
 
     const [image, setImage] = React.useState<MessageAttachType[]>([]);
     const [imagePage, setImagePage] = React.useState<number>(1);
+    const imageContainer = React.useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        imageContainer.current?.scrollTo({
+            top: imageContainer.current.scrollHeight,
+            behavior: "smooth"
+        });
+    }, [image]);
 
     useEffect(() => {
         Query<PaginatedType<MessageAttachType>>(`/message-attach?page=1&limit=6&chat_id=${chat_id}&type=image`)
@@ -59,14 +67,14 @@ function ImagePanel()
 
     return (
         <>
-            <div className="grid-cols-3 grid gap-4 overflow-auto max-h-96">
+            <div className="grid-cols-3 grid gap-4 overflow-auto max-h-96" ref={imageContainer}>
                 {
                     image.map((img, index) => {
                         return (
                             <button key={img.Id} onClick={() => {
                                 ImageViewModal({ image: img });
                             }}>
-                                <img key={index} loading="lazy" src={img.AttachUrl} alt={img.AttachName} className="h-32 m-auto" style={{
+                                <img key={index} loading="eager" src={img.AttachUrl} alt={img.AttachName} className="h-32 m-auto" style={{
                                     objectFit: "contain"
                                 }}/>
                             </button>

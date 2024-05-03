@@ -103,10 +103,15 @@ function ChatPage()
 
                                 {
                                     message ?
-                                    lastMessage?.TextMessage ? lastMessage.TextMessage : lastMessage?.MessageAttachs?.length || 0 > 0 ? ( <>
-                                        <GrAttachment className="inline-block"/>
-                                        [Attachment]
-                                    </> ) : null : <Skeleton.Input style={{height: "16px"}}  active/>
+                                        lastMessage?.TextMessage ?
+                                            <>
+                                                <div className="inline-block font-bold">{lastMessage?.ApplicationUser?.UserName + ":\xa0"}</div>
+                                                {lastMessage?.TextMessage}
+                                            </> : lastMessage?.MessageAttachs?.length || 0 > 0 ? (<>
+                                            <div className="inline-block font-bold">{lastMessage?.ApplicationUser?.UserName + ":\xa0"}</div>
+                                                <GrAttachment className="inline-block"/>
+                                                [Attachment]
+                                            </>) : null : <Skeleton.Input style={{ height: "16px" }} active/>
                                 }
                             </div>
                         </div>

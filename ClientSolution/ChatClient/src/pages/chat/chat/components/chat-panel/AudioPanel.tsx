@@ -21,6 +21,14 @@ function AudioPanel()
 
     const [audio, setAudio] = React.useState<MessageAttachType[]>([]);
     const [audioPage, setAudioPage] = React.useState<number>(1);
+    const audioContainer = React.useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        audioContainer.current?.scrollTo({
+            top: audioContainer.current.scrollHeight,
+            behavior: "smooth"
+        });
+    }, [audio]);
 
     useEffect(() => {
         Query<PaginatedType<MessageAttachType>>(`/message-attach?page=1&limit=5&chat_id=${chat_id}&type=audio`)
@@ -64,7 +72,7 @@ function AudioPanel()
 
     return(
         <>
-            <div className="max-h-96 overflow-auto">
+            <div className="max-h-96 overflow-auto" ref={audioContainer}>
                 {
                     audio.map((a, index) => {
                         const ext = a.AttachName.split(".")[a.AttachName.split(".").length - 1];
@@ -87,7 +95,7 @@ function AudioPanel()
                                     </div>
                                 </button>
 
-                                <Tooltip title={<FileOptions/>} trigger={"click"} color={"white"}>
+                                <Tooltip title={<FileOptions file={a.AttachUrl}/>} trigger={"click"} color={"white"}>
                                     <button>
                                         <BsThreeDots className="text-2xl opacity-50"/>
                                     </button>

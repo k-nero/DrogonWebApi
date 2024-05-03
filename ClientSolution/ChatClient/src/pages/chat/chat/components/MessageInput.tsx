@@ -22,6 +22,7 @@ import { audioFileExt, otherFileExt, textFileExt, videoFileExt } from "@/utils/f
 import AttachView from "@/pages/chat/chat/components/message/AttachView.tsx";
 import Text from "@/components/text/Text.tsx";
 import AudioMessageModal from "@/pages/chat/chat/components/message-input/AudioMessageModal.tsx";
+import CodeView from "@/components/text/CodeMessage.tsx";
 
 
 const baseUrl = new URL(`${import.meta.env.VITE_API_URL}`);
@@ -322,7 +323,19 @@ function MessageInput({ messageList, quoteMessage, setQuoteMessages }:
                                     <>
                                         <AttachView message={quoteMessage}/>
                                     </>
-                                    <p><Text text={quoteMessage.TextMessage}/></p>
+
+                                        <div className="max-h-32 overflow-auto">
+                                            {
+                                                quoteMessage.TextMessage?.startsWith("```") ?
+                                                    <CodeView textMessage={quoteMessage.TextMessage}/>
+                                                    : <>
+                                                        {
+                                                            <Text text={quoteMessage.TextMessage}/>
+                                                        }
+                                                    </>
+                                            }
+                                        </div>
+
                                 </div>
                                 <div>
                                     <button onClick={() => {

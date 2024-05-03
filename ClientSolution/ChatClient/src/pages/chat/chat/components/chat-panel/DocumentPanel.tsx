@@ -21,6 +21,14 @@ function DocumentPanel()
 
     const [document, setDocument] = React.useState<MessageAttachType[]>([]);
     const [documentPage, setDocumentPage] = React.useState<number>(1);
+    const documentContainer = React.useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        documentContainer.current?.scrollTo({
+            top: documentContainer.current.scrollHeight,
+            behavior: "smooth"
+        });
+    }, [document]);
 
     useEffect(() => {
         Query<PaginatedType<MessageAttachType>>(`/message-attach?page=1&limit=5&chat_id=${chat_id}&type=text`)
@@ -62,8 +70,9 @@ function DocumentPanel()
         })
     }, []);
 
-    return( <>
-        <div>
+    return(
+        <>
+        <div className="max-h-96 overflow-auto" ref={documentContainer}>
             {
                 document.map((d, index) => {
                     const ext = d.AttachName.split(".")[d.AttachName.split(".").length - 1];
@@ -79,7 +88,7 @@ function DocumentPanel()
                                     <h1 className="">{d.AttachName}</h1>
                                 </div>
                             </div>
-                            <Tooltip title={<FileOptions/>} trigger={"click"} color={"white"}>
+                            <Tooltip title={<FileOptions file={d.AttachUrl}/>} trigger={"click"} color={"white"}>
                                 <button>
                                     <BsThreeDots className="text-2xl opacity-50"/>
                                 </button>

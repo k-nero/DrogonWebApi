@@ -15,12 +15,19 @@ import { uWebSockets } from "@/utils/WebSocket/WebSocket.ts";
 
 function VideoPanel()
 {
-
     const location = useLocation();
     const chat_id = location.pathname.split("/")[2];
 
     const [video, setVideo] = React.useState<MessageAttachType[]>([]);
     const [videoPage, setVideoPage] = React.useState<number>(1);
+    const videoContainer = React.useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        videoContainer.current?.scrollTo({
+            top: videoContainer.current.scrollHeight,
+            behavior: "smooth"
+        });
+    }, [video]);
 
     useEffect(() => {
         Query<PaginatedType<MessageAttachType>>(`/message-attach?page=1&limit=5&chat_id=${chat_id}&type=video`)
@@ -64,11 +71,10 @@ function VideoPanel()
     }, []);
 
     return (<>
-        <div>
+        <div className="max-h-96 overflow-auto"  ref={videoContainer}>
             {
                 video.map((v, index) => {
                     const ext = v.AttachName.split(".")[v.AttachName.split(".").length - 1];
-
                     return (
                         <div key={index} className={`flex items-center justify-between p-3 ${index === video.length - 1 ? "" : "border-b-2"}`}>
                             <div className="flex items-center">
@@ -84,7 +90,7 @@ function VideoPanel()
                                     <h1 className="">{v.AttachName}</h1>
                                 </div>
                             </div>
-                            <Tooltip title={<FileOptions/>} trigger={"click"} color={"white"}>
+                            <Tooltip title={<FileOptions file={v.AttachUrl}/>} trigger={"click"} color={"white"}>
                                 <button>
                                     <BsThreeDots className="text-2xl opacity-50"/>
                                 </button>
