@@ -89,7 +89,7 @@ function ChatPanel({chatRoom, onlineMap} : {chatRoom : ChatRoom | undefined, onl
                                     <div>
                                         Member
                                     </div>
-                                    <Tooltip  title={<FileOptions/>} trigger={"click"} color={"white"}>
+                                    <Tooltip  title={<FileOptions file={""} />} trigger={"click"} color={"white"}>
                                         <button>
                                             <BsThreeDots className="text-2xl opacity-50"/>
                                         </button>
