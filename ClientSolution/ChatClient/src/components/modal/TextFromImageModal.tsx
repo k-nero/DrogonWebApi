@@ -28,7 +28,7 @@ function TextFromImageModal({ url }: { url: string })
     return (
         <button className="text-xl align-middle hover:text-teal-500" onClick={async () => {
             setIsRecognizing(true);
-            //ts-ignore
+            //@ts-ignore
             const worker = await createWorker(["chi_sim", "eng", "vie"], OEM.LSTM_ONLY, {
                 langPath: "https://tessdata.projectnaptha.com/4.0.0_best"
             });
