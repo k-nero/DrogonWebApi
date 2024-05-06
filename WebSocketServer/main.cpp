@@ -110,7 +110,7 @@ int main()
 	};
 
 	auto ws_open = [](auto* ws)
-	{
+	{ 
 		/* Open event here, you may access ws->getUserData() which points to a PerSocketData struct */
 		auto perSocketData = ws->getUserData();
 		user_socket_map[perSocketData->user_id] = ws;
@@ -202,13 +202,21 @@ int main()
 		.open = ws_open,
 		.message = ws_message,
 		.close = ws_close
-		}).listen(9001, [](auto* listen_s)
+		});
+		
+		
+	app->listen("0.0.0.0", 9001, [](auto* listen_s)
 	{
 		if (listen_s)
 		{
-			std::cout << "Listening on port " << 9001 << std::endl;
+			auto ips = CoreHelper::GetAllListenAddresses("0.0.0.0");
+			for (const auto& i : ips)
+			{
+				BOOST_LOG_TRIVIAL(info) << "Listening on: https://" << i << ":" << 9001;
+			}
 		}
 	});
+
 	app->run();
 	uWS::Loop::get()->free();
 }

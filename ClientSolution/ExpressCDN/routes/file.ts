@@ -1,18 +1,10 @@
 import express = require("express");
-const router = express.Router();
+//const router = express.Router();
 import path = require("path");
-import multer = require("multer");
-const storage = multer.diskStorage({
-    destination: function(req, file, cb)
-    {
-        cb(null, "uploads/");
-    },
-    filename: function(req, file, cb)
-    {
-        const newFileName = Date.now() + path.extname(file.originalname);
-        cb(null, newFileName);
-    }
-});
+import HyperExpress from "hyper-express";
+import * as fs from "node:fs";
+
+const router = new HyperExpress.Router();
 
 router.get("/:filename", function(req, res, next)
 {
@@ -20,31 +12,72 @@ router.get("/:filename", function(req, res, next)
     // const filepath = path.join(__dirname, "../uploads", filename);
     // const filestream = fs.createReadStream (filepath);
     // filestream.pipe(res);
+    try
+    {
+        const filename = req.params.filename;
+        const filepath = path.join(__dirname, "../uploads", filename);
 
-    const filename = req.params.filename;
-    const filepath = path.join(__dirname, "../uploads", filename);
-    res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
-    res.setHeader("Content-disposition", "attachment; filename=" + filename);
-    res.sendFile(filepath);
+        //check if file exists
+        if(!fs.existsSync(filepath))
+        {
+            res.status(404).send("File not found");
+            return;
+        }
+        // if(filepath.split(".")[1] === "mp4" || filepath.split(".")[1] === "webm")
+        // {
+        //     res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
+        //     //res.setHeader("Content-disposition", "attachment; filename=" + filename);
+        //
+        //     const filestream = fs.createReadStream(filepath);
+        //
+        //     res.stream(filestream).then(r => {
+        //
+        //     });
+        // }
+
+        res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
+        res.setHeader("Content-disposition", "attachment; filename=" + filename);
+        res.sendFile(filepath);
+    }
+    catch (error)
+    {
+        res.status(500).send("Error downloading file");
+    }
 
 });
 
-router.put("/uploads", function(req, res, next)
-{
+router.put("/uploads", async function(req, res, next) {
 
-    const upload = multer({storage: storage}).single("file");
-    upload(req, res, function(err)
+    let savePath: string;
+    let originalFilename: string;
+    let fileName: string;
+    try
     {
-        if(err)
-        {
-            console.log(err);
-            return res.status(500).json({error: err.json});
-        }
-        res.status(200).send({
+        await req.multipart(async (field) => {
+            if (field.file)
+            {
+                originalFilename = field.file.name;
+                //randomize the filename with date
+                fileName = new Date().getTime() + field.file.name.split(".")[1];
+                savePath = path.join(__dirname, "../uploads", fileName);
+                await field.write(savePath);
+            }
+        })
+    }
+    catch (error)
+    {
+        res.status(500).send("Error uploading file");
+        return;
+    }
+
+    if(savePath)
+    {
+        res.status(200).send(JSON.stringify({
             message: "File is uploaded",
-            filename: req.file.filename
-        });
-    });
+            originalFileName: originalFilename,
+            filepath: fileName
+        }));
+    }
 
 })
 
