@@ -37,6 +37,12 @@ public:
 		return &instance;
 	}
 
+	static ConfigProvider& GetInstanceRef()
+	{
+		static ConfigProvider instance;
+		return instance;
+	}
+
 	std::string GetPrivateRSAKey()
 	{
 		return privateRSAKey;

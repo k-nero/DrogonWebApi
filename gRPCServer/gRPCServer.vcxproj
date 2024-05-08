@@ -180,6 +180,7 @@
     <ClCompile Include="proto\todo_list.grpc.pb.cc" />
     <ClCompile Include="proto\todo_list.pb.cc" />
     <ClCompile Include="GetTodoListRPC.cpp" />
+    <ClCompile Include="TodoItemRPC.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AsyncServer.h" />
@@ -190,6 +191,7 @@
     <ClInclude Include="proto\todo_list.grpc.pb.h" />
     <ClInclude Include="proto\todo_list.pb.h" />
     <ClInclude Include="GetTodoListRPC.h" />
+    <ClInclude Include="TodoItemRPC.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Application\Application.vcxproj">

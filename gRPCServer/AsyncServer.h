@@ -14,7 +14,7 @@
 #include <grpc/support/log.h>
 #include <grpcpp/grpcpp.h>
 #include "GetTodoListRPC.h"
-#include "GetTodoItemRPC.h"
+#include "TodoItemRPC.h"
 
 using grpc::Server;
 using grpc::ServerAsyncResponseWriter;
@@ -31,18 +31,13 @@ public:
 	{
 		server_->Shutdown();
 		// Always shutdown the completion queue after the server.
-		todo_list_queue->Shutdown();
 	}
 
 	// There is no shutdown handling in this code.
 	void Run(uint16_t port);
 
 private:
-	// This can be run in multiple threads if needed.
-	void HandleRpcs();
-
-	std::unique_ptr<ServerCompletionQueue> todo_list_queue;
-	todo_list::TodoListService::AsyncService todo_list_service;
+	TodoItemRPC todo_item_service;
 	std::unique_ptr<Server> server_;
 };
 

@@ -26,7 +26,6 @@ int main()
 	uWS::SocketContextOptions options;
 	options.cert_file_name = "certificate.crt";
 	options.key_file_name = "private.key";
-
 	auto app = std::make_unique<uWS::SSLApp>(options);
 
 	auto ws_upgrade = [](auto* res, uWS::HttpRequest* req, auto* context)
@@ -58,7 +57,7 @@ int main()
 			if (access_token.empty())
 			{
 				upgradeData->aborted = true;
-				std::cout << "No token provied" << std::endl;
+				BOOST_LOG_TRIVIAL(info) << "No token provied" << std::endl;
 				res->writeStatus("401 Unauthorized")->end("No token provied");
 				return;
 			}
@@ -70,7 +69,7 @@ int main()
 		catch (...)
 		{
 			upgradeData->aborted = true;
-			std::cout << "401 Unauthorized" << std::endl;
+			BOOST_LOG_TRIVIAL(info) << "401 Unauthorized" << std::endl;
 			res->writeStatus("401 Unauthorized")->end("Unauthorized");
 			return;
 		}
@@ -79,12 +78,12 @@ int main()
 		res->onAborted([=]()
 		{
 			upgradeData->aborted = true;
-			std::cout << "HTTP socket was closed before we upgraded it!" << std::endl;
+			BOOST_LOG_TRIVIAL(info) << "HTTP socket was closed before we upgraded it!" << std::endl;
 		});
 
 		if (!upgradeData->aborted)
 		{
-			std::cout << "Async task done, upgrading to WebSocket now!" << std::endl;
+			BOOST_LOG_TRIVIAL(info) << "Async task done, upgrading to WebSocket now!" << std::endl;
 
 			/* If you don't want to upgrade you can instead respond with custom HTTP here,
 			* such as res->writeStatus(...)->writeHeader(...)->end(...); or similar.*/
@@ -104,7 +103,7 @@ int main()
 		}
 		else
 		{
-			std::cout << "Async task done, but the HTTP socket was closed. Skipping upgrade to WebSocket!" << std::endl;
+			BOOST_LOG_TRIVIAL(info) << "Async task done, but the HTTP socket was closed. Skipping upgrade to WebSocket!" << std::endl;
 		}
 		delete upgradeData;
 	};
@@ -201,6 +200,17 @@ int main()
 		.upgrade = ws_upgrade,
 		.open = ws_open,
 		.message = ws_message,
+		.dropped = [](auto* ws, std::string_view message, uWS::OpCode opCode) {
+			
+		},
+		.drain = [](auto* ws) {
+		/* Check getBufferedAmount here */
+			
+			BOOST_LOG_TRIVIAL(info) << "Buffered amount" << ws->getBufferedAmount() << std::endl;
+		},
+		.subscription = [](auto* ws, std::string_view topic, int old_count, int new_count) {
+
+		},	
 		.close = ws_close
 		});
 		
