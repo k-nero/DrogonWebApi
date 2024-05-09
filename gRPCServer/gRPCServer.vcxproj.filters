@@ -66,6 +66,9 @@
     <ClCompile Include="TodoItemRPC.cpp">
       <Filter>Source Files\TodoItem</Filter>
     </ClCompile>
+    <ClCompile Include="TodoListRPC.cpp">
+      <Filter>Source Files\TodoList</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="proto\todo_list.grpc.pb.h">
@@ -94,6 +97,9 @@
     </ClInclude>
     <ClInclude Include="TodoItemRPC.h">
       <Filter>Header Files\TodoItem</Filter>
+    </ClInclude>
+    <ClInclude Include="TodoListRPC.h">
+      <Filter>Header Files\TodoList</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

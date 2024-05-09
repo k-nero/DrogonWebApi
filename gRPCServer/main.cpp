@@ -30,10 +30,14 @@
 
 #include "AsyncServer.h"
 
+#include "ConfigProvider.h"
+
 ABSL_FLAG(uint16_t, port, 50050, "Server port for the service");
 
 int main(int argc, char** argv)
 {
+	ConfigProvider::GetInstance()->Initialize();
+
     absl::ParseCommandLine(argc, argv);
     AsyncServer server;
     server.Run(absl::GetFlag(FLAGS_port));

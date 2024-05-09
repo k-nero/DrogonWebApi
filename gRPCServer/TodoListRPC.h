@@ -1,4 +1,5 @@
 #pragma once
+#pragma once
 #include <iostream>
 #include <memory>
 #include <string>
@@ -11,26 +12,28 @@
 
 #include <grpc/support/log.h>
 #include <grpcpp/grpcpp.h>
-#include "GetTodoItemRPC.h"
-
-class TodoItemRPC
+#include "GetTodoListRPC.h"
+class TodoListRPC
 {
 public:
-	TodoItemRPC() = default;
-	~TodoItemRPC()
+	TodoListRPC() = default;
+	~TodoListRPC()
 	{
 		for (auto& queue : server_queue)
 		{
 			queue->Shutdown();
 		}
+
 	}
 
-	void InitCompletionQueue(ServerBuilder * builder);
+	void InitCompletionQueue(ServerBuilder* builder);
+
 	void Invoke();
 private:
+
 	std::vector<std::unique_ptr<ServerCompletionQueue>> server_queue;
-	todo_item::TodoItemService::AsyncService service_;
-	
-	void HandleRpcs(ServerCompletionQueue * cq_ );
+	todo_list::TodoListService::AsyncService service_;
+	void HandleRpcs(ServerCompletionQueue* cq_);
+
 };
 

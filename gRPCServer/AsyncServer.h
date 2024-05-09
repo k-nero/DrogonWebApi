@@ -15,6 +15,7 @@
 #include <grpcpp/grpcpp.h>
 #include "GetTodoListRPC.h"
 #include "TodoItemRPC.h"
+#include "TodoListRPC.h"
 
 using grpc::Server;
 using grpc::ServerAsyncResponseWriter;
@@ -38,6 +39,7 @@ public:
 
 private:
 	TodoItemRPC todo_item_service;
+	TodoListRPC todo_list_service;
 	std::unique_ptr<Server> server_;
 };
 

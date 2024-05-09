@@ -12,11 +12,18 @@ void AsyncServer::Run(uint16_t port)
 	// clients. In this case it corresponds to an *asynchronous* service.
 	
 	todo_item_service.InitCompletionQueue(&builder);
+	todo_list_service.InitCompletionQueue(&builder);
 
 	// Get hold of the completion queue used for the asynchronous communication
 	// with the gRPC runtime.
 	// Finally assemble the server.
 	server_ = builder.BuildAndStart();
+
+	todo_item_service.Invoke();
+	todo_list_service.Invoke();
+
+	server_->Wait();
+
 	std::cout << "Server listening on " << server_address << std::endl;
 
 	// Proceed to the server's main loop.

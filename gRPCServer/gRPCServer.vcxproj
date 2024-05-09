@@ -181,6 +181,7 @@
     <ClCompile Include="proto\todo_list.pb.cc" />
     <ClCompile Include="GetTodoListRPC.cpp" />
     <ClCompile Include="TodoItemRPC.cpp" />
+    <ClCompile Include="TodoListRPC.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AsyncServer.h" />
@@ -192,6 +193,7 @@
     <ClInclude Include="proto\todo_list.pb.h" />
     <ClInclude Include="GetTodoListRPC.h" />
     <ClInclude Include="TodoItemRPC.h" />
+    <ClInclude Include="TodoListRPC.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Application\Application.vcxproj">
