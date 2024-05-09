@@ -1,5 +1,5 @@
 import { MemoizedMessage } from "@/pages/chat/chat/components/Message.tsx";
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import MessageType from "@/utils/type/MessageType.ts";
 import { useLocation } from "react-router-dom";
 import Query from "@/utils/function/Query.ts";
@@ -25,17 +25,14 @@ function MessageBox({ messageList, setMessageList, setQuoteMessage }: {
     const [localUser] = useLocalStorage("auth_credential", {});
     const user: AuthResponse = localUser;
 
-    //const [isInitLoading, setIsInitLoading] = useState<boolean>(false);
     const [shouldLoadMore, setShouldLoadMore] = useState<boolean>(false);
     const [shouldScroll, setShouldScroll] = useState<boolean>(false);
     const [isAtTop, setIsAtTop] = useState<boolean>(false);
     const [isLoadFinished, setIsLoadFinished] = useState<boolean>(false);
     const message_box = useRef(null as HTMLDivElement | null)
     useEffect(() => {
-        //setIsInitLoading(true);
         Query<PaginatedType<MessageType>>(`/message?chat_id=${chat_id}&page=1&limit=30`).then((r) => {
-            setMessageList(r.m_data.reverse());
-            //setIsInitLoading(false);
+            setMessageList(r.m_data);
             setShouldScroll(true);
             setIsLoadFinished(true);
         });
@@ -50,7 +47,6 @@ function MessageBox({ messageList, setMessageList, setQuoteMessage }: {
                     {
                         message.MessageSeenBys?.push(e_data.message);
                     }
-                    // perform a deep copy to trigger re-render on the MemoizedMessage component
                     return message;
                 });
             });
@@ -98,11 +94,6 @@ function MessageBox({ messageList, setMessageList, setQuoteMessage }: {
     useEffect(() => {
         if (message_box.current)
         {
-            // message_box.current?.scrollTo({
-            //     top: message_box.current?.scrollHeight,
-            //     behavior: "smooth"
-            // })
-
             message_box.current.scrollTop = message_box.current.scrollHeight;
         }
     }, [shouldScroll]);
@@ -116,7 +107,7 @@ function MessageBox({ messageList, setMessageList, setQuoteMessage }: {
                 return;
             }
             setMessageList((prev) => {
-                return [...prev, message];
+                return [message, ...prev];
             });
             if (message.ApplicationUserId === user.user.Id)
             {
@@ -129,7 +120,7 @@ function MessageBox({ messageList, setMessageList, setQuoteMessage }: {
                     });
                 }
             }
-            else if (message_box.current && (message_box.current.scrollTop || 0 >= message_box.current.scrollHeight || 0 / 2))
+            else if (message_box.current && (message_box.current.scrollTop || 0 <= message_box.current.scrollHeight || 0 / 2))
             {
                 await new Promise((r) => setTimeout(r, 300));
                 message_box.current?.scrollTo({
@@ -150,13 +141,13 @@ function MessageBox({ messageList, setMessageList, setQuoteMessage }: {
         {
             return;
         }
-        Query<PaginatedType<MessageType>>(`/message?chat_id=${chat_id}&created_date=${messageList[0].CreatedDate}&page=1&limit=30`).then((res) => {
+        Query<PaginatedType<MessageType>>(`/message?chat_id=${chat_id}&created_date=${messageList[messageList.length - 1].CreatedDate}&page=1&limit=30`).then((res) => {
             if (!res?.m_data)
             {
                 setIsAtTop(true);
                 return;
             }
-            setMessageList([...res.m_data.reverse(), ...messageList]);
+            setMessageList([...messageList, ...res.m_data]);
             setShouldLoadMore(false);
         });
     }, [shouldLoadMore]);
@@ -179,6 +170,32 @@ function MessageBox({ messageList, setMessageList, setQuoteMessage }: {
         });
     }, []);
 
+    const scrollCallback = React.useCallback(() => {
+        if (!message_box.current)
+        {
+            return;
+        }
+
+        if ( message_box.current.scrollHeight - Math.abs(message_box.current.scrollTop) < message_box.current.scrollHeight / 5)
+        {
+           setShouldLoadMore(true);
+           console.log("load more throttled 100ms")
+        }
+    }, []);
+
+    function throttle (callbackFn: { (): void; (): void; call?: any; }, limit: number | undefined) {
+        let wait = false;
+        return function () {
+            if (!wait) {
+                callbackFn.call();
+                wait = true;
+                setTimeout(function () {
+                    wait = false;
+                }, limit);
+            }
+        }
+    }
+
     useEffect(() => {
 
         if (!message_box.current)
@@ -186,40 +203,26 @@ function MessageBox({ messageList, setMessageList, setQuoteMessage }: {
             return;
         }
 
-        //callback should be a named function otherwise it won't be removed
-        function callback()
-        {
-
-            if (!message_box.current)
-            {
-                return;
-            }
-            if (message_box.current.scrollTop <= message_box.current.scrollHeight / 5 || message_box.current.scrollTop === 0)
-            {
-                setShouldLoadMore(true);
-            }
-        }
-
         if (isAtTop)
         {
-            message_box.current.removeEventListener("scroll", callback);
+            message_box.current.removeEventListener("scroll", throttle(scrollCallback, 100));
+            return;
         }
-        message_box.current.addEventListener("scroll", callback);
+        message_box.current.addEventListener("scroll", throttle(scrollCallback, 100));
 
     }, [isAtTop]);
-    //const set = useCallback(setQuoteMessage , [setQuoteMessage]);
 
     return (
-        <div className="w-full overflow-auto px-6 " ref={message_box} id="message_box">
+        <div className="w-full overflow-auto px-6 flex flex-col-reverse " ref={message_box} id="message_box">
             {
 
                 messageList?.map((message, index) => {
                     const currentMessageDate = new Date(message.CreatedDate);
-                    const nextMessageDate = new Date(messageList[index + 1]?.CreatedDate);
+                    const nextMessageDate = new Date(messageList[index - 1]?.CreatedDate);
                     const offset = nextMessageDate.getTime() - currentMessageDate.getTime();
 
                     return (
-                        <div key={message.Id} id={message.Id}>
+                        <div key={message.Id + "_message_key"} id={message.Id}>
                             <MemoizedMessage message={message} setQuoteMessage={setQuoteMessage}/>
                             {
                                 offset > 1000 * 60 * 30 ?

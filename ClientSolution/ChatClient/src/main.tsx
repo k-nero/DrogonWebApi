@@ -7,21 +7,23 @@ import router from "./routes";
 import { ConfigProvider } from "antd";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-    <>
-        <ConfigProvider
-        theme={{
-            components: {
-                Switch: {
-                    colorPrimary: "rgb(20 184 166)",
-                    colorPrimaryHover: "rgb(20 184 166)",
-                }
-            }
-        }}
-        >
-            <App>
-                <RouterProvider router={router}/>
-            </App>
-        </ConfigProvider>
+    //<React.StrictMode>
+        <>
+            <ConfigProvider
+                theme={{
+                    components: {
+                        Switch: {
+                            colorPrimary: "rgb(20 184 166)",
+                            colorPrimaryHover: "rgb(20 184 166)",
+                        }
+                    }
+                }}
+            >
+                <App>
+                    <RouterProvider router={router}/>
+                </App>
+            </ConfigProvider>
+        </>
 
-    </>
+    //</React.StrictMode>
 );

@@ -109,6 +109,9 @@
     <None Include="proto\todo_item.proto">
       <Filter>Proto\TodoItem</Filter>
     </None>
+    <None Include="auto_compile_proto.bat">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="certificate.crt">

@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import authImg from "/assets/img/signin-ill.jpg";
+import authImg from "@/assets/img/signin-ill.jpg";
 import Footer from "@/components/footer/FooterAuthDefault.tsx";
 import React from "react";
 

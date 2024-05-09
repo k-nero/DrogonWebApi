@@ -57,7 +57,7 @@ int main()
 			if (access_token.empty())
 			{
 				upgradeData->aborted = true;
-				BOOST_LOG_TRIVIAL(info) << "No token provied" << std::endl;
+				BOOST_LOG_TRIVIAL(info) << "No token provied";
 				res->writeStatus("401 Unauthorized")->end("No token provied");
 				return;
 			}
@@ -69,7 +69,7 @@ int main()
 		catch (...)
 		{
 			upgradeData->aborted = true;
-			BOOST_LOG_TRIVIAL(info) << "401 Unauthorized" << std::endl;
+			BOOST_LOG_TRIVIAL(info) << "401 Unauthorized";
 			res->writeStatus("401 Unauthorized")->end("Unauthorized");
 			return;
 		}
@@ -78,12 +78,12 @@ int main()
 		res->onAborted([=]()
 		{
 			upgradeData->aborted = true;
-			BOOST_LOG_TRIVIAL(info) << "HTTP socket was closed before we upgraded it!" << std::endl;
+			BOOST_LOG_TRIVIAL(info) << "HTTP socket was closed before we upgraded it!" ;
 		});
 
 		if (!upgradeData->aborted)
 		{
-			BOOST_LOG_TRIVIAL(info) << "Async task done, upgrading to WebSocket now!" << std::endl;
+			BOOST_LOG_TRIVIAL(info) << "Async task done, upgrading to WebSocket now!" ;
 
 			/* If you don't want to upgrade you can instead respond with custom HTTP here,
 			* such as res->writeStatus(...)->writeHeader(...)->end(...); or similar.*/
@@ -103,7 +103,7 @@ int main()
 		}
 		else
 		{
-			BOOST_LOG_TRIVIAL(info) << "Async task done, but the HTTP socket was closed. Skipping upgrade to WebSocket!" << std::endl;
+			BOOST_LOG_TRIVIAL(info) << "Async task done, but the HTTP socket was closed. Skipping upgrade to WebSocket!";
 		}
 		delete upgradeData;
 	};
@@ -125,6 +125,11 @@ int main()
 
 		if (json["type"] == "subscribe")
 		{
+			if (ws->isSubscribed(json["channel"].asString()))
+			{
+				return;
+			}
+
 			ws->subscribe(json["channel"].asString());
 			json["socket_id"] = perSocketData->user_id;
 			app->publish(json["channel"].asString(), json.toStyledString(), uWS::OpCode::TEXT);
@@ -206,7 +211,7 @@ int main()
 		.drain = [](auto* ws) {
 		/* Check getBufferedAmount here */
 			
-			BOOST_LOG_TRIVIAL(info) << "Buffered amount" << ws->getBufferedAmount() << std::endl;
+			BOOST_LOG_TRIVIAL(info) << "Buffered amount" << ws->getBufferedAmount() ;
 		},
 		.subscription = [](auto* ws, std::string_view topic, int old_count, int new_count) {
 

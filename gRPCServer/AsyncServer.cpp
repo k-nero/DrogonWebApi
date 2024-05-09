@@ -1,4 +1,5 @@
 #include "AsyncServer.h"
+#include <boost/log/trivial.hpp>
 
 void AsyncServer::Run(uint16_t port)
 {
@@ -22,9 +23,10 @@ void AsyncServer::Run(uint16_t port)
 	todo_item_service.Invoke();
 	todo_list_service.Invoke();
 
+	BOOST_LOG_TRIVIAL(info) << "Server listening on " << server_address << std::endl;
+
 	server_->Wait();
 
-	std::cout << "Server listening on " << server_address << std::endl;
 
 	// Proceed to the server's main loop.
 }

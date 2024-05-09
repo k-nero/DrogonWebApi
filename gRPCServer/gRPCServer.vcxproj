@@ -163,6 +163,7 @@
     <CopyFileToFolders Include="private_key.pem">
       <FileType>Document</FileType>
     </CopyFileToFolders>
+    <None Include="auto_compile_proto.bat" />
     <None Include="proto\todo_item.proto" />
     <None Include="proto\todo_list.proto">
       <FileType>Document</FileType>
