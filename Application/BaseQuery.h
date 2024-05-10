@@ -20,7 +20,7 @@
 #include "BaseQueryV2.h"
 
 //TODO: Apply concepts
-template <typename T, typename Z = std::is_base_of<BaseEntity, T>::type>
+template <typename T, typename = std::is_base_of<BaseEntity, T>::type>
 class APPLICATION_API BaseQuery
 {
 public:

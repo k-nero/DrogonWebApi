@@ -13,7 +13,9 @@
 #include <grpc/support/log.h>
 #include <grpcpp/grpcpp.h>
 #include "GetTodoListRPC.h"
-class TodoListRPC
+#include "BaseService.h"
+
+class TodoListRPC : public BaseService<todo_list::TodoListService>
 {
 public:
 	TodoListRPC() = default;
@@ -23,17 +25,10 @@ public:
 		{
 			queue->Shutdown();
 		}
-
 	}
 
-	void InitCompletionQueue(ServerBuilder* builder);
+	void InitCompletionQueue(ServerBuilder* builder) override;
 
-	void Invoke();
-private:
-
-	std::vector<std::unique_ptr<ServerCompletionQueue>> server_queue;
-	todo_list::TodoListService::AsyncService service_;
-	void HandleRpcs(ServerCompletionQueue* cq_);
-
+	void Invoke() override;
 };
 

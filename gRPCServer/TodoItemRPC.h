@@ -12,8 +12,10 @@
 #include <grpc/support/log.h>
 #include <grpcpp/grpcpp.h>
 #include "GetTodoItemRPC.h"
+#include "BaseService.h"
+#include <boost/log/trivial.hpp>
 
-class TodoItemRPC
+class TodoItemRPC : public BaseService<todo_item::TodoItemService>
 {
 public:
 	TodoItemRPC() = default;
@@ -25,12 +27,7 @@ public:
 		}
 	}
 
-	void InitCompletionQueue(ServerBuilder * builder);
-	void Invoke();
-private:
-	std::vector<std::unique_ptr<ServerCompletionQueue>> server_queue;
-	todo_item::TodoItemService::AsyncService service_;
-	
-	void HandleRpcs(ServerCompletionQueue * cq_ );
+	void InitCompletionQueue(ServerBuilder* builder) override;
+	void Invoke() override;
 };
 

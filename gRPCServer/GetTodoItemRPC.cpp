@@ -45,7 +45,7 @@ void GetTodoItemRPC::Proceed()
 			return;
 		};
 
-		todo_item::TodoItem* rs = new todo_item::TodoItem();
+		auto rs = new todo_item::TodoItem();
 
 		rs->set_id(todo_item->GetId());
 		rs->set_title(todo_item->GetTitle());
@@ -58,6 +58,7 @@ void GetTodoItemRPC::Proceed()
 
 		reply_.set_message("Success");
 		reply_.set_status(200);
+		reply_.set_allocated_items(rs);
 
 		status_ = FINISH;
 		responder_.Finish(reply_, Status::OK, this);

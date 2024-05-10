@@ -17,7 +17,7 @@
 #include <string>
 #include <vector>
 
-template <typename T, typename Z = std::is_base_of<BaseEntity, T>::type>
+template <typename T, typename = std::is_base_of<BaseEntity, T>::type>
 class Query
 {
 public:

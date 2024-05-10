@@ -45,7 +45,7 @@ void GetTodoListRPC::Proceed()
 			return;
 		};
 
-		todo_list::TodoList*rs = new todo_list::TodoList();
+		auto rs = new todo_list::TodoList();
 
 		rs->set_id(todo_list->GetId());
 		rs->set_title(todo_list->GetTitle());
@@ -55,7 +55,7 @@ void GetTodoListRPC::Proceed()
 
 		for (auto& todo_item : todo_list->GetTodoItems())
 		{
-			todo_list::TodoItem* item = new todo_list::TodoItem();
+			auto item = new todo_list::TodoItem();
 			item->set_id(todo_item->GetId());
 			item->set_title(todo_item->GetTitle());
 			item->set_note(todo_item->GetNote());

@@ -118,7 +118,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <AdditionalIncludeDirectories>$(SolutionDir)Application;$(SolutionDir)Domain;$(SolutionDir)Infrastructure;$(SolutionDir)lib\SQLAPI\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <DisableSpecificWarnings>4251;4275</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4251;4275;4200;26495</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -193,6 +193,8 @@
     <ClInclude Include="proto\todo_list.grpc.pb.h" />
     <ClInclude Include="proto\todo_list.pb.h" />
     <ClInclude Include="GetTodoListRPC.h" />
+    <ClInclude Include="BaseService.h" />
+    <ClInclude Include="RPCInterface.h" />
     <ClInclude Include="TodoItemRPC.h" />
     <ClInclude Include="TodoListRPC.h" />
   </ItemGroup>

@@ -1,39 +1,27 @@
 #pragma once
 
 #include "Enum.h"
+#include "RPCInterface.h"
 #ifdef BAZEL_BUILD
 #include "proto/todo_list.grpc.pb.h"
 #else
 #include "proto/todo_list.grpc.pb.h"
 #endif
 
-using grpc::Server;
-using grpc::ServerAsyncResponseWriter;
-using grpc::ServerBuilder;
-using grpc::ServerCompletionQueue;
-using grpc::ServerContext;
-using grpc::Status;
 
-class GetTodoListRPC
+
+class GetTodoListRPC : RPCInterface<todo_list::TodoListService>
 {
 public:
 
-	GetTodoListRPC(todo_list::TodoListService::AsyncService* service, ServerCompletionQueue* cq) : service_(service), cq_(cq), responder_(&ctx_), status_(CREATE)
+	GetTodoListRPC(todo_list::TodoListService::AsyncService* service, ServerCompletionQueue* cq) : RPCInterface(service, cq), responder_(&ctx_) 
 	{
 		Proceed();
-	}
+	};
 
-	void Proceed();
+	void Proceed() override;
 
 protected:
-	ServerCompletionQueue* cq_;
-	todo_list::TodoListService::AsyncService* service_;
-	// The producer-consumer queue where for asynchronous server notifications.
-
-	// Context for the rpc, allowing to tweak aspects of it such as the use
-	// of compression, authentication, as well as to send metadata back to the
-	// client.
-	ServerContext ctx_;
 
 	// What we get from the client.
 	todo_list::GetTodoListRequest request_;
@@ -42,8 +30,5 @@ protected:
 
 	// The means to get back to the client.
 	ServerAsyncResponseWriter< todo_list::GetTodoListResponse> responder_;
-
-	// Let's implement a tiny state machine with the following states.
-	CallStatus status_;  // The current serving state.
 };
 
