@@ -90,7 +90,7 @@ function QuoteMessage({ message, incoming }: { message: MessageType, incoming: b
                         <div>
                             <AttachView message={quoteMessage}/>
                         </div>
-                        : <Skeleton active/>}
+                        : <Skeleton.Image active/>}
                     <div className={`max-h-96 overflow-auto text-sm break-words ${quoteMessage?.MessageAttachs?.length && quoteMessage.TextMessage ? "mt-3" : ""}`}>{
                         quoteMessage ?
                         <>

@@ -110,7 +110,7 @@
       <Filter>Proto\TodoItem</Filter>
     </None>
     <None Include="auto_compile_proto.bat">
-      <Filter>Source Files</Filter>
+      <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

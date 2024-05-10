@@ -205,10 +205,10 @@ function MessageBox({ messageList, setMessageList, setQuoteMessage }: {
 
         if (isAtTop)
         {
-            message_box.current.removeEventListener("scroll", throttle(scrollCallback, 100));
+            message_box.current.removeEventListener("scroll", throttle(scrollCallback, 300));
             return;
         }
-        message_box.current.addEventListener("scroll", throttle(scrollCallback, 100));
+        message_box.current.addEventListener("scroll", throttle(scrollCallback, 300));
 
     }, [isAtTop]);
 
