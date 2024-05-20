@@ -78,7 +78,29 @@ router.put("/uploads", async function(req, res, next) {
             filepath: fileName
         }));
     }
+})
 
+router.get("/tesseract/:filename", function(req, res, next) {
+    try
+    {
+        const filename = req.path_parameters.filename;
+        const filepath = path.join(__dirname, "../tesseract", filename);
+        console.log(filepath);
+
+        //check if file exists
+        if(!fs.existsSync(filepath))
+        {
+            res.status(404).send("File not found");
+            return;
+        }
+        res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
+        res.setHeader("Content-disposition", "attachment; filename=" + filename);
+        res.sendFile(filepath);
+    }
+    catch (error)
+    {
+        res.status(500).send("Error downloading file");
+    }
 })
 
 export = router;

@@ -13,15 +13,8 @@ class RPCInterface
 {
 public:
 	virtual ~RPCInterface() = default;
-	virtual void Proceed()
-	{
-		assert("Proceed method should be overridden");
-	}
-	RPCInterface(S::AsyncService* service, ServerCompletionQueue* cq) : service_(service), cq_(cq), status_(CREATE) 
-	{
-		
-	}
-
+	virtual void Proceed() = 0;
+	RPCInterface(S::AsyncService* service, ServerCompletionQueue* cq) : service_(service), cq_(cq), status_(CREATE) {}
 protected:
 	ServerCompletionQueue* cq_;
 	S::AsyncService* service_;

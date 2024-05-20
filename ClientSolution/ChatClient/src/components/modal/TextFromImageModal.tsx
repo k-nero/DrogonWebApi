@@ -4,6 +4,7 @@ import React from "react";
 import { LuLoader2 } from "react-icons/lu";
 import { CiTextAlignJustify } from "react-icons/ci";
 import { Guid } from "guid-typescript";
+const cdnURL = new URL(`${import.meta.env.VITE_CDN_URL}`);
 
 function TextFromImageModal({ url }: { url: string })
 {
@@ -29,7 +30,7 @@ function TextFromImageModal({ url }: { url: string })
         <button className="text-xl align-middle hover:text-teal-500" onClick={async () => {
             setIsRecognizing(true);
             const worker = await createWorker(["chi_sim", "eng", "vie"], OEM.LSTM_ONLY, {
-                langPath: "https://tessdata.projectnaptha.com/4.0.0_best"
+                langPath: `${cdnURL}files/tesseract`,
             });
             const { data } = await worker.recognize(url);
             Modal.info({

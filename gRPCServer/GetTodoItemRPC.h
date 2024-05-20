@@ -32,7 +32,6 @@ protected:
 	todo_item::GetTodoItemsRequest request_;
 	// What we send back to the client.
 	todo_item::GetTodoItemsResponse reply_;
-
 	// The means to get back to the client.
 	ServerAsyncResponseWriter< todo_item::GetTodoItemsResponse> responder_;
 };
