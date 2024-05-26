@@ -7,97 +7,112 @@ template <class T>
 class JsonParser
 {
 public:
-	template <class K = T, std::enable_if_t<std::is_same_v<K, int>, bool> = true>
-	static inline K obj_from_json(Json::Value& json)
+	template <class K = T>
+	static inline 
+	typename std::enable_if<std::is_same<K, int>::value, K>::type obj_from_json(Json::Value& json)
 	{ 
 		return json.asInt();
 	}
 
-	template <class K = T, std::enable_if_t<std::is_same_v<K, unsigned int>, bool> = true>
-	static inline K obj_from_json(Json::Value& json)
+	template <class K = T>
+	static inline 
+	typename std::enable_if<std::is_same<K, unsigned int>::value, K>::type obj_from_json(Json::Value& json)
 	{
 		return json.asUInt();
 	}
 
-	template <class K = T, std::enable_if_t<std::is_same_v<K, long long>, bool> = true>
-	static inline K obj_from_json(Json::Value& json)
+	template <class K = T>
+	static inline
+	typename std::enable_if<std::is_same<K, long long>::value, K>::type obj_from_json(Json::Value& json)
 	{
 		return json.asInt64();
 	}
 
-	template <class K = T, std::enable_if_t<std::is_same_v<K, long>, bool> = true>
-	static inline K obj_from_json(Json::Value& json)
+	template <class K = T>
+	static inline
+	typename std::enable_if<std::is_same<K, long>::value, K>::type obj_from_json(Json::Value& json)
 	{
 		return json.asInt64();
 	}
 
-	template <class K = T, std::enable_if_t<std::is_same_v<K, unsigned long>, bool> = true>
-	static inline K obj_from_json(Json::Value& json)
+	template <class K = T>
+	static inline
+	typename std::enable_if<std::is_same<K, unsigned long>::value, K>::type obj_from_json(Json::Value& json)
 	{
 		return json.asInt64();
 	}
 
-	template <class K = T, std::enable_if_t<std::is_same_v<K, unsigned long long>, bool> = true>
-	static inline K obj_from_json(Json::Value& json)
+	template <class K = T>
+	static inline
+	typename std::enable_if<std::is_same<K, unsigned long long>::value, K>::type obj_from_json(Json::Value& json)
 	{ 
 		return json.asUInt64();
 	}
 
-	template <class K = T, std::enable_if_t<std::is_same_v<K, short>, bool> = true>
-	static inline K obj_from_json(Json::Value& json)
+	template <class K = T>
+	static inline 
+	typename std::enable_if<std::is_same<K, short>::value, K>::type obj_from_json(Json::Value& json)
 	{
 		return json.asInt();
 	}
 
-	template <class K = T, std::enable_if_t<std::is_same_v<K, unsigned short>, bool> = true>
-	static inline K obj_from_json(Json::Value& json)
+	template <class K = T>
+	static inline 
+	typename std::enable_if<std::is_same<K, unsigned short>::value, K>::type obj_from_json(Json::Value& json)
 	{
 		return json.asUInt();
 	}
 
-	template <class K = T, std::enable_if_t<std::is_same_v<K, float>, bool> = true>
-	static inline K obj_from_json(Json::Value& json)
+	template <class K = T>
+	static inline 
+	typename std::enable_if<std::is_same<K, float>::value, K>::type obj_from_json(Json::Value& json)
 	{ 
 		return json.asFloat(); 
 	}
 
-	template <class K = T, std::enable_if_t<std::is_same_v<K, double>, bool> = true>
-	static inline K obj_from_json(Json::Value& json)
+	template <class K = T>
+	static inline 
+	typename std::enable_if<std::is_same<K, double>::value, K>::type obj_from_json(Json::Value& json)
 	{
 		return json.asDouble();
 	}
 
 	template <class K = T, std::enable_if_t<is_string_v<K>, bool> = true>
-	static inline K obj_from_json(Json::Value& json)
+	static inline 
+	typename std::enable_if<is_string_v<K>, K>::type obj_from_json(Json::Value& json)
 	{ 
 		return json.asString();
 	}
 
-	template <class K = T, std::enable_if_t<std::is_same_v<K, bool>, bool> = true>
-	static inline K obj_from_json(Json::Value& json)
+	template <class K = T>
+	static inline 
+	typename std::enable_if<std::is_same<K, bool>::value, K>::type obj_from_json(Json::Value& json)
 	{
 		return json.asBool();
 	}
 
-	template <class K = T, std::enable_if_t<is_shared_ptr_v<K>, bool> = true>
-	static inline K obj_from_json( Json::Value& json)
+	template <class K = T>
+	static inline 
+	typename std::enable_if<is_shared_ptr_v<K>, K>::type obj_from_json( Json::Value& json)
 	{
 		return std::make_shared<K::element_type>(obj_from_json<K::element_type>(json));
 	}
 
-	template <class K = T, std::enable_if_t<is_weak_ptr_v<K>, bool> = true>
-	static inline K obj_from_json( Json::Value& json)
+	template <class K = T>
+	static inline 
+	typename std::enable_if<is_weak_ptr_v<K>, K>::type obj_from_json( Json::Value& json)
 	{
 		return std::make_shared<K::element_type>(obj_from_json<K::element_type>(json));
 	}
 
-	template <class K = T, std::enable_if_t<is_vector_v<K>, bool> = true>
-	static inline K obj_from_json(Json::Value& json)
+	template <class K = T>
+	static inline 
+	typename std::enable_if<is_vector_v<K>, K>::type obj_from_json(Json::Value& json)
 	{
 		K obj{};
 		for (auto& j : json)
 		{
-			obj.push_back(std::move(obj_from_json<K::value_type>(j)));
+			obj.push_back(obj_from_json<K::value_type>(j));
 		}
 		return obj;
 	}
@@ -112,7 +127,7 @@ public:
 			{
 				return;
 			}
-			obj.*(member).pointer = std::move(obj_from_json<std::remove_reference_t<decltype(obj.*(member).pointer)>>(json[member.name]));
+			obj.*(member).pointer = (obj_from_json<std::remove_reference_t<decltype(obj.*(member).pointer)>>(json[member.name]));
 		});
 		return obj;
 	}

@@ -391,3 +391,5 @@ ClientSolution/ExpressCDN/dev.pem
 *.pem
 *.crt
 *.key
+
+/lib
