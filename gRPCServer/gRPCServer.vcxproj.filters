@@ -126,13 +126,13 @@
     <CopyFileToFolders Include="config.ini">
       <Filter>Resource Files</Filter>
     </CopyFileToFolders>
-    <CopyFileToFolders Include="private.key">
-      <Filter>Resource Files</Filter>
-    </CopyFileToFolders>
     <CopyFileToFolders Include="private_key.pem">
       <Filter>Resource Files</Filter>
     </CopyFileToFolders>
     <CopyFileToFolders Include="public_key.pem">
+      <Filter>Resource Files</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="certificate.key">
       <Filter>Resource Files</Filter>
     </CopyFileToFolders>
   </ItemGroup>

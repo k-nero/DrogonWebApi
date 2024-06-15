@@ -25,7 +25,7 @@ int main()
 
 	uWS::SocketContextOptions options;
 	options.cert_file_name = "certificate.crt";
-	options.key_file_name = "private.key";
+	options.key_file_name = "certificate.key";
 	auto app = std::make_unique<uWS::SSLApp>(options);
 
 	auto ws_upgrade = [](auto* res, uWS::HttpRequest* req, auto* context)

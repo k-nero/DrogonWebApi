@@ -15,18 +15,18 @@
   "dependencies": {
     "@types/multer": "^1.4.11",
     "cors": "^2.8.5",
-    "debug": "^4.3.4",
-    "hyper-express": "^6.16.2"
+    "debug": "^4.3.5",
+    "hyper-express": "^6.16.3"
   },
   "devDependencies": {
     "@types/debug": "4.1.12",
     "@types/express": "^4.17.21",
-    "@types/express-serve-static-core": "^4.19.1",
+    "@types/express-serve-static-core": "^4.19.3",
     "@types/mime": "^3.0.4",
-    "@types/node": "^20.12.12",
+    "@types/node": "^20.14.2",
     "@types/serve-static": "^1.15.7",
-    "@typescript-eslint/eslint-plugin": "^7.10.0",
-    "@typescript-eslint/parser": "^7.10.0",
+    "@typescript-eslint/eslint-plugin": "^7.13.0",
+    "@typescript-eslint/parser": "^7.13.0",
     "typescript": "^5.4.5"
   },
   "eslintConfig": {

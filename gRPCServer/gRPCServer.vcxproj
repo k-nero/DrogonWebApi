@@ -157,13 +157,13 @@
     <CopyFileToFolders Include="config.ini">
       <FileType>Document</FileType>
     </CopyFileToFolders>
-    <CopyFileToFolders Include="private.key">
-      <FileType>Document</FileType>
-    </CopyFileToFolders>
     <CopyFileToFolders Include="private_key.pem">
       <FileType>Document</FileType>
     </CopyFileToFolders>
     <None Include="auto_compile_proto.bat" />
+    <CopyFileToFolders Include="certificate.key">
+      <FileType>Document</FileType>
+    </CopyFileToFolders>
     <None Include="proto\todo_item.proto" />
     <None Include="proto\todo_list.proto">
       <FileType>Document</FileType>

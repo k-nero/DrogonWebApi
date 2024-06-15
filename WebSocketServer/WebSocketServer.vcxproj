@@ -155,9 +155,6 @@
     <CopyFileToFolders Include="certificate.crt">
       <FileType>Document</FileType>
     </CopyFileToFolders>
-    <CopyFileToFolders Include="private.key">
-      <FileType>Document</FileType>
-    </CopyFileToFolders>
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="config.ini">
@@ -174,6 +171,9 @@
     <ProjectReference Include="..\Infrastructure\Infrastructure.vcxproj">
       <Project>{b65be107-58be-43dd-8244-ccb27f0b6dcb}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="certificate.key" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

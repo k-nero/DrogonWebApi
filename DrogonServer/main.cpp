@@ -24,7 +24,7 @@ int main()
 
     //Set HTTP listener address and port
 
-    drogon::app().addListener(ip, 443, true, "certificate.crt", "private.key");
+    drogon::app().addListener(ip, 443, true, "certificate.crt", "certificate.key");
     drogon::app().setLogPath("");
 #if defined _DEBUG
     drogon::app().setLogLevel( trantor::Logger::kTrace );
