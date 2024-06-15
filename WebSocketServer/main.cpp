@@ -181,16 +181,14 @@ int main()
 	{
 
 		auto user_id = std::string(req->getParameter(0));
+		res->writeHeader("Access-Control-Allow-Origin", "*");
+		res->writeHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
 		if (user_socket_map.find(user_id) != user_socket_map.end())
 		{
-			res->writeHeader("Access-Control-Allow-Origin", "*");
-			res->writeHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
 			res->writeStatus("200 OK")->end("true");
 		}
 		else
 		{
-			res->writeHeader("Access-Control-Allow-Origin", "*");
-			res->writeHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
 			res->writeStatus("200 OK")->end("false");
 		}
 	});
