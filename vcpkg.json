@@ -1,8 +1,9 @@
 {
+  "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
   "dependencies": [
     {
       "name": "drogon",
-      "version>=": "1.9.2",
+      "version>=": "1.9.5",
       "host": true,
       "platform": "x64"
     },
