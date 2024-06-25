@@ -4,522 +4,616 @@
 #include "todo_item.pb.h"
 
 #include <algorithm>
-
-#include <google/protobuf/io/coded_stream.h>
-#include <google/protobuf/extension_set.h>
-#include <google/protobuf/wire_format_lite.h>
-#include <google/protobuf/descriptor.h>
-#include <google/protobuf/generated_message_reflection.h>
-#include <google/protobuf/reflection_ops.h>
-#include <google/protobuf/wire_format.h>
+#include "google/protobuf/io/coded_stream.h"
+#include "google/protobuf/extension_set.h"
+#include "google/protobuf/wire_format_lite.h"
+#include "google/protobuf/descriptor.h"
+#include "google/protobuf/generated_message_reflection.h"
+#include "google/protobuf/reflection_ops.h"
+#include "google/protobuf/wire_format.h"
+#include "google/protobuf/generated_message_tctable_impl.h"
 // @@protoc_insertion_point(includes)
-#include <google/protobuf/port_def.inc>
 
+// Must be included last.
+#include "google/protobuf/port_def.inc"
 PROTOBUF_PRAGMA_INIT_SEG
-
-namespace _pb = ::PROTOBUF_NAMESPACE_ID;
-namespace _pbi = _pb::internal;
-
+namespace _pb = ::google::protobuf;
+namespace _pbi = ::google::protobuf::internal;
+namespace _fl = ::google::protobuf::internal::field_layout;
 namespace todo_item {
-PROTOBUF_CONSTEXPR TodoItem::TodoItem(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.id_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
-  , /*decltype(_impl_.title_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
-  , /*decltype(_impl_.note_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
-  , /*decltype(_impl_.todo_list_id_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
-  , /*decltype(_impl_.created_date_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
-  , /*decltype(_impl_.modified_date_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
-  , /*decltype(_impl_.completed_)*/false
-  , /*decltype(_impl_.version_)*/0
-  , /*decltype(_impl_._cached_size_)*/{}} {}
-struct TodoItemDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR TodoItemDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
-  ~TodoItemDefaultTypeInternal() {}
-  union {
-    TodoItem _instance;
-  };
-};
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 TodoItemDefaultTypeInternal _TodoItem_default_instance_;
-PROTOBUF_CONSTEXPR GetTodoItemsRequest::GetTodoItemsRequest(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.id_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
-  , /*decltype(_impl_._cached_size_)*/{}} {}
-struct GetTodoItemsRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR GetTodoItemsRequestDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
-  ~GetTodoItemsRequestDefaultTypeInternal() {}
-  union {
-    GetTodoItemsRequest _instance;
-  };
-};
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GetTodoItemsRequestDefaultTypeInternal _GetTodoItemsRequest_default_instance_;
-PROTOBUF_CONSTEXPR GetTodoItemsResponse::GetTodoItemsResponse(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.message_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
-  , /*decltype(_impl_.items_)*/nullptr
-  , /*decltype(_impl_.status_)*/0
-  , /*decltype(_impl_._cached_size_)*/{}} {}
-struct GetTodoItemsResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR GetTodoItemsResponseDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
-  ~GetTodoItemsResponseDefaultTypeInternal() {}
-  union {
-    GetTodoItemsResponse _instance;
-  };
-};
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GetTodoItemsResponseDefaultTypeInternal _GetTodoItemsResponse_default_instance_;
-PROTOBUF_CONSTEXPR CreateTodoItemRequest::CreateTodoItemRequest(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.title_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
-  , /*decltype(_impl_.note_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
-  , /*decltype(_impl_.todo_list_id_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
-  , /*decltype(_impl_.completed_)*/false
-  , /*decltype(_impl_._cached_size_)*/{}} {}
-struct CreateTodoItemRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR CreateTodoItemRequestDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
-  ~CreateTodoItemRequestDefaultTypeInternal() {}
-  union {
-    CreateTodoItemRequest _instance;
-  };
-};
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CreateTodoItemRequestDefaultTypeInternal _CreateTodoItemRequest_default_instance_;
-PROTOBUF_CONSTEXPR CreateTodoItemResponse::CreateTodoItemResponse(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.id_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
-  , /*decltype(_impl_.message_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
-  , /*decltype(_impl_.status_)*/0
-  , /*decltype(_impl_._cached_size_)*/{}} {}
-struct CreateTodoItemResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR CreateTodoItemResponseDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
-  ~CreateTodoItemResponseDefaultTypeInternal() {}
-  union {
-    CreateTodoItemResponse _instance;
-  };
-};
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CreateTodoItemResponseDefaultTypeInternal _CreateTodoItemResponse_default_instance_;
-PROTOBUF_CONSTEXPR UpdateTodoItemRequest::UpdateTodoItemRequest(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.id_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
-  , /*decltype(_impl_.title_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
-  , /*decltype(_impl_.note_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
-  , /*decltype(_impl_.todo_list_id_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
-  , /*decltype(_impl_.completed_)*/false
-  , /*decltype(_impl_._cached_size_)*/{}} {}
-struct UpdateTodoItemRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR UpdateTodoItemRequestDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
-  ~UpdateTodoItemRequestDefaultTypeInternal() {}
-  union {
-    UpdateTodoItemRequest _instance;
-  };
-};
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 UpdateTodoItemRequestDefaultTypeInternal _UpdateTodoItemRequest_default_instance_;
-PROTOBUF_CONSTEXPR UpdateTodoItemResponse::UpdateTodoItemResponse(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.message_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
-  , /*decltype(_impl_.status_)*/0
-  , /*decltype(_impl_._cached_size_)*/{}} {}
+
+inline constexpr UpdateTodoItemResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : message_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        status_{0},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR UpdateTodoItemResponse::UpdateTodoItemResponse(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
 struct UpdateTodoItemResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR UpdateTodoItemResponseDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR UpdateTodoItemResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~UpdateTodoItemResponseDefaultTypeInternal() {}
   union {
     UpdateTodoItemResponse _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 UpdateTodoItemResponseDefaultTypeInternal _UpdateTodoItemResponse_default_instance_;
-PROTOBUF_CONSTEXPR DeleteTodoItemRequest::DeleteTodoItemRequest(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.id_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
-  , /*decltype(_impl_._cached_size_)*/{}} {}
-struct DeleteTodoItemRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR DeleteTodoItemRequestDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
-  ~DeleteTodoItemRequestDefaultTypeInternal() {}
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 UpdateTodoItemResponseDefaultTypeInternal _UpdateTodoItemResponse_default_instance_;
+
+inline constexpr UpdateTodoItemRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : id_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        title_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        note_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        todo_list_id_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        completed_{false},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR UpdateTodoItemRequest::UpdateTodoItemRequest(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct UpdateTodoItemRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR UpdateTodoItemRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~UpdateTodoItemRequestDefaultTypeInternal() {}
   union {
-    DeleteTodoItemRequest _instance;
+    UpdateTodoItemRequest _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 DeleteTodoItemRequestDefaultTypeInternal _DeleteTodoItemRequest_default_instance_;
-PROTOBUF_CONSTEXPR DeleteTodoItemResponse::DeleteTodoItemResponse(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.message_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
-  , /*decltype(_impl_.status_)*/0
-  , /*decltype(_impl_._cached_size_)*/{}} {}
-struct DeleteTodoItemResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR DeleteTodoItemResponseDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
-  ~DeleteTodoItemResponseDefaultTypeInternal() {}
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 UpdateTodoItemRequestDefaultTypeInternal _UpdateTodoItemRequest_default_instance_;
+
+inline constexpr TodoItem::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : id_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        title_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        note_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        todo_list_id_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        created_date_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        modified_date_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        completed_{false},
+        version_{0},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR TodoItem::TodoItem(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct TodoItemDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR TodoItemDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~TodoItemDefaultTypeInternal() {}
   union {
-    DeleteTodoItemResponse _instance;
+    TodoItem _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 DeleteTodoItemResponseDefaultTypeInternal _DeleteTodoItemResponse_default_instance_;
-PROTOBUF_CONSTEXPR GetTodoItemsByTodoListIdRequest::GetTodoItemsByTodoListIdRequest(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.todo_list_id_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
-  , /*decltype(_impl_._cached_size_)*/{}} {}
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 TodoItemDefaultTypeInternal _TodoItem_default_instance_;
+
+inline constexpr GetTodoItemsRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : id_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR GetTodoItemsRequest::GetTodoItemsRequest(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct GetTodoItemsRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR GetTodoItemsRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~GetTodoItemsRequestDefaultTypeInternal() {}
+  union {
+    GetTodoItemsRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GetTodoItemsRequestDefaultTypeInternal _GetTodoItemsRequest_default_instance_;
+
+inline constexpr GetTodoItemsByTodoListIdRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : todo_list_id_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR GetTodoItemsByTodoListIdRequest::GetTodoItemsByTodoListIdRequest(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
 struct GetTodoItemsByTodoListIdRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR GetTodoItemsByTodoListIdRequestDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR GetTodoItemsByTodoListIdRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~GetTodoItemsByTodoListIdRequestDefaultTypeInternal() {}
   union {
     GetTodoItemsByTodoListIdRequest _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GetTodoItemsByTodoListIdRequestDefaultTypeInternal _GetTodoItemsByTodoListIdRequest_default_instance_;
-PROTOBUF_CONSTEXPR GetTodoItemsByTodoListIdResponse::GetTodoItemsByTodoListIdResponse(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.message_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
-  , /*decltype(_impl_.items_)*/nullptr
-  , /*decltype(_impl_.status_)*/0
-  , /*decltype(_impl_._cached_size_)*/{}} {}
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GetTodoItemsByTodoListIdRequestDefaultTypeInternal _GetTodoItemsByTodoListIdRequest_default_instance_;
+
+inline constexpr DeleteTodoItemResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : message_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        status_{0},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR DeleteTodoItemResponse::DeleteTodoItemResponse(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct DeleteTodoItemResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR DeleteTodoItemResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~DeleteTodoItemResponseDefaultTypeInternal() {}
+  union {
+    DeleteTodoItemResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 DeleteTodoItemResponseDefaultTypeInternal _DeleteTodoItemResponse_default_instance_;
+
+inline constexpr DeleteTodoItemRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : id_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR DeleteTodoItemRequest::DeleteTodoItemRequest(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct DeleteTodoItemRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR DeleteTodoItemRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~DeleteTodoItemRequestDefaultTypeInternal() {}
+  union {
+    DeleteTodoItemRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 DeleteTodoItemRequestDefaultTypeInternal _DeleteTodoItemRequest_default_instance_;
+
+inline constexpr CreateTodoItemResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : id_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        message_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        status_{0},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR CreateTodoItemResponse::CreateTodoItemResponse(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct CreateTodoItemResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR CreateTodoItemResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~CreateTodoItemResponseDefaultTypeInternal() {}
+  union {
+    CreateTodoItemResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CreateTodoItemResponseDefaultTypeInternal _CreateTodoItemResponse_default_instance_;
+
+inline constexpr CreateTodoItemRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : title_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        note_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        todo_list_id_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        completed_{false},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR CreateTodoItemRequest::CreateTodoItemRequest(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct CreateTodoItemRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR CreateTodoItemRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~CreateTodoItemRequestDefaultTypeInternal() {}
+  union {
+    CreateTodoItemRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CreateTodoItemRequestDefaultTypeInternal _CreateTodoItemRequest_default_instance_;
+
+inline constexpr GetTodoItemsResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        message_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        items_{nullptr},
+        status_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR GetTodoItemsResponse::GetTodoItemsResponse(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct GetTodoItemsResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR GetTodoItemsResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~GetTodoItemsResponseDefaultTypeInternal() {}
+  union {
+    GetTodoItemsResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GetTodoItemsResponseDefaultTypeInternal _GetTodoItemsResponse_default_instance_;
+
+inline constexpr GetTodoItemsByTodoListIdResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        message_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        items_{nullptr},
+        status_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR GetTodoItemsByTodoListIdResponse::GetTodoItemsByTodoListIdResponse(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
 struct GetTodoItemsByTodoListIdResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR GetTodoItemsByTodoListIdResponseDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR GetTodoItemsByTodoListIdResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~GetTodoItemsByTodoListIdResponseDefaultTypeInternal() {}
   union {
     GetTodoItemsByTodoListIdResponse _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GetTodoItemsByTodoListIdResponseDefaultTypeInternal _GetTodoItemsByTodoListIdResponse_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GetTodoItemsByTodoListIdResponseDefaultTypeInternal _GetTodoItemsByTodoListIdResponse_default_instance_;
 }  // namespace todo_item
 static ::_pb::Metadata file_level_metadata_todo_5fitem_2eproto[11];
-static constexpr ::_pb::EnumDescriptor const** file_level_enum_descriptors_todo_5fitem_2eproto = nullptr;
-static constexpr ::_pb::ServiceDescriptor const** file_level_service_descriptors_todo_5fitem_2eproto = nullptr;
-
-const uint32_t TableStruct_todo_5fitem_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::todo_item::TodoItem, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::todo_item::TodoItem, _impl_.id_),
-  PROTOBUF_FIELD_OFFSET(::todo_item::TodoItem, _impl_.title_),
-  PROTOBUF_FIELD_OFFSET(::todo_item::TodoItem, _impl_.note_),
-  PROTOBUF_FIELD_OFFSET(::todo_item::TodoItem, _impl_.todo_list_id_),
-  PROTOBUF_FIELD_OFFSET(::todo_item::TodoItem, _impl_.completed_),
-  PROTOBUF_FIELD_OFFSET(::todo_item::TodoItem, _impl_.created_date_),
-  PROTOBUF_FIELD_OFFSET(::todo_item::TodoItem, _impl_.modified_date_),
-  PROTOBUF_FIELD_OFFSET(::todo_item::TodoItem, _impl_.version_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::todo_item::GetTodoItemsRequest, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::todo_item::GetTodoItemsRequest, _impl_.id_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::todo_item::GetTodoItemsResponse, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::todo_item::GetTodoItemsResponse, _impl_.items_),
-  PROTOBUF_FIELD_OFFSET(::todo_item::GetTodoItemsResponse, _impl_.status_),
-  PROTOBUF_FIELD_OFFSET(::todo_item::GetTodoItemsResponse, _impl_.message_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::todo_item::CreateTodoItemRequest, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::todo_item::CreateTodoItemRequest, _impl_.title_),
-  PROTOBUF_FIELD_OFFSET(::todo_item::CreateTodoItemRequest, _impl_.note_),
-  PROTOBUF_FIELD_OFFSET(::todo_item::CreateTodoItemRequest, _impl_.todo_list_id_),
-  PROTOBUF_FIELD_OFFSET(::todo_item::CreateTodoItemRequest, _impl_.completed_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::todo_item::CreateTodoItemResponse, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::todo_item::CreateTodoItemResponse, _impl_.id_),
-  PROTOBUF_FIELD_OFFSET(::todo_item::CreateTodoItemResponse, _impl_.status_),
-  PROTOBUF_FIELD_OFFSET(::todo_item::CreateTodoItemResponse, _impl_.message_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::todo_item::UpdateTodoItemRequest, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::todo_item::UpdateTodoItemRequest, _impl_.id_),
-  PROTOBUF_FIELD_OFFSET(::todo_item::UpdateTodoItemRequest, _impl_.title_),
-  PROTOBUF_FIELD_OFFSET(::todo_item::UpdateTodoItemRequest, _impl_.note_),
-  PROTOBUF_FIELD_OFFSET(::todo_item::UpdateTodoItemRequest, _impl_.todo_list_id_),
-  PROTOBUF_FIELD_OFFSET(::todo_item::UpdateTodoItemRequest, _impl_.completed_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::todo_item::UpdateTodoItemResponse, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::todo_item::UpdateTodoItemResponse, _impl_.status_),
-  PROTOBUF_FIELD_OFFSET(::todo_item::UpdateTodoItemResponse, _impl_.message_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::todo_item::DeleteTodoItemRequest, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::todo_item::DeleteTodoItemRequest, _impl_.id_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::todo_item::DeleteTodoItemResponse, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::todo_item::DeleteTodoItemResponse, _impl_.status_),
-  PROTOBUF_FIELD_OFFSET(::todo_item::DeleteTodoItemResponse, _impl_.message_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::todo_item::GetTodoItemsByTodoListIdRequest, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::todo_item::GetTodoItemsByTodoListIdRequest, _impl_.todo_list_id_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::todo_item::GetTodoItemsByTodoListIdResponse, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::todo_item::GetTodoItemsByTodoListIdResponse, _impl_.items_),
-  PROTOBUF_FIELD_OFFSET(::todo_item::GetTodoItemsByTodoListIdResponse, _impl_.status_),
-  PROTOBUF_FIELD_OFFSET(::todo_item::GetTodoItemsByTodoListIdResponse, _impl_.message_),
+static constexpr const ::_pb::EnumDescriptor**
+    file_level_enum_descriptors_todo_5fitem_2eproto = nullptr;
+static constexpr const ::_pb::ServiceDescriptor**
+    file_level_service_descriptors_todo_5fitem_2eproto = nullptr;
+const ::uint32_t TableStruct_todo_5fitem_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(
+    protodesc_cold) = {
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::todo_item::TodoItem, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::todo_item::TodoItem, _impl_.id_),
+    PROTOBUF_FIELD_OFFSET(::todo_item::TodoItem, _impl_.title_),
+    PROTOBUF_FIELD_OFFSET(::todo_item::TodoItem, _impl_.note_),
+    PROTOBUF_FIELD_OFFSET(::todo_item::TodoItem, _impl_.todo_list_id_),
+    PROTOBUF_FIELD_OFFSET(::todo_item::TodoItem, _impl_.completed_),
+    PROTOBUF_FIELD_OFFSET(::todo_item::TodoItem, _impl_.created_date_),
+    PROTOBUF_FIELD_OFFSET(::todo_item::TodoItem, _impl_.modified_date_),
+    PROTOBUF_FIELD_OFFSET(::todo_item::TodoItem, _impl_.version_),
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::todo_item::GetTodoItemsRequest, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::todo_item::GetTodoItemsRequest, _impl_.id_),
+    PROTOBUF_FIELD_OFFSET(::todo_item::GetTodoItemsResponse, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(::todo_item::GetTodoItemsResponse, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::todo_item::GetTodoItemsResponse, _impl_.items_),
+    PROTOBUF_FIELD_OFFSET(::todo_item::GetTodoItemsResponse, _impl_.status_),
+    PROTOBUF_FIELD_OFFSET(::todo_item::GetTodoItemsResponse, _impl_.message_),
+    0,
+    ~0u,
+    ~0u,
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::todo_item::CreateTodoItemRequest, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::todo_item::CreateTodoItemRequest, _impl_.title_),
+    PROTOBUF_FIELD_OFFSET(::todo_item::CreateTodoItemRequest, _impl_.note_),
+    PROTOBUF_FIELD_OFFSET(::todo_item::CreateTodoItemRequest, _impl_.todo_list_id_),
+    PROTOBUF_FIELD_OFFSET(::todo_item::CreateTodoItemRequest, _impl_.completed_),
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::todo_item::CreateTodoItemResponse, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::todo_item::CreateTodoItemResponse, _impl_.id_),
+    PROTOBUF_FIELD_OFFSET(::todo_item::CreateTodoItemResponse, _impl_.status_),
+    PROTOBUF_FIELD_OFFSET(::todo_item::CreateTodoItemResponse, _impl_.message_),
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::todo_item::UpdateTodoItemRequest, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::todo_item::UpdateTodoItemRequest, _impl_.id_),
+    PROTOBUF_FIELD_OFFSET(::todo_item::UpdateTodoItemRequest, _impl_.title_),
+    PROTOBUF_FIELD_OFFSET(::todo_item::UpdateTodoItemRequest, _impl_.note_),
+    PROTOBUF_FIELD_OFFSET(::todo_item::UpdateTodoItemRequest, _impl_.todo_list_id_),
+    PROTOBUF_FIELD_OFFSET(::todo_item::UpdateTodoItemRequest, _impl_.completed_),
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::todo_item::UpdateTodoItemResponse, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::todo_item::UpdateTodoItemResponse, _impl_.status_),
+    PROTOBUF_FIELD_OFFSET(::todo_item::UpdateTodoItemResponse, _impl_.message_),
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::todo_item::DeleteTodoItemRequest, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::todo_item::DeleteTodoItemRequest, _impl_.id_),
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::todo_item::DeleteTodoItemResponse, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::todo_item::DeleteTodoItemResponse, _impl_.status_),
+    PROTOBUF_FIELD_OFFSET(::todo_item::DeleteTodoItemResponse, _impl_.message_),
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::todo_item::GetTodoItemsByTodoListIdRequest, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::todo_item::GetTodoItemsByTodoListIdRequest, _impl_.todo_list_id_),
+    PROTOBUF_FIELD_OFFSET(::todo_item::GetTodoItemsByTodoListIdResponse, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(::todo_item::GetTodoItemsByTodoListIdResponse, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::todo_item::GetTodoItemsByTodoListIdResponse, _impl_.items_),
+    PROTOBUF_FIELD_OFFSET(::todo_item::GetTodoItemsByTodoListIdResponse, _impl_.status_),
+    PROTOBUF_FIELD_OFFSET(::todo_item::GetTodoItemsByTodoListIdResponse, _impl_.message_),
+    0,
+    ~0u,
+    ~0u,
 };
-static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, -1, -1, sizeof(::todo_item::TodoItem)},
-  { 14, -1, -1, sizeof(::todo_item::GetTodoItemsRequest)},
-  { 21, -1, -1, sizeof(::todo_item::GetTodoItemsResponse)},
-  { 30, -1, -1, sizeof(::todo_item::CreateTodoItemRequest)},
-  { 40, -1, -1, sizeof(::todo_item::CreateTodoItemResponse)},
-  { 49, -1, -1, sizeof(::todo_item::UpdateTodoItemRequest)},
-  { 60, -1, -1, sizeof(::todo_item::UpdateTodoItemResponse)},
-  { 68, -1, -1, sizeof(::todo_item::DeleteTodoItemRequest)},
-  { 75, -1, -1, sizeof(::todo_item::DeleteTodoItemResponse)},
-  { 83, -1, -1, sizeof(::todo_item::GetTodoItemsByTodoListIdRequest)},
-  { 90, -1, -1, sizeof(::todo_item::GetTodoItemsByTodoListIdResponse)},
+
+static const ::_pbi::MigrationSchema
+    schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
+        {0, -1, -1, sizeof(::todo_item::TodoItem)},
+        {16, -1, -1, sizeof(::todo_item::GetTodoItemsRequest)},
+        {25, 36, -1, sizeof(::todo_item::GetTodoItemsResponse)},
+        {39, -1, -1, sizeof(::todo_item::CreateTodoItemRequest)},
+        {51, -1, -1, sizeof(::todo_item::CreateTodoItemResponse)},
+        {62, -1, -1, sizeof(::todo_item::UpdateTodoItemRequest)},
+        {75, -1, -1, sizeof(::todo_item::UpdateTodoItemResponse)},
+        {85, -1, -1, sizeof(::todo_item::DeleteTodoItemRequest)},
+        {94, -1, -1, sizeof(::todo_item::DeleteTodoItemResponse)},
+        {104, -1, -1, sizeof(::todo_item::GetTodoItemsByTodoListIdRequest)},
+        {113, 124, -1, sizeof(::todo_item::GetTodoItemsByTodoListIdResponse)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
-  &::todo_item::_TodoItem_default_instance_._instance,
-  &::todo_item::_GetTodoItemsRequest_default_instance_._instance,
-  &::todo_item::_GetTodoItemsResponse_default_instance_._instance,
-  &::todo_item::_CreateTodoItemRequest_default_instance_._instance,
-  &::todo_item::_CreateTodoItemResponse_default_instance_._instance,
-  &::todo_item::_UpdateTodoItemRequest_default_instance_._instance,
-  &::todo_item::_UpdateTodoItemResponse_default_instance_._instance,
-  &::todo_item::_DeleteTodoItemRequest_default_instance_._instance,
-  &::todo_item::_DeleteTodoItemResponse_default_instance_._instance,
-  &::todo_item::_GetTodoItemsByTodoListIdRequest_default_instance_._instance,
-  &::todo_item::_GetTodoItemsByTodoListIdResponse_default_instance_._instance,
+    &::todo_item::_TodoItem_default_instance_._instance,
+    &::todo_item::_GetTodoItemsRequest_default_instance_._instance,
+    &::todo_item::_GetTodoItemsResponse_default_instance_._instance,
+    &::todo_item::_CreateTodoItemRequest_default_instance_._instance,
+    &::todo_item::_CreateTodoItemResponse_default_instance_._instance,
+    &::todo_item::_UpdateTodoItemRequest_default_instance_._instance,
+    &::todo_item::_UpdateTodoItemResponse_default_instance_._instance,
+    &::todo_item::_DeleteTodoItemRequest_default_instance_._instance,
+    &::todo_item::_DeleteTodoItemResponse_default_instance_._instance,
+    &::todo_item::_GetTodoItemsByTodoListIdRequest_default_instance_._instance,
+    &::todo_item::_GetTodoItemsByTodoListIdResponse_default_instance_._instance,
 };
-
-const char descriptor_table_protodef_todo_5fitem_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\017todo_item.proto\022\ttodo_item\"\232\001\n\010TodoIte"
-  "m\022\n\n\002id\030\001 \001(\t\022\r\n\005title\030\002 \001(\t\022\014\n\004note\030\003 \001"
-  "(\t\022\024\n\014todo_list_id\030\004 \001(\t\022\021\n\tcompleted\030\005 "
-  "\001(\010\022\024\n\014created_date\030\006 \001(\t\022\025\n\rmodified_da"
-  "te\030\007 \001(\t\022\017\n\007version\030\010 \001(\005\"!\n\023GetTodoItem"
-  "sRequest\022\n\n\002id\030\001 \001(\t\"[\n\024GetTodoItemsResp"
-  "onse\022\"\n\005items\030\001 \001(\0132\023.todo_item.TodoItem"
-  "\022\016\n\006status\030\002 \001(\005\022\017\n\007message\030\003 \001(\t\"]\n\025Cre"
-  "ateTodoItemRequest\022\r\n\005title\030\001 \001(\t\022\014\n\004not"
-  "e\030\002 \001(\t\022\024\n\014todo_list_id\030\003 \001(\t\022\021\n\tcomplet"
-  "ed\030\004 \001(\010\"E\n\026CreateTodoItemResponse\022\n\n\002id"
-  "\030\001 \001(\t\022\016\n\006status\030\002 \001(\005\022\017\n\007message\030\003 \001(\t\""
-  "i\n\025UpdateTodoItemRequest\022\n\n\002id\030\001 \001(\t\022\r\n\005"
-  "title\030\002 \001(\t\022\014\n\004note\030\003 \001(\t\022\024\n\014todo_list_i"
-  "d\030\004 \001(\t\022\021\n\tcompleted\030\005 \001(\010\"9\n\026UpdateTodo"
-  "ItemResponse\022\016\n\006status\030\001 \001(\005\022\017\n\007message\030"
-  "\002 \001(\t\"#\n\025DeleteTodoItemRequest\022\n\n\002id\030\001 \001"
-  "(\t\"9\n\026DeleteTodoItemResponse\022\016\n\006status\030\001"
-  " \001(\005\022\017\n\007message\030\002 \001(\t\"7\n\037GetTodoItemsByT"
-  "odoListIdRequest\022\024\n\014todo_list_id\030\001 \001(\t\"g"
-  "\n GetTodoItemsByTodoListIdResponse\022\"\n\005it"
-  "ems\030\001 \001(\0132\023.todo_item.TodoItem\022\016\n\006status"
-  "\030\002 \001(\005\022\017\n\007message\030\003 \001(\t2\357\002\n\017TodoItemServ"
-  "ice\022Q\n\014GetTodoItems\022\036.todo_item.GetTodoI"
-  "temsRequest\032\037.todo_item.GetTodoItemsResp"
-  "onse\"\000\022W\n\016CreateTodoItem\022 .todo_item.Cre"
-  "ateTodoItemRequest\032!.todo_item.CreateTod"
-  "oItemResponse\"\000\022W\n\016UpdateTodoItem\022 .todo"
-  "_item.UpdateTodoItemRequest\032!.todo_item."
-  "UpdateTodoItemResponse\"\000\022W\n\016DeleteTodoIt"
-  "em\022 .todo_item.DeleteTodoItemRequest\032!.t"
-  "odo_item.DeleteTodoItemResponse\"\000b\006proto"
-  "3"
-  ;
-static ::_pbi::once_flag descriptor_table_todo_5fitem_2eproto_once;
+const char descriptor_table_protodef_todo_5fitem_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
+    "\n\017todo_item.proto\022\ttodo_item\"\232\001\n\010TodoIte"
+    "m\022\n\n\002id\030\001 \001(\t\022\r\n\005title\030\002 \001(\t\022\014\n\004note\030\003 \001"
+    "(\t\022\024\n\014todo_list_id\030\004 \001(\t\022\021\n\tcompleted\030\005 "
+    "\001(\010\022\024\n\014created_date\030\006 \001(\t\022\025\n\rmodified_da"
+    "te\030\007 \001(\t\022\017\n\007version\030\010 \001(\005\"!\n\023GetTodoItem"
+    "sRequest\022\n\n\002id\030\001 \001(\t\"[\n\024GetTodoItemsResp"
+    "onse\022\"\n\005items\030\001 \001(\0132\023.todo_item.TodoItem"
+    "\022\016\n\006status\030\002 \001(\005\022\017\n\007message\030\003 \001(\t\"]\n\025Cre"
+    "ateTodoItemRequest\022\r\n\005title\030\001 \001(\t\022\014\n\004not"
+    "e\030\002 \001(\t\022\024\n\014todo_list_id\030\003 \001(\t\022\021\n\tcomplet"
+    "ed\030\004 \001(\010\"E\n\026CreateTodoItemResponse\022\n\n\002id"
+    "\030\001 \001(\t\022\016\n\006status\030\002 \001(\005\022\017\n\007message\030\003 \001(\t\""
+    "i\n\025UpdateTodoItemRequest\022\n\n\002id\030\001 \001(\t\022\r\n\005"
+    "title\030\002 \001(\t\022\014\n\004note\030\003 \001(\t\022\024\n\014todo_list_i"
+    "d\030\004 \001(\t\022\021\n\tcompleted\030\005 \001(\010\"9\n\026UpdateTodo"
+    "ItemResponse\022\016\n\006status\030\001 \001(\005\022\017\n\007message\030"
+    "\002 \001(\t\"#\n\025DeleteTodoItemRequest\022\n\n\002id\030\001 \001"
+    "(\t\"9\n\026DeleteTodoItemResponse\022\016\n\006status\030\001"
+    " \001(\005\022\017\n\007message\030\002 \001(\t\"7\n\037GetTodoItemsByT"
+    "odoListIdRequest\022\024\n\014todo_list_id\030\001 \001(\t\"g"
+    "\n GetTodoItemsByTodoListIdResponse\022\"\n\005it"
+    "ems\030\001 \001(\0132\023.todo_item.TodoItem\022\016\n\006status"
+    "\030\002 \001(\005\022\017\n\007message\030\003 \001(\t2\357\002\n\017TodoItemServ"
+    "ice\022Q\n\014GetTodoItems\022\036.todo_item.GetTodoI"
+    "temsRequest\032\037.todo_item.GetTodoItemsResp"
+    "onse\"\000\022W\n\016CreateTodoItem\022 .todo_item.Cre"
+    "ateTodoItemRequest\032!.todo_item.CreateTod"
+    "oItemResponse\"\000\022W\n\016UpdateTodoItem\022 .todo"
+    "_item.UpdateTodoItemRequest\032!.todo_item."
+    "UpdateTodoItemResponse\"\000\022W\n\016DeleteTodoIt"
+    "em\022 .todo_item.DeleteTodoItemRequest\032!.t"
+    "odo_item.DeleteTodoItemResponse\"\000b\006proto"
+    "3"
+};
+static ::absl::once_flag descriptor_table_todo_5fitem_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_todo_5fitem_2eproto = {
-    false, false, 1281, descriptor_table_protodef_todo_5fitem_2eproto,
+    false,
+    false,
+    1281,
+    descriptor_table_protodef_todo_5fitem_2eproto,
     "todo_item.proto",
-    &descriptor_table_todo_5fitem_2eproto_once, nullptr, 0, 11,
-    schemas, file_default_instances, TableStruct_todo_5fitem_2eproto::offsets,
-    file_level_metadata_todo_5fitem_2eproto, file_level_enum_descriptors_todo_5fitem_2eproto,
+    &descriptor_table_todo_5fitem_2eproto_once,
+    nullptr,
+    0,
+    11,
+    schemas,
+    file_default_instances,
+    TableStruct_todo_5fitem_2eproto::offsets,
+    file_level_metadata_todo_5fitem_2eproto,
+    file_level_enum_descriptors_todo_5fitem_2eproto,
     file_level_service_descriptors_todo_5fitem_2eproto,
 };
+
+// This function exists to be marked as weak.
+// It can significantly speed up compilation by breaking up LLVM's SCC
+// in the .pb.cc translation units. Large translation units see a
+// reduction of more than 35% of walltime for optimized builds. Without
+// the weak attribute all the messages in the file, including all the
+// vtables and everything they use become part of the same SCC through
+// a cycle like:
+// GetMetadata -> descriptor table -> default instances ->
+//   vtables -> GetMetadata
+// By adding a weak function here we break the connection from the
+// individual vtables back into the descriptor table.
 PROTOBUF_ATTRIBUTE_WEAK const ::_pbi::DescriptorTable* descriptor_table_todo_5fitem_2eproto_getter() {
   return &descriptor_table_todo_5fitem_2eproto;
 }
-
 // Force running AddDescriptors() at dynamic initialization time.
-PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 static ::_pbi::AddDescriptorsRunner dynamic_init_dummy_todo_5fitem_2eproto(&descriptor_table_todo_5fitem_2eproto);
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY2
+static ::_pbi::AddDescriptorsRunner dynamic_init_dummy_todo_5fitem_2eproto(&descriptor_table_todo_5fitem_2eproto);
 namespace todo_item {
-
 // ===================================================================
 
 class TodoItem::_Internal {
  public:
 };
 
-TodoItem::TodoItem(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor(arena, is_message_owned);
+TodoItem::TodoItem(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:todo_item.TodoItem)
 }
-TodoItem::TodoItem(const TodoItem& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  TodoItem* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_.id_){}
-    , decltype(_impl_.title_){}
-    , decltype(_impl_.note_){}
-    , decltype(_impl_.todo_list_id_){}
-    , decltype(_impl_.created_date_){}
-    , decltype(_impl_.modified_date_){}
-    , decltype(_impl_.completed_){}
-    , decltype(_impl_.version_){}
-    , /*decltype(_impl_._cached_size_)*/{}};
+inline PROTOBUF_NDEBUG_INLINE TodoItem::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : id_(arena, from.id_),
+        title_(arena, from.title_),
+        note_(arena, from.note_),
+        todo_list_id_(arena, from.todo_list_id_),
+        created_date_(arena, from.created_date_),
+        modified_date_(arena, from.modified_date_),
+        _cached_size_{0} {}
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  _impl_.id_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.id_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (!from._internal_id().empty()) {
-    _this->_impl_.id_.Set(from._internal_id(), 
-      _this->GetArenaForAllocation());
-  }
-  _impl_.title_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.title_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (!from._internal_title().empty()) {
-    _this->_impl_.title_.Set(from._internal_title(), 
-      _this->GetArenaForAllocation());
-  }
-  _impl_.note_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.note_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (!from._internal_note().empty()) {
-    _this->_impl_.note_.Set(from._internal_note(), 
-      _this->GetArenaForAllocation());
-  }
-  _impl_.todo_list_id_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.todo_list_id_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (!from._internal_todo_list_id().empty()) {
-    _this->_impl_.todo_list_id_.Set(from._internal_todo_list_id(), 
-      _this->GetArenaForAllocation());
-  }
-  _impl_.created_date_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.created_date_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (!from._internal_created_date().empty()) {
-    _this->_impl_.created_date_.Set(from._internal_created_date(), 
-      _this->GetArenaForAllocation());
-  }
-  _impl_.modified_date_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.modified_date_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (!from._internal_modified_date().empty()) {
-    _this->_impl_.modified_date_.Set(from._internal_modified_date(), 
-      _this->GetArenaForAllocation());
-  }
-  ::memcpy(&_impl_.completed_, &from._impl_.completed_,
-    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.version_) -
-    reinterpret_cast<char*>(&_impl_.completed_)) + sizeof(_impl_.version_));
+TodoItem::TodoItem(
+    ::google::protobuf::Arena* arena,
+    const TodoItem& from)
+    : ::google::protobuf::Message(arena) {
+  TodoItem* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  ::memcpy(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, completed_),
+           reinterpret_cast<const char *>(&from._impl_) +
+               offsetof(Impl_, completed_),
+           offsetof(Impl_, version_) -
+               offsetof(Impl_, completed_) +
+               sizeof(Impl_::version_));
+
   // @@protoc_insertion_point(copy_constructor:todo_item.TodoItem)
 }
+inline PROTOBUF_NDEBUG_INLINE TodoItem::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : id_(arena),
+        title_(arena),
+        note_(arena),
+        todo_list_id_(arena),
+        created_date_(arena),
+        modified_date_(arena),
+        _cached_size_{0} {}
 
-inline void TodoItem::SharedCtor(
-    ::_pb::Arena* arena, bool is_message_owned) {
-  (void)arena;
-  (void)is_message_owned;
-  new (&_impl_) Impl_{
-      decltype(_impl_.id_){}
-    , decltype(_impl_.title_){}
-    , decltype(_impl_.note_){}
-    , decltype(_impl_.todo_list_id_){}
-    , decltype(_impl_.created_date_){}
-    , decltype(_impl_.modified_date_){}
-    , decltype(_impl_.completed_){false}
-    , decltype(_impl_.version_){0}
-    , /*decltype(_impl_._cached_size_)*/{}
-  };
-  _impl_.id_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.id_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  _impl_.title_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.title_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  _impl_.note_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.note_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  _impl_.todo_list_id_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.todo_list_id_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  _impl_.created_date_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.created_date_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  _impl_.modified_date_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.modified_date_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+inline void TodoItem::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, completed_),
+           0,
+           offsetof(Impl_, version_) -
+               offsetof(Impl_, completed_) +
+               sizeof(Impl_::version_));
 }
-
 TodoItem::~TodoItem() {
   // @@protoc_insertion_point(destructor:todo_item.TodoItem)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void TodoItem::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArena() == nullptr);
   _impl_.id_.Destroy();
   _impl_.title_.Destroy();
   _impl_.note_.Destroy();
   _impl_.todo_list_id_.Destroy();
   _impl_.created_date_.Destroy();
   _impl_.modified_date_.Destroy();
+  _impl_.~Impl_();
 }
 
-void TodoItem::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void TodoItem::Clear() {
+PROTOBUF_NOINLINE void TodoItem::Clear() {
 // @@protoc_insertion_point(message_clear_start:todo_item.TodoItem)
-  uint32_t cached_has_bits = 0;
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -529,279 +623,249 @@ void TodoItem::Clear() {
   _impl_.todo_list_id_.ClearToEmpty();
   _impl_.created_date_.ClearToEmpty();
   _impl_.modified_date_.ClearToEmpty();
-  ::memset(&_impl_.completed_, 0, static_cast<size_t>(
+  ::memset(&_impl_.completed_, 0, static_cast<::size_t>(
       reinterpret_cast<char*>(&_impl_.version_) -
       reinterpret_cast<char*>(&_impl_.completed_)) + sizeof(_impl_.version_));
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* TodoItem::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // string id = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
-          auto str = _internal_mutable_id();
-          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "todo_item.TodoItem.id"));
-        } else
-          goto handle_unusual;
-        continue;
-      // string title = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
-          auto str = _internal_mutable_title();
-          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "todo_item.TodoItem.title"));
-        } else
-          goto handle_unusual;
-        continue;
-      // string note = 3;
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
-          auto str = _internal_mutable_note();
-          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "todo_item.TodoItem.note"));
-        } else
-          goto handle_unusual;
-        continue;
-      // string todo_list_id = 4;
-      case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 34)) {
-          auto str = _internal_mutable_todo_list_id();
-          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "todo_item.TodoItem.todo_list_id"));
-        } else
-          goto handle_unusual;
-        continue;
-      // bool completed = 5;
-      case 5:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 40)) {
-          _impl_.completed_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
-          CHK_(ptr);
-        } else
-          goto handle_unusual;
-        continue;
-      // string created_date = 6;
-      case 6:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 50)) {
-          auto str = _internal_mutable_created_date();
-          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "todo_item.TodoItem.created_date"));
-        } else
-          goto handle_unusual;
-        continue;
-      // string modified_date = 7;
-      case 7:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 58)) {
-          auto str = _internal_mutable_modified_date();
-          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "todo_item.TodoItem.modified_date"));
-        } else
-          goto handle_unusual;
-        continue;
-      // int32 version = 8;
-      case 8:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 64)) {
-          _impl_.version_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
-          CHK_(ptr);
-        } else
-          goto handle_unusual;
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
+const char* TodoItem::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
 
-uint8_t* TodoItem::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<3, 8, 0, 83, 2> TodoItem::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    8, 56,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967040,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    8,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_TodoItem_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // int32 version = 8;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(TodoItem, _impl_.version_), 63>(),
+     {64, 63, 0, PROTOBUF_FIELD_OFFSET(TodoItem, _impl_.version_)}},
+    // string id = 1;
+    {::_pbi::TcParser::FastUS1,
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(TodoItem, _impl_.id_)}},
+    // string title = 2;
+    {::_pbi::TcParser::FastUS1,
+     {18, 63, 0, PROTOBUF_FIELD_OFFSET(TodoItem, _impl_.title_)}},
+    // string note = 3;
+    {::_pbi::TcParser::FastUS1,
+     {26, 63, 0, PROTOBUF_FIELD_OFFSET(TodoItem, _impl_.note_)}},
+    // string todo_list_id = 4;
+    {::_pbi::TcParser::FastUS1,
+     {34, 63, 0, PROTOBUF_FIELD_OFFSET(TodoItem, _impl_.todo_list_id_)}},
+    // bool completed = 5;
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(TodoItem, _impl_.completed_), 63>(),
+     {40, 63, 0, PROTOBUF_FIELD_OFFSET(TodoItem, _impl_.completed_)}},
+    // string created_date = 6;
+    {::_pbi::TcParser::FastUS1,
+     {50, 63, 0, PROTOBUF_FIELD_OFFSET(TodoItem, _impl_.created_date_)}},
+    // string modified_date = 7;
+    {::_pbi::TcParser::FastUS1,
+     {58, 63, 0, PROTOBUF_FIELD_OFFSET(TodoItem, _impl_.modified_date_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // string id = 1;
+    {PROTOBUF_FIELD_OFFSET(TodoItem, _impl_.id_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // string title = 2;
+    {PROTOBUF_FIELD_OFFSET(TodoItem, _impl_.title_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // string note = 3;
+    {PROTOBUF_FIELD_OFFSET(TodoItem, _impl_.note_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // string todo_list_id = 4;
+    {PROTOBUF_FIELD_OFFSET(TodoItem, _impl_.todo_list_id_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // bool completed = 5;
+    {PROTOBUF_FIELD_OFFSET(TodoItem, _impl_.completed_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
+    // string created_date = 6;
+    {PROTOBUF_FIELD_OFFSET(TodoItem, _impl_.created_date_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // string modified_date = 7;
+    {PROTOBUF_FIELD_OFFSET(TodoItem, _impl_.modified_date_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // int32 version = 8;
+    {PROTOBUF_FIELD_OFFSET(TodoItem, _impl_.version_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
+  }},
+  // no aux_entries
+  {{
+    "\22\2\5\4\14\0\14\15\0\0\0\0\0\0\0\0"
+    "todo_item.TodoItem"
+    "id"
+    "title"
+    "note"
+    "todo_list_id"
+    "created_date"
+    "modified_date"
+  }},
+};
+
+::uint8_t* TodoItem::_InternalSerialize(
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:todo_item.TodoItem)
-  uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
 
   // string id = 1;
   if (!this->_internal_id().empty()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_id().data(), static_cast<int>(this->_internal_id().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "todo_item.TodoItem.id");
-    target = stream->WriteStringMaybeAliased(
-        1, this->_internal_id(), target);
+    const std::string& _s = this->_internal_id();
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "todo_item.TodoItem.id");
+    target = stream->WriteStringMaybeAliased(1, _s, target);
   }
 
   // string title = 2;
   if (!this->_internal_title().empty()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_title().data(), static_cast<int>(this->_internal_title().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "todo_item.TodoItem.title");
-    target = stream->WriteStringMaybeAliased(
-        2, this->_internal_title(), target);
+    const std::string& _s = this->_internal_title();
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "todo_item.TodoItem.title");
+    target = stream->WriteStringMaybeAliased(2, _s, target);
   }
 
   // string note = 3;
   if (!this->_internal_note().empty()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_note().data(), static_cast<int>(this->_internal_note().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "todo_item.TodoItem.note");
-    target = stream->WriteStringMaybeAliased(
-        3, this->_internal_note(), target);
+    const std::string& _s = this->_internal_note();
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "todo_item.TodoItem.note");
+    target = stream->WriteStringMaybeAliased(3, _s, target);
   }
 
   // string todo_list_id = 4;
   if (!this->_internal_todo_list_id().empty()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_todo_list_id().data(), static_cast<int>(this->_internal_todo_list_id().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "todo_item.TodoItem.todo_list_id");
-    target = stream->WriteStringMaybeAliased(
-        4, this->_internal_todo_list_id(), target);
+    const std::string& _s = this->_internal_todo_list_id();
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "todo_item.TodoItem.todo_list_id");
+    target = stream->WriteStringMaybeAliased(4, _s, target);
   }
 
   // bool completed = 5;
   if (this->_internal_completed() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteBoolToArray(5, this->_internal_completed(), target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(
+        5, this->_internal_completed(), target);
   }
 
   // string created_date = 6;
   if (!this->_internal_created_date().empty()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_created_date().data(), static_cast<int>(this->_internal_created_date().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "todo_item.TodoItem.created_date");
-    target = stream->WriteStringMaybeAliased(
-        6, this->_internal_created_date(), target);
+    const std::string& _s = this->_internal_created_date();
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "todo_item.TodoItem.created_date");
+    target = stream->WriteStringMaybeAliased(6, _s, target);
   }
 
   // string modified_date = 7;
   if (!this->_internal_modified_date().empty()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_modified_date().data(), static_cast<int>(this->_internal_modified_date().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "todo_item.TodoItem.modified_date");
-    target = stream->WriteStringMaybeAliased(
-        7, this->_internal_modified_date(), target);
+    const std::string& _s = this->_internal_modified_date();
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "todo_item.TodoItem.modified_date");
+    target = stream->WriteStringMaybeAliased(7, _s, target);
   }
 
   // int32 version = 8;
   if (this->_internal_version() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteInt32ToArray(8, this->_internal_version(), target);
+    target = ::google::protobuf::internal::WireFormatLite::
+        WriteInt32ToArrayWithField<8>(
+            stream, this->_internal_version(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:todo_item.TodoItem)
   return target;
 }
 
-size_t TodoItem::ByteSizeLong() const {
+::size_t TodoItem::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:todo_item.TodoItem)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // string id = 1;
   if (!this->_internal_id().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_id());
+    total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                    this->_internal_id());
   }
 
   // string title = 2;
   if (!this->_internal_title().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_title());
+    total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                    this->_internal_title());
   }
 
   // string note = 3;
   if (!this->_internal_note().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_note());
+    total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                    this->_internal_note());
   }
 
   // string todo_list_id = 4;
   if (!this->_internal_todo_list_id().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_todo_list_id());
+    total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                    this->_internal_todo_list_id());
   }
 
   // string created_date = 6;
   if (!this->_internal_created_date().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_created_date());
+    total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                    this->_internal_created_date());
   }
 
   // string modified_date = 7;
   if (!this->_internal_modified_date().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_modified_date());
+    total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                    this->_internal_modified_date());
   }
 
   // bool completed = 5;
   if (this->_internal_completed() != 0) {
-    total_size += 1 + 1;
+    total_size += 2;
   }
 
   // int32 version = 8;
   if (this->_internal_version() != 0) {
-    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_version());
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+        this->_internal_version());
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData TodoItem::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    TodoItem::MergeImpl
+const ::google::protobuf::Message::ClassData TodoItem::_class_data_ = {
+    TodoItem::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*TodoItem::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* TodoItem::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void TodoItem::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void TodoItem::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<TodoItem*>(&to_msg);
   auto& from = static_cast<const TodoItem&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:todo_item.TodoItem)
-  GOOGLE_DCHECK_NE(&from, _this);
-  uint32_t cached_has_bits = 0;
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (!from._internal_id().empty()) {
@@ -828,7 +892,7 @@ void TodoItem::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTO
   if (from._internal_version() != 0) {
     _this->_internal_set_version(from._internal_version());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void TodoItem::CopyFrom(const TodoItem& from) {
@@ -838,40 +902,25 @@ void TodoItem::CopyFrom(const TodoItem& from) {
   MergeFrom(from);
 }
 
-bool TodoItem::IsInitialized() const {
+PROTOBUF_NOINLINE bool TodoItem::IsInitialized() const {
   return true;
 }
 
-void TodoItem::InternalSwap(TodoItem* other) {
+::_pbi::CachedSize* TodoItem::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void TodoItem::InternalSwap(TodoItem* PROTOBUF_RESTRICT other) {
   using std::swap;
-  auto* lhs_arena = GetArenaForAllocation();
-  auto* rhs_arena = other->GetArenaForAllocation();
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &_impl_.id_, lhs_arena,
-      &other->_impl_.id_, rhs_arena
-  );
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &_impl_.title_, lhs_arena,
-      &other->_impl_.title_, rhs_arena
-  );
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &_impl_.note_, lhs_arena,
-      &other->_impl_.note_, rhs_arena
-  );
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &_impl_.todo_list_id_, lhs_arena,
-      &other->_impl_.todo_list_id_, rhs_arena
-  );
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &_impl_.created_date_, lhs_arena,
-      &other->_impl_.created_date_, rhs_arena
-  );
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &_impl_.modified_date_, lhs_arena,
-      &other->_impl_.modified_date_, rhs_arena
-  );
-  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.id_, &other->_impl_.id_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.title_, &other->_impl_.title_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.note_, &other->_impl_.note_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.todo_list_id_, &other->_impl_.todo_list_id_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.created_date_, &other->_impl_.created_date_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.modified_date_, &other->_impl_.modified_date_, arena);
+  ::google::protobuf::internal::memswap<
       PROTOBUF_FIELD_OFFSET(TodoItem, _impl_.version_)
       + sizeof(TodoItem::_impl_.version_)
       - PROTOBUF_FIELD_OFFSET(TodoItem, _impl_.completed_)>(
@@ -879,185 +928,172 @@ void TodoItem::InternalSwap(TodoItem* other) {
           reinterpret_cast<char*>(&other->_impl_.completed_));
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata TodoItem::GetMetadata() const {
+::google::protobuf::Metadata TodoItem::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_todo_5fitem_2eproto_getter, &descriptor_table_todo_5fitem_2eproto_once,
       file_level_metadata_todo_5fitem_2eproto[0]);
 }
-
 // ===================================================================
 
 class GetTodoItemsRequest::_Internal {
  public:
 };
 
-GetTodoItemsRequest::GetTodoItemsRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor(arena, is_message_owned);
+GetTodoItemsRequest::GetTodoItemsRequest(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:todo_item.GetTodoItemsRequest)
 }
-GetTodoItemsRequest::GetTodoItemsRequest(const GetTodoItemsRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  GetTodoItemsRequest* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_.id_){}
-    , /*decltype(_impl_._cached_size_)*/{}};
+inline PROTOBUF_NDEBUG_INLINE GetTodoItemsRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : id_(arena, from.id_),
+        _cached_size_{0} {}
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  _impl_.id_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.id_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (!from._internal_id().empty()) {
-    _this->_impl_.id_.Set(from._internal_id(), 
-      _this->GetArenaForAllocation());
-  }
+GetTodoItemsRequest::GetTodoItemsRequest(
+    ::google::protobuf::Arena* arena,
+    const GetTodoItemsRequest& from)
+    : ::google::protobuf::Message(arena) {
+  GetTodoItemsRequest* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+
   // @@protoc_insertion_point(copy_constructor:todo_item.GetTodoItemsRequest)
 }
+inline PROTOBUF_NDEBUG_INLINE GetTodoItemsRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : id_(arena),
+        _cached_size_{0} {}
 
-inline void GetTodoItemsRequest::SharedCtor(
-    ::_pb::Arena* arena, bool is_message_owned) {
-  (void)arena;
-  (void)is_message_owned;
-  new (&_impl_) Impl_{
-      decltype(_impl_.id_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-  };
-  _impl_.id_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.id_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+inline void GetTodoItemsRequest::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
 }
-
 GetTodoItemsRequest::~GetTodoItemsRequest() {
   // @@protoc_insertion_point(destructor:todo_item.GetTodoItemsRequest)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void GetTodoItemsRequest::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArena() == nullptr);
   _impl_.id_.Destroy();
+  _impl_.~Impl_();
 }
 
-void GetTodoItemsRequest::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void GetTodoItemsRequest::Clear() {
+PROTOBUF_NOINLINE void GetTodoItemsRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:todo_item.GetTodoItemsRequest)
-  uint32_t cached_has_bits = 0;
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   _impl_.id_.ClearToEmpty();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* GetTodoItemsRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // string id = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
-          auto str = _internal_mutable_id();
-          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "todo_item.GetTodoItemsRequest.id"));
-        } else
-          goto handle_unusual;
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
+const char* GetTodoItemsRequest::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
 
-uint8_t* GetTodoItemsRequest::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 0, 40, 2> GetTodoItemsRequest::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_GetTodoItemsRequest_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // string id = 1;
+    {::_pbi::TcParser::FastUS1,
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(GetTodoItemsRequest, _impl_.id_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // string id = 1;
+    {PROTOBUF_FIELD_OFFSET(GetTodoItemsRequest, _impl_.id_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+  }},
+  // no aux_entries
+  {{
+    "\35\2\0\0\0\0\0\0"
+    "todo_item.GetTodoItemsRequest"
+    "id"
+  }},
+};
+
+::uint8_t* GetTodoItemsRequest::_InternalSerialize(
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:todo_item.GetTodoItemsRequest)
-  uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
 
   // string id = 1;
   if (!this->_internal_id().empty()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_id().data(), static_cast<int>(this->_internal_id().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "todo_item.GetTodoItemsRequest.id");
-    target = stream->WriteStringMaybeAliased(
-        1, this->_internal_id(), target);
+    const std::string& _s = this->_internal_id();
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "todo_item.GetTodoItemsRequest.id");
+    target = stream->WriteStringMaybeAliased(1, _s, target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:todo_item.GetTodoItemsRequest)
   return target;
 }
 
-size_t GetTodoItemsRequest::ByteSizeLong() const {
+::size_t GetTodoItemsRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:todo_item.GetTodoItemsRequest)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // string id = 1;
   if (!this->_internal_id().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_id());
+    total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                    this->_internal_id());
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData GetTodoItemsRequest::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    GetTodoItemsRequest::MergeImpl
+const ::google::protobuf::Message::ClassData GetTodoItemsRequest::_class_data_ = {
+    GetTodoItemsRequest::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetTodoItemsRequest::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* GetTodoItemsRequest::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void GetTodoItemsRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void GetTodoItemsRequest::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<GetTodoItemsRequest*>(&to_msg);
   auto& from = static_cast<const GetTodoItemsRequest&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:todo_item.GetTodoItemsRequest)
-  GOOGLE_DCHECK_NE(&from, _this);
-  uint32_t cached_has_bits = 0;
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (!from._internal_id().empty()) {
     _this->_internal_set_id(from._internal_id());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void GetTodoItemsRequest::CopyFrom(const GetTodoItemsRequest& from) {
@@ -1067,267 +1103,265 @@ void GetTodoItemsRequest::CopyFrom(const GetTodoItemsRequest& from) {
   MergeFrom(from);
 }
 
-bool GetTodoItemsRequest::IsInitialized() const {
+PROTOBUF_NOINLINE bool GetTodoItemsRequest::IsInitialized() const {
   return true;
 }
 
-void GetTodoItemsRequest::InternalSwap(GetTodoItemsRequest* other) {
+::_pbi::CachedSize* GetTodoItemsRequest::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void GetTodoItemsRequest::InternalSwap(GetTodoItemsRequest* PROTOBUF_RESTRICT other) {
   using std::swap;
-  auto* lhs_arena = GetArenaForAllocation();
-  auto* rhs_arena = other->GetArenaForAllocation();
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &_impl_.id_, lhs_arena,
-      &other->_impl_.id_, rhs_arena
-  );
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.id_, &other->_impl_.id_, arena);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata GetTodoItemsRequest::GetMetadata() const {
+::google::protobuf::Metadata GetTodoItemsRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_todo_5fitem_2eproto_getter, &descriptor_table_todo_5fitem_2eproto_once,
       file_level_metadata_todo_5fitem_2eproto[1]);
 }
-
 // ===================================================================
 
 class GetTodoItemsResponse::_Internal {
  public:
+  using HasBits = decltype(std::declval<GetTodoItemsResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+    8 * PROTOBUF_FIELD_OFFSET(GetTodoItemsResponse, _impl_._has_bits_);
   static const ::todo_item::TodoItem& items(const GetTodoItemsResponse* msg);
+  static void set_has_items(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
 };
 
-const ::todo_item::TodoItem&
-GetTodoItemsResponse::_Internal::items(const GetTodoItemsResponse* msg) {
+const ::todo_item::TodoItem& GetTodoItemsResponse::_Internal::items(const GetTodoItemsResponse* msg) {
   return *msg->_impl_.items_;
 }
-GetTodoItemsResponse::GetTodoItemsResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor(arena, is_message_owned);
+GetTodoItemsResponse::GetTodoItemsResponse(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:todo_item.GetTodoItemsResponse)
 }
-GetTodoItemsResponse::GetTodoItemsResponse(const GetTodoItemsResponse& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  GetTodoItemsResponse* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_.message_){}
-    , decltype(_impl_.items_){nullptr}
-    , decltype(_impl_.status_){}
-    , /*decltype(_impl_._cached_size_)*/{}};
+inline PROTOBUF_NDEBUG_INLINE GetTodoItemsResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0},
+        message_(arena, from.message_) {}
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  _impl_.message_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.message_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (!from._internal_message().empty()) {
-    _this->_impl_.message_.Set(from._internal_message(), 
-      _this->GetArenaForAllocation());
-  }
-  if (from._internal_has_items()) {
-    _this->_impl_.items_ = new ::todo_item::TodoItem(*from._impl_.items_);
-  }
-  _this->_impl_.status_ = from._impl_.status_;
+GetTodoItemsResponse::GetTodoItemsResponse(
+    ::google::protobuf::Arena* arena,
+    const GetTodoItemsResponse& from)
+    : ::google::protobuf::Message(arena) {
+  GetTodoItemsResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.items_ = (cached_has_bits & 0x00000001u)
+                ? CreateMaybeMessage<::todo_item::TodoItem>(arena, *from._impl_.items_)
+                : nullptr;
+  _impl_.status_ = from._impl_.status_;
+
   // @@protoc_insertion_point(copy_constructor:todo_item.GetTodoItemsResponse)
 }
+inline PROTOBUF_NDEBUG_INLINE GetTodoItemsResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0},
+        message_(arena) {}
 
-inline void GetTodoItemsResponse::SharedCtor(
-    ::_pb::Arena* arena, bool is_message_owned) {
-  (void)arena;
-  (void)is_message_owned;
-  new (&_impl_) Impl_{
-      decltype(_impl_.message_){}
-    , decltype(_impl_.items_){nullptr}
-    , decltype(_impl_.status_){0}
-    , /*decltype(_impl_._cached_size_)*/{}
-  };
-  _impl_.message_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.message_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+inline void GetTodoItemsResponse::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, items_),
+           0,
+           offsetof(Impl_, status_) -
+               offsetof(Impl_, items_) +
+               sizeof(Impl_::status_));
 }
-
 GetTodoItemsResponse::~GetTodoItemsResponse() {
   // @@protoc_insertion_point(destructor:todo_item.GetTodoItemsResponse)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void GetTodoItemsResponse::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArena() == nullptr);
   _impl_.message_.Destroy();
-  if (this != internal_default_instance()) delete _impl_.items_;
+  delete _impl_.items_;
+  _impl_.~Impl_();
 }
 
-void GetTodoItemsResponse::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void GetTodoItemsResponse::Clear() {
+PROTOBUF_NOINLINE void GetTodoItemsResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:todo_item.GetTodoItemsResponse)
-  uint32_t cached_has_bits = 0;
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   _impl_.message_.ClearToEmpty();
-  if (GetArenaForAllocation() == nullptr && _impl_.items_ != nullptr) {
-    delete _impl_.items_;
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.items_ != nullptr);
+    _impl_.items_->Clear();
   }
-  _impl_.items_ = nullptr;
   _impl_.status_ = 0;
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* GetTodoItemsResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // .todo_item.TodoItem items = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
-          ptr = ctx->ParseMessage(_internal_mutable_items(), ptr);
-          CHK_(ptr);
-        } else
-          goto handle_unusual;
-        continue;
-      // int32 status = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
-          _impl_.status_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
-          CHK_(ptr);
-        } else
-          goto handle_unusual;
-        continue;
-      // string message = 3;
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
-          auto str = _internal_mutable_message();
-          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "todo_item.GetTodoItemsResponse.message"));
-        } else
-          goto handle_unusual;
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
+const char* GetTodoItemsResponse::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
 
-uint8_t* GetTodoItemsResponse::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:todo_item.GetTodoItemsResponse)
-  uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
 
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<2, 3, 1, 46, 2> GetTodoItemsResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(GetTodoItemsResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    3, 24,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967288,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    3,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_GetTodoItemsResponse_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+    // .todo_item.TodoItem items = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(GetTodoItemsResponse, _impl_.items_)}},
+    // int32 status = 2;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(GetTodoItemsResponse, _impl_.status_), 63>(),
+     {16, 63, 0, PROTOBUF_FIELD_OFFSET(GetTodoItemsResponse, _impl_.status_)}},
+    // string message = 3;
+    {::_pbi::TcParser::FastUS1,
+     {26, 63, 0, PROTOBUF_FIELD_OFFSET(GetTodoItemsResponse, _impl_.message_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .todo_item.TodoItem items = 1;
+    {PROTOBUF_FIELD_OFFSET(GetTodoItemsResponse, _impl_.items_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+    // int32 status = 2;
+    {PROTOBUF_FIELD_OFFSET(GetTodoItemsResponse, _impl_.status_), -1, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
+    // string message = 3;
+    {PROTOBUF_FIELD_OFFSET(GetTodoItemsResponse, _impl_.message_), -1, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::todo_item::TodoItem>()},
+  }}, {{
+    "\36\0\0\7\0\0\0\0"
+    "todo_item.GetTodoItemsResponse"
+    "message"
+  }},
+};
+
+::uint8_t* GetTodoItemsResponse::_InternalSerialize(
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:todo_item.GetTodoItemsResponse)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
   // .todo_item.TodoItem items = 1;
-  if (this->_internal_has_items()) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(1, _Internal::items(this),
+  if (cached_has_bits & 0x00000001u) {
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        1, _Internal::items(this),
         _Internal::items(this).GetCachedSize(), target, stream);
   }
 
   // int32 status = 2;
   if (this->_internal_status() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteInt32ToArray(2, this->_internal_status(), target);
+    target = ::google::protobuf::internal::WireFormatLite::
+        WriteInt32ToArrayWithField<2>(
+            stream, this->_internal_status(), target);
   }
 
   // string message = 3;
   if (!this->_internal_message().empty()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_message().data(), static_cast<int>(this->_internal_message().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "todo_item.GetTodoItemsResponse.message");
-    target = stream->WriteStringMaybeAliased(
-        3, this->_internal_message(), target);
+    const std::string& _s = this->_internal_message();
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "todo_item.GetTodoItemsResponse.message");
+    target = stream->WriteStringMaybeAliased(3, _s, target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:todo_item.GetTodoItemsResponse)
   return target;
 }
 
-size_t GetTodoItemsResponse::ByteSizeLong() const {
+::size_t GetTodoItemsResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:todo_item.GetTodoItemsResponse)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // string message = 3;
   if (!this->_internal_message().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_message());
+    total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                    this->_internal_message());
   }
 
   // .todo_item.TodoItem items = 1;
-  if (this->_internal_has_items()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *_impl_.items_);
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    total_size +=
+        1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.items_);
   }
 
   // int32 status = 2;
   if (this->_internal_status() != 0) {
-    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_status());
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+        this->_internal_status());
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData GetTodoItemsResponse::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    GetTodoItemsResponse::MergeImpl
+const ::google::protobuf::Message::ClassData GetTodoItemsResponse::_class_data_ = {
+    GetTodoItemsResponse::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetTodoItemsResponse::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* GetTodoItemsResponse::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void GetTodoItemsResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void GetTodoItemsResponse::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<GetTodoItemsResponse*>(&to_msg);
   auto& from = static_cast<const GetTodoItemsResponse&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:todo_item.GetTodoItemsResponse)
-  GOOGLE_DCHECK_NE(&from, _this);
-  uint32_t cached_has_bits = 0;
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (!from._internal_message().empty()) {
     _this->_internal_set_message(from._internal_message());
   }
-  if (from._internal_has_items()) {
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
     _this->_internal_mutable_items()->::todo_item::TodoItem::MergeFrom(
         from._internal_items());
   }
   if (from._internal_status() != 0) {
     _this->_internal_set_status(from._internal_status());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void GetTodoItemsResponse::CopyFrom(const GetTodoItemsResponse& from) {
@@ -1337,20 +1371,21 @@ void GetTodoItemsResponse::CopyFrom(const GetTodoItemsResponse& from) {
   MergeFrom(from);
 }
 
-bool GetTodoItemsResponse::IsInitialized() const {
+PROTOBUF_NOINLINE bool GetTodoItemsResponse::IsInitialized() const {
   return true;
 }
 
-void GetTodoItemsResponse::InternalSwap(GetTodoItemsResponse* other) {
+::_pbi::CachedSize* GetTodoItemsResponse::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void GetTodoItemsResponse::InternalSwap(GetTodoItemsResponse* PROTOBUF_RESTRICT other) {
   using std::swap;
-  auto* lhs_arena = GetArenaForAllocation();
-  auto* rhs_arena = other->GetArenaForAllocation();
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &_impl_.message_, lhs_arena,
-      &other->_impl_.message_, rhs_arena
-  );
-  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.message_, &other->_impl_.message_, arena);
+  ::google::protobuf::internal::memswap<
       PROTOBUF_FIELD_OFFSET(GetTodoItemsResponse, _impl_.status_)
       + sizeof(GetTodoItemsResponse::_impl_.status_)
       - PROTOBUF_FIELD_OFFSET(GetTodoItemsResponse, _impl_.items_)>(
@@ -1358,111 +1393,72 @@ void GetTodoItemsResponse::InternalSwap(GetTodoItemsResponse* other) {
           reinterpret_cast<char*>(&other->_impl_.items_));
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata GetTodoItemsResponse::GetMetadata() const {
+::google::protobuf::Metadata GetTodoItemsResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_todo_5fitem_2eproto_getter, &descriptor_table_todo_5fitem_2eproto_once,
       file_level_metadata_todo_5fitem_2eproto[2]);
 }
-
 // ===================================================================
 
 class CreateTodoItemRequest::_Internal {
  public:
 };
 
-CreateTodoItemRequest::CreateTodoItemRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor(arena, is_message_owned);
+CreateTodoItemRequest::CreateTodoItemRequest(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:todo_item.CreateTodoItemRequest)
 }
-CreateTodoItemRequest::CreateTodoItemRequest(const CreateTodoItemRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  CreateTodoItemRequest* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_.title_){}
-    , decltype(_impl_.note_){}
-    , decltype(_impl_.todo_list_id_){}
-    , decltype(_impl_.completed_){}
-    , /*decltype(_impl_._cached_size_)*/{}};
+inline PROTOBUF_NDEBUG_INLINE CreateTodoItemRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : title_(arena, from.title_),
+        note_(arena, from.note_),
+        todo_list_id_(arena, from.todo_list_id_),
+        _cached_size_{0} {}
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  _impl_.title_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.title_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (!from._internal_title().empty()) {
-    _this->_impl_.title_.Set(from._internal_title(), 
-      _this->GetArenaForAllocation());
-  }
-  _impl_.note_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.note_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (!from._internal_note().empty()) {
-    _this->_impl_.note_.Set(from._internal_note(), 
-      _this->GetArenaForAllocation());
-  }
-  _impl_.todo_list_id_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.todo_list_id_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (!from._internal_todo_list_id().empty()) {
-    _this->_impl_.todo_list_id_.Set(from._internal_todo_list_id(), 
-      _this->GetArenaForAllocation());
-  }
-  _this->_impl_.completed_ = from._impl_.completed_;
+CreateTodoItemRequest::CreateTodoItemRequest(
+    ::google::protobuf::Arena* arena,
+    const CreateTodoItemRequest& from)
+    : ::google::protobuf::Message(arena) {
+  CreateTodoItemRequest* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  _impl_.completed_ = from._impl_.completed_;
+
   // @@protoc_insertion_point(copy_constructor:todo_item.CreateTodoItemRequest)
 }
+inline PROTOBUF_NDEBUG_INLINE CreateTodoItemRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : title_(arena),
+        note_(arena),
+        todo_list_id_(arena),
+        _cached_size_{0} {}
 
-inline void CreateTodoItemRequest::SharedCtor(
-    ::_pb::Arena* arena, bool is_message_owned) {
-  (void)arena;
-  (void)is_message_owned;
-  new (&_impl_) Impl_{
-      decltype(_impl_.title_){}
-    , decltype(_impl_.note_){}
-    , decltype(_impl_.todo_list_id_){}
-    , decltype(_impl_.completed_){false}
-    , /*decltype(_impl_._cached_size_)*/{}
-  };
-  _impl_.title_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.title_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  _impl_.note_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.note_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  _impl_.todo_list_id_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.todo_list_id_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+inline void CreateTodoItemRequest::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.completed_ = {};
 }
-
 CreateTodoItemRequest::~CreateTodoItemRequest() {
   // @@protoc_insertion_point(destructor:todo_item.CreateTodoItemRequest)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void CreateTodoItemRequest::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArena() == nullptr);
   _impl_.title_.Destroy();
   _impl_.note_.Destroy();
   _impl_.todo_list_id_.Destroy();
+  _impl_.~Impl_();
 }
 
-void CreateTodoItemRequest::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void CreateTodoItemRequest::Clear() {
+PROTOBUF_NOINLINE void CreateTodoItemRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:todo_item.CreateTodoItemRequest)
-  uint32_t cached_has_bits = 0;
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -1470,176 +1466,164 @@ void CreateTodoItemRequest::Clear() {
   _impl_.note_.ClearToEmpty();
   _impl_.todo_list_id_.ClearToEmpty();
   _impl_.completed_ = false;
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* CreateTodoItemRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // string title = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
-          auto str = _internal_mutable_title();
-          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "todo_item.CreateTodoItemRequest.title"));
-        } else
-          goto handle_unusual;
-        continue;
-      // string note = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
-          auto str = _internal_mutable_note();
-          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "todo_item.CreateTodoItemRequest.note"));
-        } else
-          goto handle_unusual;
-        continue;
-      // string todo_list_id = 3;
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
-          auto str = _internal_mutable_todo_list_id();
-          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "todo_item.CreateTodoItemRequest.todo_list_id"));
-        } else
-          goto handle_unusual;
-        continue;
-      // bool completed = 4;
-      case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 32)) {
-          _impl_.completed_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
-          CHK_(ptr);
-        } else
-          goto handle_unusual;
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
+const char* CreateTodoItemRequest::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
 
-uint8_t* CreateTodoItemRequest::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<2, 4, 0, 61, 2> CreateTodoItemRequest::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    4, 24,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967280,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    4,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_CreateTodoItemRequest_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // bool completed = 4;
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(CreateTodoItemRequest, _impl_.completed_), 63>(),
+     {32, 63, 0, PROTOBUF_FIELD_OFFSET(CreateTodoItemRequest, _impl_.completed_)}},
+    // string title = 1;
+    {::_pbi::TcParser::FastUS1,
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(CreateTodoItemRequest, _impl_.title_)}},
+    // string note = 2;
+    {::_pbi::TcParser::FastUS1,
+     {18, 63, 0, PROTOBUF_FIELD_OFFSET(CreateTodoItemRequest, _impl_.note_)}},
+    // string todo_list_id = 3;
+    {::_pbi::TcParser::FastUS1,
+     {26, 63, 0, PROTOBUF_FIELD_OFFSET(CreateTodoItemRequest, _impl_.todo_list_id_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // string title = 1;
+    {PROTOBUF_FIELD_OFFSET(CreateTodoItemRequest, _impl_.title_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // string note = 2;
+    {PROTOBUF_FIELD_OFFSET(CreateTodoItemRequest, _impl_.note_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // string todo_list_id = 3;
+    {PROTOBUF_FIELD_OFFSET(CreateTodoItemRequest, _impl_.todo_list_id_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // bool completed = 4;
+    {PROTOBUF_FIELD_OFFSET(CreateTodoItemRequest, _impl_.completed_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
+  }},
+  // no aux_entries
+  {{
+    "\37\5\4\14\0\0\0\0"
+    "todo_item.CreateTodoItemRequest"
+    "title"
+    "note"
+    "todo_list_id"
+  }},
+};
+
+::uint8_t* CreateTodoItemRequest::_InternalSerialize(
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:todo_item.CreateTodoItemRequest)
-  uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
 
   // string title = 1;
   if (!this->_internal_title().empty()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_title().data(), static_cast<int>(this->_internal_title().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "todo_item.CreateTodoItemRequest.title");
-    target = stream->WriteStringMaybeAliased(
-        1, this->_internal_title(), target);
+    const std::string& _s = this->_internal_title();
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "todo_item.CreateTodoItemRequest.title");
+    target = stream->WriteStringMaybeAliased(1, _s, target);
   }
 
   // string note = 2;
   if (!this->_internal_note().empty()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_note().data(), static_cast<int>(this->_internal_note().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "todo_item.CreateTodoItemRequest.note");
-    target = stream->WriteStringMaybeAliased(
-        2, this->_internal_note(), target);
+    const std::string& _s = this->_internal_note();
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "todo_item.CreateTodoItemRequest.note");
+    target = stream->WriteStringMaybeAliased(2, _s, target);
   }
 
   // string todo_list_id = 3;
   if (!this->_internal_todo_list_id().empty()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_todo_list_id().data(), static_cast<int>(this->_internal_todo_list_id().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "todo_item.CreateTodoItemRequest.todo_list_id");
-    target = stream->WriteStringMaybeAliased(
-        3, this->_internal_todo_list_id(), target);
+    const std::string& _s = this->_internal_todo_list_id();
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "todo_item.CreateTodoItemRequest.todo_list_id");
+    target = stream->WriteStringMaybeAliased(3, _s, target);
   }
 
   // bool completed = 4;
   if (this->_internal_completed() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteBoolToArray(4, this->_internal_completed(), target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(
+        4, this->_internal_completed(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:todo_item.CreateTodoItemRequest)
   return target;
 }
 
-size_t CreateTodoItemRequest::ByteSizeLong() const {
+::size_t CreateTodoItemRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:todo_item.CreateTodoItemRequest)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // string title = 1;
   if (!this->_internal_title().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_title());
+    total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                    this->_internal_title());
   }
 
   // string note = 2;
   if (!this->_internal_note().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_note());
+    total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                    this->_internal_note());
   }
 
   // string todo_list_id = 3;
   if (!this->_internal_todo_list_id().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_todo_list_id());
+    total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                    this->_internal_todo_list_id());
   }
 
   // bool completed = 4;
   if (this->_internal_completed() != 0) {
-    total_size += 1 + 1;
+    total_size += 2;
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData CreateTodoItemRequest::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    CreateTodoItemRequest::MergeImpl
+const ::google::protobuf::Message::ClassData CreateTodoItemRequest::_class_data_ = {
+    CreateTodoItemRequest::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*CreateTodoItemRequest::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* CreateTodoItemRequest::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void CreateTodoItemRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void CreateTodoItemRequest::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<CreateTodoItemRequest*>(&to_msg);
   auto& from = static_cast<const CreateTodoItemRequest&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:todo_item.CreateTodoItemRequest)
-  GOOGLE_DCHECK_NE(&from, _this);
-  uint32_t cached_has_bits = 0;
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (!from._internal_title().empty()) {
@@ -1654,7 +1638,7 @@ void CreateTodoItemRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, 
   if (from._internal_completed() != 0) {
     _this->_internal_set_completed(from._internal_completed());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void CreateTodoItemRequest::CopyFrom(const CreateTodoItemRequest& from) {
@@ -1664,269 +1648,232 @@ void CreateTodoItemRequest::CopyFrom(const CreateTodoItemRequest& from) {
   MergeFrom(from);
 }
 
-bool CreateTodoItemRequest::IsInitialized() const {
+PROTOBUF_NOINLINE bool CreateTodoItemRequest::IsInitialized() const {
   return true;
 }
 
-void CreateTodoItemRequest::InternalSwap(CreateTodoItemRequest* other) {
+::_pbi::CachedSize* CreateTodoItemRequest::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void CreateTodoItemRequest::InternalSwap(CreateTodoItemRequest* PROTOBUF_RESTRICT other) {
   using std::swap;
-  auto* lhs_arena = GetArenaForAllocation();
-  auto* rhs_arena = other->GetArenaForAllocation();
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &_impl_.title_, lhs_arena,
-      &other->_impl_.title_, rhs_arena
-  );
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &_impl_.note_, lhs_arena,
-      &other->_impl_.note_, rhs_arena
-  );
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &_impl_.todo_list_id_, lhs_arena,
-      &other->_impl_.todo_list_id_, rhs_arena
-  );
-  swap(_impl_.completed_, other->_impl_.completed_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.title_, &other->_impl_.title_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.note_, &other->_impl_.note_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.todo_list_id_, &other->_impl_.todo_list_id_, arena);
+        swap(_impl_.completed_, other->_impl_.completed_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata CreateTodoItemRequest::GetMetadata() const {
+::google::protobuf::Metadata CreateTodoItemRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_todo_5fitem_2eproto_getter, &descriptor_table_todo_5fitem_2eproto_once,
       file_level_metadata_todo_5fitem_2eproto[3]);
 }
-
 // ===================================================================
 
 class CreateTodoItemResponse::_Internal {
  public:
 };
 
-CreateTodoItemResponse::CreateTodoItemResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor(arena, is_message_owned);
+CreateTodoItemResponse::CreateTodoItemResponse(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:todo_item.CreateTodoItemResponse)
 }
-CreateTodoItemResponse::CreateTodoItemResponse(const CreateTodoItemResponse& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  CreateTodoItemResponse* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_.id_){}
-    , decltype(_impl_.message_){}
-    , decltype(_impl_.status_){}
-    , /*decltype(_impl_._cached_size_)*/{}};
+inline PROTOBUF_NDEBUG_INLINE CreateTodoItemResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : id_(arena, from.id_),
+        message_(arena, from.message_),
+        _cached_size_{0} {}
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  _impl_.id_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.id_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (!from._internal_id().empty()) {
-    _this->_impl_.id_.Set(from._internal_id(), 
-      _this->GetArenaForAllocation());
-  }
-  _impl_.message_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.message_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (!from._internal_message().empty()) {
-    _this->_impl_.message_.Set(from._internal_message(), 
-      _this->GetArenaForAllocation());
-  }
-  _this->_impl_.status_ = from._impl_.status_;
+CreateTodoItemResponse::CreateTodoItemResponse(
+    ::google::protobuf::Arena* arena,
+    const CreateTodoItemResponse& from)
+    : ::google::protobuf::Message(arena) {
+  CreateTodoItemResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  _impl_.status_ = from._impl_.status_;
+
   // @@protoc_insertion_point(copy_constructor:todo_item.CreateTodoItemResponse)
 }
+inline PROTOBUF_NDEBUG_INLINE CreateTodoItemResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : id_(arena),
+        message_(arena),
+        _cached_size_{0} {}
 
-inline void CreateTodoItemResponse::SharedCtor(
-    ::_pb::Arena* arena, bool is_message_owned) {
-  (void)arena;
-  (void)is_message_owned;
-  new (&_impl_) Impl_{
-      decltype(_impl_.id_){}
-    , decltype(_impl_.message_){}
-    , decltype(_impl_.status_){0}
-    , /*decltype(_impl_._cached_size_)*/{}
-  };
-  _impl_.id_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.id_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  _impl_.message_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.message_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+inline void CreateTodoItemResponse::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.status_ = {};
 }
-
 CreateTodoItemResponse::~CreateTodoItemResponse() {
   // @@protoc_insertion_point(destructor:todo_item.CreateTodoItemResponse)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void CreateTodoItemResponse::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArena() == nullptr);
   _impl_.id_.Destroy();
   _impl_.message_.Destroy();
+  _impl_.~Impl_();
 }
 
-void CreateTodoItemResponse::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void CreateTodoItemResponse::Clear() {
+PROTOBUF_NOINLINE void CreateTodoItemResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:todo_item.CreateTodoItemResponse)
-  uint32_t cached_has_bits = 0;
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   _impl_.id_.ClearToEmpty();
   _impl_.message_.ClearToEmpty();
   _impl_.status_ = 0;
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* CreateTodoItemResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // string id = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
-          auto str = _internal_mutable_id();
-          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "todo_item.CreateTodoItemResponse.id"));
-        } else
-          goto handle_unusual;
-        continue;
-      // int32 status = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
-          _impl_.status_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
-          CHK_(ptr);
-        } else
-          goto handle_unusual;
-        continue;
-      // string message = 3;
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
-          auto str = _internal_mutable_message();
-          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "todo_item.CreateTodoItemResponse.message"));
-        } else
-          goto handle_unusual;
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
+const char* CreateTodoItemResponse::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
 
-uint8_t* CreateTodoItemResponse::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<2, 3, 0, 50, 2> CreateTodoItemResponse::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    3, 24,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967288,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    3,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_CreateTodoItemResponse_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+    // string id = 1;
+    {::_pbi::TcParser::FastUS1,
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(CreateTodoItemResponse, _impl_.id_)}},
+    // int32 status = 2;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(CreateTodoItemResponse, _impl_.status_), 63>(),
+     {16, 63, 0, PROTOBUF_FIELD_OFFSET(CreateTodoItemResponse, _impl_.status_)}},
+    // string message = 3;
+    {::_pbi::TcParser::FastUS1,
+     {26, 63, 0, PROTOBUF_FIELD_OFFSET(CreateTodoItemResponse, _impl_.message_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // string id = 1;
+    {PROTOBUF_FIELD_OFFSET(CreateTodoItemResponse, _impl_.id_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // int32 status = 2;
+    {PROTOBUF_FIELD_OFFSET(CreateTodoItemResponse, _impl_.status_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
+    // string message = 3;
+    {PROTOBUF_FIELD_OFFSET(CreateTodoItemResponse, _impl_.message_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+  }},
+  // no aux_entries
+  {{
+    "\40\2\0\7\0\0\0\0"
+    "todo_item.CreateTodoItemResponse"
+    "id"
+    "message"
+  }},
+};
+
+::uint8_t* CreateTodoItemResponse::_InternalSerialize(
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:todo_item.CreateTodoItemResponse)
-  uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
 
   // string id = 1;
   if (!this->_internal_id().empty()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_id().data(), static_cast<int>(this->_internal_id().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "todo_item.CreateTodoItemResponse.id");
-    target = stream->WriteStringMaybeAliased(
-        1, this->_internal_id(), target);
+    const std::string& _s = this->_internal_id();
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "todo_item.CreateTodoItemResponse.id");
+    target = stream->WriteStringMaybeAliased(1, _s, target);
   }
 
   // int32 status = 2;
   if (this->_internal_status() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteInt32ToArray(2, this->_internal_status(), target);
+    target = ::google::protobuf::internal::WireFormatLite::
+        WriteInt32ToArrayWithField<2>(
+            stream, this->_internal_status(), target);
   }
 
   // string message = 3;
   if (!this->_internal_message().empty()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_message().data(), static_cast<int>(this->_internal_message().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "todo_item.CreateTodoItemResponse.message");
-    target = stream->WriteStringMaybeAliased(
-        3, this->_internal_message(), target);
+    const std::string& _s = this->_internal_message();
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "todo_item.CreateTodoItemResponse.message");
+    target = stream->WriteStringMaybeAliased(3, _s, target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:todo_item.CreateTodoItemResponse)
   return target;
 }
 
-size_t CreateTodoItemResponse::ByteSizeLong() const {
+::size_t CreateTodoItemResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:todo_item.CreateTodoItemResponse)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // string id = 1;
   if (!this->_internal_id().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_id());
+    total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                    this->_internal_id());
   }
 
   // string message = 3;
   if (!this->_internal_message().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_message());
+    total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                    this->_internal_message());
   }
 
   // int32 status = 2;
   if (this->_internal_status() != 0) {
-    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_status());
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+        this->_internal_status());
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData CreateTodoItemResponse::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    CreateTodoItemResponse::MergeImpl
+const ::google::protobuf::Message::ClassData CreateTodoItemResponse::_class_data_ = {
+    CreateTodoItemResponse::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*CreateTodoItemResponse::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* CreateTodoItemResponse::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void CreateTodoItemResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void CreateTodoItemResponse::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<CreateTodoItemResponse*>(&to_msg);
   auto& from = static_cast<const CreateTodoItemResponse&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:todo_item.CreateTodoItemResponse)
-  GOOGLE_DCHECK_NE(&from, _this);
-  uint32_t cached_has_bits = 0;
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (!from._internal_id().empty()) {
@@ -1938,7 +1885,7 @@ void CreateTodoItemResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg,
   if (from._internal_status() != 0) {
     _this->_internal_set_status(from._internal_status());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void CreateTodoItemResponse::CopyFrom(const CreateTodoItemResponse& from) {
@@ -1948,146 +1895,92 @@ void CreateTodoItemResponse::CopyFrom(const CreateTodoItemResponse& from) {
   MergeFrom(from);
 }
 
-bool CreateTodoItemResponse::IsInitialized() const {
+PROTOBUF_NOINLINE bool CreateTodoItemResponse::IsInitialized() const {
   return true;
 }
 
-void CreateTodoItemResponse::InternalSwap(CreateTodoItemResponse* other) {
+::_pbi::CachedSize* CreateTodoItemResponse::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void CreateTodoItemResponse::InternalSwap(CreateTodoItemResponse* PROTOBUF_RESTRICT other) {
   using std::swap;
-  auto* lhs_arena = GetArenaForAllocation();
-  auto* rhs_arena = other->GetArenaForAllocation();
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &_impl_.id_, lhs_arena,
-      &other->_impl_.id_, rhs_arena
-  );
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &_impl_.message_, lhs_arena,
-      &other->_impl_.message_, rhs_arena
-  );
-  swap(_impl_.status_, other->_impl_.status_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.id_, &other->_impl_.id_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.message_, &other->_impl_.message_, arena);
+        swap(_impl_.status_, other->_impl_.status_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata CreateTodoItemResponse::GetMetadata() const {
+::google::protobuf::Metadata CreateTodoItemResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_todo_5fitem_2eproto_getter, &descriptor_table_todo_5fitem_2eproto_once,
       file_level_metadata_todo_5fitem_2eproto[4]);
 }
-
 // ===================================================================
 
 class UpdateTodoItemRequest::_Internal {
  public:
 };
 
-UpdateTodoItemRequest::UpdateTodoItemRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor(arena, is_message_owned);
+UpdateTodoItemRequest::UpdateTodoItemRequest(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:todo_item.UpdateTodoItemRequest)
 }
-UpdateTodoItemRequest::UpdateTodoItemRequest(const UpdateTodoItemRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  UpdateTodoItemRequest* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_.id_){}
-    , decltype(_impl_.title_){}
-    , decltype(_impl_.note_){}
-    , decltype(_impl_.todo_list_id_){}
-    , decltype(_impl_.completed_){}
-    , /*decltype(_impl_._cached_size_)*/{}};
+inline PROTOBUF_NDEBUG_INLINE UpdateTodoItemRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : id_(arena, from.id_),
+        title_(arena, from.title_),
+        note_(arena, from.note_),
+        todo_list_id_(arena, from.todo_list_id_),
+        _cached_size_{0} {}
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  _impl_.id_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.id_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (!from._internal_id().empty()) {
-    _this->_impl_.id_.Set(from._internal_id(), 
-      _this->GetArenaForAllocation());
-  }
-  _impl_.title_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.title_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (!from._internal_title().empty()) {
-    _this->_impl_.title_.Set(from._internal_title(), 
-      _this->GetArenaForAllocation());
-  }
-  _impl_.note_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.note_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (!from._internal_note().empty()) {
-    _this->_impl_.note_.Set(from._internal_note(), 
-      _this->GetArenaForAllocation());
-  }
-  _impl_.todo_list_id_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.todo_list_id_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (!from._internal_todo_list_id().empty()) {
-    _this->_impl_.todo_list_id_.Set(from._internal_todo_list_id(), 
-      _this->GetArenaForAllocation());
-  }
-  _this->_impl_.completed_ = from._impl_.completed_;
+UpdateTodoItemRequest::UpdateTodoItemRequest(
+    ::google::protobuf::Arena* arena,
+    const UpdateTodoItemRequest& from)
+    : ::google::protobuf::Message(arena) {
+  UpdateTodoItemRequest* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  _impl_.completed_ = from._impl_.completed_;
+
   // @@protoc_insertion_point(copy_constructor:todo_item.UpdateTodoItemRequest)
 }
+inline PROTOBUF_NDEBUG_INLINE UpdateTodoItemRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : id_(arena),
+        title_(arena),
+        note_(arena),
+        todo_list_id_(arena),
+        _cached_size_{0} {}
 
-inline void UpdateTodoItemRequest::SharedCtor(
-    ::_pb::Arena* arena, bool is_message_owned) {
-  (void)arena;
-  (void)is_message_owned;
-  new (&_impl_) Impl_{
-      decltype(_impl_.id_){}
-    , decltype(_impl_.title_){}
-    , decltype(_impl_.note_){}
-    , decltype(_impl_.todo_list_id_){}
-    , decltype(_impl_.completed_){false}
-    , /*decltype(_impl_._cached_size_)*/{}
-  };
-  _impl_.id_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.id_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  _impl_.title_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.title_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  _impl_.note_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.note_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  _impl_.todo_list_id_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.todo_list_id_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+inline void UpdateTodoItemRequest::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.completed_ = {};
 }
-
 UpdateTodoItemRequest::~UpdateTodoItemRequest() {
   // @@protoc_insertion_point(destructor:todo_item.UpdateTodoItemRequest)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void UpdateTodoItemRequest::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArena() == nullptr);
   _impl_.id_.Destroy();
   _impl_.title_.Destroy();
   _impl_.note_.Destroy();
   _impl_.todo_list_id_.Destroy();
+  _impl_.~Impl_();
 }
 
-void UpdateTodoItemRequest::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void UpdateTodoItemRequest::Clear() {
+PROTOBUF_NOINLINE void UpdateTodoItemRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:todo_item.UpdateTodoItemRequest)
-  uint32_t cached_has_bits = 0;
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -2096,203 +1989,188 @@ void UpdateTodoItemRequest::Clear() {
   _impl_.note_.ClearToEmpty();
   _impl_.todo_list_id_.ClearToEmpty();
   _impl_.completed_ = false;
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* UpdateTodoItemRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // string id = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
-          auto str = _internal_mutable_id();
-          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "todo_item.UpdateTodoItemRequest.id"));
-        } else
-          goto handle_unusual;
-        continue;
-      // string title = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
-          auto str = _internal_mutable_title();
-          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "todo_item.UpdateTodoItemRequest.title"));
-        } else
-          goto handle_unusual;
-        continue;
-      // string note = 3;
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
-          auto str = _internal_mutable_note();
-          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "todo_item.UpdateTodoItemRequest.note"));
-        } else
-          goto handle_unusual;
-        continue;
-      // string todo_list_id = 4;
-      case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 34)) {
-          auto str = _internal_mutable_todo_list_id();
-          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "todo_item.UpdateTodoItemRequest.todo_list_id"));
-        } else
-          goto handle_unusual;
-        continue;
-      // bool completed = 5;
-      case 5:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 40)) {
-          _impl_.completed_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
-          CHK_(ptr);
-        } else
-          goto handle_unusual;
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
+const char* UpdateTodoItemRequest::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
 
-uint8_t* UpdateTodoItemRequest::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<3, 5, 0, 63, 2> UpdateTodoItemRequest::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    5, 56,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967264,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    5,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_UpdateTodoItemRequest_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+    // string id = 1;
+    {::_pbi::TcParser::FastUS1,
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(UpdateTodoItemRequest, _impl_.id_)}},
+    // string title = 2;
+    {::_pbi::TcParser::FastUS1,
+     {18, 63, 0, PROTOBUF_FIELD_OFFSET(UpdateTodoItemRequest, _impl_.title_)}},
+    // string note = 3;
+    {::_pbi::TcParser::FastUS1,
+     {26, 63, 0, PROTOBUF_FIELD_OFFSET(UpdateTodoItemRequest, _impl_.note_)}},
+    // string todo_list_id = 4;
+    {::_pbi::TcParser::FastUS1,
+     {34, 63, 0, PROTOBUF_FIELD_OFFSET(UpdateTodoItemRequest, _impl_.todo_list_id_)}},
+    // bool completed = 5;
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(UpdateTodoItemRequest, _impl_.completed_), 63>(),
+     {40, 63, 0, PROTOBUF_FIELD_OFFSET(UpdateTodoItemRequest, _impl_.completed_)}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // string id = 1;
+    {PROTOBUF_FIELD_OFFSET(UpdateTodoItemRequest, _impl_.id_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // string title = 2;
+    {PROTOBUF_FIELD_OFFSET(UpdateTodoItemRequest, _impl_.title_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // string note = 3;
+    {PROTOBUF_FIELD_OFFSET(UpdateTodoItemRequest, _impl_.note_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // string todo_list_id = 4;
+    {PROTOBUF_FIELD_OFFSET(UpdateTodoItemRequest, _impl_.todo_list_id_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // bool completed = 5;
+    {PROTOBUF_FIELD_OFFSET(UpdateTodoItemRequest, _impl_.completed_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
+  }},
+  // no aux_entries
+  {{
+    "\37\2\5\4\14\0\0\0"
+    "todo_item.UpdateTodoItemRequest"
+    "id"
+    "title"
+    "note"
+    "todo_list_id"
+  }},
+};
+
+::uint8_t* UpdateTodoItemRequest::_InternalSerialize(
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:todo_item.UpdateTodoItemRequest)
-  uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
 
   // string id = 1;
   if (!this->_internal_id().empty()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_id().data(), static_cast<int>(this->_internal_id().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "todo_item.UpdateTodoItemRequest.id");
-    target = stream->WriteStringMaybeAliased(
-        1, this->_internal_id(), target);
+    const std::string& _s = this->_internal_id();
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "todo_item.UpdateTodoItemRequest.id");
+    target = stream->WriteStringMaybeAliased(1, _s, target);
   }
 
   // string title = 2;
   if (!this->_internal_title().empty()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_title().data(), static_cast<int>(this->_internal_title().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "todo_item.UpdateTodoItemRequest.title");
-    target = stream->WriteStringMaybeAliased(
-        2, this->_internal_title(), target);
+    const std::string& _s = this->_internal_title();
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "todo_item.UpdateTodoItemRequest.title");
+    target = stream->WriteStringMaybeAliased(2, _s, target);
   }
 
   // string note = 3;
   if (!this->_internal_note().empty()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_note().data(), static_cast<int>(this->_internal_note().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "todo_item.UpdateTodoItemRequest.note");
-    target = stream->WriteStringMaybeAliased(
-        3, this->_internal_note(), target);
+    const std::string& _s = this->_internal_note();
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "todo_item.UpdateTodoItemRequest.note");
+    target = stream->WriteStringMaybeAliased(3, _s, target);
   }
 
   // string todo_list_id = 4;
   if (!this->_internal_todo_list_id().empty()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_todo_list_id().data(), static_cast<int>(this->_internal_todo_list_id().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "todo_item.UpdateTodoItemRequest.todo_list_id");
-    target = stream->WriteStringMaybeAliased(
-        4, this->_internal_todo_list_id(), target);
+    const std::string& _s = this->_internal_todo_list_id();
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "todo_item.UpdateTodoItemRequest.todo_list_id");
+    target = stream->WriteStringMaybeAliased(4, _s, target);
   }
 
   // bool completed = 5;
   if (this->_internal_completed() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteBoolToArray(5, this->_internal_completed(), target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(
+        5, this->_internal_completed(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:todo_item.UpdateTodoItemRequest)
   return target;
 }
 
-size_t UpdateTodoItemRequest::ByteSizeLong() const {
+::size_t UpdateTodoItemRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:todo_item.UpdateTodoItemRequest)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // string id = 1;
   if (!this->_internal_id().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_id());
+    total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                    this->_internal_id());
   }
 
   // string title = 2;
   if (!this->_internal_title().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_title());
+    total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                    this->_internal_title());
   }
 
   // string note = 3;
   if (!this->_internal_note().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_note());
+    total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                    this->_internal_note());
   }
 
   // string todo_list_id = 4;
   if (!this->_internal_todo_list_id().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_todo_list_id());
+    total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                    this->_internal_todo_list_id());
   }
 
   // bool completed = 5;
   if (this->_internal_completed() != 0) {
-    total_size += 1 + 1;
+    total_size += 2;
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData UpdateTodoItemRequest::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    UpdateTodoItemRequest::MergeImpl
+const ::google::protobuf::Message::ClassData UpdateTodoItemRequest::_class_data_ = {
+    UpdateTodoItemRequest::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*UpdateTodoItemRequest::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* UpdateTodoItemRequest::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void UpdateTodoItemRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void UpdateTodoItemRequest::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<UpdateTodoItemRequest*>(&to_msg);
   auto& from = static_cast<const UpdateTodoItemRequest&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:todo_item.UpdateTodoItemRequest)
-  GOOGLE_DCHECK_NE(&from, _this);
-  uint32_t cached_has_bits = 0;
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (!from._internal_id().empty()) {
@@ -2310,7 +2188,7 @@ void UpdateTodoItemRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, 
   if (from._internal_completed() != 0) {
     _this->_internal_set_completed(from._internal_completed());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void UpdateTodoItemRequest::CopyFrom(const UpdateTodoItemRequest& from) {
@@ -2320,230 +2198,207 @@ void UpdateTodoItemRequest::CopyFrom(const UpdateTodoItemRequest& from) {
   MergeFrom(from);
 }
 
-bool UpdateTodoItemRequest::IsInitialized() const {
+PROTOBUF_NOINLINE bool UpdateTodoItemRequest::IsInitialized() const {
   return true;
 }
 
-void UpdateTodoItemRequest::InternalSwap(UpdateTodoItemRequest* other) {
+::_pbi::CachedSize* UpdateTodoItemRequest::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void UpdateTodoItemRequest::InternalSwap(UpdateTodoItemRequest* PROTOBUF_RESTRICT other) {
   using std::swap;
-  auto* lhs_arena = GetArenaForAllocation();
-  auto* rhs_arena = other->GetArenaForAllocation();
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &_impl_.id_, lhs_arena,
-      &other->_impl_.id_, rhs_arena
-  );
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &_impl_.title_, lhs_arena,
-      &other->_impl_.title_, rhs_arena
-  );
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &_impl_.note_, lhs_arena,
-      &other->_impl_.note_, rhs_arena
-  );
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &_impl_.todo_list_id_, lhs_arena,
-      &other->_impl_.todo_list_id_, rhs_arena
-  );
-  swap(_impl_.completed_, other->_impl_.completed_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.id_, &other->_impl_.id_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.title_, &other->_impl_.title_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.note_, &other->_impl_.note_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.todo_list_id_, &other->_impl_.todo_list_id_, arena);
+        swap(_impl_.completed_, other->_impl_.completed_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata UpdateTodoItemRequest::GetMetadata() const {
+::google::protobuf::Metadata UpdateTodoItemRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_todo_5fitem_2eproto_getter, &descriptor_table_todo_5fitem_2eproto_once,
       file_level_metadata_todo_5fitem_2eproto[5]);
 }
-
 // ===================================================================
 
 class UpdateTodoItemResponse::_Internal {
  public:
 };
 
-UpdateTodoItemResponse::UpdateTodoItemResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor(arena, is_message_owned);
+UpdateTodoItemResponse::UpdateTodoItemResponse(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:todo_item.UpdateTodoItemResponse)
 }
-UpdateTodoItemResponse::UpdateTodoItemResponse(const UpdateTodoItemResponse& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  UpdateTodoItemResponse* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_.message_){}
-    , decltype(_impl_.status_){}
-    , /*decltype(_impl_._cached_size_)*/{}};
+inline PROTOBUF_NDEBUG_INLINE UpdateTodoItemResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : message_(arena, from.message_),
+        _cached_size_{0} {}
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  _impl_.message_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.message_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (!from._internal_message().empty()) {
-    _this->_impl_.message_.Set(from._internal_message(), 
-      _this->GetArenaForAllocation());
-  }
-  _this->_impl_.status_ = from._impl_.status_;
+UpdateTodoItemResponse::UpdateTodoItemResponse(
+    ::google::protobuf::Arena* arena,
+    const UpdateTodoItemResponse& from)
+    : ::google::protobuf::Message(arena) {
+  UpdateTodoItemResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  _impl_.status_ = from._impl_.status_;
+
   // @@protoc_insertion_point(copy_constructor:todo_item.UpdateTodoItemResponse)
 }
+inline PROTOBUF_NDEBUG_INLINE UpdateTodoItemResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : message_(arena),
+        _cached_size_{0} {}
 
-inline void UpdateTodoItemResponse::SharedCtor(
-    ::_pb::Arena* arena, bool is_message_owned) {
-  (void)arena;
-  (void)is_message_owned;
-  new (&_impl_) Impl_{
-      decltype(_impl_.message_){}
-    , decltype(_impl_.status_){0}
-    , /*decltype(_impl_._cached_size_)*/{}
-  };
-  _impl_.message_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.message_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+inline void UpdateTodoItemResponse::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.status_ = {};
 }
-
 UpdateTodoItemResponse::~UpdateTodoItemResponse() {
   // @@protoc_insertion_point(destructor:todo_item.UpdateTodoItemResponse)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void UpdateTodoItemResponse::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArena() == nullptr);
   _impl_.message_.Destroy();
+  _impl_.~Impl_();
 }
 
-void UpdateTodoItemResponse::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void UpdateTodoItemResponse::Clear() {
+PROTOBUF_NOINLINE void UpdateTodoItemResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:todo_item.UpdateTodoItemResponse)
-  uint32_t cached_has_bits = 0;
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   _impl_.message_.ClearToEmpty();
   _impl_.status_ = 0;
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* UpdateTodoItemResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // int32 status = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
-          _impl_.status_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
-          CHK_(ptr);
-        } else
-          goto handle_unusual;
-        continue;
-      // string message = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
-          auto str = _internal_mutable_message();
-          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "todo_item.UpdateTodoItemResponse.message"));
-        } else
-          goto handle_unusual;
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
+const char* UpdateTodoItemResponse::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
 
-uint8_t* UpdateTodoItemResponse::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 0, 48, 2> UpdateTodoItemResponse::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_UpdateTodoItemResponse_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // string message = 2;
+    {::_pbi::TcParser::FastUS1,
+     {18, 63, 0, PROTOBUF_FIELD_OFFSET(UpdateTodoItemResponse, _impl_.message_)}},
+    // int32 status = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(UpdateTodoItemResponse, _impl_.status_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(UpdateTodoItemResponse, _impl_.status_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // int32 status = 1;
+    {PROTOBUF_FIELD_OFFSET(UpdateTodoItemResponse, _impl_.status_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
+    // string message = 2;
+    {PROTOBUF_FIELD_OFFSET(UpdateTodoItemResponse, _impl_.message_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+  }},
+  // no aux_entries
+  {{
+    "\40\0\7\0\0\0\0\0"
+    "todo_item.UpdateTodoItemResponse"
+    "message"
+  }},
+};
+
+::uint8_t* UpdateTodoItemResponse::_InternalSerialize(
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:todo_item.UpdateTodoItemResponse)
-  uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
 
   // int32 status = 1;
   if (this->_internal_status() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteInt32ToArray(1, this->_internal_status(), target);
+    target = ::google::protobuf::internal::WireFormatLite::
+        WriteInt32ToArrayWithField<1>(
+            stream, this->_internal_status(), target);
   }
 
   // string message = 2;
   if (!this->_internal_message().empty()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_message().data(), static_cast<int>(this->_internal_message().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "todo_item.UpdateTodoItemResponse.message");
-    target = stream->WriteStringMaybeAliased(
-        2, this->_internal_message(), target);
+    const std::string& _s = this->_internal_message();
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "todo_item.UpdateTodoItemResponse.message");
+    target = stream->WriteStringMaybeAliased(2, _s, target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:todo_item.UpdateTodoItemResponse)
   return target;
 }
 
-size_t UpdateTodoItemResponse::ByteSizeLong() const {
+::size_t UpdateTodoItemResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:todo_item.UpdateTodoItemResponse)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // string message = 2;
   if (!this->_internal_message().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_message());
+    total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                    this->_internal_message());
   }
 
   // int32 status = 1;
   if (this->_internal_status() != 0) {
-    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_status());
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+        this->_internal_status());
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData UpdateTodoItemResponse::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    UpdateTodoItemResponse::MergeImpl
+const ::google::protobuf::Message::ClassData UpdateTodoItemResponse::_class_data_ = {
+    UpdateTodoItemResponse::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*UpdateTodoItemResponse::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* UpdateTodoItemResponse::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void UpdateTodoItemResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void UpdateTodoItemResponse::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<UpdateTodoItemResponse*>(&to_msg);
   auto& from = static_cast<const UpdateTodoItemResponse&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:todo_item.UpdateTodoItemResponse)
-  GOOGLE_DCHECK_NE(&from, _this);
-  uint32_t cached_has_bits = 0;
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (!from._internal_message().empty()) {
@@ -2552,7 +2407,7 @@ void UpdateTodoItemResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg,
   if (from._internal_status() != 0) {
     _this->_internal_set_status(from._internal_status());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void UpdateTodoItemResponse::CopyFrom(const UpdateTodoItemResponse& from) {
@@ -2562,201 +2417,188 @@ void UpdateTodoItemResponse::CopyFrom(const UpdateTodoItemResponse& from) {
   MergeFrom(from);
 }
 
-bool UpdateTodoItemResponse::IsInitialized() const {
+PROTOBUF_NOINLINE bool UpdateTodoItemResponse::IsInitialized() const {
   return true;
 }
 
-void UpdateTodoItemResponse::InternalSwap(UpdateTodoItemResponse* other) {
+::_pbi::CachedSize* UpdateTodoItemResponse::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void UpdateTodoItemResponse::InternalSwap(UpdateTodoItemResponse* PROTOBUF_RESTRICT other) {
   using std::swap;
-  auto* lhs_arena = GetArenaForAllocation();
-  auto* rhs_arena = other->GetArenaForAllocation();
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &_impl_.message_, lhs_arena,
-      &other->_impl_.message_, rhs_arena
-  );
-  swap(_impl_.status_, other->_impl_.status_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.message_, &other->_impl_.message_, arena);
+        swap(_impl_.status_, other->_impl_.status_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata UpdateTodoItemResponse::GetMetadata() const {
+::google::protobuf::Metadata UpdateTodoItemResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_todo_5fitem_2eproto_getter, &descriptor_table_todo_5fitem_2eproto_once,
       file_level_metadata_todo_5fitem_2eproto[6]);
 }
-
 // ===================================================================
 
 class DeleteTodoItemRequest::_Internal {
  public:
 };
 
-DeleteTodoItemRequest::DeleteTodoItemRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor(arena, is_message_owned);
+DeleteTodoItemRequest::DeleteTodoItemRequest(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:todo_item.DeleteTodoItemRequest)
 }
-DeleteTodoItemRequest::DeleteTodoItemRequest(const DeleteTodoItemRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  DeleteTodoItemRequest* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_.id_){}
-    , /*decltype(_impl_._cached_size_)*/{}};
+inline PROTOBUF_NDEBUG_INLINE DeleteTodoItemRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : id_(arena, from.id_),
+        _cached_size_{0} {}
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  _impl_.id_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.id_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (!from._internal_id().empty()) {
-    _this->_impl_.id_.Set(from._internal_id(), 
-      _this->GetArenaForAllocation());
-  }
+DeleteTodoItemRequest::DeleteTodoItemRequest(
+    ::google::protobuf::Arena* arena,
+    const DeleteTodoItemRequest& from)
+    : ::google::protobuf::Message(arena) {
+  DeleteTodoItemRequest* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+
   // @@protoc_insertion_point(copy_constructor:todo_item.DeleteTodoItemRequest)
 }
+inline PROTOBUF_NDEBUG_INLINE DeleteTodoItemRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : id_(arena),
+        _cached_size_{0} {}
 
-inline void DeleteTodoItemRequest::SharedCtor(
-    ::_pb::Arena* arena, bool is_message_owned) {
-  (void)arena;
-  (void)is_message_owned;
-  new (&_impl_) Impl_{
-      decltype(_impl_.id_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-  };
-  _impl_.id_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.id_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+inline void DeleteTodoItemRequest::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
 }
-
 DeleteTodoItemRequest::~DeleteTodoItemRequest() {
   // @@protoc_insertion_point(destructor:todo_item.DeleteTodoItemRequest)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void DeleteTodoItemRequest::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArena() == nullptr);
   _impl_.id_.Destroy();
+  _impl_.~Impl_();
 }
 
-void DeleteTodoItemRequest::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void DeleteTodoItemRequest::Clear() {
+PROTOBUF_NOINLINE void DeleteTodoItemRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:todo_item.DeleteTodoItemRequest)
-  uint32_t cached_has_bits = 0;
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   _impl_.id_.ClearToEmpty();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* DeleteTodoItemRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // string id = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
-          auto str = _internal_mutable_id();
-          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "todo_item.DeleteTodoItemRequest.id"));
-        } else
-          goto handle_unusual;
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
+const char* DeleteTodoItemRequest::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
 
-uint8_t* DeleteTodoItemRequest::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 0, 42, 2> DeleteTodoItemRequest::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_DeleteTodoItemRequest_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // string id = 1;
+    {::_pbi::TcParser::FastUS1,
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(DeleteTodoItemRequest, _impl_.id_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // string id = 1;
+    {PROTOBUF_FIELD_OFFSET(DeleteTodoItemRequest, _impl_.id_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+  }},
+  // no aux_entries
+  {{
+    "\37\2\0\0\0\0\0\0"
+    "todo_item.DeleteTodoItemRequest"
+    "id"
+  }},
+};
+
+::uint8_t* DeleteTodoItemRequest::_InternalSerialize(
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:todo_item.DeleteTodoItemRequest)
-  uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
 
   // string id = 1;
   if (!this->_internal_id().empty()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_id().data(), static_cast<int>(this->_internal_id().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "todo_item.DeleteTodoItemRequest.id");
-    target = stream->WriteStringMaybeAliased(
-        1, this->_internal_id(), target);
+    const std::string& _s = this->_internal_id();
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "todo_item.DeleteTodoItemRequest.id");
+    target = stream->WriteStringMaybeAliased(1, _s, target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:todo_item.DeleteTodoItemRequest)
   return target;
 }
 
-size_t DeleteTodoItemRequest::ByteSizeLong() const {
+::size_t DeleteTodoItemRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:todo_item.DeleteTodoItemRequest)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // string id = 1;
   if (!this->_internal_id().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_id());
+    total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                    this->_internal_id());
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData DeleteTodoItemRequest::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    DeleteTodoItemRequest::MergeImpl
+const ::google::protobuf::Message::ClassData DeleteTodoItemRequest::_class_data_ = {
+    DeleteTodoItemRequest::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*DeleteTodoItemRequest::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* DeleteTodoItemRequest::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void DeleteTodoItemRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void DeleteTodoItemRequest::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<DeleteTodoItemRequest*>(&to_msg);
   auto& from = static_cast<const DeleteTodoItemRequest&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:todo_item.DeleteTodoItemRequest)
-  GOOGLE_DCHECK_NE(&from, _this);
-  uint32_t cached_has_bits = 0;
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (!from._internal_id().empty()) {
     _this->_internal_set_id(from._internal_id());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void DeleteTodoItemRequest::CopyFrom(const DeleteTodoItemRequest& from) {
@@ -2766,217 +2608,203 @@ void DeleteTodoItemRequest::CopyFrom(const DeleteTodoItemRequest& from) {
   MergeFrom(from);
 }
 
-bool DeleteTodoItemRequest::IsInitialized() const {
+PROTOBUF_NOINLINE bool DeleteTodoItemRequest::IsInitialized() const {
   return true;
 }
 
-void DeleteTodoItemRequest::InternalSwap(DeleteTodoItemRequest* other) {
+::_pbi::CachedSize* DeleteTodoItemRequest::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void DeleteTodoItemRequest::InternalSwap(DeleteTodoItemRequest* PROTOBUF_RESTRICT other) {
   using std::swap;
-  auto* lhs_arena = GetArenaForAllocation();
-  auto* rhs_arena = other->GetArenaForAllocation();
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &_impl_.id_, lhs_arena,
-      &other->_impl_.id_, rhs_arena
-  );
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.id_, &other->_impl_.id_, arena);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata DeleteTodoItemRequest::GetMetadata() const {
+::google::protobuf::Metadata DeleteTodoItemRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_todo_5fitem_2eproto_getter, &descriptor_table_todo_5fitem_2eproto_once,
       file_level_metadata_todo_5fitem_2eproto[7]);
 }
-
 // ===================================================================
 
 class DeleteTodoItemResponse::_Internal {
  public:
 };
 
-DeleteTodoItemResponse::DeleteTodoItemResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor(arena, is_message_owned);
+DeleteTodoItemResponse::DeleteTodoItemResponse(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:todo_item.DeleteTodoItemResponse)
 }
-DeleteTodoItemResponse::DeleteTodoItemResponse(const DeleteTodoItemResponse& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  DeleteTodoItemResponse* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_.message_){}
-    , decltype(_impl_.status_){}
-    , /*decltype(_impl_._cached_size_)*/{}};
+inline PROTOBUF_NDEBUG_INLINE DeleteTodoItemResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : message_(arena, from.message_),
+        _cached_size_{0} {}
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  _impl_.message_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.message_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (!from._internal_message().empty()) {
-    _this->_impl_.message_.Set(from._internal_message(), 
-      _this->GetArenaForAllocation());
-  }
-  _this->_impl_.status_ = from._impl_.status_;
+DeleteTodoItemResponse::DeleteTodoItemResponse(
+    ::google::protobuf::Arena* arena,
+    const DeleteTodoItemResponse& from)
+    : ::google::protobuf::Message(arena) {
+  DeleteTodoItemResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  _impl_.status_ = from._impl_.status_;
+
   // @@protoc_insertion_point(copy_constructor:todo_item.DeleteTodoItemResponse)
 }
+inline PROTOBUF_NDEBUG_INLINE DeleteTodoItemResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : message_(arena),
+        _cached_size_{0} {}
 
-inline void DeleteTodoItemResponse::SharedCtor(
-    ::_pb::Arena* arena, bool is_message_owned) {
-  (void)arena;
-  (void)is_message_owned;
-  new (&_impl_) Impl_{
-      decltype(_impl_.message_){}
-    , decltype(_impl_.status_){0}
-    , /*decltype(_impl_._cached_size_)*/{}
-  };
-  _impl_.message_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.message_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+inline void DeleteTodoItemResponse::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.status_ = {};
 }
-
 DeleteTodoItemResponse::~DeleteTodoItemResponse() {
   // @@protoc_insertion_point(destructor:todo_item.DeleteTodoItemResponse)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void DeleteTodoItemResponse::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArena() == nullptr);
   _impl_.message_.Destroy();
+  _impl_.~Impl_();
 }
 
-void DeleteTodoItemResponse::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void DeleteTodoItemResponse::Clear() {
+PROTOBUF_NOINLINE void DeleteTodoItemResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:todo_item.DeleteTodoItemResponse)
-  uint32_t cached_has_bits = 0;
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   _impl_.message_.ClearToEmpty();
   _impl_.status_ = 0;
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* DeleteTodoItemResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // int32 status = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
-          _impl_.status_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
-          CHK_(ptr);
-        } else
-          goto handle_unusual;
-        continue;
-      // string message = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
-          auto str = _internal_mutable_message();
-          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "todo_item.DeleteTodoItemResponse.message"));
-        } else
-          goto handle_unusual;
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
+const char* DeleteTodoItemResponse::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
 
-uint8_t* DeleteTodoItemResponse::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 0, 48, 2> DeleteTodoItemResponse::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_DeleteTodoItemResponse_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // string message = 2;
+    {::_pbi::TcParser::FastUS1,
+     {18, 63, 0, PROTOBUF_FIELD_OFFSET(DeleteTodoItemResponse, _impl_.message_)}},
+    // int32 status = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(DeleteTodoItemResponse, _impl_.status_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(DeleteTodoItemResponse, _impl_.status_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // int32 status = 1;
+    {PROTOBUF_FIELD_OFFSET(DeleteTodoItemResponse, _impl_.status_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
+    // string message = 2;
+    {PROTOBUF_FIELD_OFFSET(DeleteTodoItemResponse, _impl_.message_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+  }},
+  // no aux_entries
+  {{
+    "\40\0\7\0\0\0\0\0"
+    "todo_item.DeleteTodoItemResponse"
+    "message"
+  }},
+};
+
+::uint8_t* DeleteTodoItemResponse::_InternalSerialize(
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:todo_item.DeleteTodoItemResponse)
-  uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
 
   // int32 status = 1;
   if (this->_internal_status() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteInt32ToArray(1, this->_internal_status(), target);
+    target = ::google::protobuf::internal::WireFormatLite::
+        WriteInt32ToArrayWithField<1>(
+            stream, this->_internal_status(), target);
   }
 
   // string message = 2;
   if (!this->_internal_message().empty()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_message().data(), static_cast<int>(this->_internal_message().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "todo_item.DeleteTodoItemResponse.message");
-    target = stream->WriteStringMaybeAliased(
-        2, this->_internal_message(), target);
+    const std::string& _s = this->_internal_message();
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "todo_item.DeleteTodoItemResponse.message");
+    target = stream->WriteStringMaybeAliased(2, _s, target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:todo_item.DeleteTodoItemResponse)
   return target;
 }
 
-size_t DeleteTodoItemResponse::ByteSizeLong() const {
+::size_t DeleteTodoItemResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:todo_item.DeleteTodoItemResponse)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // string message = 2;
   if (!this->_internal_message().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_message());
+    total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                    this->_internal_message());
   }
 
   // int32 status = 1;
   if (this->_internal_status() != 0) {
-    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_status());
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+        this->_internal_status());
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData DeleteTodoItemResponse::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    DeleteTodoItemResponse::MergeImpl
+const ::google::protobuf::Message::ClassData DeleteTodoItemResponse::_class_data_ = {
+    DeleteTodoItemResponse::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*DeleteTodoItemResponse::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* DeleteTodoItemResponse::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void DeleteTodoItemResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void DeleteTodoItemResponse::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<DeleteTodoItemResponse*>(&to_msg);
   auto& from = static_cast<const DeleteTodoItemResponse&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:todo_item.DeleteTodoItemResponse)
-  GOOGLE_DCHECK_NE(&from, _this);
-  uint32_t cached_has_bits = 0;
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (!from._internal_message().empty()) {
@@ -2985,7 +2813,7 @@ void DeleteTodoItemResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg,
   if (from._internal_status() != 0) {
     _this->_internal_set_status(from._internal_status());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void DeleteTodoItemResponse::CopyFrom(const DeleteTodoItemResponse& from) {
@@ -2995,201 +2823,188 @@ void DeleteTodoItemResponse::CopyFrom(const DeleteTodoItemResponse& from) {
   MergeFrom(from);
 }
 
-bool DeleteTodoItemResponse::IsInitialized() const {
+PROTOBUF_NOINLINE bool DeleteTodoItemResponse::IsInitialized() const {
   return true;
 }
 
-void DeleteTodoItemResponse::InternalSwap(DeleteTodoItemResponse* other) {
+::_pbi::CachedSize* DeleteTodoItemResponse::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void DeleteTodoItemResponse::InternalSwap(DeleteTodoItemResponse* PROTOBUF_RESTRICT other) {
   using std::swap;
-  auto* lhs_arena = GetArenaForAllocation();
-  auto* rhs_arena = other->GetArenaForAllocation();
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &_impl_.message_, lhs_arena,
-      &other->_impl_.message_, rhs_arena
-  );
-  swap(_impl_.status_, other->_impl_.status_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.message_, &other->_impl_.message_, arena);
+        swap(_impl_.status_, other->_impl_.status_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata DeleteTodoItemResponse::GetMetadata() const {
+::google::protobuf::Metadata DeleteTodoItemResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_todo_5fitem_2eproto_getter, &descriptor_table_todo_5fitem_2eproto_once,
       file_level_metadata_todo_5fitem_2eproto[8]);
 }
-
 // ===================================================================
 
 class GetTodoItemsByTodoListIdRequest::_Internal {
  public:
 };
 
-GetTodoItemsByTodoListIdRequest::GetTodoItemsByTodoListIdRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor(arena, is_message_owned);
+GetTodoItemsByTodoListIdRequest::GetTodoItemsByTodoListIdRequest(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:todo_item.GetTodoItemsByTodoListIdRequest)
 }
-GetTodoItemsByTodoListIdRequest::GetTodoItemsByTodoListIdRequest(const GetTodoItemsByTodoListIdRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  GetTodoItemsByTodoListIdRequest* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_.todo_list_id_){}
-    , /*decltype(_impl_._cached_size_)*/{}};
+inline PROTOBUF_NDEBUG_INLINE GetTodoItemsByTodoListIdRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : todo_list_id_(arena, from.todo_list_id_),
+        _cached_size_{0} {}
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  _impl_.todo_list_id_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.todo_list_id_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (!from._internal_todo_list_id().empty()) {
-    _this->_impl_.todo_list_id_.Set(from._internal_todo_list_id(), 
-      _this->GetArenaForAllocation());
-  }
+GetTodoItemsByTodoListIdRequest::GetTodoItemsByTodoListIdRequest(
+    ::google::protobuf::Arena* arena,
+    const GetTodoItemsByTodoListIdRequest& from)
+    : ::google::protobuf::Message(arena) {
+  GetTodoItemsByTodoListIdRequest* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+
   // @@protoc_insertion_point(copy_constructor:todo_item.GetTodoItemsByTodoListIdRequest)
 }
+inline PROTOBUF_NDEBUG_INLINE GetTodoItemsByTodoListIdRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : todo_list_id_(arena),
+        _cached_size_{0} {}
 
-inline void GetTodoItemsByTodoListIdRequest::SharedCtor(
-    ::_pb::Arena* arena, bool is_message_owned) {
-  (void)arena;
-  (void)is_message_owned;
-  new (&_impl_) Impl_{
-      decltype(_impl_.todo_list_id_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-  };
-  _impl_.todo_list_id_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.todo_list_id_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+inline void GetTodoItemsByTodoListIdRequest::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
 }
-
 GetTodoItemsByTodoListIdRequest::~GetTodoItemsByTodoListIdRequest() {
   // @@protoc_insertion_point(destructor:todo_item.GetTodoItemsByTodoListIdRequest)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void GetTodoItemsByTodoListIdRequest::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArena() == nullptr);
   _impl_.todo_list_id_.Destroy();
+  _impl_.~Impl_();
 }
 
-void GetTodoItemsByTodoListIdRequest::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void GetTodoItemsByTodoListIdRequest::Clear() {
+PROTOBUF_NOINLINE void GetTodoItemsByTodoListIdRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:todo_item.GetTodoItemsByTodoListIdRequest)
-  uint32_t cached_has_bits = 0;
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   _impl_.todo_list_id_.ClearToEmpty();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* GetTodoItemsByTodoListIdRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // string todo_list_id = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
-          auto str = _internal_mutable_todo_list_id();
-          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "todo_item.GetTodoItemsByTodoListIdRequest.todo_list_id"));
-        } else
-          goto handle_unusual;
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
+const char* GetTodoItemsByTodoListIdRequest::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
 
-uint8_t* GetTodoItemsByTodoListIdRequest::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 0, 62, 2> GetTodoItemsByTodoListIdRequest::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_GetTodoItemsByTodoListIdRequest_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // string todo_list_id = 1;
+    {::_pbi::TcParser::FastUS1,
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(GetTodoItemsByTodoListIdRequest, _impl_.todo_list_id_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // string todo_list_id = 1;
+    {PROTOBUF_FIELD_OFFSET(GetTodoItemsByTodoListIdRequest, _impl_.todo_list_id_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+  }},
+  // no aux_entries
+  {{
+    "\51\14\0\0\0\0\0\0"
+    "todo_item.GetTodoItemsByTodoListIdRequest"
+    "todo_list_id"
+  }},
+};
+
+::uint8_t* GetTodoItemsByTodoListIdRequest::_InternalSerialize(
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:todo_item.GetTodoItemsByTodoListIdRequest)
-  uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
 
   // string todo_list_id = 1;
   if (!this->_internal_todo_list_id().empty()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_todo_list_id().data(), static_cast<int>(this->_internal_todo_list_id().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "todo_item.GetTodoItemsByTodoListIdRequest.todo_list_id");
-    target = stream->WriteStringMaybeAliased(
-        1, this->_internal_todo_list_id(), target);
+    const std::string& _s = this->_internal_todo_list_id();
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "todo_item.GetTodoItemsByTodoListIdRequest.todo_list_id");
+    target = stream->WriteStringMaybeAliased(1, _s, target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:todo_item.GetTodoItemsByTodoListIdRequest)
   return target;
 }
 
-size_t GetTodoItemsByTodoListIdRequest::ByteSizeLong() const {
+::size_t GetTodoItemsByTodoListIdRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:todo_item.GetTodoItemsByTodoListIdRequest)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // string todo_list_id = 1;
   if (!this->_internal_todo_list_id().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_todo_list_id());
+    total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                    this->_internal_todo_list_id());
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData GetTodoItemsByTodoListIdRequest::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    GetTodoItemsByTodoListIdRequest::MergeImpl
+const ::google::protobuf::Message::ClassData GetTodoItemsByTodoListIdRequest::_class_data_ = {
+    GetTodoItemsByTodoListIdRequest::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetTodoItemsByTodoListIdRequest::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* GetTodoItemsByTodoListIdRequest::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void GetTodoItemsByTodoListIdRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void GetTodoItemsByTodoListIdRequest::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<GetTodoItemsByTodoListIdRequest*>(&to_msg);
   auto& from = static_cast<const GetTodoItemsByTodoListIdRequest&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:todo_item.GetTodoItemsByTodoListIdRequest)
-  GOOGLE_DCHECK_NE(&from, _this);
-  uint32_t cached_has_bits = 0;
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (!from._internal_todo_list_id().empty()) {
     _this->_internal_set_todo_list_id(from._internal_todo_list_id());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void GetTodoItemsByTodoListIdRequest::CopyFrom(const GetTodoItemsByTodoListIdRequest& from) {
@@ -3199,267 +3014,265 @@ void GetTodoItemsByTodoListIdRequest::CopyFrom(const GetTodoItemsByTodoListIdReq
   MergeFrom(from);
 }
 
-bool GetTodoItemsByTodoListIdRequest::IsInitialized() const {
+PROTOBUF_NOINLINE bool GetTodoItemsByTodoListIdRequest::IsInitialized() const {
   return true;
 }
 
-void GetTodoItemsByTodoListIdRequest::InternalSwap(GetTodoItemsByTodoListIdRequest* other) {
+::_pbi::CachedSize* GetTodoItemsByTodoListIdRequest::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void GetTodoItemsByTodoListIdRequest::InternalSwap(GetTodoItemsByTodoListIdRequest* PROTOBUF_RESTRICT other) {
   using std::swap;
-  auto* lhs_arena = GetArenaForAllocation();
-  auto* rhs_arena = other->GetArenaForAllocation();
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &_impl_.todo_list_id_, lhs_arena,
-      &other->_impl_.todo_list_id_, rhs_arena
-  );
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.todo_list_id_, &other->_impl_.todo_list_id_, arena);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata GetTodoItemsByTodoListIdRequest::GetMetadata() const {
+::google::protobuf::Metadata GetTodoItemsByTodoListIdRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_todo_5fitem_2eproto_getter, &descriptor_table_todo_5fitem_2eproto_once,
       file_level_metadata_todo_5fitem_2eproto[9]);
 }
-
 // ===================================================================
 
 class GetTodoItemsByTodoListIdResponse::_Internal {
  public:
+  using HasBits = decltype(std::declval<GetTodoItemsByTodoListIdResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+    8 * PROTOBUF_FIELD_OFFSET(GetTodoItemsByTodoListIdResponse, _impl_._has_bits_);
   static const ::todo_item::TodoItem& items(const GetTodoItemsByTodoListIdResponse* msg);
+  static void set_has_items(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
 };
 
-const ::todo_item::TodoItem&
-GetTodoItemsByTodoListIdResponse::_Internal::items(const GetTodoItemsByTodoListIdResponse* msg) {
+const ::todo_item::TodoItem& GetTodoItemsByTodoListIdResponse::_Internal::items(const GetTodoItemsByTodoListIdResponse* msg) {
   return *msg->_impl_.items_;
 }
-GetTodoItemsByTodoListIdResponse::GetTodoItemsByTodoListIdResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor(arena, is_message_owned);
+GetTodoItemsByTodoListIdResponse::GetTodoItemsByTodoListIdResponse(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:todo_item.GetTodoItemsByTodoListIdResponse)
 }
-GetTodoItemsByTodoListIdResponse::GetTodoItemsByTodoListIdResponse(const GetTodoItemsByTodoListIdResponse& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  GetTodoItemsByTodoListIdResponse* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_.message_){}
-    , decltype(_impl_.items_){nullptr}
-    , decltype(_impl_.status_){}
-    , /*decltype(_impl_._cached_size_)*/{}};
+inline PROTOBUF_NDEBUG_INLINE GetTodoItemsByTodoListIdResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0},
+        message_(arena, from.message_) {}
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  _impl_.message_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.message_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (!from._internal_message().empty()) {
-    _this->_impl_.message_.Set(from._internal_message(), 
-      _this->GetArenaForAllocation());
-  }
-  if (from._internal_has_items()) {
-    _this->_impl_.items_ = new ::todo_item::TodoItem(*from._impl_.items_);
-  }
-  _this->_impl_.status_ = from._impl_.status_;
+GetTodoItemsByTodoListIdResponse::GetTodoItemsByTodoListIdResponse(
+    ::google::protobuf::Arena* arena,
+    const GetTodoItemsByTodoListIdResponse& from)
+    : ::google::protobuf::Message(arena) {
+  GetTodoItemsByTodoListIdResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.items_ = (cached_has_bits & 0x00000001u)
+                ? CreateMaybeMessage<::todo_item::TodoItem>(arena, *from._impl_.items_)
+                : nullptr;
+  _impl_.status_ = from._impl_.status_;
+
   // @@protoc_insertion_point(copy_constructor:todo_item.GetTodoItemsByTodoListIdResponse)
 }
+inline PROTOBUF_NDEBUG_INLINE GetTodoItemsByTodoListIdResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0},
+        message_(arena) {}
 
-inline void GetTodoItemsByTodoListIdResponse::SharedCtor(
-    ::_pb::Arena* arena, bool is_message_owned) {
-  (void)arena;
-  (void)is_message_owned;
-  new (&_impl_) Impl_{
-      decltype(_impl_.message_){}
-    , decltype(_impl_.items_){nullptr}
-    , decltype(_impl_.status_){0}
-    , /*decltype(_impl_._cached_size_)*/{}
-  };
-  _impl_.message_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.message_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+inline void GetTodoItemsByTodoListIdResponse::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, items_),
+           0,
+           offsetof(Impl_, status_) -
+               offsetof(Impl_, items_) +
+               sizeof(Impl_::status_));
 }
-
 GetTodoItemsByTodoListIdResponse::~GetTodoItemsByTodoListIdResponse() {
   // @@protoc_insertion_point(destructor:todo_item.GetTodoItemsByTodoListIdResponse)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void GetTodoItemsByTodoListIdResponse::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArena() == nullptr);
   _impl_.message_.Destroy();
-  if (this != internal_default_instance()) delete _impl_.items_;
+  delete _impl_.items_;
+  _impl_.~Impl_();
 }
 
-void GetTodoItemsByTodoListIdResponse::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void GetTodoItemsByTodoListIdResponse::Clear() {
+PROTOBUF_NOINLINE void GetTodoItemsByTodoListIdResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:todo_item.GetTodoItemsByTodoListIdResponse)
-  uint32_t cached_has_bits = 0;
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   _impl_.message_.ClearToEmpty();
-  if (GetArenaForAllocation() == nullptr && _impl_.items_ != nullptr) {
-    delete _impl_.items_;
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.items_ != nullptr);
+    _impl_.items_->Clear();
   }
-  _impl_.items_ = nullptr;
   _impl_.status_ = 0;
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* GetTodoItemsByTodoListIdResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // .todo_item.TodoItem items = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
-          ptr = ctx->ParseMessage(_internal_mutable_items(), ptr);
-          CHK_(ptr);
-        } else
-          goto handle_unusual;
-        continue;
-      // int32 status = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
-          _impl_.status_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
-          CHK_(ptr);
-        } else
-          goto handle_unusual;
-        continue;
-      // string message = 3;
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
-          auto str = _internal_mutable_message();
-          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "todo_item.GetTodoItemsByTodoListIdResponse.message"));
-        } else
-          goto handle_unusual;
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
+const char* GetTodoItemsByTodoListIdResponse::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
 
-uint8_t* GetTodoItemsByTodoListIdResponse::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:todo_item.GetTodoItemsByTodoListIdResponse)
-  uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
 
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<2, 3, 1, 58, 2> GetTodoItemsByTodoListIdResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(GetTodoItemsByTodoListIdResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    3, 24,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967288,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    3,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_GetTodoItemsByTodoListIdResponse_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+    // .todo_item.TodoItem items = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(GetTodoItemsByTodoListIdResponse, _impl_.items_)}},
+    // int32 status = 2;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(GetTodoItemsByTodoListIdResponse, _impl_.status_), 63>(),
+     {16, 63, 0, PROTOBUF_FIELD_OFFSET(GetTodoItemsByTodoListIdResponse, _impl_.status_)}},
+    // string message = 3;
+    {::_pbi::TcParser::FastUS1,
+     {26, 63, 0, PROTOBUF_FIELD_OFFSET(GetTodoItemsByTodoListIdResponse, _impl_.message_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .todo_item.TodoItem items = 1;
+    {PROTOBUF_FIELD_OFFSET(GetTodoItemsByTodoListIdResponse, _impl_.items_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+    // int32 status = 2;
+    {PROTOBUF_FIELD_OFFSET(GetTodoItemsByTodoListIdResponse, _impl_.status_), -1, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
+    // string message = 3;
+    {PROTOBUF_FIELD_OFFSET(GetTodoItemsByTodoListIdResponse, _impl_.message_), -1, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::todo_item::TodoItem>()},
+  }}, {{
+    "\52\0\0\7\0\0\0\0"
+    "todo_item.GetTodoItemsByTodoListIdResponse"
+    "message"
+  }},
+};
+
+::uint8_t* GetTodoItemsByTodoListIdResponse::_InternalSerialize(
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:todo_item.GetTodoItemsByTodoListIdResponse)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
   // .todo_item.TodoItem items = 1;
-  if (this->_internal_has_items()) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(1, _Internal::items(this),
+  if (cached_has_bits & 0x00000001u) {
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        1, _Internal::items(this),
         _Internal::items(this).GetCachedSize(), target, stream);
   }
 
   // int32 status = 2;
   if (this->_internal_status() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteInt32ToArray(2, this->_internal_status(), target);
+    target = ::google::protobuf::internal::WireFormatLite::
+        WriteInt32ToArrayWithField<2>(
+            stream, this->_internal_status(), target);
   }
 
   // string message = 3;
   if (!this->_internal_message().empty()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_message().data(), static_cast<int>(this->_internal_message().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "todo_item.GetTodoItemsByTodoListIdResponse.message");
-    target = stream->WriteStringMaybeAliased(
-        3, this->_internal_message(), target);
+    const std::string& _s = this->_internal_message();
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "todo_item.GetTodoItemsByTodoListIdResponse.message");
+    target = stream->WriteStringMaybeAliased(3, _s, target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:todo_item.GetTodoItemsByTodoListIdResponse)
   return target;
 }
 
-size_t GetTodoItemsByTodoListIdResponse::ByteSizeLong() const {
+::size_t GetTodoItemsByTodoListIdResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:todo_item.GetTodoItemsByTodoListIdResponse)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // string message = 3;
   if (!this->_internal_message().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_message());
+    total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                    this->_internal_message());
   }
 
   // .todo_item.TodoItem items = 1;
-  if (this->_internal_has_items()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *_impl_.items_);
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    total_size +=
+        1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.items_);
   }
 
   // int32 status = 2;
   if (this->_internal_status() != 0) {
-    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_status());
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+        this->_internal_status());
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData GetTodoItemsByTodoListIdResponse::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    GetTodoItemsByTodoListIdResponse::MergeImpl
+const ::google::protobuf::Message::ClassData GetTodoItemsByTodoListIdResponse::_class_data_ = {
+    GetTodoItemsByTodoListIdResponse::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetTodoItemsByTodoListIdResponse::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* GetTodoItemsByTodoListIdResponse::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void GetTodoItemsByTodoListIdResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void GetTodoItemsByTodoListIdResponse::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<GetTodoItemsByTodoListIdResponse*>(&to_msg);
   auto& from = static_cast<const GetTodoItemsByTodoListIdResponse&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:todo_item.GetTodoItemsByTodoListIdResponse)
-  GOOGLE_DCHECK_NE(&from, _this);
-  uint32_t cached_has_bits = 0;
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (!from._internal_message().empty()) {
     _this->_internal_set_message(from._internal_message());
   }
-  if (from._internal_has_items()) {
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
     _this->_internal_mutable_items()->::todo_item::TodoItem::MergeFrom(
         from._internal_items());
   }
   if (from._internal_status() != 0) {
     _this->_internal_set_status(from._internal_status());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void GetTodoItemsByTodoListIdResponse::CopyFrom(const GetTodoItemsByTodoListIdResponse& from) {
@@ -3469,20 +3282,21 @@ void GetTodoItemsByTodoListIdResponse::CopyFrom(const GetTodoItemsByTodoListIdRe
   MergeFrom(from);
 }
 
-bool GetTodoItemsByTodoListIdResponse::IsInitialized() const {
+PROTOBUF_NOINLINE bool GetTodoItemsByTodoListIdResponse::IsInitialized() const {
   return true;
 }
 
-void GetTodoItemsByTodoListIdResponse::InternalSwap(GetTodoItemsByTodoListIdResponse* other) {
+::_pbi::CachedSize* GetTodoItemsByTodoListIdResponse::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void GetTodoItemsByTodoListIdResponse::InternalSwap(GetTodoItemsByTodoListIdResponse* PROTOBUF_RESTRICT other) {
   using std::swap;
-  auto* lhs_arena = GetArenaForAllocation();
-  auto* rhs_arena = other->GetArenaForAllocation();
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &_impl_.message_, lhs_arena,
-      &other->_impl_.message_, rhs_arena
-  );
-  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.message_, &other->_impl_.message_, arena);
+  ::google::protobuf::internal::memswap<
       PROTOBUF_FIELD_OFFSET(GetTodoItemsByTodoListIdResponse, _impl_.status_)
       + sizeof(GetTodoItemsByTodoListIdResponse::_impl_.status_)
       - PROTOBUF_FIELD_OFFSET(GetTodoItemsByTodoListIdResponse, _impl_.items_)>(
@@ -3490,60 +3304,16 @@ void GetTodoItemsByTodoListIdResponse::InternalSwap(GetTodoItemsByTodoListIdResp
           reinterpret_cast<char*>(&other->_impl_.items_));
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata GetTodoItemsByTodoListIdResponse::GetMetadata() const {
+::google::protobuf::Metadata GetTodoItemsByTodoListIdResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_todo_5fitem_2eproto_getter, &descriptor_table_todo_5fitem_2eproto_once,
       file_level_metadata_todo_5fitem_2eproto[10]);
 }
-
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace todo_item
-PROTOBUF_NAMESPACE_OPEN
-template<> PROTOBUF_NOINLINE ::todo_item::TodoItem*
-Arena::CreateMaybeMessage< ::todo_item::TodoItem >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::todo_item::TodoItem >(arena);
-}
-template<> PROTOBUF_NOINLINE ::todo_item::GetTodoItemsRequest*
-Arena::CreateMaybeMessage< ::todo_item::GetTodoItemsRequest >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::todo_item::GetTodoItemsRequest >(arena);
-}
-template<> PROTOBUF_NOINLINE ::todo_item::GetTodoItemsResponse*
-Arena::CreateMaybeMessage< ::todo_item::GetTodoItemsResponse >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::todo_item::GetTodoItemsResponse >(arena);
-}
-template<> PROTOBUF_NOINLINE ::todo_item::CreateTodoItemRequest*
-Arena::CreateMaybeMessage< ::todo_item::CreateTodoItemRequest >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::todo_item::CreateTodoItemRequest >(arena);
-}
-template<> PROTOBUF_NOINLINE ::todo_item::CreateTodoItemResponse*
-Arena::CreateMaybeMessage< ::todo_item::CreateTodoItemResponse >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::todo_item::CreateTodoItemResponse >(arena);
-}
-template<> PROTOBUF_NOINLINE ::todo_item::UpdateTodoItemRequest*
-Arena::CreateMaybeMessage< ::todo_item::UpdateTodoItemRequest >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::todo_item::UpdateTodoItemRequest >(arena);
-}
-template<> PROTOBUF_NOINLINE ::todo_item::UpdateTodoItemResponse*
-Arena::CreateMaybeMessage< ::todo_item::UpdateTodoItemResponse >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::todo_item::UpdateTodoItemResponse >(arena);
-}
-template<> PROTOBUF_NOINLINE ::todo_item::DeleteTodoItemRequest*
-Arena::CreateMaybeMessage< ::todo_item::DeleteTodoItemRequest >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::todo_item::DeleteTodoItemRequest >(arena);
-}
-template<> PROTOBUF_NOINLINE ::todo_item::DeleteTodoItemResponse*
-Arena::CreateMaybeMessage< ::todo_item::DeleteTodoItemResponse >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::todo_item::DeleteTodoItemResponse >(arena);
-}
-template<> PROTOBUF_NOINLINE ::todo_item::GetTodoItemsByTodoListIdRequest*
-Arena::CreateMaybeMessage< ::todo_item::GetTodoItemsByTodoListIdRequest >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::todo_item::GetTodoItemsByTodoListIdRequest >(arena);
-}
-template<> PROTOBUF_NOINLINE ::todo_item::GetTodoItemsByTodoListIdResponse*
-Arena::CreateMaybeMessage< ::todo_item::GetTodoItemsByTodoListIdResponse >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::todo_item::GetTodoItemsByTodoListIdResponse >(arena);
-}
-PROTOBUF_NAMESPACE_CLOSE
-
+namespace google {
+namespace protobuf {
+}  // namespace protobuf
+}  // namespace google
 // @@protoc_insertion_point(global_scope)
-#include <google/protobuf/port_undef.inc>
+#include "google/protobuf/port_undef.inc"
