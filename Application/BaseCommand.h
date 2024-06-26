@@ -34,9 +34,7 @@ public:
 			boost::mp11::mp_for_each<D>([&](auto D)
 			{
 				std::string field = D.name;
-				auto value = (item.*(D).pointer);
-				auto void_pointer = (void*)&value;
-				if (is_primitive_type(value))
+				if (is_primitive_type((item.*(D).pointer)))
 				{
 					if constexpr (D.name == "CreatedDate")
 					{
@@ -44,12 +42,12 @@ public:
 					}
 					else
 					{
-						if constexpr (std::is_same<std::remove_reference_t<decltype(value)>, std::string>::value
-							|| std::is_same<std::remove_reference_t<decltype(value)>, std::wstring>::value
-							|| std::is_same<std::remove_reference_t<decltype(value)>, std::string_view>::value
-							|| std::is_same<std::remove_reference_t<decltype(value)>, std::wstring_view>::value)
+						if constexpr (std::is_same<std::remove_reference_t<decltype((item.*(D).pointer))>, std::string>::value
+							|| std::is_same<std::remove_reference_t<decltype((item.*(D).pointer))>, std::wstring>::value
+							|| std::is_same<std::remove_reference_t<decltype((item.*(D).pointer))>, std::string_view>::value
+							|| std::is_same<std::remove_reference_t<decltype((item.*(D).pointer))>, std::wstring_view>::value)
 						{
-							if ((*(std::string*)void_pointer).empty())
+							if (((item.*(D).pointer)).empty())
 							{
 								return;
 							}
@@ -70,36 +68,34 @@ public:
 				{
 					if (D.name == f)
 					{
-						auto value = (item.*(D).pointer);
-						auto void_pointer = (void*)&value;
-						if constexpr (std::is_same<std::remove_reference_t<decltype(value)>, int>::value)
+						if constexpr (std::is_same<std::remove_reference_t<decltype((item.*(D).pointer))>, int>::value)
 						{
-							client->BindParameter(D.name, *(int*)void_pointer);
+							client->BindParameter(D.name, (item.*(D).pointer));
 						}
-						else if constexpr (std::is_same<std::remove_reference_t<decltype(value)>, long>::value)
+						else if constexpr (std::is_same<std::remove_reference_t<decltype((item.*(D).pointer))>, long>::value)
 						{
 							
-							client->BindParameter(D.name, *(long*)void_pointer);
+							client->BindParameter(D.name, (item.*(D).pointer));
 						}
-						else if constexpr (std::is_same<std::remove_reference_t<decltype(value)>, bool>::value)
+						else if constexpr (std::is_same<std::remove_reference_t<decltype((item.*(D).pointer))>, bool>::value)
 						{
-							client->BindParameter(D.name, *(bool*)void_pointer);
+							client->BindParameter(D.name, (item.*(D).pointer));
 						}
-						else if constexpr (std::is_same<std::remove_reference_t<decltype(value)>, double>::value
-							|| std::is_same<std::remove_reference_t<decltype(value)>, float>::value)
+						else if constexpr (std::is_same<std::remove_reference_t<decltype((item.*(D).pointer))>, double>::value
+							|| std::is_same<std::remove_reference_t<decltype((item.*(D).pointer))>, float>::value)
 						{
-							client->BindParameter(D.name, *(double*)void_pointer);
+							client->BindParameter(D.name, (item.*(D).pointer));
 						}
-						else if constexpr (std::is_same<std::remove_reference_t<decltype(value)>, std::string>::value
-							|| std::is_same<std::remove_reference_t<decltype(value)>, std::wstring>::value
-							|| std::is_same<std::remove_reference_t<decltype(value)>, std::string_view>::value
-							|| std::is_same<std::remove_reference_t<decltype(value)>, std::wstring_view>::value)
+						else if constexpr (std::is_same<std::remove_reference_t<decltype((item.*(D).pointer))>, std::string>::value
+							|| std::is_same<std::remove_reference_t<decltype((item.*(D).pointer))>, std::wstring>::value
+							|| std::is_same<std::remove_reference_t<decltype((item.*(D).pointer))>, std::string_view>::value
+							|| std::is_same<std::remove_reference_t<decltype((item.*(D).pointer))>, std::wstring_view>::value)
 						{
-							client->BindParameter(D.name, (*(std::string*)void_pointer));
+							client->BindParameter(D.name, (item.*(D).pointer));
 						}
-						else if constexpr (std::is_same<std::remove_reference_t<decltype(value)>, std::tm>::value)
+						else if constexpr (std::is_same<std::remove_reference_t<decltype((item.*(D).pointer))>, std::tm>::value)
 						{
-							client->BindParameter(D.name, *(tm*)void_pointer);
+							client->BindParameter(D.name, (item.*(D).pointer));
 						}
 					}
 				}
@@ -158,35 +154,33 @@ public:
 				{
 					if (D.name == f)
 					{
-						auto value = (item.*(D).pointer);
-						auto void_pointer = (void*)&value;
 						if constexpr (std::is_same<std::remove_reference_t<decltype(item.*(D).pointer)>, int>::value)
 						{
-							client->BindParameter(D.name, *(int*)void_pointer);
+							client->BindParameter(D.name, item.*(D).pointer);
 						}
 						else if constexpr (std::is_same<std::remove_reference_t<decltype(item.*(D).pointer)>, long>::value)
 						{
-							client->BindParameter(D.name, *(long*)void_pointer);
+							client->BindParameter(D.name, item.*(D).pointer);
 						}
 						else if constexpr (std::is_same<std::remove_reference_t<decltype(item.*(D).pointer)>, bool>::value)
 						{
-							client->BindParameter(D.name, *(bool*)void_pointer);
+							client->BindParameter(D.name, item.*(D).pointer);
 						}
 						else if constexpr (std::is_same<std::remove_reference_t<decltype(item.*(D).pointer)>, double>::value
 							|| std::is_same<std::remove_reference_t<decltype(item.*(D).pointer)>, float>::value)
 						{
-							client->BindParameter(D.name, *(double*)void_pointer);
+							client->BindParameter(D.name, item.*(D).pointer);
 						}
 						else if constexpr (std::is_same<std::remove_reference_t<decltype(item.*(D).pointer)>, std::string>::value
 							|| std::is_same<std::remove_reference_t<decltype(item.*(D).pointer)>, std::wstring>::value
 							|| std::is_same<std::remove_reference_t<decltype(item.*(D).pointer)>, std::string_view>::value
 							|| std::is_same<std::remove_reference_t<decltype(item.*(D).pointer)>, std::wstring_view>::value)
 						{
-							client->BindParameter(D.name, (*(std::string*)void_pointer));
+							client->BindParameter(D.name, (item.*(D).pointer));
 						}
 						else if constexpr (std::is_same<std::remove_reference_t<decltype(item.*(D).pointer)>, std::tm>::value)
 						{
-							client->BindParameter(D.name, *(tm*)void_pointer);
+							client->BindParameter(D.name, item.*(D).pointer);
 						}
 					}
 				}
