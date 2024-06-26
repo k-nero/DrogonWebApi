@@ -13,24 +13,24 @@ namespace drogon
 		{
 			boost::mp11::mp_for_each<D>([&](auto member)
 			{
-				if (member.name == "Id" || member.name == "id")
+				if constexpr (member.name == "Id" || member.name == "id")
 				{
 					return;
 				}
-				if (std::is_same<std::remove_reference_t<decltype(obj.*(member).pointer)>, int>::value)
+				if constexpr (std::is_same<std::remove_reference_t<decltype(obj.*(member).pointer)>, int>::value)
 				{
 					(long&)(obj.*(member).pointer) = (*json)[member.name].asInt();
 				}
-				else if (std::is_same<std::remove_reference_t<decltype(obj.*(member).pointer)>, bool>::value)
+				else if constexpr (std::is_same<std::remove_reference_t<decltype(obj.*(member).pointer)>, bool>::value)
 				{
 					(bool&)(obj.*(member).pointer) = (*json)[member.name].asBool();
 				}
-				else if (std::is_same<std::remove_reference_t<decltype(obj.*(member).pointer)>, double>::value
+				else if constexpr (std::is_same<std::remove_reference_t<decltype(obj.*(member).pointer)>, double>::value
 					|| std::is_same<std::remove_reference_t<decltype(obj.*(member).pointer)>, float>::value)
 				{
 					(double&)(obj.*(member).pointer) = (*json)[member.name].asDouble();
 				}
-				else if (std::is_same<std::remove_reference_t<decltype(obj.*(member).pointer)>, std::string>::value
+				else if constexpr (std::is_same<std::remove_reference_t<decltype(obj.*(member).pointer)>, std::string>::value
 					|| std::is_same<std::remove_reference_t<decltype(obj.*(member).pointer)>, std::wstring>::value
 					|| std::is_same<std::remove_reference_t<decltype(obj.*(member).pointer)>, std::string_view>::value
 					|| std::is_same<std::remove_reference_t<decltype(obj.*(member).pointer)>, std::wstring_view>::value)
@@ -44,7 +44,7 @@ namespace drogon
 						(std::string&)(obj.*(member).pointer) = (*json)[member.name].asString();
 					}
 				}
-				else if (std::is_same<std::remove_reference_t<decltype(obj.*(member).pointer)>, std::tm>::value)
+				else if constexpr (std::is_same<std::remove_reference_t<decltype(obj.*(member).pointer)>, std::tm>::value)
 				{
 
 				}

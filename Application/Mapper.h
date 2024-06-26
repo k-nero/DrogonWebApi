@@ -29,7 +29,7 @@ public:
 
 				void* source_pointer = &(source.*(source_member.pointer));
 				using des_type = std::remove_reference_t<decltype(destination.*(destination_memeber.pointer))>;	
-				if (source_member.name == destination_memeber.name && typeid(source.*(source_member.pointer)) == typeid(destination.*(destination_memeber.pointer)) )
+				if constexpr (source_member.name == destination_memeber.name && typeid(source.*(source_member.pointer)) == typeid(destination.*(destination_memeber.pointer)) )
 				{
 					destination.*(destination_memeber.pointer) = *((des_type*)source_pointer);
 				}

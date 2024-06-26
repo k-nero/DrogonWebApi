@@ -448,7 +448,7 @@ private:
 		boost::mp11::mp_for_each< boost::describe::describe_members<Type, boost::describe::mod_any_access | boost::describe::mod_inherited>>([&](auto D)
 		{
 			auto value = t.*(D).pointer;
-			if (is_primitive_type(value))
+			if constexpr (is_primitive_type(value))
 			{
 				count++;
 			}
@@ -481,11 +481,11 @@ private:
 
 				table_list.erase(std::remove_if(table_list.begin(), table_list.end(), [&](std::string s) { return s == D.name; }), table_list.end());
 
-				if (!std::is_void_v<inner_type> && !std::is_same_v<std::string, val_type> && !std::is_same_v<std::wstring, val_type>)
+				 if constexpr (!std::is_void_v<inner_type> && !std::is_same_v<std::string, val_type> && !std::is_same_v<std::wstring, val_type>)
 				{
 					using inner_elem_type = std::remove_pointer_t<has_element_type_t<std::remove_reference_t<inner_type>>>;
 
-					if (!std::is_void_v<inner_elem_type>)
+					 if constexpr (!std::is_void_v<inner_elem_type>)
 					{
 						inner_table_name = std::string(typeid(inner_elem_type).name());
 						inner_table_name = inner_table_name.substr(inner_table_name.find_last_of(' ') + 1);
@@ -493,10 +493,10 @@ private:
 						alias += " FROM [dbo].[" + inner_table_name + "] WHERE [dbo].[" + table_name + "].[Id] = [dbo].[" + inner_table_name + "].[" + table_name + "Id] FOR JSON AUTO)) AS '" + std::string(D.name) + "'";
 					}
 				}
-				else if (is_shared_ptr_v<val_type>)
+				else if constexpr (is_shared_ptr_v<val_type>)
 				{
 					using inner_elem_type = std::remove_pointer_t<has_element_type_t<std::remove_reference_t<val_type>>>;
-					if (!std::is_void_v<inner_elem_type>)
+					if constexpr (!std::is_void_v<inner_elem_type>)
 					{
 						inner_table_name = std::string(typeid(inner_elem_type).name());
 						inner_table_name = inner_table_name.substr(inner_table_name.find_last_of(' ') + 1);

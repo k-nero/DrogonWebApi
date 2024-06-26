@@ -62,11 +62,11 @@ public:
 					{
 						using type = std::remove_reference_t<decltype(item.get()->*(D).pointer)>;
 						using inner_type = has_value_type_t<type>;
-						if (!std::is_void_v<inner_type> && !std::is_same_v<std::string, type> && !std::is_same_v<std::wstring, type>)
+						if constexpr (!std::is_void_v<inner_type> && !std::is_same_v<std::string, type> && !std::is_same_v<std::wstring, type>)
 						{
 							using inner_elem_type = std::remove_pointer_t<has_element_type_t<std::remove_reference_t<inner_type>>>;
 
-							if (!std::is_void_v<inner_elem_type>)
+							if constexpr (!std::is_void_v<inner_elem_type>)
 							{
 								auto includes_copy = includes;
 								includes_copy.erase(std::remove_if(includes_copy.begin(), includes_copy.end(), [&](std::string s) { return s == D.name; }), includes_copy.end());
@@ -79,10 +79,10 @@ public:
 								(item.get()->*(D).pointer) = std::any_cast<type>(inner_items);
 							}
 						}
-						else if (is_shared_ptr_v<type>)
+						else if constexpr (is_shared_ptr_v<type>)
 						{
 							using inner_elem_type = std::remove_pointer_t<has_element_type_t<std::remove_reference_t<type>>>;
-							if (!std::is_void_v<inner_elem_type>)
+							if constexpr (!std::is_void_v<inner_elem_type>)
 							{
 								std::string inner_table_name = typeid(inner_elem_type).name();
 								inner_table_name = inner_table_name.substr(inner_table_name.find_last_of(' ') + 1);
@@ -152,11 +152,11 @@ public:
 					{
 						using type = std::remove_reference_t<decltype(item.get()->*(D).pointer)>;
 						using inner_type = has_value_type_t<type>;
-						if (!std::is_void_v<inner_type> && !std::is_same_v<std::string, type> && !std::is_same_v<std::wstring, type>)
+						if constexpr (!std::is_void_v<inner_type> && !std::is_same_v<std::string, type> && !std::is_same_v<std::wstring, type>)
 						{
 							using inner_elem_type = std::remove_pointer_t<has_element_type_t<std::remove_reference_t<inner_type>>>;
 
-							if (!std::is_void_v<inner_elem_type>)
+							if constexpr (!std::is_void_v<inner_elem_type>)
 							{
 								auto includes_copy = includes;
 								includes_copy.erase(std::remove_if(includes_copy.begin(), includes_copy.end(), [&](std::string s) { return s == D.name; }), includes_copy.end());
@@ -169,10 +169,10 @@ public:
 								(item.get()->*(D).pointer) = std::any_cast<type>(inner_items);
 							}
 						}
-						else if (is_shared_ptr_v<type>)
+						else if constexpr (is_shared_ptr_v<type>)
 						{
 							using inner_elem_type = std::remove_pointer_t<has_element_type_t<std::remove_reference_t<type>>>;
-							if (!std::is_void_v<inner_elem_type>)
+							if constexpr (!std::is_void_v<inner_elem_type>)
 							{
 								std::string inner_table_name = typeid(inner_elem_type).name();
 								inner_table_name = inner_table_name.substr(inner_table_name.find_last_of(' ') + 1);
@@ -222,20 +222,20 @@ public:
 			{
 				auto pointer = (void*)&(item->*(D).pointer);
 			}*/
-			if (std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, int>::value)
+			if constexpr (std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, int>::value)
 			{
 				(long&)(item->*(D).pointer) = cmd.Field(D.name).asLong();
 			}
-			else if (std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, bool>::value)
+			else if constexpr (std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, bool>::value)
 			{
 				(bool&)(item->*(D).pointer) = cmd.Field(D.name).asBool();
 			}
-			else if (std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, double>::value
+			else if constexpr (std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, double>::value
 				|| std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, float>::value)
 			{
 				(double&)(item->*(D).pointer) = cmd.Field(D.name).asDouble();
 			}
-			else if (std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, std::string>::value
+			else if constexpr (std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, std::string>::value
 				|| std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, std::wstring>::value
 				|| std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, std::string_view>::value
 				|| std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, std::wstring_view>::value)
@@ -249,7 +249,7 @@ public:
 					(std::string&)(item->*(D).pointer) = cmd.Field(D.name).asString().GetMultiByteChars();
 				}
 			}
-			else if (std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, std::tm>::value)
+			else if constexpr (std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, std::tm>::value)
 			{
 				(std::tm&)(item->*(D).pointer) = std::tm(cmd.Field(D.name).asDateTime());
 			}
@@ -291,11 +291,11 @@ public:
 					{
 						using type = std::remove_reference_t<decltype(item.get()->*(D).pointer)>;
 						using inner_type = has_value_type_t<type>;
-						if (!std::is_void_v<inner_type> && !std::is_same_v<std::string, type> && !std::is_same_v<std::wstring, type>)
+						if constexpr (!std::is_void_v<inner_type> && !std::is_same_v<std::string, type> && !std::is_same_v<std::wstring, type>)
 						{
 							using inner_elem_type = std::remove_pointer_t<has_element_type_t<std::remove_reference_t<inner_type>>>;
 
-							if (!std::is_void_v<inner_elem_type>)
+							if constexpr (!std::is_void_v<inner_elem_type>)
 							{
 								
 								auto includes_copy = includes;
@@ -309,10 +309,10 @@ public:
 								(item.get()->*(D).pointer) = std::any_cast<type>(inner_items);
 							}
 						}
-						else if (is_shared_ptr_v<type>)
+						else if constexpr (is_shared_ptr_v<type>)
 						{
 							using inner_elem_type = std::remove_pointer_t<has_element_type_t<std::remove_reference_t<type>>>;
-							if (!std::is_void_v<inner_elem_type>)
+							if constexpr (!std::is_void_v<inner_elem_type>)
 							{
 								std::string inner_table_name = typeid(inner_elem_type).name();
 								inner_table_name = inner_table_name.substr(inner_table_name.find_last_of(' ') + 1);
@@ -390,11 +390,11 @@ public:
 					{
 						using type = std::remove_reference_t<decltype(item.get()->*(D).pointer)>;
 						using inner_type = has_value_type_t<type>;
-						if (!std::is_void_v<inner_type> && !std::is_same_v<std::string, type> && !std::is_same_v<std::wstring, type>)
+						if constexpr  (!std::is_void_v<inner_type> && !std::is_same_v<std::string, type> && !std::is_same_v<std::wstring, type>)
 						{
 							using inner_elem_type = std::remove_pointer_t<has_element_type_t<std::remove_reference_t<inner_type>>>;
 
-							if (!std::is_void_v<inner_elem_type>)
+							if constexpr (!std::is_void_v<inner_elem_type>)
 							{
 								auto includes_copy = includes;
 								includes_copy.erase(std::remove_if(includes_copy.begin(), includes_copy.end(), [&](std::string s) { return s == D.name; }), includes_copy.end());
@@ -407,10 +407,10 @@ public:
 								(item.get()->*(D).pointer) = std::any_cast<type>(inner_items);
 							}
 						}
-						else if (is_shared_ptr_v<type>)
+						else if constexpr (is_shared_ptr_v<type>)
 						{
 							using inner_elem_type = std::remove_pointer_t<has_element_type_t<std::remove_reference_t<type>>>;
-							if (!std::is_void_v<inner_elem_type>)
+							if constexpr (!std::is_void_v<inner_elem_type>)
 							{
 								std::string inner_table_name = typeid(inner_elem_type).name();
 								inner_table_name = inner_table_name.substr(inner_table_name.find_last_of(' ') + 1);
@@ -472,20 +472,20 @@ public:
 			{
 				auto pointer = (void*)&(item->*(D).pointer);
 			}*/
-			if (std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, int>::value)
+			if constexpr (std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, int>::value)
 			{
 				(long&)(item->*(D).pointer) = client->GetLongResult(D.name);
 			}
-			else if (std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, bool>::value)
+			else if constexpr (std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, bool>::value)
 			{
 				(bool&)(item->*(D).pointer) = client->GetBoolResult(D.name);
 			}
-			else if (std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, double>::value
+			else if constexpr (std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, double>::value
 				|| std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, float>::value)
 			{
 				(double&)(item->*(D).pointer) = client->GetDoubleResult(D.name);
 			}
-			else if (std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, std::string>::value
+			else if constexpr (std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, std::string>::value
 				|| std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, std::wstring>::value
 				|| std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, std::string_view>::value
 				|| std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, std::wstring_view>::value)
@@ -499,7 +499,7 @@ public:
 					(std::string&)(item->*(D).pointer) = client->GetStringResult(D.name);
 				}
 			}
-			else if (std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, std::tm>::value)
+			else if constexpr (std::is_same<std::remove_reference_t<decltype(item->*(D).pointer)>, std::tm>::value)
 			{
 				(std::tm&)(item->*(D).pointer) = client->GetDateTimeResult(D.name);
 			}
