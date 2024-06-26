@@ -237,6 +237,7 @@
     <ClInclude Include="BaseQuery.h" />
     <ClInclude Include="BaseCommand.h" />
     <ClInclude Include="BaseQueryV2.h" />
+    <ClInclude Include="BaseQueryV3.h" />
     <ClInclude Include="ChatParticipantModel.h" />
     <ClInclude Include="ChatParticipantService.h" />
     <ClInclude Include="ChatRoomModel.h" />

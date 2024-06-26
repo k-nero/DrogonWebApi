@@ -72,11 +72,10 @@ public:
 								includes_copy.erase(std::remove_if(includes_copy.begin(), includes_copy.end(), [&](std::string s) { return s == D.name; }), includes_copy.end());
 #ifdef ASYNC
 								auto inner_items_future = std::async(std::launch::async, &BaseQuery::GetAll<inner_elem_type>, this, table_name + "Id = '" + client->GetStringResult(PKEY) + "'", includes);
-								auto inner_items = inner_items_future.get();
+								(item.get()->*(D).pointer) = inner_items_future.get();
 #else
-								auto inner_items = GetAll<inner_elem_type>(table_name + "Id = '" + client->GetStringResult(PKEY) + "'", includes);
+								(item.get()->*(D).pointer) = GetAll<inner_elem_type>(table_name + "Id = '" + client->GetStringResult(PKEY) + "'", includes);
 #endif // ASYNC
-								(item.get()->*(D).pointer) = std::any_cast<type>(inner_items);
 							}
 						}
 						else if constexpr (is_shared_ptr_v<type>)
@@ -91,11 +90,11 @@ public:
 								includes_copy.erase(std::remove_if(includes_copy.begin(), includes_copy.end(), [&](std::string s) { return s == D.name; }), includes_copy.end());
 #ifdef ASYNC
 								auto inner_item_future = std::async(std::launch::async, &BaseQuery::GetSingle<inner_elem_type>, this, PKEY " =  '" + id + "'", includes);
-								auto inner_item = inner_item_future.get();
+								(item.get()->*(D).pointer) = inner_item_future.get();
 #else
-								auto inner_item = GetSingle<inner_elem_type>(PKEY " =  '" + id + "'", includes);
+								(item.get()->*(D).pointer) = GetSingle<inner_elem_type>(PKEY " =  '" + id + "'", includes);
 #endif // ASYNC
-								(item.get()->*(D).pointer) = std::any_cast<type>(inner_item);
+								
 							}
 						}
 					}
@@ -162,11 +161,10 @@ public:
 								includes_copy.erase(std::remove_if(includes_copy.begin(), includes_copy.end(), [&](std::string s) { return s == D.name; }), includes_copy.end());
 #ifdef ASYNC
 								auto inner_items_future = std::async(std::launch::async, &BaseQuery::GetAll<inner_elem_type>, this, table_name + "Id = '" + client->GetStringResult(PKEY) + "'", includes);
-								auto inner_items(inner_items_future.get());
+								(item.get()->*(D).pointer) = (inner_items_future.get());
 #else
-								auto inner_items = GetAll<inner_elem_type>(table_name + "Id = '" + client->GetStringResult(PKEY) + "'", includes);
+								(item.get()->*(D).pointer) = GetAll<inner_elem_type>(table_name + "Id = '" + client->GetStringResult(PKEY) + "'", includes);
 #endif // ASYNC
-								(item.get()->*(D).pointer) = std::any_cast<type>(inner_items);
 							}
 						}
 						else if constexpr (is_shared_ptr_v<type>)
@@ -181,11 +179,10 @@ public:
 								includes_copy.erase(std::remove_if(includes_copy.begin(), includes_copy.end(), [&](std::string s) { return s == D.name; }), includes_copy.end());
 #ifdef ASYNC
 								auto inner_item_future = std::async(std::launch::async, &BaseQuery::GetSingle<inner_elem_type>, this, PKEY " =  '" + id + "'", includes);
-								auto inner_item = inner_item_future.get();
+								(item.get()->*(D).pointer) = inner_item_future.get();
 #else
-								auto inner_item = GetSingle<inner_elem_type>(PKEY " =  '" + id + "'", includes);
+								(item.get()->*(D).pointer) = GetSingle<inner_elem_type>(PKEY " =  '" + id + "'", includes);
 #endif // ASYNC
-								(item.get()->*(D).pointer) = std::any_cast<type>(inner_item);
 							}
 						}
 
@@ -302,11 +299,10 @@ public:
 								includes_copy.erase(std::remove_if(includes_copy.begin(), includes_copy.end(), [&](std::string s) { return s == D.name; }), includes_copy.end());
 #ifdef ASYNC
 								auto inner_items_future = std::async(std::launch::async, &BaseQuery::GetAll<inner_elem_type>, this, table_name +  "Id = '" + client->GetStringResult(PKEY) + "'", includes);
-								auto inner_items = inner_items_future.get();
+								(item.get()->*(D).pointer) = inner_items_future.get();
 #else 
-								auto inner_items = GetAll<inner_elem_type>(table_name + "Id = '" + client->GetStringResult(PKEY) + "'", includes);
+								(item.get()->*(D).pointer) = GetAll<inner_elem_type>(table_name + "Id = '" + client->GetStringResult(PKEY) + "'", includes);
 #endif	// ASYNC
-								(item.get()->*(D).pointer) = std::any_cast<type>(inner_items);
 							}
 						}
 						else if constexpr (is_shared_ptr_v<type>)
@@ -321,11 +317,10 @@ public:
 								includes_copy.erase(std::remove_if(includes_copy.begin(), includes_copy.end(), [&](std::string s) { return s == D.name; }), includes_copy.end());
 #ifdef ASYNC
 								auto inner_ptr_item_future = std::async(std::launch::async, &BaseQuery::GetSingle<inner_elem_type>, this, PKEY " =  '" + id + "'", includes);
-								auto inner_ptr_item = inner_ptr_item_future.get();
+								(item.get()->*(D).pointer) = inner_ptr_item_future.get();
 #else 
-								auto inner_ptr_item = GetSingle<inner_elem_type>(PKEY " =  '" + id + "'", includes);
+								(item.get()->*(D).pointer) = GetSingle<inner_elem_type>(PKEY " =  '" + id + "'", includes);
 #endif	// ASYNC
-								(item.get()->*(D).pointer) = std::any_cast<type>(inner_ptr_item);
 							}
 
 						}
@@ -400,11 +395,10 @@ public:
 								includes_copy.erase(std::remove_if(includes_copy.begin(), includes_copy.end(), [&](std::string s) { return s == D.name; }), includes_copy.end());
 #ifdef ASYNC
 								auto inner_items_future = std::async(std::launch::async, &BaseQuery::GetAll<inner_elem_type>, this, table_name + "Id = '" + client->GetStringResult(PKEY) + "'", includes_copy);
-								auto inner_items = inner_items_future.get();
+								(item.get()->*(D).pointer) = inner_items_future.get();
 #else
-								auto inner_items = GetAll<inner_elem_type>(table_name + "Id = '" + client->GetStringResult(PKEY) + "'", includes);
+								(item.get()->*(D).pointer) = GetAll<inner_elem_type>(table_name + "Id = '" + client->GetStringResult(PKEY) + "'", includes);
 #endif // ASYNC
-								(item.get()->*(D).pointer) = std::any_cast<type>(inner_items);
 							}
 						}
 						else if constexpr (is_shared_ptr_v<type>)
@@ -419,11 +413,10 @@ public:
 								includes_copy.erase(std::remove_if(includes_copy.begin(), includes_copy.end(), [&](std::string s) { return s == D.name; }), includes_copy.end());
 #ifdef ASYNC
 								auto inner_item_future = std::async(std::launch::async, &BaseQuery::GetSingle<inner_elem_type>, this, PKEY " =  '" + id + "'", includes);
-								auto inner_item = inner_item_future.get();
+								(item.get()->*(D).pointer) = inner_item_future.get();
 #else
-								auto inner_item = GetSingle<inner_elem_type>(PKEY " =  '" + id + "'", includes);
+								(item.get()->*(D).pointer) = GetSingle<inner_elem_type>(PKEY " =  '" + id + "'", includes);
 #endif // ASYNC
-								(item.get()->*(D).pointer) = std::any_cast<type>(inner_item);
 							}
 						}
 

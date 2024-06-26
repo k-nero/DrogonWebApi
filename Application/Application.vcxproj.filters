@@ -144,6 +144,9 @@
     <ClInclude Include="MediaMessageModel.h">
       <Filter>Header Files\Model</Filter>
     </ClInclude>
+    <ClInclude Include="BaseQueryV3.h">
+      <Filter>Header Files\Common\ORM</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ApplicationUserServices.cpp">
