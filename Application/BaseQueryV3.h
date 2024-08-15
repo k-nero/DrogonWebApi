@@ -1,28 +1,31 @@
 #pragma once
 #include <type_traits>
 #include <BaseEntity.h>
+#include <vector>
 
 //TODO: Implement Query class
 
 template <typename T, typename = std::is_base_of<BaseEntity, T>::type>
-class Query
+class DbSet
 {
 public:
-	Query();
-	~Query();
-	Query& Where(std::string where)
+	DbSet() = default;
+	~DbSet() = default;
+
+	DbSet& Where(std::string where)
 	{
 		_where = where;
 		return *this;
 	}
 
 	template<typename F>
-	Query& Include(F f)
+	DbSet& Include(F f)
 	{
 		_includes.push_back(typeid(f()).name());
 		return *this;
 	}
 
 private:
-	std::string _command;
+	std::string _where;
+	std::vector<std::string> _includes;
 };
