@@ -3,7 +3,7 @@
   "dependencies": [
     {
       "name": "drogon",
-      "version>=": "1.9.5",
+      "version>=": "1.9.7",
       "host": true,
       "platform": "x64"
     },
@@ -90,5 +90,5 @@
       "platform": "x64"
     }
   ],
-  "builtin-baseline": "fe1cde61e971d53c9687cf9a46308f8f55da19fa"
+  "builtin-baseline": "cff6ed45719c0162fa7065fdac90506a0add812c"
 }
